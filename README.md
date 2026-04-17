@@ -11,7 +11,7 @@ These vary in form — some are short designed pieces, some are longer prose. Sl
 ## essays
 
 - **[The Biology of Belonging](the-biology-of-belonging.pdf)** `short` — restorative yoga, bounded active context, and the same shape showing up twice.
-- **[Why Things Don't Finish](why-things-dont-finish.pdf)** `essay` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[Why Things Don't Finish](why-things-dont-finish.pdf)** `short` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
 - **[On Cross-Domain Analogy](on-cross-domain-analogy.pdf)** `visual` — breath as shared channel, back pressure as parasympathetic signal, write amplification as cortisol cascade.
 
 More when they arrive.
