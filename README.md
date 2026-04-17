@@ -10,7 +10,8 @@ This is where the written ones go. Slow on purpose.
 
 ## essays
 
-- **The Partition Problem** — restorative yoga, bounded active context, and the same shape showing up twice.
-- **The Campaign Cascade** — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[The Partition Problem](the-partition-problem.pdf)** — restorative yoga, bounded active context, and the same shape showing up twice.
+- **[The Campaign Cascade](the-campaign-cascade.pdf)** — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[Three Places Where Distributed Systems and the Body Actually Rhyme](three-mappings.pdf)** — breath as shared channel, back pressure as parasympathetic signal, write amplification as cortisol cascade.
 
 More when they arrive.
