@@ -10,8 +10,8 @@ This is where the written ones go. Slow on purpose.
 
 ## essays
 
-- **[The Partition Problem](the-partition-problem.pdf)** — restorative yoga, bounded active context, and the same shape showing up twice.
-- **[The Campaign Cascade](the-campaign-cascade.pdf)** — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
-- **[Three Places Where Distributed Systems and the Body Actually Rhyme](three-mappings.pdf)** — breath as shared channel, back pressure as parasympathetic signal, write amplification as cortisol cascade.
+- **[The Biology of Belonging](the-biology-of-belonging.pdf)** — restorative yoga, bounded active context, and the same shape showing up twice.
+- **[Why Things Don't Finish](why-things-dont-finish.pdf)** — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[On Cross-Domain Analogy](on-cross-domain-analogy.pdf)** — breath as shared channel, back pressure as parasympathetic signal, write amplification as cortisol cascade.
 
 More when they arrive.
