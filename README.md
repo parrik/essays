@@ -1,7 +1,5 @@
 # on love
 
-Essays on things I love.
-
 Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure — and to notice when that structure rhymes with something you've been looking at for years in another room. I don't think the connections are metaphors. I think they're the same problem, shown twice.
 
 Posters, short pieces, longer prose. Slow on purpose.
