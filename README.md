@@ -6,7 +6,7 @@ Love here isn't enthusiasm. It's the willingness to stay with something long eno
 
 Most of what's here lives at those rhymes. Fleet engineering and cellular biology. Restorative yoga and bounded context. The insides of companies and the insides of cells. I don't think the connections are metaphors. I think they're the same problem, shown twice.
 
-These vary in form — some are short designed pieces, some are longer prose. Slow on purpose.
+These vary in form — some are posters, some are short designed pieces, some are longer prose. Slow on purpose.
 
 ## essays
 
