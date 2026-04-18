@@ -9,6 +9,6 @@ Posters, short pieces, longer prose. Slow on purpose.
 ## essays
 
 - **[The Biology of Belonging](the-biology-of-belonging.pdf)** `short` — restorative yoga, bounded active context, and the same shape showing up twice.
-- **[Why Things Don't Finish](why-things-dont-finish.pdf)** `poster` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[Campaign Cascade](campaign-cascade.pdf)** `poster` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
 
 More when they arrive.
