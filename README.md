@@ -11,6 +11,6 @@ These vary in form — some are short designed pieces, some are longer prose. Sl
 ## essays
 
 - **[The Biology of Belonging](the-biology-of-belonging.pdf)** `short` — restorative yoga, bounded active context, and the same shape showing up twice.
-- **[Why Things Don't Finish](why-things-dont-finish.pdf)** `short` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+- **[Why Things Don't Finish](why-things-dont-finish.pdf)** `poster` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
 
 More when they arrive.
