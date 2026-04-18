@@ -1,8 +1,8 @@
 # on love
 
-Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure — and to notice when that structure rhymes with something you've been looking at for years in another room. I don't think the connections are metaphors. I think they're the same problem, shown twice.
+Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.
 
-Posters, short pieces, longer prose. Slow on purpose.
+Posters, short pieces, longer prose. Written by human, edited by AI, then edited by human.
 
 ## essays
 
