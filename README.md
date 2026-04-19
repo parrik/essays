@@ -2,7 +2,7 @@
 
 Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.
 
-Posters, short pieces, longer prose. Written by human & AI.
+Posters, short pieces, longer prose. Written by AI, lived by human.
 
 ## essays
 
