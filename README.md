@@ -2,6 +2,8 @@
 
 Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.
 
+I like distributed systems, biology, and the practice.
+
 Posters, short pieces, longer prose. Written by AI, lived by human.
 
 ## essays
