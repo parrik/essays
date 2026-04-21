@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const essays = await getCollection('essays');
+essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+<Base title="parrik">
+  <section class="intro">
+    <h1>on love</h1>
+    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
+    <p>I like distributed systems, biology, and the practice.</p>
+    <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
+  </section>
+  <section class="essays">
+    <h2>essays</h2>
+    <ul>
+      {essays.map(essay => (
+        <li>
+          <a href={`/essays/${essay.id}/`} class="essay-link">
+            <span class="essay-title">{essay.data.title}</span>
+            {essay.data.tag && <span class={`essay-tag tag-${essay.data.tag}`}>{essay.data.tag}</span>}
+          </a>
+          {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>

@@ -1,14 +1,34 @@
-# on love
+# parrik
 
-Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.
+Source for [parrik.com](https://parrik.com) — essays on systems, biology, and the practice.
 
-I like distributed systems, biology, and the practice.
+Built with [Astro](https://astro.build). Deployed to GitHub Pages.
 
-Posters, short pieces, longer prose. Written by AI, lived by human.
+## Essays
 
-## essays
+- **[The Partition Problem](src/content/essays/the-partition-problem.md)** — restorative yoga and the biology of belonging.
+- **[The Campaign Cascade](src/content/essays/the-campaign-cascade.md)** — why cross-cutting engineering initiatives multiply instead of completing.
 
-- **[The Biology of Belonging](the-biology-of-belonging.pdf)** `short` — restorative yoga, bounded active context, and the same shape showing up twice.
-- **[Campaign Cascade](campaign-cascade.pdf)** `poster` — why cross-cutting engineering initiatives multiply instead of completing, and the three ways out.
+## Local development
 
-More when they arrive.
+```bash
+npm install
+npm run dev          # localhost:4321
+npm run build        # output in dist/
+```
+
+## Adding an essay
+
+Create `src/content/essays/your-essay-slug.md` with frontmatter:
+
+```yaml
+---
+title: Your Essay Title
+subtitle: Optional subtitle
+tag: essay | poster | short
+order: 3        # higher = later in list; lower = earlier
+description: Short description for SEO / social.
+---
+```
+
+The slug becomes the URL: `/essays/your-essay-slug/`.
