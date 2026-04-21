@@ -5,6 +5,7 @@ kicker: Method
 tag: essay
 order: 0
 description: After enough conversations, memory becomes a list. The list flattens the distinction between repetition and corroboration.
+pdfUrl: /know-thyself.pdf
 ---
 
 After enough conversations with a model, its memory of you starts to look like a list.
