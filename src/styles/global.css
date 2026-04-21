@@ -101,14 +101,49 @@ a {
 a:hover { text-decoration-color: currentColor; }
 
 /* Home */
+.intro {
+  margin: 1.5rem 0 4rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
 .intro h1 {
-  font-size: 2.4rem;
-  margin-bottom: 1rem;
-  font-weight: 500;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 3.2rem;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.015em;
+  line-height: 1.05;
+  margin: 0 0 1.75rem;
 }
 
 .intro p {
-  margin: 0.75rem 0;
+  margin: 0.9rem 0;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+
+.intro p:first-of-type {
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+
+.intro p:first-of-type::first-letter {
+  font-size: 3rem;
+  float: left;
+  line-height: 0.9;
+  padding: 0.22em 0.12em 0 0;
+  font-weight: 400;
+  color: var(--accent);
+}
+
+.intro p:last-of-type {
+  font-style: italic;
+  color: var(--muted);
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  letter-spacing: 0.005em;
 }
 
 .essays {

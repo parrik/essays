@@ -16,46 +16,56 @@ The fix is not more memory. It is shape.
 
 ---
 
-Start small. Imagine a person — call her Alex. Alex told her model she moved to a new city for a director role, and that the first three months were hard: no friends, child struggling at school, long hours, stopped running. That is an *episode*. A specific lived event, dated, contained, a thing that happened.
+Consider two claims. The first: *Alex moved to a new city last August, and the first three months were hard — working long hours, her child struggling at school, the running routine she had kept for years stopped.* Specific. Dated. A thing that happened.
 
-Separately, Alex has said across many conversations that she thinks her physical routine is load-bearing for everything else. That is an *interpretation* — a theory about why certain patterns show up. Interpretations are cheap. You can produce them all day without new evidence.
+The second: *Alex's physical routine is load-bearing for everything else.* Interpretive. A theory. Something Alex and the model have said back and forth for six months.
 
-A flat list puts these on the same footing. A shaped memory does not.
+A flat list puts these on the same footing — one line each in the memory store. But the interpretation is cheap. You can produce interpretations all day without new evidence. The episode is the thing the interpretation rests on. If the episode is miscoded, the interpretation crumbles. If the interpretation is wrong, the episode remains.
 
-The typed scheme distinguishes seven kinds of node. Three carry the weight most of the time.
-
-*References* are biographical facts — where you were born, who you married, what you do. Single-source, verifiable in principle.
-
-*Observations* are specific episodes. The three hard months after the move. The first Sunday at the new running group. The conflict with the senior colleague in March. Each one dated, contained, lived.
-
-*Overlaps* are patterns grounded in two or more *independent* observations — not the same claim restated, but the same shape recurring across different events.
-
-The other four matter at the edges. *Novel* nodes are interpretations that rest on a single derivation; they must carry a tentative flag and an explicit caveat block naming how they could be wrong. *Emergent* nodes are claims that only precipitate at the intersection of two or more existing nodes — no single parent alone produces them. *Equivalency* nodes bridge to external theoretical frameworks. *Open* nodes preserve the questions you have wondered about without answering, kept first-class so they do not quietly collapse into novels.
-
-Every node carries a provenance triple: who said it, what it rests on, how it was derived. Every edge between nodes carries one too.
+A shaped memory makes the distinction structural.
 
 ---
 
-The operating rule, adapted from Patrick McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) schema, is:
+*Reference* is what's biographical and verifiable. Where you were born. Who you married. What you do.
+
+*Observation* is what happened. The three hard months after the move. The first Sunday at the new running group. The conflict with the senior colleague in March. Each one dated, each one contained.
+
+*Overlap* is a pattern grounded in two or more **independent** observations. Not the same claim restated — the same *shape* recurring across different events. Alex's running routine stopped, then work extended and her child struggled. Her running routine restarted, then work stabilized and her child's grades recovered. Two episodes, same shape. That's an overlap. Her saying "routine matters to me" five times is not.
+
+Those three carry the weight. Four more handle the edges.
+
+*Novel* is an interpretation resting on a single derivation. The schema requires it to carry a `tentative: true` flag and an explicit `caveats:` block naming how it could be wrong. *Emergent* is a claim that precipitates only at the intersection of two existing nodes, not in either alone. *Equivalency* is a bridge to an external theoretical framework — a way of saying *this pattern instantiates something already well-described elsewhere*. *Open* is for the questions you have wondered about without answering, kept first-class so they do not quietly collapse into novels.
+
+Every node carries a provenance triple: who said it, what it rests on, how it was derived. Every edge carries one too.
+
+---
+
+The operating rule, adapted from Patrick McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph), is:
 
 > **Attribution ≠ confidence.**
 
 This is the move that does the work.
 
-Repetition feels like corroboration. It is not. If Alex has said across six conversations that she "stays in misaligned situations because she is afraid of burning the relationship," that is one derivation repeated six times — not six independent pieces of evidence. Real confidence accumulates only from *independent* grounding: different episodes, different contexts, different types of evidence. A claim made once by the model and echoed back by Alex twelve times is still single-source.
+Repetition feels like corroboration. It isn't. If Alex has said across six conversations that she "stays in misaligned situations because she is afraid of burning the relationship," that is one derivation repeated six times, not six pieces of evidence. The model agreed politely each time. Nothing new has landed.
 
-The schema forces this distinction into the structure of the memory. A node whose evidence is `derived-inference` from a single episode cannot quietly become a pattern. It can only move from `novel` to `overlap` when a new, independent observation lands.
+Real confidence accumulates only from *independent* grounding: different episodes, different contexts, different evidence types. The schema forces this into the structure of the memory itself. A node whose evidence is `derived-inference` from a single episode cannot quietly become a pattern. It can only move from `novel` to `overlap` when a new, independent observation lands.
 
-This sounds bureaucratic. It is the opposite. Without it, a model that is polite and attentive drifts into a subtle kind of hallucination — it believes things about the person it is talking to, confidently, because it has said those things and the person did not object. With it, the model knows which claims it can lean on and which it is holding tentatively. It can tell you the load-bearing ones — the observations most of your interpretations rest on, so a wrong observation does not quietly corrupt downstream claims. It can tell you the fragile ones — the novel interpretations with explicit caveats. It can flag the emergent ones — insights that only appeared at the intersection of two things you held simultaneously. It can preserve the open questions you have been quietly answering with plausible-sounding novels.
+This sounds bureaucratic. It is the opposite.
+
+Without it, a model that is polite and attentive drifts into a subtle kind of hallucination — confident about things that rest on thin inference, because those things have been said and not objected to. With it, the model can tell you the load-bearing observations — the ones most of your interpretations rest on, so a wrong episode doesn't corrupt downstream claims. It can tell you the fragile ones, with their explicit caveats. It can preserve the open questions you have been quietly answering with plausible-sounding novels.
 
 ---
 
-Nothing in this schema is new, exactly.
+The scaffold is open, MIT-licensed, at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. Paste `START_HERE.md` into a conversation with a model that has meaningful memory of you, and it walks through the construction in phases: inventory references and observations; identify patterns; name the novel interpretations tentatively; find the emergent ones; preserve the open questions; add equivalency bridges if relevant; name the practices you have adopted from all this. You get a typed YAML graph, a visual diagram, and a list of which observations a correction would cascade from.
 
-It borrows from Patrick McCarthy's open-knowledge-graph — the provenance triple, the confidence tiers, the emergent-at-intersection idea. From W3C PROV-O, the formal vocabulary for revisions. From Toulmin's argument model, the *warrant* — the reasoning between evidence and claim, stated as a separable assumption that can be challenged on its own terms. From Luhmann's Zettelkasten, atomicity and link density. From the rationalist epistemic-status convention, tagging effort and genre. What it adds is a first-class *observation* node — because personal graphs, unlike scientific ones, treat episodes as things that get reinterpreted, not just as evidence for propositions.
+None of the pieces are new. The provenance triple, the confidence tiers, and the emergent-at-intersection framing come from Pat McCarthy's scientific-claims schema. The *warrant* field — the reasoning between evidence and claim, stated as a separable assumption — is from Toulmin. Atomicity and link density come from Luhmann's Zettelkasten. Revisions borrow from W3C PROV-O. Effort and genre tags come from the rationalist epistemic-status convention. What the scaffold adds is a first-class *observation* node, because personal graphs, unlike scientific ones, treat episodes as things that get reinterpreted, not just as evidence for propositions.
 
 What it produces is closer to an older thing: a Renaissance commonplace book. Structured personal notes, typed and linked, organized for retrieval and return. The difference is that a commonplace book was private. This one is designed to be readable by an AI you are talking with.
 
-The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple wall as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one. If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative. It is the thing.
+---
 
-The scaffold is open and MIT, at [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself). If any of it is useful, take it, modify it, discard it. The method is the point, not the artifact.
+The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple wall as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
+
+If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative.
+
+It is the thing.
