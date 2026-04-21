@@ -40,6 +40,64 @@ Every node carries a provenance triple: who said it, what it rests on, how it wa
 
 ---
 
+Here is what that distinction looks like in YAML:
+
+```yaml
+- id: O01-first-three-months
+  type: observation
+  name: "First three months in new city — isolation and overwhelm"
+  statement: |
+    Sep–Nov 2024: working long hours, child struggling at school,
+    no friends yet, stopped the running routine.
+  provenance:
+    attribution: { source: "Alex, self-report", date: "2024-12" }
+    evidence: { type: self-report }
+
+- id: O04-grades-recovered
+  type: observation
+  name: "Child's grades recovered in spring semester"
+  statement: |
+    Spring 2025: grades recovered to pre-move levels, coinciding with
+    Alex re-establishing her own routine.
+  provenance:
+    attribution: { source: "Alex + report cards", date: "2025-05" }
+    evidence: { type: external-record }
+
+- id: P01-routine-as-regulation
+  type: overlap
+  name: "Physical routine is load-bearing for Alex's stability"
+  statement: |
+    When routine breaks down, other things deteriorate proportionally;
+    when it returns, they stabilize. Not preference — structural.
+  provenance:
+    evidence:
+      type: pattern-across-cases
+      references: [O01-first-three-months, O04-grades-recovered]
+    derivation:
+      from: [O01-first-three-months, O04-grades-recovered]
+      method: "induction across independent instances"
+
+- id: N01-isolation-as-early-warning
+  type: novel
+  tentative: true
+  name: "Isolation is an early-warning signal, not a neutral state"
+  statement: |
+    PROPOSED: for Alex, extended periods without meaningful social
+    contact appear upstream of routine breakdown.
+  provenance:
+    evidence:
+      type: derived-inference
+      references: [O01-first-three-months]
+  caveats: |
+    Could be wrong: O01 conflates isolation with several other
+    changes. Only one detailed episode on record; needs an
+    independent second.
+```
+
+Two observations. One overlap grounded in both. One novel grounded in only the first, flagged tentative, with a caveat that names what could falsify it. The overlap could become stronger with more instances. The novel cannot become a pattern until a second, *independent* episode arrives — not the same claim restated, but a different event with the same shape.
+
+---
+
 The operating rule, adapted from Patrick McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph), is:
 
 > **Attribution ≠ confidence.**
