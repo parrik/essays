@@ -58,4 +58,4 @@ What it produces is closer to an older thing: a Renaissance commonplace book. St
 
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple wall as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one. If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative. It is the thing.
 
-The scaffold is open and MIT. If any of it is useful, take it, modify it, discard it. The method is the point, not the artifact.
+The scaffold is open and MIT, at [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself). If any of it is useful, take it, modify it, discard it. The method is the point, not the artifact.
