@@ -250,6 +250,21 @@ hr {
 .essay-body em { font-style: italic; }
 .essay-body strong { font-weight: 600; }
 
+.essay-body img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 2rem auto 0.5rem;
+  border-radius: 3px;
+}
+
+.essay-body img + p {
+  margin-top: 0.25rem;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
 .essay-body blockquote {
   margin: 1.5rem 0;
   padding: 0.25rem 0 0.25rem 1rem;
