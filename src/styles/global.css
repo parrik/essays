@@ -283,6 +283,97 @@ hr {
   .essay-body .graph-embed-short { height: 380px; }
 }
 
+.essay-body .graph-legend {
+  margin: 1.75rem 0 0.75rem;
+  padding: 0.85rem 1rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg-soft);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.essay-body .graph-legend .legend-title {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.55rem;
+  font-weight: 500;
+}
+
+.essay-body .graph-legend ul.legend-nodes,
+.essay-body .graph-legend ul.legend-edges {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.3rem 1rem;
+}
+
+.essay-body .graph-legend ul.legend-nodes {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.essay-body .graph-legend ul.legend-edges {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 0.6rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--line);
+  color: var(--text);
+}
+
+.essay-body .graph-legend li {
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  margin: 0;
+}
+
+.essay-body .graph-legend strong { font-weight: 600; margin-right: 0.3rem; }
+
+.essay-body .graph-legend .chip {
+  display: inline-block;
+  min-width: 1.8rem;
+  padding: 0.1em 0.35em;
+  margin-right: 0.55rem;
+  text-align: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border: 1px solid;
+  border-radius: 3px;
+  font-family: system-ui, -apple-system, sans-serif;
+  flex-shrink: 0;
+}
+
+.essay-body .graph-legend .chip-ref { background: #ECECEC; border-color: #666666; color: #333; }
+.essay-body .graph-legend .chip-obs { background: #C8DCF0; border-color: #3A5E7A; color: #1a3854; }
+.essay-body .graph-legend .chip-ovl { background: #B8E0C2; border-color: #2A6A3A; color: #18472a; }
+.essay-body .graph-legend .chip-nov { background: #F5E0A0; border-color: #7A5A0E; color: #50420a; border-style: dashed; }
+.essay-body .graph-legend .chip-emg { background: #E0C8F0; border-color: #5A3A7A; color: #3e2858; }
+.essay-body .graph-legend .chip-eqv { background: #F5C890; border-color: #7A4A0E; color: #5a340a; }
+.essay-body .graph-legend .chip-prc { background: #D8E0F5; border-color: #3A4A7A; color: #28325a; }
+.essay-body .graph-legend .chip-opn { background: #F5C8C8; border-color: #7A2A2A; color: #52191a; border-style: dashed; }
+
+.essay-body .graph-legend .edge-swatch {
+  display: inline-block;
+  width: 32px;
+  height: 0;
+  margin-right: 0.55rem;
+  border-top: 2px solid #2A6A3A;
+  flex-shrink: 0;
+}
+
+.essay-body .graph-legend .edge-grounds { border-top-style: solid; border-top-color: #2A6A3A; }
+.essay-body .graph-legend .edge-emergent { border-top-style: dotted; border-top-color: #6A4A8A; }
+
+@media (max-width: 540px) {
+  .essay-body .graph-legend ul.legend-nodes,
+  .essay-body .graph-legend ul.legend-edges { grid-template-columns: 1fr; }
+}
+
 .essay-body blockquote {
   margin: 1.5rem 0;
   padding: 0.25rem 0 0.25rem 1rem;

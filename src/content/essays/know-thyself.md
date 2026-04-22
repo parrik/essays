@@ -10,6 +10,24 @@ pdfUrl: /know-thyself.pdf
 
 *This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
 
+<div class="graph-legend" aria-label="How to read the graph">
+  <div class="legend-title">How to read the graph</div>
+  <ul class="legend-nodes">
+    <li><span class="chip chip-ref">R</span><strong>reference</strong> — biographical fact</li>
+    <li><span class="chip chip-obs">O</span><strong>observation</strong> — dated event</li>
+    <li><span class="chip chip-ovl">P</span><strong>overlap</strong> — pattern across observations</li>
+    <li><span class="chip chip-nov">N</span><strong>novel</strong> — tentative, single-derivation</li>
+    <li><span class="chip chip-emg">E</span><strong>emergent</strong> — claim at an intersection</li>
+    <li><span class="chip chip-eqv">EQ</span><strong>equivalency</strong> — bridge to external framework</li>
+    <li><span class="chip chip-prc">PR</span><strong>practice</strong> — operating method</li>
+    <li><span class="chip chip-opn">OQ</span><strong>open</strong> — unresolved question</li>
+  </ul>
+  <ul class="legend-edges">
+    <li><span class="edge-swatch edge-grounds"></span>solid — grounds</li>
+    <li><span class="edge-swatch edge-emergent"></span>dotted — emergent from</li>
+  </ul>
+</div>
+
 <iframe src="/example-graph-full.html" class="graph-embed" loading="lazy" title="Alex's full example graph — hover any node"></iframe>
 
 *A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The essay below explains why memory needs this shape.*
@@ -107,8 +125,6 @@ Two observations. One overlap grounded in both. One novel grounded in only the f
 What falls out of a graph like this, once it has some mass, is worth naming explicitly.
 
 **The spine.** A handful of nodes carry most of the interpretations. In Alex's graph, `O01-first-three-months` is referenced by four later nodes — the overlap about routine, the novel about isolation, the emergent about her child, and a practice around the Sunday run. That is the spine. If `O01` turns out to be miscoded — maybe "isolation" was really about one specific colleague, not a general state — four downstream nodes need to be revisited. Finding the spine is finding the load-bearing observations, so that a correction at the ground knows exactly where to cascade.
-
-In the diagrams below, shape and color encode type. Grey rectangles are references (biographical facts). Blue rounded boxes are observations (dated events). Green ovals are overlaps (patterns grounded in multiple observations). Orange-peach ovals with dashed borders are novels (single-derivation, tentative). Purple diamonds are emergents (claims that precipitate only at intersections). Orange hexagons are equivalency bridges to external frameworks. Lavender parallelograms are practices (operating methods). Pink octagons with dashed borders are open questions (unresolved). Solid arrows are `grounds`; dashed arrows are `emergent_from`.
 
 <iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
 
