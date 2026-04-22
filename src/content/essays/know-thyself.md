@@ -10,6 +10,10 @@ pdfUrl: /know-thyself.pdf
 
 *This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
 
+<iframe src="/example-graph-full.html" class="graph-embed" loading="lazy" title="Alex's full example graph — hover any node"></iframe>
+
+*A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The essay below explains why memory needs this shape.*
+
 After enough conversations with a model, its memory of you starts to look like a list.
 
 A list isn't bad. Lists are what memory looks like when it has no shape. But the list has a specific failure mode that goes invisible fast: a claim stated once feels the same as a claim stated five times, which feels the same as a claim grounded in five independent events. The distinction between *I said this repeatedly* and *this has been independently confirmed* collapses to nothing. After a year, the model believes things about you that rest on a single inference it made early on and has politely restated back to you ever since.
@@ -104,9 +108,11 @@ What falls out of a graph like this, once it has some mass, is worth naming expl
 
 **The spine.** A handful of nodes carry most of the interpretations. In Alex's graph, `O01-first-three-months` is referenced by four later nodes — the overlap about routine, the novel about isolation, the emergent about her child, and a practice around the Sunday run. That is the spine. If `O01` turns out to be miscoded — maybe "isolation" was really about one specific colleague, not a general state — four downstream nodes need to be revisited. Finding the spine is finding the load-bearing observations, so that a correction at the ground knows exactly where to cascade.
 
-![Spine subset of Alex's example graph: eleven of eighteen nodes, showing which observations carry most of the downstream interpretations](/example-graph-spine.png)
+In the diagrams below, shape and color encode type. Grey rectangles are references (biographical facts). Blue rounded boxes are observations (dated events). Green ovals are overlaps (patterns grounded in multiple observations). Orange-peach ovals with dashed borders are novels (single-derivation, tentative). Purple diamonds are emergents (claims that precipitate only at intersections). Orange hexagons are equivalency bridges to external frameworks. Lavender parallelograms are practices (operating methods). Pink octagons with dashed borders are open questions (unresolved). Solid arrows are `grounds`; dashed arrows are `emergent_from`.
 
-*The spine of Alex's graph — eleven of eighteen nodes. Observations sit at the ground; overlaps and emergents rise from them. The shape shows where a correction would cascade.*
+<iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
+
+*The spine — eleven of eighteen nodes. Observations sit at the ground; overlaps and emergents rise from them. Hover any node for what it is and what knowing it unlocks.*
 
 **Emergent nodes.** Some claims only exist at an intersection. *Child's stability in this new city depends on Alex's routine stability* is not present in the overlap about routine alone — that one is just about Alex. It is not present in the observation about the child's grades recovering alone — that one is just about the child. At the intersection, a different thing precipitates. The node is marked `emergent` with both parents cited in `precipitates_from`, so if either parent gets revised, the emergent is flagged for re-derivation. The useful claims are usually the ones that don't come out of a single piece of evidence.
 
@@ -114,11 +120,7 @@ What falls out of a graph like this, once it has some mass, is worth naming expl
 
 **Open questions.** Open exists so the things you have wondered about without answering don't quietly collapse into novels. *Is the move a 2–3 year plan or a permanent relocation?* — if that question prematurely crystallizes into a confident interpretation, a dozen downstream claims inherit an unexamined premise. Keeping it as `open` preserves the uncertainty as a first-class citizen.
 
-A complete worked example — Alex across eighteen nodes and all eight types, with full provenance — is in the scaffold at [`example-graph.yaml`](https://github.com/parrik/know-thyself/blob/main/example-graph.yaml). Running `render.py` over it produces a diagram of every node, a load-bearing-spine subset, and a validation file that flags missing provenance.
-
-![Full Alex example graph: eighteen nodes across all eight types (reference, observation, overlap, novel, emergent, equivalency, practice, open), with edges showing how interpretations rest on grounded observations](/example-graph-full.png)
-
-*The full graph, all eighteen nodes. Shapes encode type — ovals for overlaps, diamonds for emergents, octagons for open questions, hexagons for equivalency bridges, parallelograms for practices. Dashed borders mark the tentative (novels and opens). A correction at the ground — the grey references — has a visible cascade path.*
+A complete worked example — Alex across eighteen nodes and all eight types, with full provenance — is in the scaffold at [`example-graph.yaml`](https://github.com/parrik/know-thyself/blob/main/example-graph.yaml). Running `render.py` over it produces a diagram of every node, a load-bearing-spine subset, and a validation file that flags missing provenance. The interactive graph at the top of this essay is rendered from that file.
 
 ---
 
