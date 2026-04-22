@@ -13,9 +13,12 @@
     --line: #d4c7a8;
   }
   html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
-               font-family: Georgia, 'Times New Roman', Times, serif; }
-  .wrap { padding: 0.5rem; }
-  svg { display: block; width: 100%; height: auto; }
+               font-family: Georgia, 'Times New Roman', Times, serif;
+               height: 100%; overflow: hidden; }
+  .wrap { position: absolute; inset: 0; padding: 0.5rem; display: flex;
+          align-items: center; justify-content: center; }
+  svg { display: block; width: 100%; height: 100%;
+        max-width: 100%; max-height: 100%; }
   .node { cursor: pointer; transition: filter 0.15s ease; }
   .node:hover { filter: brightness(1.04) drop-shadow(0 2px 6px rgba(0,0,0,0.18)); }
   .node > title { display: none; }
@@ -25,8 +28,9 @@
     background: #fffdf7;
     border: 1px solid var(--line);
     border-radius: 4px;
-    padding: 0.65rem 0.8rem;
-    max-width: 360px;
+    padding: 0.6rem 0.75rem;
+    width: min(280px, calc(100vw - 24px));
+    box-sizing: border-box;
     box-shadow: 0 6px 18px rgba(40,30,20,0.16);
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-size: 0.82rem;
@@ -401,13 +405,21 @@
     });
     g.addEventListener('mouseleave', () => tip.classList.remove('visible'));
     g.addEventListener('mousemove', (e) => {
-      const pad = 14;
-      const w = tip.offsetWidth || 320;
-      const h = tip.offsetHeight || 80;
+      const pad = 12;
+      const margin = 6;
+      const w = tip.offsetWidth || 280;
+      const h = tip.offsetHeight || 100;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      // Prefer right of cursor; flip left if no room; then clamp into viewport.
       let x = e.clientX + pad;
+      if (x + w > vw - margin) x = e.clientX - w - pad;
+      if (x < margin) x = margin;
+      if (x + w > vw - margin) x = vw - w - margin;
       let y = e.clientY + pad;
-      if (x + w > window.innerWidth - 8) x = e.clientX - w - pad;
-      if (y + h > window.innerHeight - 8) y = e.clientY - h - pad;
+      if (y + h > vh - margin) y = e.clientY - h - pad;
+      if (y < margin) y = margin;
+      if (y + h > vh - margin) y = vh - h - margin;
       tip.style.left = x + 'px';
       tip.style.top = y + 'px';
     });
