@@ -1,17 +1,14 @@
-@import url("https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Fraunces:opsz,wght@9..144,500..700&display=swap");
-
 :root {
   color-scheme: light;
-  --text: #1f1b17;
-  --muted: #74695c;
-  --accent: oklch(62% 0.16 38);
-  --accent-soft: oklch(85% 0.08 60);
-  --bg: #f7f2e6;
-  --bg-soft: #efe9d9;
-  --line: #d9cfb8;
-  --max-width: 660px;
-  --serif-display: "Fraunces", "Spectral", Georgia, serif;
-  --serif: "Spectral", Georgia, "Times New Roman", Times, serif;
+  --text: #2b2520;
+  --muted: #7a6f60;
+  --accent: #8a3420;
+  --bg: #f4ecd9;
+  --bg-soft: #ebe2cc;
+  --line: #d4c7a8;
+  --max-width: 680px;
+  --serif: Georgia, "Times New Roman", Times, serif;
+  --serif-display: Georgia, "Times New Roman", Times, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
@@ -22,12 +19,10 @@ html, body {
   padding: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: var(--serif);
-  font-size: 17.5px;
-  line-height: 1.6;
-  font-weight: 400;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 18px;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
 }
 
 body {
@@ -86,28 +81,22 @@ main {
 }
 
 h1 {
-  font-family: var(--serif-display);
+  font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: 500;
   font-size: 2rem;
   margin: 0 0 0.5rem;
-  line-height: 1.18;
-  letter-spacing: -0.012em;
-  font-variation-settings: "opsz" 144;
-  color: var(--text);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 h2 {
-  font-family: var(--serif);
+  font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: 500;
   font-size: 1.2rem;
-  color: var(--text);
+  color: var(--accent);
   margin-top: 2.25rem;
   margin-bottom: 0.75rem;
-  letter-spacing: -0.005em;
-  line-height: 1.25;
 }
-
-p { margin: 0 0 1.1em; }
 
 a {
   color: var(--accent);
