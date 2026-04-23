@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="about" description="About parrik — a home for essays on distributed systems, biology, and the practice.">
+  <article class="about">
+    <p class="lede">
+      parrik is a home for essays on distributed systems, epistemics,
+      biology, and the practice. Three essays are up. The rest is slowly
+      arriving.
+    </p>
+
+    <p>
+      The through-line is signal-responsive systems. Code, bodies, the way
+      we think about our own lives. When the signal comes loose from the
+      context it was meant to serve, failure can look rational from the
+      inside — a memory structure that collapses the difference between
+      repetition and corroboration; a cell that has lost the tissue-level
+      broadcast it was meant to answer to; a PR sitting in front of a
+      reviewer who does not understand why it matters. Different surfaces,
+      same shape. The writing tries to name the shape where it finds it.
+    </p>
+
+    <h2>Shelf</h2>
+
+    <p>
+      Distributed systems: Martin Kleppmann, Marc Brooker, Kyle Kingsbury
+      (Jepsen), Dan Luu, Hillel Wayne. Epistemics: Julia Galef's Scout
+      Mindset. Biology is where the analogies come from. FKJ is the sonic
+      anchor for practice.
+    </p>
+
+    <h2>Method</h2>
+
+    <p>
+      <em>Attribution is not confidence.</em> A claim repeated five times
+      is not five pieces of evidence — it is one derivation restated five
+      times. Real confidence comes from independent derivations. This is
+      the load-bearing rule of the
+      <a href="https://github.com/parrik/know-thyself">Know Thyself
+      scaffold</a> and the background discipline of the essay shelf.
+    </p>
+
+    <h2>Currently</h2>
+
+    <p>
+      Writing the next essay. Reading DDIA Chapter 9. Practicing the piano.
+    </p>
+
+    <h2>Elsewhere</h2>
+
+    <p>
+      <a href="https://github.com/parrik">github.com/parrik</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/parrik/know-thyself">know-thyself scaffold (MIT)</a>
+      &nbsp;·&nbsp;
+      <a href="/rss.xml">RSS</a>
+    </p>
+
+    <p class="postscript">
+      <em>Written by AI, lived by human.</em>
+    </p>
+  </article>
+</Base>
+
+<style>
+  .about { max-width: var(--max-width); }
+  .about .lede {
+    font-size: 1.1rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+  }
+  .about p {
+    margin: 0 0 1.1rem 0;
+  }
+  .about h2 {
+    font-family: system-ui, sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 2.25rem;
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .about .postscript {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.92rem;
+  }
+</style>

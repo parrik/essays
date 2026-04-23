@@ -15,10 +15,10 @@ const { essay } = Astro.props;
 const { Content } = await render(essay);
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>
-  <article class="essay">
+  <article class="essay h-entry">
     {essay.data.kicker && <p class="essay-kicker">{essay.data.kicker}</p>}
-    <h1>{essay.data.title}</h1>
-    {essay.data.subtitle && <p class="essay-sub">{essay.data.subtitle}</p>}
+    <h1 class="p-name">{essay.data.title}</h1>
+    {essay.data.subtitle && <p class="essay-sub p-summary">{essay.data.subtitle}</p>}
     <MetadataStripe
       publishedAt={essay.data.publishedAt}
       updatedAt={essay.data.updatedAt}
@@ -30,8 +30,10 @@ const { Content } = await render(essay);
       {essay.data.pdfUrl && <a href={essay.data.pdfUrl}>download pdf</a>}
     </div>
     <hr />
-    <div class="essay-body">
+    <div class="essay-body e-content">
       <Content />
     </div>
+    <a class="u-url" href={`/essays/${essay.id}/`} hidden>{essay.data.title}</a>
+    <span class="p-author h-card" hidden>parrik</span>
   </article>
 </Base>

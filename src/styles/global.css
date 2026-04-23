@@ -464,3 +464,71 @@ hr {
   .essay-body table tr td:first-child,
   .essay-body table tr th:first-child { width: auto; }
 }
+
+/* ── Reading progress (CSS-only, scroll-linked) ─────────── */
+.reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left center;
+  transform: scaleX(0);
+  animation: progress linear;
+  animation-timeline: scroll(root block);
+  z-index: 100;
+  opacity: 0.45;
+}
+@keyframes progress { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .reading-progress { display: none; } }
+
+/* ── Site nav (added with about page) ─────────────────── */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.site-nav {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.06em;
+}
+.site-nav a {
+  color: var(--muted);
+  text-decoration: none;
+  margin-left: 1.25rem;
+}
+.site-nav a:hover { color: var(--accent); }
+
+/* ── Print ──────────────────────────────────────────────── */
+@media print {
+  .reading-progress,
+  .site-header,
+  .site-footer,
+  .essay-meta,
+  .metadata-stripe,
+  .graph-embed,
+  iframe {
+    display: none !important;
+  }
+  main { max-width: none; padding: 0; }
+  body {
+    background: white;
+    color: black;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+  h1, h2, h3 { page-break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+  article a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.75em;
+    color: #555;
+    word-break: break-all;
+  }
+  article a[href^="#"]::after,
+  article a[href^="/"]:not([href^="/alex"]):not([href^="/essays"])::after {
+    content: "";
+  }
+}
