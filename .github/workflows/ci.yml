@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build + lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Astro check (type + frontmatter schema)
+        run: npx astro check
+        continue-on-error: true  # informational until the content is clean
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload dist for downstream jobs
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
+
+  links:
+    name: Link check (internal + external)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Lychee link check
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200,204,206,301,302,303,304,307,308,429
+            --timeout 20
+            --max-concurrency 8
+            --exclude-path dist/_astro
+            'dist/**/*.html'
+          fail: false  # report, don't block — external links can flake
+
+  html-validate:
+    name: HTML sanity check
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Install html-validate
+        run: npm install --no-save html-validate
+
+      - name: Validate essay pages
+        run: |
+          npx html-validate \
+            --formatter stylish \
+            'dist/**/*.html' \
+            --preset recommended \
+            || exit 0  # informational; tighten later
+        continue-on-error: true
+
+  styles-loaded:
+    # Catches the specific failure class where a page renders without CSS
+    # because the stylesheet link or build chunking broke. Validates that
+    # every built HTML page has at least one <link rel="stylesheet"> to
+    # /_astro/*.css AND that that file exists in dist.
+    name: Stylesheet presence check
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Verify every HTML references an existing CSS bundle
+        run: |
+          set -e
+          fail=0
+          for f in $(find dist -name "*.html"); do
+            css=$(grep -oE 'href="/_astro/[^"]+\.css"' "$f" | head -1 | sed 's/href="//;s/"$//')
+            if [ -z "$css" ]; then
+              echo "::error file=$f::No _astro CSS link found in $f"
+              fail=1
+              continue
+            fi
+            css_path="dist${css}"
+            if [ ! -f "$css_path" ]; then
+              echo "::error file=$f::Referenced CSS missing: $css_path"
+              fail=1
+            fi
+          done
+          exit $fail
