@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import MetadataStripe from '../../components/MetadataStripe.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -18,6 +19,12 @@ const { Content } = await render(essay);
     {essay.data.kicker && <p class="essay-kicker">{essay.data.kicker}</p>}
     <h1>{essay.data.title}</h1>
     {essay.data.subtitle && <p class="essay-sub">{essay.data.subtitle}</p>}
+    <MetadataStripe
+      publishedAt={essay.data.publishedAt}
+      updatedAt={essay.data.updatedAt}
+      status={essay.data.status}
+      confidence={essay.data.confidence}
+    />
     <div class="essay-meta">
       <a href="/">← home</a>
       {essay.data.pdfUrl && <a href={essay.data.pdfUrl}>download pdf</a>}

@@ -1,0 +1,66 @@
+---
+export interface Props {
+  publishedAt?: Date;
+  updatedAt?: Date;
+  status?: 'seedling' | 'tending' | 'evergreen';
+  confidence?: 'speculative' | 'likely' | 'certain' | 'log';
+}
+
+const { publishedAt, updatedAt, status, confidence } = Astro.props;
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+
+const isRevised =
+  publishedAt && updatedAt && updatedAt.getTime() - publishedAt.getTime() > 24 * 60 * 60 * 1000;
+---
+
+{(publishedAt || status) && (
+  <div class="metadata-stripe">
+    {publishedAt && (
+      <time datetime={publishedAt.toISOString()}>
+        Planted {fmt(publishedAt)}
+      </time>
+    )}
+    {isRevised && (
+      <>
+        <span class="sep">·</span>
+        <time datetime={updatedAt.toISOString()}>
+          Last tended {fmt(updatedAt)}
+        </time>
+      </>
+    )}
+    {status && (
+      <>
+        <span class="sep">·</span>
+        <span class={`status status-${status}`}>{status}</span>
+      </>
+    )}
+    {confidence && (
+      <>
+        <span class="sep">·</span>
+        <span class="confidence">confidence: {confidence}</span>
+      </>
+    )}
+  </div>
+)}
+
+<style>
+  .metadata-stripe {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.78rem;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+    margin: 0.25rem 0 0.75rem;
+    font-variant: tabular-nums;
+  }
+  .metadata-stripe time { font-variant: tabular-nums; }
+  .sep { margin: 0 0.4em; color: var(--line); }
+  .status,
+  .confidence {
+    font-style: italic;
+  }
+  .status-tending { color: var(--accent); }
+  .status-seedling { color: var(--muted); }
+  .status-evergreen { color: var(--muted); opacity: 0.85; }
+</style>

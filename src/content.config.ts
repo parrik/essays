@@ -11,6 +11,11 @@ const essays = defineCollection({
     description: z.string().optional(),
     pdfUrl: z.string().optional(),
     order: z.number().optional(),
+    // Freshness metadata — enables "last tended" signals without chrome.
+    publishedAt: z.coerce.date().optional(),
+    updatedAt: z.coerce.date().optional(),
+    status: z.enum(['seedling', 'tending', 'evergreen']).optional(),
+    confidence: z.enum(['speculative', 'likely', 'certain', 'log']).optional(),
   }),
 });
 

@@ -5,7 +5,9 @@ kicker: Method
 tag: essay
 order: 0
 description: After enough conversations, memory becomes a list. The list flattens the distinction between repetition and corroboration.
-pdfUrl: /know-thyself.pdf
+publishedAt: 2026-04-21
+updatedAt: 2026-04-23
+status: tending
 ---
 
 *This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
@@ -169,3 +171,25 @@ The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved o
 If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative.
 
 It is the thing.
+
+---
+
+## Notes since launch
+
+*Added April 23, 2026. This essay is tended, not finished — I'll keep adding short notes below when the working version of the method turns up something worth naming.*
+
+**Sub-categories, not new types.** After a couple of weeks of building with the schema on a real graph, five patterns emerged as useful sub-categories of *reference* — not new node types: *canary* (evidence-backed leading indicator with a real citation), *lens* (mental-model frame applied to other nodes — Lindy, Circuit Breakers, Ulysses Pact), *experiment* (runnable method with evidence base), *filter* (anti-pattern for a specific domain), and *forecast* (time-horizon inference, flagged tentative). Each extends the schema by name instead of adding a new type. Resist minting new types; the schema ages faster than the content.
+
+**The NOW node.** A single node at the center of the graph with `type: now`, containing current priorities and pointers to the rest. First thing you read when the graph is open. Nothing fancy — just a top-of-stack that prevents "where do I start?" paralysis. Came out of Dan Shipper's Roam critique: backlinks didn't produce revisit. A NOW node + an auto-render hook creates a daily revisit surface.
+
+**Fractal time horizons.** Forecast nodes at 1 month / 90 days / 1 year / 10 years / 30 years / 60 years — each getting vaguer as the horizon extends. Honest speculation with the tentative flag and attribution ≠ confidence. At 60 years, the useful claim is not specifics — it's *"the ledger from here onward is what will be visible."*
+
+**A worked extended example.** The original Alex example-graph showed every node type in use; an extended version now demonstrates sub-categories, the NOW node, and the forecast fractal. Open it full-screen →
+
+<p style="text-align: center; margin: 1.5rem 0;">
+  <a href="/alex-case-study.html" target="_blank" rel="noopener" style="font-size: 0.95rem;">
+    ↗ open the extended case-study diagram full-screen
+  </a>
+</p>
+
+**What breaks.** In every reviewed case of a typed knowledge graph whose practitioner wrote an honest retrospective — Luhmann, Matuschak, Roam's users per Shipper, Gordon Brander's Subconscious — the typed structure depreciated faster than the raw notes. Simon Willison's zero-schema TILs (576 entries over 6 years) have outlasted every typed-graph project. The schema is an enhancement; flat markdown is the honest fallback. The test is not how the graph grew, but whether you revisit it.

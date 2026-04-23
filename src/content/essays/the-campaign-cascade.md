@@ -6,6 +6,8 @@ tag: poster
 order: 2
 description: Why cross-cutting initiatives multiply instead of completing.
 pdfUrl: /campaign-cascade.pdf
+publishedAt: 2026-04-21
+status: evergreen
 ---
 
 ## The Loop

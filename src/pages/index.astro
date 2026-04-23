@@ -4,6 +4,15 @@ import { getCollection } from 'astro:content';
 
 const essays = await getCollection('essays');
 essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+const isRecent = (d?: Date) => {
+  if (!d) return false;
+  const days = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24);
+  return days < 21;
+};
 ---
 <Base title="parrik">
   <section class="intro">
@@ -15,15 +24,33 @@ essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
   <section class="essays">
     <h2>essays</h2>
     <ul>
-      {essays.map(essay => (
-        <li>
-          <a href={`/essays/${essay.id}/`} class="essay-link">
-            <span class="essay-title">{essay.data.title}</span>
-            {essay.data.tag && <span class={`essay-tag tag-${essay.data.tag}`}>{essay.data.tag}</span>}
-          </a>
-          {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
-        </li>
-      ))}
+      {essays.map(essay => {
+        const d = essay.data;
+        const showTended = d.updatedAt && d.publishedAt && isRecent(d.updatedAt) &&
+          (d.updatedAt.getTime() - d.publishedAt.getTime() > 24 * 60 * 60 * 1000);
+        return (
+          <li>
+            <a href={`/essays/${essay.id}/`} class="essay-link">
+              <span class="essay-title">{d.title}</span>
+              {d.tag && <span class={`essay-tag tag-${d.tag}`}>{d.tag}</span>}
+              {showTended && <span class="essay-tended" title={`Last tended ${fmt(d.updatedAt!)}`}>tended {fmt(d.updatedAt!)}</span>}
+            </a>
+            {d.subtitle && <p class="essay-subtitle">{d.subtitle}</p>}
+          </li>
+        );
+      })}
     </ul>
   </section>
 </Base>
+
+<style>
+  .essay-tended {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--accent);
+    margin-left: 0.6em;
+    font-variant: tabular-nums;
+    font-style: italic;
+  }
+</style>
