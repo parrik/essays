@@ -1,12 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300..700&display=swap");
+
 :root {
   color-scheme: light;
-  --text: #2b2520;
-  --muted: #7a6f60;
-  --accent: #8a3420;
-  --bg: #f4ecd9;
-  --bg-soft: #ebe2cc;
-  --line: #d4c7a8;
+  --text: #1f1b17;
+  --muted: #74695c;
+  --accent: oklch(62% 0.16 38);
+  --accent-soft: oklch(85% 0.08 60);
+  --bg: #f7f2e6;
+  --bg-soft: #efe9d9;
+  --line: #d9cfb8;
   --max-width: 680px;
+  --serif: "Fraunces", Georgia, "Times New Roman", Times, serif;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -16,10 +21,11 @@ html, body {
   padding: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-family: var(--serif);
   font-size: 18px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  font-variation-settings: "opsz" 14;
 }
 
 body {
@@ -78,19 +84,25 @@ main {
 }
 
 h1 {
-  font-weight: 500;
-  font-size: 2rem;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 2.2rem;
   margin: 0 0 0.5rem;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.15;
+  letter-spacing: -0.012em;
+  font-variation-settings: "opsz" 144, "wght" 500;
+  color: var(--text);
 }
 
 h2 {
+  font-family: var(--serif);
   font-weight: 500;
-  font-size: 1.2rem;
-  color: var(--accent);
+  font-size: 1.25rem;
+  color: var(--text);
   margin-top: 2.25rem;
   margin-bottom: 0.75rem;
+  font-variation-settings: "opsz" 48, "wght" 500;
+  letter-spacing: -0.008em;
 }
 
 a {
@@ -107,44 +119,9 @@ a:hover { text-decoration-color: currentColor; }
   border-bottom: 1px solid var(--line);
 }
 
-.intro h1 {
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 3.2rem;
-  font-weight: 400;
-  font-style: italic;
-  letter-spacing: -0.015em;
-  line-height: 1.05;
-  margin: 0 0 1.75rem;
-}
-
-.intro p {
-  margin: 0.9rem 0;
-  font-size: 1.08rem;
-  line-height: 1.7;
-}
-
-.intro p:first-of-type {
-  font-size: 1.2rem;
-  line-height: 1.55;
-  color: var(--text);
-}
-
-.intro p:first-of-type::first-letter {
-  font-size: 3rem;
-  float: left;
-  line-height: 0.9;
-  padding: 0.22em 0.12em 0 0;
-  font-weight: 400;
-  color: var(--accent);
-}
-
-.intro p:last-of-type {
-  font-style: italic;
-  color: var(--muted);
-  font-size: 1rem;
-  margin-top: 1.5rem;
-  letter-spacing: 0.005em;
-}
+/* .intro legacy — homepage now uses .hero layout defined in index.astro */
+.intro, .intro h1, .intro p, .intro p:first-of-type,
+.intro p:first-of-type::first-letter, .intro p:last-of-type { all: unset; }
 
 .essays {
   margin-top: 2.5rem;
@@ -185,20 +162,9 @@ a:hover { text-decoration-color: currentColor; }
 
 .essays li a.essay-link:hover .essay-title { color: var(--accent); }
 
-.essay-tag {
-  display: inline-block;
-  margin-left: 0.7rem;
-  padding: 0.12em 0.55em;
-  font-family: system-ui, sans-serif;
-  font-size: 0.68rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  vertical-align: middle;
-  font-weight: 400;
-}
+/* Legacy pill-tag — replaced by inline essay-dateline metadata on homepage.
+   Kept only if referenced elsewhere; otherwise unstyled. */
+.essay-tag { display: none; }
 
 .essay-subtitle {
   color: var(--muted);

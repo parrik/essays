@@ -1,49 +1,92 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="about" description="About parrik — a home for essays on distributed systems, biology, and the practice.">
+<Base title="about" description="About parrik — essays on signal-responsive systems across distributed systems, biology, and the practice.">
   <article class="about">
+
+    <h1>About</h1>
+
     <p class="lede">
-      parrik is a home for essays on distributed systems, epistemics,
-      biology, and the practice. Three essays are up. The rest is slowly
-      arriving.
+      parrik is a home for essays on a single shape.
+      One failure mode surfacing across code, bodies, and the way we think.
+      A memory structure that collapses corroboration.
+      A cell that has lost tissue broadcast.
+      A code change whose reviewer doesn't know what it touches.
+      Different surfaces, same signal-loss. The writing attempts to name
+      where it finds it.
     </p>
+
+    <h2>Backstory</h2>
 
     <p>
-      The through-line is signal-responsive systems. Code, bodies, the way
-      we think about our own lives. When the signal comes loose from the
-      context it was meant to serve, failure can look rational from the
-      inside — a memory structure that collapses the difference between
-      repetition and corroboration; a cell that has lost the tissue-level
-      broadcast it was meant to answer to; a PR sitting in front of a
-      reviewer who does not understand why it matters. Different surfaces,
-      same shape. The writing tries to name the shape where it finds it.
+      I grew up in India and came to the United States at 25 for AWS.
+      The decade since has been distributed-systems engineering at a
+      handful of companies — API Gateway, Cruise, Microsoft Azure,
+      Bloomberg, Expedia. Working as a Staff-level engineer for the
+      last several; before that, mostly heads-down IR and search-index
+      work. In 2026 I stepped back. The essays here are what a year
+      of reading and writing looks like when the day isn't already
+      filled with someone else's roadmap.
     </p>
 
-    <h2>Shelf</h2>
+    <h2>Admirations</h2>
 
     <p>
-      Distributed systems: Martin Kleppmann, Marc Brooker, Kyle Kingsbury
-      (Jepsen), Dan Luu, Hillel Wayne. Epistemics: Julia Galef's Scout
-      Mindset. Biology is where the analogies come from. FKJ is the sonic
-      anchor for practice.
+      The writers I read hardest and whose work sets the bar:
     </p>
+
+    <ul>
+      <li>
+        <strong>Distributed systems</strong> — Martin Kleppmann,
+        Marc Brooker, Kyle Kingsbury (Jepsen), Dan Luu, Hillel Wayne.
+        Different registers; same discipline of not lying about what
+        a system does under load.
+      </li>
+      <li>
+        <strong>Epistemics</strong> — Julia Galef, <em>The Scout
+        Mindset</em>. The specific chapter that installs a habit is
+        Ch. 6 "How Sure Are You?" — two hours of calibration exercises
+        and the rest of her work lands differently.
+      </li>
+      <li>
+        <strong>Biology of context</strong> — Mina Bissell's "dynamic
+        reciprocity" and Douglas Hanahan's successive hallmark papers
+        (2000 / 2011 / 2022). The drift from cell-centric to
+        ecosystem-centric cancer biology is the biological half of the
+        through-line on this site.
+      </li>
+      <li>
+        <strong>Engineering-as-communication</strong> — Fred Brooks
+        for the scaling law of shared context; Richard Hamming for
+        problem selection; Patrick McKenzie for revenue-line honesty.
+      </li>
+      <li>
+        <strong>Practice</strong> — FKJ (French Kiwi Juice) as the
+        sonic anchor. One person, many instruments, loop-based live
+        craft, genre-fluid. The piano in the living room points at
+        his shape.
+      </li>
+    </ul>
 
     <h2>Method</h2>
 
     <p>
-      <em>Attribution is not confidence.</em> A claim repeated five times
-      is not five pieces of evidence — it is one derivation restated five
-      times. Real confidence comes from independent derivations. This is
-      the load-bearing rule of the
-      <a href="https://github.com/parrik/know-thyself">Know Thyself
-      scaffold</a> and the background discipline of the essay shelf.
+      <em>Attribution is not confidence.</em> A claim repeated across
+      five conversations is not five pieces of evidence — it is one
+      derivation restated five times. Real confidence accumulates
+      only from independent derivations: different episodes, different
+      contexts, different evidence types. This is the load-bearing
+      rule of the <a href="https://github.com/parrik/know-thyself">
+      Know Thyself scaffold</a> and the background discipline of the
+      essay shelf.
     </p>
 
     <h2>Currently</h2>
 
     <p>
-      Writing the next essay. Reading DDIA Chapter 9. Practicing the piano.
+      Writing the next essay, which names the through-line above
+      explicitly. Reading DDIA Chapter 9. Practicing the piano.
+      CrossFit daily. Library next door.
     </p>
 
     <h2>Elsewhere</h2>
@@ -64,26 +107,47 @@ import Base from '../layouts/Base.astro';
 
 <style>
   .about { max-width: var(--max-width); }
+  .about h1 {
+    font-size: 2.2rem;
+    margin: 0.5rem 0 2rem 0;
+    font-variation-settings: "opsz" 144, "wght" 500;
+  }
   .about .lede {
     font-size: 1.1rem;
     color: var(--text);
-    margin-bottom: 1.5rem;
+    margin-bottom: 2rem;
+    line-height: 1.55;
+    max-width: 42rem;
   }
   .about p {
     margin: 0 0 1.1rem 0;
+    max-width: 42rem;
   }
   .about h2 {
-    font-family: system-ui, sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.18em;
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: var(--muted);
-    margin-top: 2.25rem;
-    margin-bottom: 0.6rem;
+    margin-top: 3rem;
+    margin-bottom: 0.9rem;
     font-weight: 500;
+    font-variation-settings: normal;
+  }
+  .about ul {
+    margin: 0 0 1.5rem 0;
+    padding-left: 1.3rem;
+    max-width: 42rem;
+  }
+  .about li {
+    margin: 0.7rem 0;
+    line-height: 1.55;
+  }
+  .about li::marker {
+    color: var(--muted);
   }
   .about .postscript {
-    margin-top: 3rem;
+    margin-top: 4rem;
     padding-top: 1.5rem;
     border-top: 1px solid var(--line);
     color: var(--muted);

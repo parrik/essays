@@ -14,43 +14,190 @@ const isRecent = (d?: Date) => {
   return days < 21;
 };
 ---
-<Base title="parrik">
-  <section class="intro">
-    <h1>on love</h1>
-    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
-    <p>I like distributed systems, biology, and the practice.</p>
-    <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
+<Base title="parrik" description="Essays on signal-responsive systems — distributed systems, biology, and the practice.">
+  <section class="hero">
+    <h1>Essays on signal-responsive systems.</h1>
+    <p class="deck">
+      One failure mode across three surfaces — a memory structure that
+      collapses corroboration, a cell that has lost tissue broadcast,
+      a code change whose reviewer doesn't know what it touches.
+      Same shape. Different domains. Writing here tries to name
+      the shape where it finds it.
+    </p>
+    <p class="hero-meta">
+      <a href="/about/">about</a>
+      <span class="sep">·</span>
+      <a href="/rss.xml">rss</a>
+      <span class="sep">·</span>
+      <a href="https://github.com/parrik/know-thyself">know-thyself scaffold</a>
+    </p>
   </section>
+
   <section class="essays">
-    <h2>essays</h2>
+    <h2>Essays</h2>
     <ul>
-      {essays.map(essay => {
+      {essays.map((essay) => {
         const d = essay.data;
         const showTended = d.updatedAt && d.publishedAt && isRecent(d.updatedAt) &&
           (d.updatedAt.getTime() - d.publishedAt.getTime() > 24 * 60 * 60 * 1000);
         return (
           <li>
             <a href={`/essays/${essay.id}/`} class="essay-link">
-              <span class="essay-title">{d.title}</span>
-              {d.tag && <span class={`essay-tag tag-${d.tag}`}>{d.tag}</span>}
-              {showTended && <span class="essay-tended" title={`Last tended ${fmt(d.updatedAt!)}`}>tended {fmt(d.updatedAt!)}</span>}
+              <div class="essay-head">
+                <span class="essay-title">{d.title}</span>
+                <span class="essay-dateline">
+                  {d.tag && <span class="dl-tag">{d.tag}</span>}
+                  {d.status && <span class="dl-sep">·</span>}
+                  {d.status && <span class={`dl-status dl-status-${d.status}`}>{d.status}</span>}
+                  {showTended && <span class="dl-sep">·</span>}
+                  {showTended && <span class="dl-tended">tended {fmt(d.updatedAt!)}</span>}
+                </span>
+              </div>
+              {d.subtitle && <p class="essay-subtitle">{d.subtitle}</p>}
             </a>
-            {d.subtitle && <p class="essay-subtitle">{d.subtitle}</p>}
           </li>
         );
       })}
     </ul>
   </section>
+
+  <section class="currently">
+    <h2>Currently</h2>
+    <p>Writing the next essay. Reading DDIA Chapter&nbsp;9. Practicing the piano. The next post is about the shape itself — why signal-responsive-system is a frame worth naming rather than three coincidences.</p>
+  </section>
 </Base>
 
 <style>
-  .essay-tended {
+  .hero { margin: 1rem 0 5rem; }
+  .hero h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: 400;
+    font-size: 2.4rem;
+    line-height: 1.15;
+    letter-spacing: -0.012em;
+    margin: 0 0 1.5rem;
+    max-width: 28ch;
+  }
+  .hero .deck {
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: var(--text);
+    margin: 0 0 2rem;
+    max-width: 38rem;
+  }
+  .hero-meta {
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.82rem;
     letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0;
+  }
+  .hero-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+  }
+  .hero-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+  .hero-meta .sep { margin: 0 0.5em; color: var(--line); }
+
+  .essays,
+  .currently {
+    margin-top: 3rem;
+  }
+
+  .essays h2,
+  .currently h2 {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 1.5rem;
+    font-weight: 500;
+    font-style: normal;
+  }
+
+  .essays ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .essays li {
+    padding: 0;
+    border: none;
+    margin-bottom: 2rem;
+  }
+  .essays li:last-child { margin-bottom: 0; }
+
+  .essay-link {
+    text-decoration: none;
+    color: var(--text);
+    display: block;
+  }
+
+  .essay-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .essay-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+    line-height: 1.3;
+  }
+
+  .essay-link:hover .essay-title {
     color: var(--accent);
-    margin-left: 0.6em;
+  }
+
+  .essay-dateline {
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
     font-variant: tabular-nums;
+    white-space: nowrap;
+  }
+  .essay-dateline .dl-tag {
+    text-transform: lowercase;
+  }
+  .essay-dateline .dl-sep {
+    margin: 0 0.4em;
+    color: var(--line);
+  }
+  .essay-dateline .dl-status,
+  .essay-dateline .dl-tended {
     font-style: italic;
+  }
+  .essay-dateline .dl-status-tending {
+    color: var(--accent);
+  }
+
+  .essay-subtitle {
+    color: var(--muted);
+    margin: 0.4rem 0 0;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    max-width: 50ch;
+  }
+
+  .currently p {
+    font-size: 0.96rem;
+    color: var(--muted);
+    line-height: 1.65;
+    margin: 0;
+    max-width: 42rem;
+    font-style: italic;
+  }
+
+  @media (max-width: 540px) {
+    .hero h1 { font-size: 1.9rem; }
+    .essay-head { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+    .essay-dateline { white-space: normal; }
   }
 </style>
