@@ -4,176 +4,26 @@ import { getCollection } from 'astro:content';
 
 const essays = await getCollection('essays');
 essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-
-const fmt = (d: Date) =>
-  d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-
-const isRecent = (d?: Date) => {
-  if (!d) return false;
-  const days = (Date.now() - d.getTime()) / (1000 * 60 * 60 * 24);
-  return days < 21;
-};
 ---
-<Base title="parrik" description="On love — distributed systems, biology, the practice.">
+<Base title="parrik">
   <section class="intro">
     <h1>on love</h1>
     <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
-    <p>Stay long enough and the structure starts to repeat. Shuffle sharding and cellular architecture are the same answer in different vocabularies. A fractal is itself a distributed shape. A cell that has lost its tissue's broadcast is shaped the way a node losing quorum is shaped.</p>
-    <p>What gets studied here — across distributed systems, biology, the practice — is what happens when a living thing stops knowing it's part of something larger.</p>
+    <p>I like distributed systems, biology, and the practice.</p>
     <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
   </section>
-
   <section class="essays">
-    <h2>Essays</h2>
+    <h2>essays</h2>
     <ul>
-      {essays.map((essay) => {
-        const d = essay.data;
-        const showTended = d.updatedAt && d.publishedAt && isRecent(d.updatedAt) &&
-          (d.updatedAt.getTime() - d.publishedAt.getTime() > 24 * 60 * 60 * 1000);
-        return (
-          <li>
-            <a href={`/essays/${essay.id}/`} class="essay-link">
-              <div class="essay-head">
-                <span class="essay-title">{d.title}</span>
-                <span class="essay-dateline">
-                  {d.tag && <span class="dl-tag">{d.tag}</span>}
-                  {d.status && <span class="dl-sep">·</span>}
-                  {d.status && <span class={`dl-status dl-status-${d.status}`}>{d.status}</span>}
-                  {showTended && <span class="dl-sep">·</span>}
-                  {showTended && <span class="dl-tended">tended {fmt(d.updatedAt!)}</span>}
-                </span>
-              </div>
-              {d.subtitle && <p class="essay-subtitle">{d.subtitle}</p>}
-            </a>
-          </li>
-        );
-      })}
+      {essays.map(essay => (
+        <li>
+          <a href={`/essays/${essay.id}/`} class="essay-link">
+            <span class="essay-title">{essay.data.title}</span>
+            {essay.data.tag && <span class={`essay-tag tag-${essay.data.tag}`}>{essay.data.tag}</span>}
+          </a>
+          {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+        </li>
+      ))}
     </ul>
   </section>
-
-  <section class="currently">
-    <h2>Currently</h2>
-    <p>Writing the next essay. Reading DDIA Chapter&nbsp;9. Practicing the piano. The next post is about the shape itself — why signal-responsive-system is a frame worth naming rather than three coincidences.</p>
-  </section>
 </Base>
-
-<style>
-  .intro { margin: 0.5rem 0 2.5rem; }
-  .intro h1 {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    font-weight: 400;
-    font-size: 1.9rem;
-    line-height: 1.2;
-    letter-spacing: -0.01em;
-    margin: 0 0 0.8rem;
-    color: var(--text);
-  }
-  .intro p {
-    font-size: 1rem;
-    line-height: 1.5;
-    color: var(--text);
-    margin: 0 0 0.7rem;
-    max-width: 34rem;
-  }
-  .intro p:last-child { margin-bottom: 0; }
-
-  .essays,
-  .currently {
-    margin-top: 2rem;
-  }
-
-  .essays h2,
-  .currently h2 {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 0 0 1.5rem;
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  .essays ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .essays li {
-    padding: 0;
-    border: none;
-    margin-bottom: 1.4rem;
-  }
-  .essays li:last-child { margin-bottom: 0; }
-
-  .essay-link {
-    text-decoration: none;
-    color: var(--text);
-    display: block;
-  }
-
-  .essay-head {
-    display: flex;
-    align-items: baseline;
-    gap: 0.9rem;
-    flex-wrap: wrap;
-  }
-
-  .essay-title {
-    font-size: 1.15rem;
-    font-weight: 500;
-    line-height: 1.3;
-    letter-spacing: -0.003em;
-  }
-
-  .essay-link:hover .essay-title {
-    color: var(--accent);
-  }
-
-  .essay-dateline {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.74rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    font-variant: tabular-nums;
-    white-space: nowrap;
-  }
-  .essay-dateline .dl-tag {
-    text-transform: lowercase;
-  }
-  .essay-dateline .dl-sep {
-    margin: 0 0.4em;
-    color: var(--line);
-  }
-  .essay-dateline .dl-status,
-  .essay-dateline .dl-tended {
-    font-weight: 500;
-  }
-  .essay-dateline .dl-status-tending {
-    color: var(--accent);
-  }
-
-  .essay-subtitle {
-    color: var(--muted);
-    margin: 0.4rem 0 0;
-    font-size: 0.98rem;
-    line-height: 1.5;
-    max-width: 50ch;
-  }
-
-  .currently p {
-    font-size: 0.95rem;
-    color: var(--muted);
-    line-height: 1.55;
-    margin: 0;
-    max-width: 38rem;
-  }
-
-  @media (max-width: 540px) {
-    .intro h1 { font-size: 1.7rem; }
-    .intro p { font-size: 1rem; }
-    .essay-head { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
-    .essay-dateline { white-space: normal; }
-  }
-</style>
