@@ -12,27 +12,11 @@ status: tending
 
 *This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
 
-<div class="graph-legend" aria-label="How to read the graph">
-  <div class="legend-title">How to read the graph</div>
-  <ul class="legend-nodes">
-    <li><span class="chip chip-ref">R</span><strong>reference</strong> — biographical fact</li>
-    <li><span class="chip chip-obs">O</span><strong>observation</strong> — dated event</li>
-    <li><span class="chip chip-ovl">P</span><strong>overlap</strong> — pattern across observations</li>
-    <li><span class="chip chip-nov">N</span><strong>novel</strong> — tentative, single-derivation</li>
-    <li><span class="chip chip-emg">E</span><strong>emergent</strong> — claim at an intersection</li>
-    <li><span class="chip chip-eqv">EQ</span><strong>equivalency</strong> — bridge to external framework</li>
-    <li><span class="chip chip-prc">PR</span><strong>practice</strong> — operating method</li>
-    <li><span class="chip chip-opn">OQ</span><strong>open</strong> — unresolved question</li>
-  </ul>
-  <ul class="legend-edges">
-    <li><span class="edge-swatch edge-grounds"></span>solid — grounds</li>
-    <li><span class="edge-swatch edge-emergent"></span>dotted — emergent from</li>
-  </ul>
-</div>
+<iframe src="/alex-case-study.html" class="graph-embed" loading="lazy" title="Alex's case study — 43-node fictional graph. Click any node."></iframe>
 
-<iframe src="/example-graph-full.html" class="graph-embed" loading="lazy" title="Alex's full example graph — hover any node"></iframe>
+*Alex, a fictional engineer deciding by May 15 whether to leave a Staff-level role for a seed-stage startup. Forty-three nodes, every type in use, including a NOW node at the center and forecast horizons clustered above it. Click any node to see what it is and what knowing it unlocks. [Open full-screen →](/alex-case-study.html)*
 
-*A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The essay below explains why memory needs this shape.*
+*The essay below explains why memory needs this shape.*
 
 After enough conversations with a model, its memory of you starts to look like a list.
 
@@ -61,6 +45,8 @@ A shaped memory makes the distinction structural.
 Those three carry the weight. Four more handle the edges.
 
 *Novel* is an interpretation resting on a single derivation. The schema requires it to carry a `tentative: true` flag and an explicit `caveats:` block naming how it could be wrong. *Emergent* is a claim that precipitates only at the intersection of two existing nodes, not in either alone. *Equivalency* is a bridge to an external theoretical framework — a way of saying *this pattern instantiates something already well-described elsewhere*. *Open* is for the questions you have wondered about without answering, kept first-class so they do not quietly collapse into novels.
+
+One more move earns its keep in practice: extend the schema by descriptive prefix, not by minting new types. A `reference-canary` cites empirical leading-indicator research. A `reference-lens` names a mental-model frame applied to other nodes — Lindy, Circuit Breakers, Ulysses Pact. A `reference-forecast` is a time-horizon inference carrying the tentative flag and honest attribution-not-confidence discipline: *1 month*, *1 year*, *10 years*, *30 years*, *60 years* — each getting vaguer as the horizon extends. At sixty years the useful claim is not specifics. It is *"the ledger from here onward is what will be visible."* The schema stays small; the roles grow by name.
 
 Every node carries a provenance triple: who said it, what it rests on, how it was derived. Every edge carries one too.
 
@@ -132,6 +118,8 @@ What falls out of a graph like this, once it has some mass, is worth naming expl
 
 *The spine — eleven of eighteen nodes. Observations sit at the ground; overlaps and emergents rise from them. Hover any node for what it is and what knowing it unlocks.*
 
+**The NOW node.** Alongside the spine, one more structural element: a single node at the center of the graph with `type: now`, containing current priorities and pointers to the rest of the graph. First thing you read when the graph is open. Nothing fancy — just a top-of-stack that prevents the "where do I start?" paralysis typed graphs accumulate as they grow. Dan Shipper's retrospective on Roam Research named this failure mode precisely: bidirectional links created placement anxiety without producing revisit. A NOW node plus an auto-render hook (graph regenerates the moment it changes) creates a daily revisit surface. The graph is always current when you open it, and you always know where to start.
+
 **Emergent nodes.** Some claims only exist at an intersection. *Child's stability in this new city depends on Alex's routine stability* is not present in the overlap about routine alone — that one is just about Alex. It is not present in the observation about the child's grades recovering alone — that one is just about the child. At the intersection, a different thing precipitates. The node is marked `emergent` with both parents cited in `precipitates_from`, so if either parent gets revised, the emergent is flagged for re-derivation. The useful claims are usually the ones that don't come out of a single piece of evidence.
 
 **Equivalency bridges.** Sometimes a pattern is already well-described in an external literature — trauma theory, attachment, `sīla`, whatever happens to apply. The `equivalency` type names the bridge without flattening your observation into it. *This is like X in that framework* is a weaker, more honest claim than *this reduces to X*. The observation is almost always more specific than the external concept.
@@ -166,30 +154,12 @@ What it produces is closer to an older thing: a Renaissance commonplace book. St
 
 ---
 
+A caveat worth naming: in every reviewed case of a typed knowledge graph whose author wrote an honest retrospective — Luhmann's own notes on his cards, Andy Matuschak's evergreen-notes meta-commentary, Dan Shipper on Roam, Gordon Brander on why he shut down his Subconscious protocol — the *typed structure* depreciated faster than the *raw notes*. Simon Willison's zero-schema TIL log, six years and 576 entries, has outlasted every typed-graph project it ran alongside. The schema here is an enhancement; flat markdown is the honest fallback. The test of whether this is working is not how the graph grew. It is whether you open it and read it again.
+
+---
+
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple wall as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
 
 If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative.
 
 It is the thing.
-
----
-
-## Notes since launch
-
-*Added April 23, 2026. This essay is tended, not finished — I'll keep adding short notes below when the working version of the method turns up something worth naming.*
-
-**Sub-categories, not new types.** After a couple of weeks of building with the schema on a real graph, five patterns emerged as useful sub-categories of *reference* — not new node types: *canary* (evidence-backed leading indicator with a real citation), *lens* (mental-model frame applied to other nodes — Lindy, Circuit Breakers, Ulysses Pact), *experiment* (runnable method with evidence base), *filter* (anti-pattern for a specific domain), and *forecast* (time-horizon inference, flagged tentative). Each extends the schema by name instead of adding a new type. Resist minting new types; the schema ages faster than the content.
-
-**The NOW node.** A single node at the center of the graph with `type: now`, containing current priorities and pointers to the rest. First thing you read when the graph is open. Nothing fancy — just a top-of-stack that prevents "where do I start?" paralysis. Came out of Dan Shipper's Roam critique: backlinks didn't produce revisit. A NOW node + an auto-render hook creates a daily revisit surface.
-
-**Fractal time horizons.** Forecast nodes at 1 month / 90 days / 1 year / 10 years / 30 years / 60 years — each getting vaguer as the horizon extends. Honest speculation with the tentative flag and attribution ≠ confidence. At 60 years, the useful claim is not specifics — it's *"the ledger from here onward is what will be visible."*
-
-**A worked extended example.** The original Alex example-graph showed every node type in use; an extended version now demonstrates sub-categories, the NOW node, and the forecast fractal. Open it full-screen →
-
-<p style="text-align: center; margin: 1.5rem 0;">
-  <a href="/alex-case-study.html" target="_blank" rel="noopener" style="font-size: 0.95rem;">
-    ↗ open the extended case-study diagram full-screen
-  </a>
-</p>
-
-**What breaks.** In every reviewed case of a typed knowledge graph whose practitioner wrote an honest retrospective — Luhmann, Matuschak, Roam's users per Shipper, Gordon Brander's Subconscious — the typed structure depreciated faster than the raw notes. Simon Willison's zero-schema TILs (576 entries over 6 years) have outlasted every typed-graph project. The schema is an enhancement; flat markdown is the honest fallback. The test is not how the graph grew, but whether you revisit it.
