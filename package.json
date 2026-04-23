@@ -10,7 +10,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "pdf": "node scripts/pdf.mjs",
-    "verify": "node scripts/verify.mjs"
+    "verify": "node scripts/verify.mjs",
+    "canary": "node scripts/canary.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.18",

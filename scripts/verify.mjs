@@ -107,11 +107,13 @@ try {
               const res = await fetch(u, { method: 'GET' });
               return res.status;
             }, full);
-            if (r !== 200) failures.push(`[CSS-STATUS ${r}] ${full} (from ${url})`);
+            // 304 Not Modified is valid — the local preview server issues it
+            // on repeat CSS fetches within a session. Prod CDN returns 200.
+            if (r !== 200 && r !== 304) failures.push(`[CSS-STATUS ${r}] ${full} (from ${url})`);
           } catch (e) {
             failures.push(`[CSS-FETCH] ${full} — ${e.message}`);
           }
-        } else if (st !== 200) {
+        } else if (st !== 200 && st !== 304) {
           failures.push(`[CSS-STATUS ${st}] ${full} (from ${url})`);
         }
       }
