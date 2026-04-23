@@ -6,7 +6,7 @@
   --bg: #f4ecd9;
   --bg-soft: #ebe2cc;
   --line: #d4c7a8;
-  --max-width: 680px;
+  --max-width: 640px;
   --serif: Georgia, "Times New Roman", Times, serif;
   --serif-display: Georgia, "Times New Roman", Times, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -23,8 +23,8 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: Georgia, 'Times New Roman', Times, serif;
-  font-size: 18px;
-  line-height: 1.65;
+  font-size: 17px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -97,8 +97,8 @@ h2 {
   font-weight: 500;
   font-size: 1.2rem;
   color: var(--accent);
-  margin-top: 2.25rem;
-  margin-bottom: 0.75rem;
+  margin-top: 1.8rem;
+  margin-bottom: 0.6rem;
 }
 
 a {
@@ -186,7 +186,6 @@ a:hover { text-decoration-color: var(--accent); }
 
 .essay-sub {
   color: var(--muted);
-  font-style: italic;
   font-size: 1.05rem;
   margin: 0.25rem 0 1.5rem;
 }
@@ -210,10 +209,10 @@ a:hover { text-decoration-color: var(--accent); }
 hr {
   border: none;
   border-top: 1px solid var(--line);
-  margin: 2rem 0;
+  margin: 1.5rem 0;
 }
 
-.essay-body p { margin: 1.2rem 0; }
+.essay-body p { margin: 0.9rem 0; }
 .essay-body em { font-style: italic; }
 .essay-body strong { font-weight: 600; }
 
@@ -346,7 +345,6 @@ hr {
   padding: 0.25rem 0 0.25rem 1rem;
   border-left: 3px solid var(--line);
   color: var(--muted);
-  font-style: italic;
 }
 
 .essay-body table {

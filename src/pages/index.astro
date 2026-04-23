@@ -14,23 +14,13 @@ const isRecent = (d?: Date) => {
   return days < 21;
 };
 ---
-<Base title="parrik" description="Essays on signal-responsive systems — distributed systems, biology, and the practice.">
-  <section class="hero">
-    <h1>Essays on signal-responsive systems.</h1>
-    <p class="deck">
-      One failure mode across three surfaces — a memory structure that
-      collapses corroboration, a cell that has lost tissue broadcast,
-      a code change whose reviewer doesn't know what it touches.
-      Same shape. Different domains. Writing here tries to name
-      the shape where it finds it.
-    </p>
-    <p class="hero-meta">
-      <a href="/about/">about</a>
-      <span class="sep">·</span>
-      <a href="/rss.xml">rss</a>
-      <span class="sep">·</span>
-      <a href="https://github.com/parrik/know-thyself">know-thyself scaffold</a>
-    </p>
+<Base title="parrik" description="On love — distributed systems, biology, the practice.">
+  <section class="intro">
+    <h1>on love</h1>
+    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
+    <p>Stay long enough and the structure starts to repeat. Shuffle sharding and cellular architecture are the same answer in different vocabularies. A fractal is itself a distributed shape. A cell that has lost its tissue's broadcast is shaped the way a node losing quorum is shaped.</p>
+    <p>What gets studied here — across distributed systems, biology, the practice — is what happens when a living thing stops knowing it's part of something larger.</p>
+    <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
   </section>
 
   <section class="essays">
@@ -68,44 +58,28 @@ const isRecent = (d?: Date) => {
 </Base>
 
 <style>
-  .hero { margin: 1rem 0 4.5rem; }
-  .hero h1 {
+  .intro { margin: 0.5rem 0 2.5rem; }
+  .intro h1 {
     font-family: Georgia, 'Times New Roman', Times, serif;
     font-weight: 400;
-    font-style: italic;
-    font-size: 2.5rem;
-    line-height: 1.15;
+    font-size: 1.9rem;
+    line-height: 1.2;
     letter-spacing: -0.01em;
-    margin: 0 0 1.25rem;
-    max-width: 24ch;
+    margin: 0 0 0.8rem;
     color: var(--text);
   }
-  .hero .deck {
-    font-size: 1.08rem;
-    line-height: 1.65;
+  .intro p {
+    font-size: 1rem;
+    line-height: 1.5;
     color: var(--text);
-    margin: 0 0 2rem;
-    max-width: 38rem;
+    margin: 0 0 0.7rem;
+    max-width: 34rem;
   }
-  .hero-meta {
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.82rem;
-    letter-spacing: 0.04em;
-    color: var(--muted);
-    margin: 0;
-  }
-  .hero-meta a {
-    color: var(--muted);
-    text-decoration: underline;
-    text-decoration-color: var(--line);
-    text-underline-offset: 3px;
-  }
-  .hero-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
-  .hero-meta .sep { margin: 0 0.5em; color: var(--line); }
+  .intro p:last-child { margin-bottom: 0; }
 
   .essays,
   .currently {
-    margin-top: 3rem;
+    margin-top: 2rem;
   }
 
   .essays h2,
@@ -129,7 +103,7 @@ const isRecent = (d?: Date) => {
   .essays li {
     padding: 0;
     border: none;
-    margin-bottom: 2rem;
+    margin-bottom: 1.4rem;
   }
   .essays li:last-child { margin-bottom: 0; }
 
@@ -174,7 +148,7 @@ const isRecent = (d?: Date) => {
   }
   .essay-dateline .dl-status,
   .essay-dateline .dl-tended {
-    font-style: italic;
+    font-weight: 500;
   }
   .essay-dateline .dl-status-tending {
     color: var(--accent);
@@ -189,16 +163,16 @@ const isRecent = (d?: Date) => {
   }
 
   .currently p {
-    font-size: 0.96rem;
+    font-size: 0.95rem;
     color: var(--muted);
-    line-height: 1.65;
+    line-height: 1.55;
     margin: 0;
-    max-width: 42rem;
-    font-style: italic;
+    max-width: 38rem;
   }
 
   @media (max-width: 540px) {
-    .hero h1 { font-size: 1.9rem; }
+    .intro h1 { font-size: 1.7rem; }
+    .intro p { font-size: 1rem; }
     .essay-head { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
     .essay-dateline { white-space: normal; }
   }
