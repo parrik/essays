@@ -25,7 +25,6 @@ jobs:
 
       - name: Astro check (type + frontmatter schema)
         run: npx astro check
-        continue-on-error: true  # informational until the content is clean
 
       - name: Build
         run: npm run build
@@ -48,7 +47,7 @@ jobs:
           name: dist
           path: dist
 
-      - name: Lychee link check
+      - name: Lychee internal link check (fail on 4xx for same-site)
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
@@ -57,9 +56,27 @@ jobs:
             --accept 200,204,206,301,302,303,304,307,308,429
             --timeout 20
             --max-concurrency 8
+            --offline
+            --base dist
             --exclude-path dist/_astro
             'dist/**/*.html'
-          fail: false  # report, don't block — external links can flake
+          fail: true  # internal links are authoritative; must resolve
+
+      - name: Lychee external link check (informational)
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --verbose
+            --no-progress
+            --accept 200,204,206,301,302,303,304,307,308,429
+            --timeout 20
+            --max-concurrency 8
+            --include-verbatim
+            --scheme https
+            --exclude-path dist/_astro
+            --exclude 'parrik.com'
+            'dist/**/*.html'
+          fail: false  # external links flake, don't block
 
   html-validate:
     name: HTML sanity check

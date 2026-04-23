@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
   --text: #2b2520;
-  --muted: #7a6f60;
+  --muted: #6a5f50;               /* bumped for WCAG AA (4.18→5.3 on --bg) */
   --accent: #8a3420;
   --bg: #f4ecd9;
   --bg-soft: #ebe2cc;
@@ -10,6 +10,9 @@
   --serif: Georgia, "Times New Roman", Times, serif;
   --serif-display: Georgia, "Times New Roman", Times, serif;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* single small-caps label ruleset — see .section-label */
+  --label-size: 0.74rem;
+  --label-tracking: 0.2em;
 }
 
 * { box-sizing: border-box; }
@@ -100,10 +103,17 @@ h2 {
 
 a {
   color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--line);
   text-underline-offset: 3px;
+  transition: color 0.12s ease, text-decoration-color 0.12s ease;
 }
 
-a:hover { text-decoration-color: currentColor; }
+a:hover { text-decoration-color: var(--accent); }
+
+/* Opt-out anchors for nav and card-style link blocks */
+.essay-link, .site-nav a, .site-title, .essay-meta a { text-decoration: none; }
+.site-nav a:hover, .site-title:hover, .essay-meta a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
 
 /* Home */
 .intro {
@@ -112,9 +122,7 @@ a:hover { text-decoration-color: currentColor; }
   border-bottom: 1px solid var(--line);
 }
 
-/* .intro legacy — homepage now uses .hero layout defined in index.astro */
-.intro, .intro h1, .intro p, .intro p:first-of-type,
-.intro p:first-of-type::first-letter, .intro p:last-of-type { all: unset; }
+/* (intro legacy styles removed — dead code) */
 
 .essays {
   margin-top: 2.5rem;

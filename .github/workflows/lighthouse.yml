@@ -1,0 +1,37 @@
+name: Lighthouse CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lighthouse:
+    name: Lighthouse audit (perf / a11y / best-practices / SEO)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Install Lighthouse CI
+        run: npm install --no-save @lhci/cli
+
+      - name: Run Lighthouse against built site
+        run: |
+          npx @lhci/cli autorun \
+            --config=.lighthouserc.json \
+            --collect.staticDistDir=./dist \
+            --upload.target=temporary-public-storage \
+            || echo "::warning::Lighthouse found regressions — review scores above"
+        continue-on-error: true  # informational until baselines stabilize

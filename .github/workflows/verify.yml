@@ -1,0 +1,42 @@
+name: Verify live site
+
+# Post-deploy verification. Runs on a schedule + on-demand. Scheduled rather
+# than chained to deploy so a bad push gets caught even if CI/deploy logs
+# are green (e.g. CDN cache, DNS, post-deploy CSS 404s).
+
+on:
+  schedule:
+    - cron: '0 */6 * * *'  # every 6 hours
+  workflow_dispatch:
+    inputs:
+      base_url:
+        description: 'Base URL to verify'
+        required: false
+        default: 'https://parrik.com/'
+
+jobs:
+  verify-live:
+    name: Puppeteer live-site checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run verify
+        run: node scripts/verify.mjs "${{ github.event.inputs.base_url || 'https://parrik.com/' }}"
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verify-screenshots
+          path: scripts/verify-output/
+          retention-days: 7
