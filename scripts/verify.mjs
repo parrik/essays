@@ -90,9 +90,13 @@ try {
       (els) => els.map((e) => e.getAttribute('href')).filter(Boolean)
     );
     const astroCss = cssHrefs.filter((h) => /^\/_astro\/.+\.css$/.test(h));
-    if (astroCss.length === 0) {
+    // Standalone static HTML in public/ ships its own inline styles and has
+    // no Astro bundle by design. Skip the CSS-LINK assertion for these.
+    const cssLinkExempt = new Set(['/alex-case-study.html']);
+    const urlPath = new URL(url).pathname;
+    if (astroCss.length === 0 && !cssLinkExempt.has(urlPath)) {
       failures.push(`[CSS-LINK] ${url} — no <link rel=stylesheet href=/_astro/*.css>`);
-    } else {
+    } else if (astroCss.length > 0) {
       for (const href of astroCss) {
         const full = new URL(href, url).href;
         const st = cssResponses.get(full);
