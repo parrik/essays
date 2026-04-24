@@ -10,6 +10,12 @@ pdfUrl: /know-thyself.pdf
 
 *This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
 
+<p class="dashboard-link-wrap">
+  <a class="dashboard-link" href="/alex-case-study.html">
+    Open Alex's full dashboard →
+  </a>
+</p>
+
 <div class="graph-legend" aria-label="How to read the graph">
   <div class="legend-title">How to read the graph</div>
   <ul class="legend-nodes">

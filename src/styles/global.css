@@ -232,6 +232,32 @@ hr {
   font-size: 0.9rem;
 }
 
+.essay-body .dashboard-link-wrap {
+  text-align: center;
+  margin: 1.4rem 0 1.6rem;
+}
+
+.essay-body .dashboard-link {
+  display: inline-block;
+  padding: 0.7rem 1.3rem;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg-soft);
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.01em;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.essay-body .dashboard-link:hover {
+  background: var(--bg);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
 .essay-body .graph-embed {
   display: block;
   width: 100%;
