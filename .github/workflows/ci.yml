@@ -57,7 +57,7 @@ jobs:
             --timeout 20
             --max-concurrency 8
             --offline
-            --base dist
+            --base ${{ github.workspace }}/dist
             --exclude-path dist/_astro
             'dist/**/*.html'
           fail: true  # internal links are authoritative; must resolve
@@ -119,7 +119,14 @@ jobs:
         run: |
           set -e
           fail=0
+          # Skip standalone HTML copied verbatim from public/ — those are
+          # self-contained interactive docs (inline CSS, own styling), not
+          # Astro-rendered pages, so they don't reference /_astro/*.css.
+          skip_re='^dist/(alex-case-study|example-graph-(full|spine|extended|extended-.*))\.html$'
           for f in $(find dist -name "*.html"); do
+            if [[ "$f" =~ $skip_re ]]; then
+              continue
+            fi
             css=$(grep -oE 'href="/_astro/[^"]+\.css"' "$f" | head -1 | sed 's/href="//;s/"$//')
             if [ -z "$css" ]; then
               echo "::error file=$f::No _astro CSS link found in $f"
