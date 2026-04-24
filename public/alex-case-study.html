@@ -40,25 +40,8 @@
     --sans:  "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     --mono:  "JetBrains Mono", "SF Mono", Menlo, Consolas, monospace;
   }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: #1a1814;
-      --bg-panel: #22201b;
-      --bg-panel-2: #2a271f;
-      --border: #3a3530;
-      --border-soft: #2a2621;
-      --ink: #ede8dd;
-      --ink-soft: #c4beb0;
-      --muted: #8a8376;
-      --muted-2: #5a5449;
-      --accent: #d4a460;
-      --accent-soft: #3a2f1e;
-      --link: #8fb0f0;
-      --link-hover: #b8cefa;
-      --warn: #d4a460;
-      --warn-soft: rgba(212,164,96,0.10);
-    }
-  }
+  /* Light-only: dashboard always uses the warm-paper site palette.
+     (Removed prefers-color-scheme: dark override — matches essay tone.) */
 
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; background: var(--bg); color: var(--ink); font-family: var(--sans); }
