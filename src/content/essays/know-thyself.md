@@ -96,8 +96,6 @@ Nine months in, Alex's graph had shape. A few dozen nodes, each carrying its own
 
 **The forecasts.** Once a graph has enough structure, the model can project the current shape forward — a one-month forecast, a ninety-day forecast, a twelve-month forecast, a five-year forecast. Each is an emergent claim grounded in the observations, overlaps, and open questions below it. *At current trajectory, by end of July: if the running holds and no external shock, Mira is settled at Kenwood for next year, Alex commissions two more books on her list, the drinking trend is the variable to watch.* The forecast is not prophecy; it is the graph extrapolated with the same honesty it stored the past. When it misses, the miss points back at the spine, and the graph gets corrected at the level where the wrong assumption lived. Forecasts wrong for the right reason are more useful than vague ones kept safe.
 
-![Alex's risk corridor — five intersection readings where the graph would invert its current trajectory](/example-graph-extended-risk-corridor.png)
-
 **The risk corridor.** Some of the most useful claims a graph can surface are the ones you would never generate on purpose. Five intersection readings in Alex's graph marked *low probability, high consequence* — each grounded in two or three existing nodes, each tentative, each named:
 
 1. *Mira crisis forces a return East.* An adolescent mental-health event, a social incident at Kenwood, or a sustained refusal — any of which could make the Chicago life unsustainable for reasons unrelated to Alex's work. Response capacity depends on Daniel being structurally available, which her open question about summer custody has left ambiguous.
@@ -110,7 +108,7 @@ Nine months in, Alex's graph had shape. A few dozen nodes, each carrying its own
 
 5. *A Helen-anniversary compounding event.* The September anniversary of her closest friend's diagnosis sits right where the last routine-collapse started. One bad week there could reactivate the pattern.
 
-Alex did not know any of these as a list until the graph rendered them for her. Each is an emergent — a claim that exists only where two existing nodes meet. The routine overlap plus the Mira-stability emergent plus the open question about Daniel produce scenario one. The work identity plus the conflict observations produce scenario two. None of them is a prediction; each is a corridor to watch.
+Alex did not know any of these as a list until the graph rendered them for her. Each is an emergent — a claim that exists only where two existing nodes meet. The routine overlap plus the Mira-stability emergent plus the open question about Daniel produce scenario one. The work identity plus the conflict observations produce scenario two. None of them is a prediction; each is a corridor to watch. The full set is visible in [Alex's dashboard](/alex-case-study.html) — hover any risk-corridor node to see its parents.
 
 This is the thing a flat list cannot produce. A flat list has no notion of *intersection*. It can only return claims it was told. A typed graph with provenance can tell you things you never said — claims that precipitate structurally from the ones you did.
 
