@@ -38,140 +38,114 @@ pdfUrl: /know-thyself.pdf
 
 *A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The essay below explains why memory needs this shape.*
 
-After enough conversations with a model, its memory of you starts to look like a list.
+## The mirror problem
 
-A list isn't bad. Lists are what memory looks like when it has no shape. But the list has a specific failure mode that goes invisible fast: a claim stated once feels the same as a claim stated five times, which feels the same as a claim grounded in five independent events. The distinction between *I said this repeatedly* and *this has been independently confirmed* collapses to nothing. After a year, the model believes things about you that rest on a single inference it made early on and has politely restated back to you ever since.
+One evening in May, Alex asked the model a simple thing. She was nine months into Chicago — an editor at UChicago Press, with a list of her own by then, drafting a message to a senior colleague who had pushed back on her acquisition proposal for a second-time author she was fighting for. She wanted the model's read: *was there a pattern in how she handled conflict at work?* She had said the word *conflict* into the chat maybe a dozen times across those months. The model had a lot to draw on.
+
+The reply came back confident, fluent, slightly wrong.
+
+It told her she had a tendency to *stay in misaligned situations because she was afraid of burning the relationship.* It gave three supporting examples. Alex read it twice. The sentence sounded like something she had said. It was, in fact, something she had said — six or seven times, across several evenings, sometimes as self-diagnosis, sometimes as shorthand for a more complicated feeling she did not have better words for. But it wasn't true the way the model was saying it was true. It was a thing she kept reaching for. It was not, and had never been, a pattern the model had any evidence for.
+
+She sat with that for a minute. Then she did something most users never do. She asked the model to show its work. *How do you know that?* And the model, politely and correctly, produced the list. Six conversations. The same claim, attributed to her. No independent episodes. No specific events. Nothing but her own restatement bounced back at her with a patient nod each time.
+
+She had been talking to a mirror.
+
+## Why the default shape fails
+
+This happens by default. When a model remembers you, it stores a list — bullets it judged important, facts about your life, things you said that seemed to carry weight. A list is what memory looks like when it has no shape, and for a while it works fine. But the failure mode goes invisible fast.
+
+A claim stated once feels the same as a claim stated five times, which feels the same as a claim grounded in five independent events. *I said this repeatedly* and *this has been independently confirmed* collapse to the same line. After a year of conversation, the model believes things about you that rest on a single inference it made early and has politely restated ever since. You, across those same conversations, have absorbed its polite restatements as agreement. You start quoting yourself back through it.
 
 The fix is not more memory. It is shape.
 
----
+## The shape, through Alex's year
 
-Consider two claims. The first: *Alex moved to a new city last August, and the first three months were hard — working long hours, her child struggling at school, the running routine she had kept for years stopped.* Specific. Dated. A thing that happened.
+*After Alex saw the mirror problem, she wanted a memory that could not do this. Not a more careful model. A memory whose shape made the drift structurally impossible.* The answer was that the memory had to have types.
 
-The second: *Alex's physical routine is load-bearing for everything else.* Interpretive. A theory. Something Alex and the model have said back and forth for six months.
+**Reference — what is.** Alex was forty-one. Senior editor at UChicago Press, books in sociology and memoir. Moved from Brooklyn to Chicago last August for the job. Divorced four years, amicable enough. Daughter Mira, nine, at Kenwood. These were facts. The model could carry them without thinking, and the rest of the graph could stand on them. They were the floor.
 
-A flat list puts these on the same footing — one line each in the memory store. But the interpretation is cheap. You can produce interpretations all day without new evidence. The episode is the thing the interpretation rests on. If the episode is miscoded, the interpretation crumbles. If the interpretation is wrong, the episode remains.
+**Observation — what happened.** Each episode got its own node, with a date and a boundary. September through November: Alex's first three months in Chicago. The days were longer than she had expected. Mira came home most afternoons quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped — she would notice at the end of a week that she had not laced up once. One episode. One timestamp. The model stored it as it was, without guessing what it meant.
 
-A shaped memory makes the distinction structural.
+A second observation came in March, and this one mattered. The morning after a hard acquisitions meeting, Alex mentioned in passing that she had run before the meeting and had held her position on a book she was fighting for more clearly than she had in weeks. The model caught that and stored it too. Two episodes, held separately.
 
----
+**Overlap — the same shape, twice.** In the first episode, her running stopped, her work extended, Mira struggled. In the second, her running came back, her work stabilized, Mira climbed. Two episodes. One shape: *when the running holds, everything else holds.* That was an overlap. The model could defend it. It had evidence.
 
-*Reference* is what's biographical and verifiable. Where you were born. Who you married. What you do.
+Contrast that with the *afraid-to-burn-the-relationship* claim. That one Alex had made six times but had never grounded in a specific event. The schema refused to call it a pattern. One claim said six ways is one derivation, not six. The graph would not let it become an overlap until a specific episode actually showed up.
 
-*Observation* is what happened. The three hard months after the move. The first Sunday at the new running group. The conflict with the senior colleague in March. Each one dated, each one contained.
+**Novel — one derivation, held honestly.** *For Alex, isolation is upstream of routine breakdown, not the other way around.* One detailed episode supported it: in those first three months, she had stopped responding to the two friends back in Brooklyn who usually texted her weekly, and the running had stopped the week after. The model wrote it down, flagged it tentative, and named the caveat out loud: *could be wrong — isolation and routine-break happened together; causal direction inferred, not observed; needs an independent second.* A novel is the model's honesty that it is guessing. Alex could read the novel and see exactly which claims about her the model was still not sure about.
 
-*Overlap* is a pattern grounded in two or more **independent** observations. Not the same claim restated — the same *shape* recurring across different events. Alex's running routine stopped, then work extended and her child struggled. Her running routine restarted, then work stabilized and her child's grades recovered. Two episodes, same shape. That's an overlap. Her saying "routine matters to me" five times is not.
+**Emergent — at the intersection.** *Mira's stability in this new city depends on Alex's own routine stability.* That sentence was not in the routine overlap alone; the routine overlap was about Alex. It was not in the observation about Mira's grades alone; that one was about the child. It fell out where they intersected. The timing of Mira's recovery matched the timing of Alex's running returning too closely to be noise. The model marked it with both parents. If either parent ever got revised — say, Alex noticed that Mira's shift actually tracked her teacher change, not the running — the emergent would get flagged for re-derivation. Emergent claims are where the most interesting things live. They are also the most at risk of quiet drift, which is why they are marked.
 
-Those three carry the weight. Four more handle the edges.
+**Equivalency — the bridge.** *When the running holds, everything else holds* had a name in the literature — self-regulation researchers called it a keystone habit; embodied-cognition researchers called it interoceptive stabilization. The equivalency node pointed at the framework without swallowing Alex's specific observation into it. Pointing is not importing. What Alex had was more textured than what the literature described. The bridge was weaker than absorption, and more honest.
 
-*Novel* is an interpretation resting on a single derivation. The schema requires it to carry a `tentative: true` flag and an explicit `caveats:` block naming how it could be wrong. *Emergent* is a claim that precipitates only at the intersection of two existing nodes, not in either alone. *Equivalency* is a bridge to an external theoretical framework — a way of saying *this pattern instantiates something already well-described elsewhere*. *Open* is for the questions you have wondered about without answering, kept first-class so they do not quietly collapse into novels.
+**Open — the unanswered, kept first-class.** *Is Chicago a 2–3 year plan, or permanent?* Alex had not decided. Some nights she talked as if it were permanent, other nights as if it were temporary, and the model had absorbed both without noticing the contradiction. Left alone, that ambiguity would crystallize into a novel — *she has accepted the relocation* — and a dozen downstream claims would inherit an unexamined premise. The open type held the question as itself: visible, unanswered. Open is not indecision. It is the refusal to pretend a decision has been made while living as if it hadn't been.
 
-Every node carries a provenance triple: who said it, what it rests on, how it was derived. Every edge carries one too.
+## What the graph lets her see
 
----
-
-Here is what that distinction looks like in YAML:
-
-```yaml
-- id: O01-first-three-months
-  type: observation
-  name: "First three months in new city — isolation and overwhelm"
-  statement: |
-    Sep–Nov 2024: working long hours, child struggling at school,
-    no friends yet, stopped the running routine.
-  provenance:
-    attribution: { source: "Alex, self-report", date: "2024-12" }
-    evidence: { type: self-report }
-
-- id: O04-grades-recovered
-  type: observation
-  name: "Child's grades recovered in spring semester"
-  statement: |
-    Spring 2025: grades recovered to pre-move levels, coinciding with
-    Alex re-establishing her own routine.
-  provenance:
-    attribution: { source: "Alex + report cards", date: "2025-05" }
-    evidence: { type: external-record }
-
-- id: P01-routine-as-regulation
-  type: overlap
-  name: "Physical routine is load-bearing for Alex's stability"
-  statement: |
-    When routine breaks down, other things deteriorate proportionally;
-    when it returns, they stabilize. Not preference — structural.
-  provenance:
-    evidence:
-      type: pattern-across-cases
-      references: [O01-first-three-months, O04-grades-recovered]
-    derivation:
-      from: [O01-first-three-months, O04-grades-recovered]
-      method: "induction across independent instances"
-
-- id: N01-isolation-as-early-warning
-  type: novel
-  tentative: true
-  name: "Isolation is an early-warning signal, not a neutral state"
-  statement: |
-    PROPOSED: for Alex, extended periods without meaningful social
-    contact appear upstream of routine breakdown.
-  provenance:
-    evidence:
-      type: derived-inference
-      references: [O01-first-three-months]
-  caveats: |
-    Could be wrong: O01 conflates isolation with several other
-    changes. Only one detailed episode on record; needs an
-    independent second.
-```
-
-Two observations. One overlap grounded in both. One novel grounded in only the first, flagged tentative, with a caveat that names what could falsify it. The overlap could become stronger with more instances. The novel cannot become a pattern until a second, *independent* episode arrives — not the same claim restated, but a different event with the same shape.
-
----
-
-What falls out of a graph like this, once it has some mass, is worth naming explicitly.
-
-**The spine.** A handful of nodes carry most of the interpretations. In Alex's graph, `O01-first-three-months` is referenced by four later nodes — the overlap about routine, the novel about isolation, the emergent about her child, and a practice around the Sunday run. That is the spine. If `O01` turns out to be miscoded — maybe "isolation" was really about one specific colleague, not a general state — four downstream nodes need to be revisited. Finding the spine is finding the load-bearing observations, so that a correction at the ground knows exactly where to cascade.
+Nine months in, Alex's graph had shape. A few dozen nodes, each carrying its own provenance: who said it, what it rested on, how it was derived. Then the graph became something more than a record. It became an instrument.
 
 <iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
 
-*The spine — eleven of eighteen nodes. Observations sit at the ground; overlaps and emergents rise from them. Hover any node for what it is and what knowing it unlocks.*
+*The spine — load-bearing observations and the claims that rise from them.*
 
-**Emergent nodes.** Some claims only exist at an intersection. *Child's stability in this new city depends on Alex's routine stability* is not present in the overlap about routine alone — that one is just about Alex. It is not present in the observation about the child's grades recovering alone — that one is just about the child. At the intersection, a different thing precipitates. The node is marked `emergent` with both parents cited in `precipitates_from`, so if either parent gets revised, the emergent is flagged for re-derivation. The useful claims are usually the ones that don't come out of a single piece of evidence.
+**The spine.** Four or five observations carried most of her interpretations. The first three months in Chicago was referenced by four later nodes: the routine overlap, the isolation novel, the Mira-stability emergent, and a practice about the Sunday morning run. That episode was load-bearing. If it turned out to be miscoded — if what she had actually felt in those months was not isolation but a specific grief about her closest friend Helen's decline, and the running stopping had never been about loneliness — those four downstream nodes would need revisiting. Finding the spine was finding where a correction would cascade.
 
-**Equivalency bridges.** Sometimes a pattern is already well-described in an external literature — trauma theory, attachment, `sīla`, whatever happens to apply. The `equivalency` type names the bridge without flattening your observation into it. *This is like X in that framework* is a weaker, more honest claim than *this reduces to X*. The observation is almost always more specific than the external concept.
+**The fragile ones.** Novels sitting without a second instance. *Isolation-upstream-of-routine* was one. It might be true. It might be a story she had told herself about one specific stretch of time. Naming the fragility was the opposite of pretending the claim was solid. She could look at her graph and see, *these three things I've been quietly believing about myself are actually only inferred from one evening in October.*
 
-**Open questions.** Open exists so the things you have wondered about without answering don't quietly collapse into novels. *Is the move a 2–3 year plan or a permanent relocation?* — if that question prematurely crystallizes into a confident interpretation, a dozen downstream claims inherit an unexamined premise. Keeping it as `open` preserves the uncertainty as a first-class citizen.
+**The open questions, still unanswered.** *Chicago 2–3 years or permanent* did not get quietly decided by a plausible-sounding novel on a tired night. It sat there until she chose to answer it.
 
-A complete worked example — Alex across eighteen nodes and all eight types, with full provenance — is in the scaffold at [`example-graph.yaml`](https://github.com/parrik/know-thyself/blob/main/example-graph.yaml). Running `render.py` over it produces a diagram of every node, a load-bearing-spine subset, and a validation file that flags missing provenance. The interactive graph at the top of this essay is rendered from that file.
+**The forecasts.** Once a graph has enough structure, the model can project the current shape forward — a one-month forecast, a ninety-day forecast, a twelve-month forecast, a five-year forecast. Each is an emergent claim grounded in the observations, overlaps, and open questions below it. *At current trajectory, by end of July: if the running holds and no external shock, Mira is settled at Kenwood for next year, Alex commissions two more books on her list, the drinking trend is the variable to watch.* The forecast is not prophecy; it is the graph extrapolated with the same honesty it stored the past. When it misses, the miss points back at the spine, and the graph gets corrected at the level where the wrong assumption lived. Forecasts wrong for the right reason are more useful than vague ones kept safe.
 
----
+![Alex's risk corridor — five intersection readings where the graph would invert its current trajectory](/example-graph-extended-risk-corridor.png)
 
-The operating rule, adapted from Patrick McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph), is:
+**The risk corridor.** Some of the most useful claims a graph can surface are the ones you would never generate on purpose. Five intersection readings in Alex's graph marked *low probability, high consequence* — each grounded in two or three existing nodes, each tentative, each named:
+
+1. *Mira crisis forces a return East.* An adolescent mental-health event, a social incident at Kenwood, or a sustained refusal — any of which could make the Chicago life unsustainable for reasons unrelated to Alex's work. Response capacity depends on Daniel being structurally available, which her open question about summer custody has left ambiguous.
+
+2. *UChicago Press leadership change removes autonomy.* A new director who wants a different list shape. Alex's way of holding positions, under a leadership that didn't back her, would flip from asset to liability fast. Canary: a shift in who initiates the weekly acquisitions huddle.
+
+3. *An old relationship surfaces.* An ex-author publishes a novel that fictionalizes a past indiscretion, or mentions it in an interview. Professional and personal exposure both. Low probability; not zero. Counter-move: the exposure surface is only the other party.
+
+4. *The drinking crosses a visible line.* A missed dinner, a committee meeting badly handled, an incident Mira sees. The trajectory from six drinks a week to fourteen happened once, last September through November. It could happen again.
+
+5. *A Helen-anniversary compounding event.* The September anniversary of her closest friend's diagnosis sits right where the last routine-collapse started. One bad week there could reactivate the pattern.
+
+Alex did not know any of these as a list until the graph rendered them for her. Each is an emergent — a claim that exists only where two existing nodes meet. The routine overlap plus the Mira-stability emergent plus the open question about Daniel produce scenario one. The work identity plus the conflict observations produce scenario two. None of them is a prediction; each is a corridor to watch.
+
+This is the thing a flat list cannot produce. A flat list has no notion of *intersection*. It can only return claims it was told. A typed graph with provenance can tell you things you never said — claims that precipitate structurally from the ones you did.
+
+## The operating rule
+
+Adapted from Pat McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph):
 
 > **Attribution ≠ confidence.**
 
-This is the move that does the work.
+Repetition feels like corroboration. It isn't. Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. The model agreed politely each time. Nothing new landed. The claim could be wrong. It could be right for one part of a life and not another. It could be something said once and come to be believed by hearing it said.
 
-Repetition feels like corroboration. It isn't. If Alex has said across six conversations that she "stays in misaligned situations because she is afraid of burning the relationship," that is one derivation repeated six times, not six pieces of evidence. The model agreed politely each time. Nothing new has landed.
+Real confidence only accumulates from *independent* grounding: different episodes, different contexts, different evidence types. The schema forces this into the structure of the memory itself. A novel cannot quietly become an overlap. It waits for a new, independent observation.
 
-Real confidence accumulates only from *independent* grounding: different episodes, different contexts, different evidence types. The schema forces this into the structure of the memory itself. A node whose evidence is `derived-inference` from a single episode cannot quietly become a pattern. It can only move from `novel` to `overlap` when a new, independent observation lands.
+This sounds bureaucratic. It is the opposite. Without it, a polite and attentive model drifts into a subtle kind of hallucination — confident about things that rest on thin inference, because those things have been said and not objected to. With it, a year in, Alex can ask the model *what do you think you know about me?* and the model can answer: *here are the claims I am most sure of, and why. Here are the ones I am guessing at. Here are the questions you have been answering with guesses instead of deciding.*
 
-This sounds bureaucratic. It is the opposite.
+That is what it looks like to be known carefully.
 
-Without it, a model that is polite and attentive drifts into a subtle kind of hallucination — confident about things that rest on thin inference, because those things have been said and not objected to. With it, the model can tell you the load-bearing observations — the ones most of your interpretations rest on, so a wrong episode doesn't corrupt downstream claims. It can tell you the fragile ones, with their explicit caveats. It can preserve the open questions you have been quietly answering with plausible-sounding novels.
+## Why this shape, and why it will outlast any particular model
 
----
+The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem). The schema adapts Pat McCarthy's open-knowledge-graph, itself drawn from decades of scientific knowledge representation. Provenance, confidence tiers, and emergent-at-intersection are not LLM-era inventions. They are older than most of the software the reader has ever used.
 
-The scaffold is open, MIT-licensed, at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. Paste `START_HERE.md` into a conversation with a model that has meaningful memory of you, and it walks through the construction in phases: inventory references and observations; identify patterns; name the novel interpretations tentatively; find the emergent ones; preserve the open questions; add equivalency bridges if relevant; name the practices you have adopted from all this. You get a typed YAML graph, a visual diagram, and a list of which observations a correction would cascade from.
+What the scaffold adds, as its one genuine extension, is the *observation* node as a first-class type. In a scientific graph, observations are evidence for propositions. In a personal graph, observations are things that get reinterpreted — the first three months mean one thing in November and another in May. The schema honors this. What Alex lived, how she understood it at the time, and how the model summarized it back to her are three different layers. The types keep them straight.
 
-None of the pieces are new. The provenance triple, the confidence tiers, and the emergent-at-intersection framing come from Pat McCarthy's scientific-claims schema. The *warrant* field — the reasoning between evidence and claim, stated as a separable assumption — is from Toulmin. Atomicity and link density come from Luhmann's Zettelkasten. Revisions borrow from W3C PROV-O. Effort and genre tags come from the rationalist epistemic-status convention. What the scaffold adds is a first-class *observation* node, because personal graphs, unlike scientific ones, treat episodes as things that get reinterpreted, not just as evidence for propositions.
+This is why the schema will not age out with models. Claude, GPT, Gemini, and the next twenty models come and go. Each one will have its own context window, its own memory policies, its own quirks. Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new model reads the graph and continues. When a model version is deprecated, the graph does not care. The model is the interlocutor; the graph is the memory.
 
-What it produces is closer to an older thing: a Renaissance commonplace book. Structured personal notes, typed and linked, organized for retrieval and return. The difference is that a commonplace book was private. This one is designed to be readable by an AI you are talking with.
+Which is also the privacy story. **The information is not in the model. The information is in the file.** A graph node might say *Mira has been quiet at lunch* — that sentence is Alex's, sitting on her disk. The model only sees what she chooses to paste in for a given conversation. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is back to being a stranger. The locus of memory, and therefore of exposure, is controlled by the owner. Not the vendor.
 
----
+## The thing
 
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple wall as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
 
 If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is not decorative.
 
 It is the thing.
+
+---
+
+*The scaffold is MIT-licensed at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)** — eight node types, provenance, validator, rendering. `START_HERE.md` walks through building a graph of your own.*
