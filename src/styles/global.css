@@ -213,28 +213,27 @@ a:hover { text-decoration-color: var(--accent); }
 .series-part:hover .part-num,
 .series-part:hover .part-subtitle { color: var(--accent); }
 
-/* Status line under the essays list.
-   Inline color swatches: tending = warm accent, evergreen = sage green.
-   Both italic-light to read as commentary, not chrome. */
-.essays-status {
-  margin: 1.6rem 0 0.2rem;
-  font-size: 0.92rem;
-  font-style: italic;
+/* Per-row right-side meta — "a series · tending" / "evergreen". */
+.essay-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.essay-meta-right {
+  flex-shrink: 0;
+  font-family: var(--sans);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
   color: var(--muted);
-  line-height: 1.55;
+  white-space: nowrap;
 }
-.status-tending {
-  color: var(--accent);
-  font-style: normal;
-  font-variant: small-caps;
-  letter-spacing: 0.03em;
-}
-.status-evergreen {
-  color: #4a6e3a;  /* sage — sits next to the cream/oxblood palette without competing */
-  font-style: normal;
-  font-variant: small-caps;
-  letter-spacing: 0.03em;
-}
+.meta-series { color: var(--muted); }
+.meta-sep { margin: 0 0.45rem; color: var(--line); }
+.meta-status { font-weight: 500; }
+.meta-tending { color: var(--accent); }
+.meta-evergreen { color: #4a6e3a; }  /* sage, complements the cream + oxblood palette */
 
 /* Essay page */
 .essay-kicker {

@@ -35,12 +35,26 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     <ul>
       {topLevel.map(essay => {
         const children = childrenByParent.get(essay.id) ?? [];
-        if (children.length === 0) {
+        const isSeries = children.length > 0;
+        const status = essay.data.status;
+        // Right-side meta: "a series · tending" / "evergreen" / "tending"
+        const meta = (
+          <span class="essay-meta-right">
+            {isSeries && <span class="meta-series">a series</span>}
+            {isSeries && status && <span class="meta-sep">·</span>}
+            {status && <span class={`meta-status meta-${status}`}>{status}</span>}
+          </span>
+        );
+
+        if (!isSeries) {
           return (
             <li>
-              <a href={`/essays/${essay.id}/`} class="essay-link">
-                <span class="essay-title">{essay.data.title}</span>
-              </a>
+              <div class="essay-row">
+                <a href={`/essays/${essay.id}/`} class="essay-link">
+                  <span class="essay-title">{essay.data.title}</span>
+                </a>
+                {meta}
+              </div>
               {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
             </li>
           );
@@ -49,7 +63,10 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
         const parts = [essay, ...children];
         return (
           <li class="series">
-            <span class="essay-title series-title">{essay.data.title}</span>
+            <div class="essay-row">
+              <span class="essay-title series-title">{essay.data.title}</span>
+              {meta}
+            </div>
             <ol class="series-parts">
               {parts.map((p, i) => (
                 <li>
@@ -64,27 +81,5 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
         );
       })}
     </ul>
-    {(() => {
-      const tending = topLevel.filter(e => e.data.status === 'tending').map(e => e.data.title);
-      const evergreen = topLevel.filter(e => e.data.status === 'evergreen').map(e => e.data.title);
-      const fmt = (xs: string[]) =>
-        xs.length === 0 ? '' : xs.length === 1 ? xs[0] : xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1];
-      return (tending.length || evergreen.length) ? (
-        <p class="essays-status">
-          {tending.length > 0 && (
-            <>
-              {fmt(tending)} {tending.length === 1 ? 'is' : 'are'} being{' '}
-              <span class="status-tending">tended continuously</span>.{' '}
-            </>
-          )}
-          {evergreen.length > 0 && (
-            <>
-              {fmt(evergreen)} {evergreen.length === 1 ? 'is' : 'are'}{' '}
-              <span class="status-evergreen">evergreen</span>.
-            </>
-          )}
-        </p>
-      ) : null;
-    })()}
   </section>
 </Base>
