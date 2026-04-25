@@ -4,6 +4,7 @@ subtitle: A schema for personal memory in LLM conversations
 kicker: Method
 tag: essay
 order: 0
+status: tending
 description: After enough conversations, memory becomes a list. The list flattens the distinction between repetition and corroboration.
 pdfUrl: /know-thyself.pdf
 ---

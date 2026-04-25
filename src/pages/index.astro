@@ -2,29 +2,89 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const essays = (await getCollection('essays'))
-  .filter(e => !e.data.parent);  // sub-essays are linked from parents, not listed here
-essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const all = (await getCollection('essays'))
+  .filter(e => e.data.status !== 'seedling');  // hide work-in-progress drafts
+
+// Top-level essays: nothing in `parent`. Sub-essays group under their parent.
+const topLevel = all.filter(e => !e.data.parent);
+topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+// Build a parent-id → ordered children map.
+const childrenByParent = new Map();
+for (const e of all) {
+  if (!e.data.parent) continue;
+  const arr = childrenByParent.get(e.data.parent) ?? [];
+  arr.push(e);
+  childrenByParent.set(e.data.parent, arr);
+}
+for (const arr of childrenByParent.values()) {
+  arr.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+}
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 ---
 <Base title="parrik">
   <section class="intro">
-    <h1>on love</h1>
-    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
-    <p>I like distributed systems, biology, and the practice.</p>
+    <h1>on love, nature, and nurture</h1>
+    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure. Nature is the structure when you find it. Nurture is what you do once you can see it.</p>
+    <p>I write about distributed systems, biology, and the practice.</p>
     <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
   </section>
   <section class="essays">
     <h2>essays</h2>
     <ul>
-      {essays.map(essay => (
-        <li>
-          <a href={`/essays/${essay.id}/`} class="essay-link">
-            <span class="essay-title">{essay.data.title}</span>
-            {essay.data.tag && <span class={`essay-tag tag-${essay.data.tag}`}>{essay.data.tag}</span>}
-          </a>
-          {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
-        </li>
-      ))}
+      {topLevel.map(essay => {
+        const children = childrenByParent.get(essay.id) ?? [];
+        if (children.length === 0) {
+          return (
+            <li>
+              <a href={`/essays/${essay.id}/`} class="essay-link">
+                <span class="essay-title">{essay.data.title}</span>
+              </a>
+              {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+            </li>
+          );
+        }
+        // Series: parent becomes Part I; children get Part II, III, ...
+        const parts = [essay, ...children];
+        return (
+          <li class="series">
+            <span class="essay-title series-title">{essay.data.title}</span>
+            <ol class="series-parts">
+              {parts.map((p, i) => (
+                <li>
+                  <a href={`/essays/${p.id}/`} class="series-part">
+                    <span class="part-num">Part {ROMAN[i]}</span>
+                    <span class="part-subtitle">{p.data.subtitle ?? ''}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </li>
+        );
+      })}
     </ul>
+    {(() => {
+      const tending = topLevel.filter(e => e.data.status === 'tending').map(e => e.data.title);
+      const evergreen = topLevel.filter(e => e.data.status === 'evergreen').map(e => e.data.title);
+      const fmt = (xs: string[]) =>
+        xs.length === 0 ? '' : xs.length === 1 ? xs[0] : xs.slice(0, -1).join(', ') + ' and ' + xs[xs.length - 1];
+      return (tending.length || evergreen.length) ? (
+        <p class="essays-status">
+          {tending.length > 0 && (
+            <>
+              {fmt(tending)} {tending.length === 1 ? 'is' : 'are'} being{' '}
+              <span class="status-tending">tended continuously</span>.{' '}
+            </>
+          )}
+          {evergreen.length > 0 && (
+            <>
+              {fmt(evergreen)} {evergreen.length === 1 ? 'is' : 'are'}{' '}
+              <span class="status-evergreen">evergreen</span>.
+            </>
+          )}
+        </p>
+      ) : null;
+    })()}
   </section>
 </Base>
