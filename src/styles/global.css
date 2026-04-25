@@ -122,6 +122,10 @@ a:hover { text-decoration-color: var(--accent); }
   border-bottom: 1px solid var(--line);
 }
 
+.intro h1 {
+  color: #3d5a3a; /* forest green — earthy, complements oxblood without fighting */
+}
+
 /* (intro legacy styles removed — dead code) */
 
 .essays {
