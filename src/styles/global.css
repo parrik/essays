@@ -490,7 +490,9 @@ hr {
 }
 
 .essay-body pre {
-  background: var(--bg-soft);
+  /* !important defeats Shiki's inline style="background-color: ..."
+     so the code block stays on the cream palette regardless of theme. */
+  background: var(--bg-soft) !important;
   border: 1px solid var(--line);
   border-radius: 3px;
   padding: 1rem 1.15rem;
