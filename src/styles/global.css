@@ -123,7 +123,7 @@ a:hover { text-decoration-color: var(--accent); }
 }
 
 .intro h1 {
-  color: #3d5a3a; /* forest green — earthy, complements oxblood without fighting */
+  color: #5e8a3a; /* leaf-forest green — bright enough to read as green at heading weight, still earthy */
 }
 
 /* (intro legacy styles removed — dead code) */
