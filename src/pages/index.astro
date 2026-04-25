@@ -2,28 +2,84 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const essays = await getCollection('essays');
-essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+const all = (await getCollection('essays'))
+  .filter(e => e.data.status !== 'seedling');  // hide work-in-progress drafts
+
+// Top-level essays: nothing in `parent`. Sub-essays group under their parent.
+const topLevel = all.filter(e => !e.data.parent);
+topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+// Build a parent-id → ordered children map.
+const childrenByParent = new Map();
+for (const e of all) {
+  if (!e.data.parent) continue;
+  const arr = childrenByParent.get(e.data.parent) ?? [];
+  arr.push(e);
+  childrenByParent.set(e.data.parent, arr);
+}
+for (const arr of childrenByParent.values()) {
+  arr.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+}
+
+const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 ---
 <Base title="parrik">
   <section class="intro">
-    <h1>on love</h1>
-    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure.</p>
-    <p>I like distributed systems, biology, and the practice.</p>
+    <h1>on love, nature, and nurture</h1>
+    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure. Nature is the structure when you find it. Nurture is what you do once you can see it.</p>
+    <p>I write about distributed systems, biology, and the practice.</p>
     <p>Posters, short pieces, longer prose. Written by AI, lived by human.</p>
   </section>
   <section class="essays">
     <h2>essays</h2>
     <ul>
-      {essays.map(essay => (
-        <li>
-          <a href={`/essays/${essay.id}/`} class="essay-link">
-            <span class="essay-title">{essay.data.title}</span>
-            {essay.data.tag && <span class={`essay-tag tag-${essay.data.tag}`}>{essay.data.tag}</span>}
-          </a>
-          {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
-        </li>
-      ))}
+      {topLevel.map(essay => {
+        const children = childrenByParent.get(essay.id) ?? [];
+        const isSeries = children.length > 0;
+        const status = essay.data.status;
+        // Right-side meta: "a series · tending" / "evergreen" / "tending"
+        const meta = (
+          <span class="essay-meta-right">
+            {isSeries && <span class="meta-series">a series</span>}
+            {isSeries && status && <span class="meta-sep">·</span>}
+            {status && <span class={`meta-status meta-${status}`}>{status}</span>}
+          </span>
+        );
+
+        if (!isSeries) {
+          return (
+            <li>
+              <div class="essay-row">
+                <a href={`/essays/${essay.id}/`} class="essay-link">
+                  <span class="essay-title">{essay.data.title}</span>
+                </a>
+                {meta}
+              </div>
+              {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+            </li>
+          );
+        }
+        // Series: parent becomes Part I; children get Part II, III, ...
+        const parts = [essay, ...children];
+        return (
+          <li class="series">
+            <div class="essay-row">
+              <span class="essay-title series-title">{essay.data.title}</span>
+              {meta}
+            </div>
+            <ol class="series-parts">
+              {parts.map((p, i) => (
+                <li>
+                  <a href={`/essays/${p.id}/`} class="series-part">
+                    <span class="part-num">Part {ROMAN[i]}</span>
+                    <span class="part-subtitle">{p.data.subtitle ?? ''}</span>
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </li>
+        );
+      })}
     </ul>
   </section>
 </Base>
