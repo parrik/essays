@@ -939,8 +939,15 @@
   }
 
   function renderToday() {
-    const src = DATA.now_date || DATA.rendered;
-    const p = prettyDate(src) || { weekday: "Today", pretty: src, iso: src };
+    // Date in the reader's local timezone — not the fictional Alex graph's
+    // frozen "May 2025" frame. The graph itself is a worked example;
+    // the dashboard shell is read live, so the date should be live too.
+    const today = new Date();
+    const p = {
+      weekday: today.toLocaleDateString(undefined, { weekday: "long" }),
+      pretty:  today.toLocaleDateString(undefined, { month: "long", day: "numeric", year: "numeric" }),
+      iso:     today.toISOString().slice(0, 10),
+    };
 
     const now = byId.get(DATA.now_id);
     const sections = (DATA.now_sections || {});
