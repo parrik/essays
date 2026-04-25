@@ -147,3 +147,7 @@ It is the thing.
 ---
 
 *The scaffold is MIT-licensed at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)** — eight node types, provenance, validator, rendering. `START_HERE.md` walks through building a graph of your own.*
+
+---
+
+*Continue to **[Part II — Search was never about humans](/essays/know-thyself-search/)**, on retrieval over a typed personal graph when the reader is an AI agent.*

@@ -2,7 +2,8 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const essays = await getCollection('essays');
+const essays = (await getCollection('essays'))
+  .filter(e => !e.data.parent);  // sub-essays are linked from parents, not listed here
 essays.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
 <Base title="parrik">
