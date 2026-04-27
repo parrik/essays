@@ -171,6 +171,20 @@ The Delphic maxim, again: γνῶθι σεαυτόν. *Know thyself.* The advice
 
 The retrieval problem hasn't changed in two and a half millennia. The reader has.
 
+## Postscript — DeepSeek V4 (Apr 26 2026)
+
+Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Headline: a million-token context window. Substrate: a hybrid attention scheme — Compressed Sparse Attention plus Heavy Compressed Attention — that delivers the headline with **9.5–13.7× less memory** and **10% of the KV cache** of V3.2.
+
+The four-scales argument extends one substrate further. The fifth row:
+
+| Scale | Nodes | Edges | Walk strategy | Reader |
+|---|---|---|---|---|
+| **LLM working memory** | **tokens / latent codes** | **sparse + hierarchical attention** | **compression + retrieval-as-attention** | **the model itself** |
+
+The graph-traversal-with-ranking shape is internalized one substrate further. The visible feature (long context) is downstream of the same memory-architecture move that scales every retrieval system before it. The reader is the model.
+
+More to follow.
+
 ---
 
 *The retrieval scaffold described in this essay is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)** — three Python CLIs, ~300 LOC, runnable today. The companion [Know Thyself](/essays/know-thyself/) essay describes the schema. The companion [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) is Patrick D. McCarthy's foundational work; this essay's technical spine is his Paper 1 argument that bounded context makes graph structure necessary.*
