@@ -115,7 +115,7 @@ This is the thing a flat list cannot produce. A flat list has no notion of *inte
 
 ## The operating rule
 
-The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration. [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) applies it formally to scientific-knowledge graphs; this scaffold ports it to personal memory:
+The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration. [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops it formally for the scientific-knowledge-graph case; this work claims the same rule for personal memory:
 
 > **Attribution ≠ confidence.**
 
@@ -129,9 +129,9 @@ That is what it looks like to be known carefully.
 
 ## Why this shape, and why it will outlast any particular model
 
-The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem). The machinery has multiple lineages — provenance triples in [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and the [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013); the same triplet shape inside [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); the formal necessity theorems and the *attribution ≠ confidence* rule in Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph), itself drawn from decades of scientific knowledge representation. None of this is an LLM-era invention; they are older than most of the software the reader has ever used. Park et al.'s *Generative Agents* (UIST 2023) made the closely-related move in a different setting — separating observation from reflection in agent memory, with reflections citing the observations they rest on.
+The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem). The machinery has multiple lineages — provenance triples in [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and the [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013); the same triplet shape inside [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) developing the necessity theorems and the *attribution ≠ confidence* rule formally for scientific-knowledge graphs, drawing on decades of scientific knowledge representation. None of this is an LLM-era invention; they are older than most of the software the reader has ever used. Park et al.'s *Generative Agents* (UIST 2023) made the closely-related move in a different setting — separating observation from reflection in agent memory, with reflections citing the observations they rest on.
 
-What this scaffold extends, beyond what McCarthy's framework — originally designed for scientific knowledge — supplies for personal memory: three specific rewrites.
+What this work claims for personal memory — three specific extensions beyond McCarthy's scientific-graph case:
 
 **Observation becomes a first-class node type.** In a scientific graph, observations are evidence for propositions; once a proposition is established, the observations recede. In a personal graph, observations are things that get *reinterpreted* — the first three months mean one thing in November and another in May. The schema honors this. What Alex lived, how she understood it at the time, and how the model summarized it back to her are three different layers. The types keep them straight.
 
