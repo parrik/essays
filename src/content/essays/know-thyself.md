@@ -9,7 +9,9 @@ description: After enough conversations, memory becomes a list. The list flatten
 pdfUrl: /know-thyself.pdf
 ---
 
-*This essay accompanies an open, MIT-licensed scaffold for building this kind of memory with a model: **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**. The essay is the argument; the scaffold is the tool.*
+After a year of conversation with the same model, Alex caught it confidently telling her something about herself that wasn't true — and she could trace exactly how it got there.
+
+This essay is the argument. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
 
 <p class="dashboard-link-wrap">
   <a class="dashboard-link" href="/alex-case-study.html">
@@ -41,13 +43,15 @@ pdfUrl: /know-thyself.pdf
 
 ## The mirror problem
 
-One evening in May, Alex asked the model a simple thing. She was nine months into Chicago — an editor at UChicago Press, with a list of her own by then, drafting a message to a senior colleague who had pushed back on her acquisition proposal for a second-time author she was fighting for. She wanted the model's read: *was there a pattern in how she handled conflict at work?* She had said the word *conflict* into the chat maybe a dozen times across those months. The model had a lot to draw on.
+One evening in May, Alex asked the model a simple thing: *was there a pattern in how she handled conflict at work?* She was nine months into Chicago, an editor at UChicago Press. She had said the word *conflict* into the chat maybe a dozen times across those months. The model had a lot to draw on.
 
 The reply came back confident, fluent, slightly wrong.
 
-It told her she had a tendency to *stay in misaligned situations because she was afraid of burning the relationship.* It gave three supporting examples. Alex read it twice. The sentence sounded like something she had said. It was, in fact, something she had said — six or seven times, across several evenings, sometimes as self-diagnosis, sometimes as shorthand for a more complicated feeling she did not have better words for. But it wasn't true the way the model was saying it was true. It was a thing she kept reaching for. It was not, and had never been, a pattern the model had any evidence for.
+It told her she had a tendency to *stay in misaligned situations because she was afraid of burning the relationship.* Three supporting examples. The sentence sounded like something she had said. It was — six or seven times, across several evenings, sometimes as self-diagnosis, sometimes as shorthand for a more complicated feeling she did not have better words for. It was a thing she kept reaching for. It was not, and had never been, a pattern the model had any evidence for.
 
-She sat with that for a minute. Then she did something most users never do. She asked the model to show its work. *How do you know that?* And the model, politely and correctly, produced the list. Six conversations. The same claim, attributed to her. No independent episodes. No specific events. Nothing but her own restatement bounced back at her with a patient nod each time.
+She did something most users never do. She asked the model to show its work. *How do you know that?*
+
+The model politely produced the list. Six conversations. The same claim, attributed to her. No independent episodes. No specific events. Nothing but her own restatement bounced back at her with a patient nod each time.
 
 She had been talking to a mirror.
 
@@ -115,11 +119,13 @@ This is the thing a flat list cannot produce. A flat list has no notion of *inte
 
 ## The operating rule
 
-The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration. [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops it formally for the scientific-knowledge-graph case; this work claims the same rule for personal memory:
+The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration:
 
 > **Attribution ≠ confidence.**
 
-Repetition feels like corroboration. It isn't. Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. The model agreed politely each time. Nothing new landed. The claim could be wrong. It could be right for one part of a life and not another. It could be something said once and come to be believed by hearing it said.
+Repetition feels like corroboration. It isn't.
+
+Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. The model agreed politely each time. Nothing new landed. The claim could be wrong. It could be right for one part of a life and not another. It could be something said once and come to be believed by hearing it said.
 
 Real confidence only accumulates from *independent* grounding: different episodes, different contexts, different evidence types. The schema forces this into the structure of the memory itself. A novel cannot quietly become an overlap. It waits for a new, independent observation.
 
@@ -129,9 +135,9 @@ That is what it looks like to be known carefully.
 
 ## Why this shape, and why it will outlast any particular model
 
-The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem). The machinery has multiple lineages — provenance triples in [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and the [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013); the same triplet shape inside [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) developing the necessity theorems and the *attribution ≠ confidence* rule formally for scientific-knowledge graphs, drawing on decades of scientific knowledge representation. None of this is an LLM-era invention; they are older than most of the software the reader has ever used. Park et al.'s *Generative Agents* (UIST 2023) made the closely-related move in a different setting — separating observation from reflection in agent memory, with reflections citing the observations they rest on.
+The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem).
 
-What this work claims for personal memory — three specific extensions beyond McCarthy's scientific-graph case:
+None of this is an LLM-era invention. The provenance-triple machinery has multiple lineages going back decades — RDF, PROV-O, scientific-knowledge graphs.[^prior] What this work claims for personal memory — three specific extensions beyond the scientific-graph case:
 
 **Observation becomes a first-class node type.** In a scientific graph, observations are evidence for propositions; once a proposition is established, the observations recede. In a personal graph, observations are things that get *reinterpreted* — the first three months mean one thing in November and another in May. The schema honors this. What Alex lived, how she understood it at the time, and how the model summarized it back to her are three different layers. The types keep them straight.
 
@@ -139,7 +145,11 @@ What this work claims for personal memory — three specific extensions beyond M
 
 **An inverted edge-density prediction.** The original framework predicts mature graphs become edge-dense over time. True for science, where new findings keep slotting into existing structure. *False for personal psychology*, where new life events spawn new nodes — a person, a loss, a pattern — and cross-time edges stay sparse. A forty-year-old's graph is node-dense with sparse adjacency, not edge-dense. Different shape, different design pressures.
 
-This is why the schema will not age out with models. Claude, GPT, Gemini, and the next twenty models come and go. Each one will have its own context window, its own memory policies, its own quirks. Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new model reads the graph and continues. When a model version is deprecated, the graph does not care. The model is the interlocutor; the graph is the memory.
+This is why the schema will not age out with models. Claude, GPT, Gemini, and the next twenty models come and go. Each one has its own context window, its own memory policies, its own quirks.
+
+Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new model reads the graph and continues. When a model version is deprecated, the graph does not care.
+
+The model is the interlocutor. The graph is the memory.
 
 Which is also the privacy story. **The information is not in the model. The information is in the file.** A graph node might say *Mira has been quiet at lunch* — that sentence is Alex's, sitting on her disk. The model only sees what she chooses to paste in for a given conversation. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is back to being a stranger. The locus of memory, and therefore of exposure, is controlled by the owner. Not the vendor.
 
@@ -158,3 +168,5 @@ It is the thing.
 ---
 
 *Continue to **[Part II — Search was never about humans](/essays/know-thyself-search/)**, on retrieval over a typed personal graph when the reader is an AI agent.*
+
+[^prior]: Provenance triples in [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and the [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013); the same triplet shape inside [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) developing the necessity theorems and the *attribution ≠ confidence* rule formally for scientific-knowledge graphs. Park et al.'s *Generative Agents* (UIST 2023) made the closely-related move in agent memory — separating observation from reflection, with reflections citing the observations they rest on.
