@@ -137,7 +137,7 @@ That is what it looks like to be known carefully.
 
 The types are not idiosyncratic. They are the same shape rigorous fields use to store claims: an episode (the experiment), a pattern (the replication), a tentative interpretation (the hypothesis), an intersection (the theoretical integration), a borrowed framework (the citation), an unanswered question (the open problem).
 
-None of this is an LLM-era invention. The provenance-triple machinery has multiple lineages going back decades — RDF, PROV-O, scientific-knowledge graphs.[^prior] What this work claims for personal memory — three specific extensions beyond the scientific-graph case:
+None of this is an LLM-era invention. The provenance-triple machinery has multiple lineages going back decades — RDF, PROV-O, scientific-knowledge graphs.[^prior] **What this essay puts down for personal memory is three specific extensions beyond the scientific-graph case:**
 
 **Observation becomes a first-class node type.** In a scientific graph, observations are evidence for propositions; once a proposition is established, the observations recede. In a personal graph, observations are things that get *reinterpreted* — the first three months mean one thing in November and another in May. The schema honors this. What Alex lived, how she understood it at the time, and how the model summarized it back to her are three different layers. The types keep them straight.
 
