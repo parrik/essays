@@ -9,9 +9,11 @@ publishedAt: 2026-04-21
 status: evergreen
 ---
 
-There is a particular kind of suffering that looks, from the inside, like health.
+A cancer cell is not a broken cell.
 
-A cancer cell is not a broken cell. It divides, consumes, builds, responds — it does everything a cell is supposed to do. What it has lost is not function. What it has lost is *context*. It no longer receives the tissue's continuous broadcast: *you are part of something larger, slow down, wait, listen.* Cut off from that signal, it optimizes for its own survival. It isn't malfunctioning. It's functioning in isolation, inside a model of the world that is no longer true.
+It divides, consumes, builds, responds — it does everything a cell is supposed to do. What it has lost is not function. What it has lost is *context*. It no longer receives the tissue's continuous broadcast: *you are part of something larger, slow down, wait, listen.* Cut off from that signal, it optimizes for its own survival. It isn't malfunctioning. It's functioning in isolation, inside a model of the world that is no longer true.
+
+There is a particular kind of suffering that looks, from the inside, like health.
 
 The fascia knows this before the mind does.
 

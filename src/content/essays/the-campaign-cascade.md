@@ -12,7 +12,13 @@ status: evergreen
 
 ## The Loop
 
-A platform team identifies a cross-cutting problem — a Java 21 upgrade across repos, a Kubernetes migration across services. They launch a campaign: open PRs across hundreds of entities owned by other teams. The PRs stall. The manager escalates to the director, who escalates to the SVP, who broadcasts a directive: *merge these PRs.* The directive lands with selective adoption. A tracking campaign is created to chase compliance on the original campaign. Each incomplete campaign spawns the next.
+A platform team launches a campaign: hundreds of PRs across repos owned by other teams. Java 21 upgrade. Kubernetes migration. Pick your flavor.
+
+The PRs stall.
+
+The manager escalates to the director, who escalates to the SVP, who broadcasts a directive: *merge these PRs.* The directive lands with selective adoption. A tracking campaign gets spun up to chase compliance on the original campaign.
+
+Each incomplete campaign spawns the next.
 
 > Campaign → Stall → Escalate → Directive → New Campaign → …
 

@@ -9,21 +9,21 @@ status: tending
 description: Search has always been graph-traversal-with-ranking. The human reader was a contingency. The agent's reader is the latest, sharpest version of an old problem.
 ---
 
-*Companion to **[Know Thyself](/essays/know-thyself/)**. The first essay argued that personal memory needs structured shape. This one argues that **retrieval over that memory** has always had the same shape — and the human at the other end of the screen was a temporary user.*
+The human reader was a contingency. Search has always been graph-traversal-with-ranking — and the new reader has a different attention budget.
 
-*The retrieval scaffold this essay describes is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
+*Companion to **[Know Thyself](/essays/know-thyself/)**. The first essay argued personal memory needs structured shape. This one argues retrieval over that memory has always had the same shape. The retrieval scaffold is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
 
 ---
 
 ## The mirror, again
 
-The first essay opened with Alex catching a model confidently making a claim about her on six restated assertions and zero independent episodes. The schema fixed it: typed nodes, provenance triples, the rule that a claim repeated five times in conversation is one derivation, not five.
+The first essay opened with Alex catching a model confidently making a claim about her on six restated assertions and zero independent episodes. The schema fixed it: typed nodes, provenance triples, the rule that a claim repeated five times is one derivation, not five.
 
-Eight months in, Alex's graph has shape. A few hundred nodes. References, observations, overlaps. A spine that holds. The model that summarized her back to her now refuses to flatten attribution into confidence.
+Eight months in, her graph has shape. A few hundred nodes. References, observations, overlaps. A spine that holds.
 
-Then she asks it a question and pastes the whole graph into the conversation, the way she's been doing all year, and Claude pulls up short. *Three thousand nodes is too much for me to read at once.* The paste worked at three hundred. Then at six hundred. Then at twelve hundred with some friction. Then it stopped.
+Then she pastes the whole graph into the conversation, the way she's been doing all year, and Claude pulls up short. *Three thousand nodes is too much for me to read at once.* The paste worked at three hundred. Then at six hundred. Then at twelve hundred with some friction. Then it stopped.
 
-This is where the second essay starts. The graph is correct. The reader is finite. Retrieval is the bridge.
+The graph is correct. The reader is finite. Retrieval is the bridge.
 
 ## The thing that was never about humans
 
@@ -45,7 +45,7 @@ You can read the last fifty years of information retrieval as the same shape, in
 
 **Scale 2 — Vector retrieval (2017 onward).** Replace term-as-node with embedding-as-node, and term-overlap-as-edge with cosine-distance-as-edge, and you have the modern vector database. Underneath, when scale demands it, sits a *graph of vectors*: HNSW, Malkov's 2018 [hierarchical small-world index](https://arxiv.org/abs/1603.09320), where logarithmic-time approximate-nearest-neighbor reduces to a greedy walk from a sparse top layer down through dense lower layers — the [shuffle-sharding-of-similarity](https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding/) you've already seen in distributed systems. Pinecone, Weaviate, Qdrant, FAISS — all of them use HNSW or a close variant under the hood. (Below ten thousand vectors, brute-force NumPy beats HNSW; HNSW becomes load-bearing as scale grows past where SIMD can keep up. *Crossovers reported in literature land around 100K nodes for query-bound workloads, ~1M for batch — though I haven't measured this on my own laptop yet. The `etudes/hnsw-crossover/` benchmark in the repo exists for exactly that verification; the post will be updated when it's run.* The graph structure becomes necessary precisely when the linear scan stops being free.) Reader: still mostly a human, with an LLM increasingly present. Result format: page summaries, with the chunk creeping in.
 
-**Scale 3 — Typed knowledge graph (decades of database research; recently personal).** Nodes are claims; edges are typed relationships — `grounds`, `derives_from`, `evidences`, `contradicts`, `emergent_from`. The schema isn't decorative. It's how the graph distinguishes *I said this five times* from *this has been independently grounded twice*. The shape — claims with attribution and derivation — runs in multiple traditions: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013) formalized it decades ago, [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations) ships the same triplet inside the model output today, [Patrick D. McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) works the formal theorems out explicitly for the scientific-knowledge-graph case. The [know-thyself](https://github.com/parrik/know-thyself) scaffold extends this lineage to personal memory — see [*What this essay extends*](#what-this-essay-extends) below. Reader: a self, or an agent reading on behalf of a self. Result format: a node plus its provenance plus its neighborhood.
+**Scale 3 — Typed knowledge graph (decades of database research; recently personal).** Nodes are claims; edges are typed relationships — `grounds`, `derives_from`, `evidences`, `contradicts`, `emergent_from`. The schema isn't decorative. It's how the graph distinguishes *I said this five times* from *this has been independently grounded twice*. The shape — claims with attribution and derivation — runs in multiple traditions going back decades.[^triplet] The [know-thyself](https://github.com/parrik/know-thyself) scaffold extends this lineage to personal memory — see [*What this essay extends*](#what-this-essay-extends) below. Reader: a self, or an agent reading on behalf of a self. Result format: a node plus its provenance plus its neighborhood.
 
 **Scale 4 — AI-native search (2023 onward).** [Exa](https://exa.ai) is one well-developed commercial articulation. Will Bryk's framing: *"It would kind of be insane if the same search engine that was optimal for humans would also be optimal for this very different creature."* Three axes of difference, in his words: query complexity (humans send keywords, agents send precise structured queries), result volume (humans want ten links, agents want every match), ranking semantics (popularity vs comprehensiveness). The substrate underneath: clustered ANN — Exa explicitly rejected HNSW because [it doesn't shard cleanly and doesn't compose with metadata filters](https://exa.ai/blog/building-web-scale-vector-db) — over a Matryoshka-trained embedding truncated and binary-quantized for SIMD-register-resident lookup. The hard work is at the rim. The shape underneath is still graph + traversal.
 
@@ -74,11 +74,21 @@ Bryk's three axes are right but too narrow. Stack them up against what the subst
 
 ## Why bounded context forces structured memory
 
-The argument has multiple historical lineages, all from authors with deep historical backing. **Working-memory capacity is bounded** — [Miller 1956](https://psychclassics.yorku.ca/Miller/) on "7±2" as the information-channel limit, [Cowan 2001](https://doi.org/10.1017/S0140525X01003922) revising to "4±1" for unrelated chunks. **Institutional decision-making is bounded** — [Herbert Simon's bounded rationality](https://www.jstor.org/stable/1884852) (1955; Nobel 1978) on satisficing under cognitive constraints. **Lossless compression is bounded** — [Shannon's source coding theorem](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf) (1948) on the floor below which information is lost. **Factoring shared structure into named relations is database normalization** — [Codd's relational model](https://dl.acm.org/doi/10.1145/362384.362685) (1970), the operation that recovers space without losing the posterior.
+Four claims, each with deep prior backing.[^bounded]
 
-Stack these together and the argument follows directly. When relevant knowledge `|K|` exceeds an entity's active working capacity `C_n`: discarding loses information, lossless compression hits Shannon's floor, lossy compression is "blind discarding with extra steps." The space-creating operation that doesn't lose information is *factoring* — extracting shared structure into a named node with typed edges. **Factoring is graph construction.** The bounded reader needs the graph not as decoration but as the only architecture that lets retrieval scale without degradation.
+**Working-memory capacity is bounded.** Miller's 7±2; Cowan's 4±1.
 
-Three substrates share the bounded-capacity constraint: biological working memory, institutional decision-making, and *transformer context windows — though large, they degrade in inference quality as they fill with content irrelevant to the current problem.* [Patrick McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) works the formal theorem out for the *scientific*-knowledge-graph case explicitly, including the corollary aimed directly at the frontier-model labs:
+**Institutional decision-making is bounded.** Simon's bounded rationality.
+
+**Lossless compression is bounded.** Shannon's floor below which information is lost.
+
+**Factoring shared structure into named relations is database normalization.** Codd's relational model — the operation that recovers space without losing the posterior.
+
+Stack these. When relevant knowledge `|K|` exceeds an entity's active working capacity `C_n`: discarding loses information, lossless compression hits Shannon's floor, lossy compression is "blind discarding with extra steps." The space-creating operation that doesn't lose information is *factoring* — extracting shared structure into a named node with typed edges.
+
+**Factoring is graph construction.** The bounded reader needs the graph not as decoration but as the only architecture that lets retrieval scale without degradation.
+
+Three substrates share the bounded-capacity constraint: biological working memory, institutional decision-making, and *transformer context windows — though large, they degrade in inference quality as they fill with content irrelevant to the current problem.* McCarthy's open-knowledge-graph works the formal theorem out for the *scientific*-knowledge-graph case, including the corollary aimed directly at the frontier-model labs:
 
 > Growing C_n directly does not solve the retrieval problem… The efficient path is not to grow the context window but to grow the encoded knowledge accessible via stored adjacency: **filling the graph, not the context window.**
 
@@ -95,9 +105,11 @@ The frontier labs are testing both bets. The big-context bet says transformers w
 
 ## What this essay extends
 
-The provenance-triple machinery — typed nodes carrying claim + attribution + derivation — has roots wider than any single articulation. [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and the [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013) formalized the triplet shape decades before either Pat or the LLM era. [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations) ships the same triplet inside the model output today. [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) works the necessity arguments out formally for the *scientific*-knowledge-graph case, theorem by theorem. The machinery holds across all of these traditions; that's not what this essay reopens. **The personal-graph framing — applying the bounded-context argument to a self rather than a science — is what this essay puts down.**
+**The personal-graph framing — applying the bounded-context argument to a self rather than a science — is what this essay puts down.** The provenance-triple machinery itself has roots going back decades, across multiple traditions.[^triplet]
 
-What needs rewriting for personal memory are McCarthy's specific predictions about how mature graphs evolve. His necessity arguments run through selection-under-competition: scientific knowledge prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. There's no competitor's posterior to lose to, no replication, no external ground truth, fuzzy temporal validity. Three rewrites this essay makes:
+What needs rewriting for personal memory are the specific predictions about how mature graphs evolve. McCarthy's necessity arguments run through selection-under-competition: scientific knowledge prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior to lose to, no replication, no external ground truth, fuzzy temporal validity.
+
+Three rewrites this essay makes:
 
 **A `valid_at` / confidence-decay axis.** Propositions about persons aren't permanently valid the way physical-law propositions are. *Propositions don't die, they become less true over time.* The schema's retention logic, drawn from survival pressure, has to be replaced by epistemic humility — every claim about a person carries a validity window that decays unless re-grounded. The know-thyself scaffold treats this as a first-class field on every node, not a bolted-on annotation.
 
@@ -109,9 +121,11 @@ The schema carries over cleanly. The retention logic, as imported from competiti
 
 ## A demo, at the personal scale
 
-The bet is testable. The same shape that matters for Exa over the web matters for one person's graph at three hundred nodes — *because the bound is about the reader, not the corpus.* A small graph plus a finite agent is the same problem as a huge graph plus a finite agent, just with the constants reset.
+The bet is testable. The same shape that matters for Exa over the web matters for one person's graph at 300 nodes — *because the bound is about the reader, not the corpus.*
 
-Here's a working demo, runnable on a laptop, against [Alex's example graph](https://github.com/parrik/know-thyself/blob/main/example-graph-extended.yaml) (the 87-node fictional editor from the first essay):
+A small graph plus a finite agent is the same problem as a huge graph plus a finite agent. Just with the constants reset.
+
+Working demo, runnable on a laptop, against [Alex's example graph](https://github.com/parrik/know-thyself/blob/main/example-graph-extended.yaml) (the 87-node fictional editor from the first essay):
 
 ```bash
 git clone github.com/parrik/know-thyself-search
@@ -207,4 +221,8 @@ More to follow.
 
 ---
 
-*The retrieval scaffold described in this essay is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)** — three Python CLIs, ~300 LOC, runnable today. The companion [Know Thyself](/essays/know-thyself/) essay describes the schema. The bounded-context argument the essay builds on draws on Miller 1956 and Cowan 2001 in cognitive science, RDF and PROV-O for the provenance-triple shape, and Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) which works the necessity theorems out formally. The four-scale synthesis and the temporal-validity extension are this essay's specific contribution.*
+*The retrieval scaffold described in this essay is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)** — three Python CLIs, ~300 LOC, runnable today. The companion [Know Thyself](/essays/know-thyself/) essay describes the schema. The bounded-context argument draws on Miller 1956 and Cowan 2001 in cognitive science, RDF and PROV-O for the provenance-triple shape, and Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) which works the necessity theorems out formally. The four-scale synthesis and the temporal-validity extension are this essay's specific contribution.*
+
+[^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013) formalized the triplet shape decades before the LLM era. [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations) ships the same triplet inside the model output today. [Patrick D. McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) works the necessity theorems out formally for the *scientific*-knowledge-graph case, theorem by theorem.
+
+[^bounded]: [Miller 1956](https://psychclassics.yorku.ca/Miller/) on "7±2" as the information-channel limit; [Cowan 2001](https://doi.org/10.1017/S0140525X01003922) revising to "4±1" for unrelated chunks; [Herbert Simon's bounded rationality](https://www.jstor.org/stable/1884852) (1955; Nobel 1978) on satisficing under cognitive constraints; [Shannon's source coding theorem](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf) (1948); [Codd's relational model](https://dl.acm.org/doi/10.1145/362384.362685) (1970).
