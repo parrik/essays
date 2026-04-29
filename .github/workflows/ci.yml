@@ -58,7 +58,7 @@ jobs:
             --max-concurrency 8
             --offline
             --root-dir ${{ github.workspace }}/dist
-            --base-url ${{ github.workspace }}/dist
+            --base ${{ github.workspace }}/dist
             --fallback-extensions html
             --exclude-path dist/_astro
             --exclude '%23'
@@ -68,6 +68,9 @@ jobs:
           # With --root-dir, lychee resolves bare '#foo' as file:///root/%23foo
           # and reports "file not found". Same-page anchors are validated by
           # html-validate / browser, not link-check.
+          # --base is deprecated in lychee >=0.23 (warning emitted) but
+          # --base-url doesn't accept filesystem paths the same way; keep
+          # --base until lychee fixes the upgrade path.
 
       - name: Lychee external link check (informational)
         uses: lycheeverse/lychee-action@v2
