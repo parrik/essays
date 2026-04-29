@@ -142,18 +142,21 @@ a:hover { text-decoration-color: var(--accent); }
   margin-bottom: 0.5rem;
 }
 
-.essays ul {
+.essays ul,
+.brewing ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.essays li {
+.essays li,
+.brewing li {
   padding: 1.1rem 0;
   border-bottom: 1px solid var(--line);
 }
 
-.essays li:last-child { border-bottom: none; }
+.essays li:last-child,
+.brewing li:last-child { border-bottom: none; }
 
 .essays li a.essay-link {
   text-decoration: none;
