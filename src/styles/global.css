@@ -158,6 +158,24 @@ a:hover { text-decoration-color: var(--accent); }
 .essays li:last-child,
 .brewing li:last-child { border-bottom: none; }
 
+/* Brewing — work-in-progress catalog. Smaller, dimmer, separated from essays. */
+.brewing {
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--line);
+}
+
+.brewing li {
+  padding: 0.6rem 0;
+  border-bottom: none;
+}
+
+.brewing .essay-title {
+  font-size: 0.98rem;
+  color: var(--muted);
+  font-weight: 400;
+}
+
 .essays li a.essay-link {
   text-decoration: none;
   color: var(--text);
