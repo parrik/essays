@@ -115,7 +115,7 @@ This is the thing a flat list cannot produce. A flat list has no notion of *inte
 
 ## The operating rule
 
-The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration. Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) names it precisely for the personal-graph case:
+The rule is older than any contemporary articulation — standard scientific epistemology, the difference between independent evidence and corroboration. [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) applies it formally to scientific-knowledge graphs; this scaffold ports it to personal memory:
 
 > **Attribution ≠ confidence.**
 
