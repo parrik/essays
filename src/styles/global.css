@@ -132,7 +132,8 @@ a:hover { text-decoration-color: var(--accent); }
   margin-top: 2.5rem;
 }
 
-.essays h2 {
+.essays h2,
+.brewing h2 {
   font-family: system-ui, sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.18em;
