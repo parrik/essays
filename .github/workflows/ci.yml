@@ -57,7 +57,9 @@ jobs:
             --timeout 20
             --max-concurrency 8
             --offline
+            --root-dir ${{ github.workspace }}/dist
             --base ${{ github.workspace }}/dist
+            --fallback-extensions html
             --exclude-path dist/_astro
             'dist/**/*.html'
           fail: true  # internal links are authoritative; must resolve
