@@ -642,7 +642,7 @@ The typed graph's `valid_at` axis is reconsolidation at the schema layer. Claims
     else if (state.step === 'reveal') {
       let body = '';
       if (state.answer === 'yield') {
-        body = `<p><strong>The original scene said STOP. The leading question planted YIELD.</strong> In Loftus &amp; colleagues' classic 1978 study, roughly three-quarters of participants who got the misleading question picked the planted detail on later recall. You're in good company — and that's the point.</p>`;
+        body = `<p><strong>The original scene said STOP. The leading question planted YIELD.</strong> In Loftus &amp; colleagues' 1978 study, roughly three-quarters of participants who got the misleading question picked the planted detail on later recall. You're in good company — and that's the point.</p>`;
       } else if (state.answer === 'stop') {
         body = `<p><strong>You held the original.</strong> About a quarter of participants in the original study did the same. The misinformation effect is statistical, not universal — but it's robust, replicates across decades, and doesn't depend on the subject being gullible or distracted.</p>`;
       } else if (state.answer === 'none') {
@@ -763,8 +763,8 @@ The personal-graph project is not a notes app. It's the indexing-theory architec
 
 [^bjork]: Bjork, R. A., & Bjork, E. L. (1992). *A new theory of disuse and an old theory of stimulus fluctuation* — the storage-strength / retrieval-strength split.
 [^engram]: Josselyn, S. A., & Tonegawa, S. (2020). *Memory engrams: Recalling the past and imagining the future*, Science. Optogenetic engram research established silent engrams.
-[^reconsolidation]: Nader, K., Schafe, G. E., & LeDoux, J. E. (2000). *Fear memories require protein synthesis in the amygdala for reconsolidation after retrieval*, Nature.
-[^loftus]: Loftus, E. F. (2005). *Planting misinformation in the human mind*, Learning & Memory.
+[^reconsolidation]: Nader, K., Schafe, G. E., & LeDoux, J. E. (2000). *Fear memories require protein synthesis in the amygdala for reconsolidation after retrieval*, Nature — established that retrieved memories re-enter a labile state and require fresh protein synthesis to re-stabilize.
+[^loftus]: Loftus, E. F. (2005). *Planting misinformation in the human mind*, Learning & Memory — the misinformation paradigm: leading questions can replace stored detail at recall.
 [^teyler]: Teyler, T. J., & DiScenna, P. (1986). *The hippocampal memory indexing theory*; Teyler & Rudy (2007) update.
 [^hipporag]: Gutiérrez et al. (2024). *HippoRAG: Neurobiologically inspired long-term memory for LLMs*, NeurIPS.
 [^matuschak]: Andy Matuschak's evergreen-notes retrospective on the 1,000-note rediscovery loop.
