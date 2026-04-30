@@ -22,7 +22,7 @@ etudes:
 
 The human reader was a contingency. Search has always been graph-traversal-with-ranking — and the new reader has a different attention budget.
 
-*Companion to **[Know Thyself](/essays/know-thyself/)**. First essay: personal memory needs structured shape. This one: retrieval over that memory has always had the same shape. Scaffold at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
+*Companion to **[Know Thyself](/essays/know-thyself/)**. First essay: personal memory needs structured shape. This one: retrieval over it has always had the same shape. Scaffold at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
 
 ---
 
@@ -237,9 +237,9 @@ Fifty years of information retrieval, same shape instantiated four times.
 
 **Scale 2 — Vector retrieval (2017 onward).** Embedding-as-node, cosine-as-edge. At scale: a *graph of vectors* — HNSW,[^hnsw] log-time ANN as a greedy walk from a sparse top layer through dense lower layers, shuffle-sharding-of-similarity[^shuffle]. Pinecone, Weaviate, Qdrant, FAISS all use HNSW or close variants. (Below 10K vectors, brute-force NumPy beats it; HNSW earns its keep past SIMD's reach. *Literature: ~100K crossover query-bound, ~1M batch — unverified on my laptop. `etudes/hnsw-crossover/` exists; post updates when it runs.*) Reader: mostly human, LLM increasingly present. Format: page summaries, chunk creeping in.
 
-**Scale 3 — Typed knowledge graph (decades of database research; recently personal).** Nodes are claims; edges are typed — `grounds`, `derives_from`, `evidences`, `contradicts`, `emergent_from`. The schema isn't decorative — it distinguishes *I said this five times* from *this is independently grounded twice*. Claims-with-attribution runs in multiple traditions going back decades.[^triplet] The [know-thyself](https://github.com/parrik/know-thyself) scaffold extends it to personal memory — see [*What this essay extends*](#what-this-essay-extends). Reader: a self, or an agent on behalf of a self. Format: node + provenance + neighborhood.
+**Scale 3 — Typed knowledge graph (decades of DB research; recently personal).** Nodes are claims; edges typed — `grounds`, `derives_from`, `evidences`, `contradicts`, `emergent_from`. Not decorative — it distinguishes *I said this five times* from *independently grounded twice*. Claims-with-attribution runs in multiple traditions decades back.[^triplet] The [know-thyself](https://github.com/parrik/know-thyself) scaffold extends it to personal memory — see [*What this essay extends*](#what-this-essay-extends). Reader: a self, or an agent on behalf of one. Format: node + provenance + neighborhood.
 
-**Scale 4 — AI-native search (2023 onward).** [Exa](https://exa.ai) is one well-developed articulation. Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."* Three axes: query complexity (keywords vs structured), result volume (ten vs every match), ranking (popularity vs comprehensiveness). Substrate: clustered ANN — Exa rejected HNSW because [it doesn't shard cleanly and doesn't compose with metadata filters](https://exa.ai/blog/building-web-scale-vector-db) — over a Matryoshka-trained embedding, truncated and binary-quantized for SIMD-resident lookup. Hard work at the rim. Shape underneath: still graph + traversal.
+**Scale 4 — AI-native search (2023 onward).** [Exa](https://exa.ai) is one well-developed articulation. Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."* Three axes: query complexity (keywords vs structured), volume (ten vs every match), ranking (popularity vs comprehensiveness). Substrate: clustered ANN — Exa rejected HNSW because [it doesn't shard cleanly and doesn't compose with metadata filters](https://exa.ai/blog/building-web-scale-vector-db) — over a Matryoshka-trained embedding, truncated and binary-quantized for SIMD-resident lookup. Hard work at the rim. Shape underneath: still graph + traversal.
 
 Same shape, four scales:
 
@@ -256,7 +256,7 @@ All *find relevant nodes by walking edges*. What changes: node spec, edge spec, 
 
 Bryk's three axes, right but too narrow:
 
-**Query format.** Humans type two words because typing is slow. Agents specify intent — JSON, structured filter, precise predicate. Exa takes queries as *declarative descriptions of the target* (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`) — its embedding was [link-prediction-trained](https://www.latent.space/p/exa) on how documents *get cited*, not *get queried*. Generative capacity, not typing budget.
+**Query format.** Humans type two words; typing is slow. Agents specify intent — JSON, structured filter, precise predicate. Exa takes queries as *declarative descriptions of the target* (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`) — its embedding was [link-prediction-trained](https://www.latent.space/p/exa) on how documents *get cited*, not *get queried*. Generative capacity, not typing budget.
 
 **Result format.** Humans want ten ranked links. Agents want atomic chunks with provenance — chunk plus *where, when, what type, what confidence*. Exa returns `{title, url, score, publishedDate, author, text, highlights[], summary}` — every field stitches into the agent's answer. Page summary doesn't appear; chunk and citation do.
 
@@ -532,13 +532,13 @@ Both bets are live. Big-context: transformers absorb the graph through scale. MC
 
 **The personal-graph framing — bounded-context applied to a self rather than a science — is what this essay puts down.** Provenance-triple machinery has roots going back decades.[^triplet]
 
-What needs rewriting are predictions about how mature graphs evolve. McCarthy's necessity arguments run through selection-under-competition: science prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior, no replication, no external ground truth, fuzzy temporal validity.
+What needs rewriting: predictions about how mature graphs evolve. McCarthy's necessity arguments run through selection-under-competition: science prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior, no replication, no external ground truth, fuzzy temporal validity.
 
 Three rewrites:
 
-**`valid_at` / confidence-decay axis.** Propositions about persons aren't permanently valid the way physical-law propositions are. *Propositions don't die, they become less true over time.* Retention logic from survival pressure gets replaced by epistemic humility — every claim carries a validity window that decays unless re-grounded. First-class field on every node.
+**`valid_at` / confidence-decay axis.** Propositions about persons aren't permanently valid the way physical laws are. *Propositions don't die, they become less true over time.* Retention from survival pressure becomes epistemic humility — every claim carries a validity window that decays unless re-grounded. First-class field on every node.
 
-**Inverted edge-density.** Paper 1 Corollary 3 predicts mature graphs become edge-dense. True for science. *False for personal psychology*, where new life events spawn new nodes and cross-time edges stay sparse. A forty-year-old's graph is *node-dense with sparse adjacency*. "Connected clique" indexes don't fit; "right node, then walk *its* neighborhood" does.
+**Inverted edge-density.** Paper 1 Corollary 3 predicts mature graphs become edge-dense. True for science. *False for personal psychology*, where new events spawn new nodes and cross-time edges stay sparse. A forty-year-old's graph is *node-dense with sparse adjacency*. "Connected clique" indexes don't fit; "right node, then walk *its* neighborhood" does.
 
 **Un-clean action space.** K/A inseparability (Paper 3 Corollary 4) presumes a crisp β overlap. *"Respond to this friend,"* *"decide this job move,"* *"interpret last night's dream"* don't share one. Schema tolerates K-without-A and A-without-K. Necessity weakens; engineering absorbs the slack.
 
@@ -546,7 +546,7 @@ Schema carries over cleanly. Retention logic doesn't. This essay extends McCarth
 
 ## A demo, at the personal scale
 
-The bet is testable. The shape that matters for Exa over the web matters for a 300-node personal graph — *the bound is about the reader, not the corpus.* Small graph + finite agent = huge graph + finite agent.
+The bet is testable. The shape that matters for Exa over the web matters for a 300-node personal graph — *the bound is the reader, not the corpus.* Small graph + finite agent = huge graph + finite agent.
 
 Runnable on a laptop, against [Alex's example graph](https://github.com/parrik/know-thyself/blob/main/example-graph-extended.yaml) (87-node fictional editor from the first essay):
 
@@ -595,7 +595,7 @@ Three things to notice.
 
 ## What this essay puts on the record
 
-Synthesis across all four scales — **inverted index, vector retrieval, typed knowledge graph, AI-native search** — is one shape, constants reset. Retrieval architectures assumed a human reader; the reader changed; knowledge representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
+Synthesis across all four scales — **inverted index, vector retrieval, typed knowledge graph, AI-native search** — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; knowledge representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
 
 Adjacent work names pieces without the cross-scale claim:
 
@@ -606,7 +606,7 @@ Adjacent work names pieces without the cross-scale claim:
 
 Personal-memory adjacent work converges independently. [Mem0](https://github.com/mem0ai/mem0) (54k stars): facts as the unit. [Graphiti](https://github.com/getzep/graphiti): bitemporally validated memory. [Letta](https://github.com/letta-ai/letta): tiered like virtual memory. [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG): Personalized PageRank over an LLM-extracted graph. [A-Mem](https://github.com/agiresearch/A-mem): graph built dynamically per write. [basicmachines-co/basic-memory](https://github.com/basicmachines-co/basic-memory): hand-edit as markdown.
 
-What these share — what LangChain / LlamaIndex don't yet ship — is *typed-node-with-provenance*. Frameworks treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped (typed claims, typed edges, provenance triples). The conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. The person-shaped primitive survives.
+What these share — what LangChain / LlamaIndex don't ship — is *typed-node-with-provenance*. Frameworks treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped (typed claims, typed edges, provenance triples). Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
 
 ## What this opens
 
@@ -615,14 +615,14 @@ Reader finite, graph isn't: retrieval is the bridge. Same shape across scales, b
 - **Schema:** typed nodes carrying claim + attribution + derivation — provenance-triple across RDF, scientific provenance, Anthropic's citations API, McCarthy's open-knowledge-graph. The [know-thyself](https://github.com/parrik/know-thyself) scaffold adds temporal-validity.
 - **Index:** vectors plus typed metadata (the [know-thyself-search](https://github.com/parrik/know-thyself-search) scaffold this essay describes).
 - **Walk:** edge-aware traversal — `walk_provenance(node_id)` returns the typed-edge neighborhood (outbound `grounded_by` / `related_to`, inbound references) in one call. **Shipped Apr 2026.**
-- **Surface:** MCP server — `search_graph` / `get_node` / `walk_provenance` / `list_node_stats` over stdio. Any MCP-aware client (Claude Code, Claude Desktop, Cursor) queries natively. **Shipped Apr 2026.**
+- **Surface:** MCP server — `search_graph` / `get_node` / `walk_provenance` / `list_node_stats` over stdio; any MCP client (Claude Code, Claude Desktop, Cursor) queries natively. **Shipped Apr 2026.**
 - **Next bottleneck:** sub-statement chunking. Long observation nodes accumulate dated sub-sections; whole-statement single-vector dilutes new content. Instance during the edge-aware ship: a query for the newest sub-section of a long log node failed — a stale tangential reference won. Cosine averaged across sub-sections smeared the new content out. Etude queued.
 
 That's the personal-memory stack. Scales up: swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa. Swap the agent for a literature-review assistant — different surface, same architecture. Shape doesn't care.
 
 This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
 
-γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle — being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's life wasn't.
+γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle — being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
 
 The retrieval problem hasn't changed in two and a half millennia. The reader has.
 
