@@ -1,6 +1,6 @@
 ---
 title: Security was never about response
-subtitle: The discipline ends at verification
+subtitle: Continuous verification — gates fire on action, sweeps fire on cadence
 kicker: Method
 tag: essay
 order: 3

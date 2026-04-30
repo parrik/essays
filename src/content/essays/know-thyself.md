@@ -1,5 +1,5 @@
 ---
-title: Self-knowledge was never about a list
+title: Self-knowledge was never about size
 seriesName: Know Thyself
 subtitle: A schema for personal memory in LLM conversations
 kicker: Method
