@@ -29,6 +29,10 @@ etudes:
 
 A silent engram is not a forgotten memory. The trace is intact. Direct stimulation evokes it. The cue just doesn't reach.
 
+Alex has been keeping the graph for nine months. She knows its shape — a few hundred typed nodes, a spine that holds, the patterns about her own life she sees most clearly. One Sunday evening she goes to recall something her sister told her about their mother, on a phone call three months back. She knows the conversation happened. She types a name; nothing comes. She types a phrase she's pretty sure she used in her notes; nothing comes. She *knows* it is in the graph, because she put it there.
+
+She opens the file directly, scrolls, and finds the node within a minute. The trace was never gone. The pathway from her cue to the trace had drifted apart.
+
 Storage is the substrate. Memory is what survives retrieval under bound.
 
 <div class="etude-embed" data-etude="silent-engram">
@@ -756,7 +760,7 @@ The know-thyself schema is the same architecture again. Typed graph as index. YA
 
 Pt I shaped the memory. Pt II built the bridge. Pt III names what memory *is* now that we have both: an operation on a substrate, indexed by what the bounded reader can pull on under load.
 
-The personal-graph project is not a notes app. It's the indexing-theory architecture, applied to a self.
+The personal-graph project is not a notes app. It's the indexing-theory architecture, applied to a self. It's what Alex was reaching for, that Sunday evening — a typed index, sized to her, that survives retrieval.
 
 ---
 
