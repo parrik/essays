@@ -5,6 +5,12 @@ const essays = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/essays' }),
   schema: z.object({
     title: z.string(),
+    // Optional override for the series-header label on the homepage
+    // when this essay is the parent of a series. Lets each part have
+    // its own claim-shaped title (Part I, II, III...) while the
+    // series itself keeps a different umbrella name. Falls back to
+    // `title` if unset.
+    seriesName: z.string().optional(),
     subtitle: z.string().optional(),
     kicker: z.string().optional(),
     tag: z.enum(['essay', 'poster', 'short']).optional(),

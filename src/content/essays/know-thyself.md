@@ -1,5 +1,6 @@
 ---
-title: Know Thyself
+title: Self-knowledge was never about size
+seriesName: Know Thyself
 subtitle: A schema for personal memory in LLM conversations
 kicker: Method
 tag: essay

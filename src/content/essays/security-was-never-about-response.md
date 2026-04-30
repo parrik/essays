@@ -1,13 +1,13 @@
 ---
 title: Security was never about response
-subtitle: The discipline ends at verification. What follows is a different posture entirely.
+subtitle: Continuous verification — gates fire on action, sweeps fire on cadence
 kicker: Method
 tag: essay
 order: 3
 parent: know-thyself
 publishedAt: 2026-04-30
 status: tending
-description: Security looks like detection-and-response from the outside. The actual discipline is verification — gates fire on action, sweeps fire on cadence, both inside security. Response is what fires when verification fails — and that is a different discipline.
+description: Gates fire on action; sweeps fire on cadence. Both are inside security. Response — what fires when verification fails — is a different discipline.
 etudesPrompt: One picker, twelve practices, two disciplines. See which is which.
 etudes:
   - label: Verify or Respond?

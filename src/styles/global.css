@@ -217,27 +217,41 @@ a:hover { text-decoration-color: var(--accent); }
 }
 .series-parts li:first-child { padding-top: 0.55rem; }
 .series-part {
-  display: block;
+  display: flex;
+  align-items: baseline;
+  gap: 0.95rem;
   text-decoration: none;
   color: var(--text);
 }
 .part-num {
-  display: inline-block;
+  flex: 0 0 auto;
   font-family: var(--sans);
   font-size: 0.74rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted);
-  margin-right: 0.95rem;
   font-weight: 500;
   min-width: 3.6rem;
 }
-.part-subtitle {
+.part-body {
+  display: block;
+  flex: 1 1 auto;
+}
+.part-name {
+  display: block;
   font-size: 0.98rem;
   color: var(--text);
+  line-height: 1.4;
+}
+.part-description {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
 }
 .series-part:hover .part-num,
-.series-part:hover .part-subtitle { color: var(--accent); }
+.series-part:hover .part-name { color: var(--accent); }
 
 /* Per-row right-side meta — "a series · tending" / "evergreen". */
 .essay-row {

@@ -1,6 +1,6 @@
 ---
 title: Memory was never about storage
-subtitle: What you can retrieve under load is what you remember
+subtitle: Indexing-theory architecture, applied to a self
 kicker: Method
 tag: essay
 order: 2
