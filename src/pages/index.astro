@@ -4,20 +4,21 @@ import { getCollection } from 'astro:content';
 
 const all = await getCollection('essays');
 
-// Split by status. Seedlings live in the brewing section; tending /
-// evergreen / unset live in the main essays list. The split is dynamic
-// so a new seedling shows up automatically.
-const published = all.filter(e => e.data.status !== 'seedling');
-const seedlings = all.filter(e => e.data.status === 'seedling');
-
-// Top-level essays (main list): nothing in `parent`. Sub-essays group
-// under their parent.
-const topLevel = published.filter(e => !e.data.parent);
+// Every essay is a work-in-progress at some stage of development —
+// seedling / tending / evergreen are stages of the same artifact, not
+// separate hierarchies. Surface them in one unified list. The
+// per-essay status lives in the MetadataStripe on each page, where
+// the reader can see *Planted ... · seedling* or *... · tending* and
+// know what they are reading. The homepage's job is to show the
+// structure of the body of work.
+const topLevel = all.filter(e => !e.data.parent);
 topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
-// Build a parent-id → ordered children map for the main list only.
+// Build a parent-id → ordered children map. Children include all
+// statuses — a series has all its parts visible, in order, even when
+// the later parts are still seedling.
 const childrenByParent = new Map();
-for (const e of published) {
+for (const e of all) {
   if (!e.data.parent) continue;
   const arr = childrenByParent.get(e.data.parent) ?? [];
   arr.push(e);
@@ -26,16 +27,6 @@ for (const e of published) {
 for (const arr of childrenByParent.values()) {
   arr.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 }
-
-// Brewing list: seedlings, most-recent-first by publishedAt (fallback to
-// order). Future-proof — any new seedling appears automatically; no
-// hardcoded list to update on each new draft.
-seedlings.sort((a, b) => {
-  const at = a.data.publishedAt ? new Date(a.data.publishedAt).getTime() : 0;
-  const bt = b.data.publishedAt ? new Date(b.data.publishedAt).getTime() : 0;
-  if (at !== bt) return bt - at;
-  return (a.data.order ?? 99) - (b.data.order ?? 99);
-});
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
@@ -100,30 +91,6 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
       })}
     </ul>
   </section>
-  {seedlings.length > 0 && (
-    <section class="brewing">
-      <h2>brewing</h2>
-      <ul>
-        {seedlings.map(essay => {
-          const etudes = countEtudes(essay);
-          return (
-            <li>
-              <div class="essay-row">
-                <a href={`/essays/${essay.id}/`} class="essay-link">
-                  <span class="essay-title">{essay.data.title}</span>
-                  {etudes > 0 && <span class="play-hint" aria-label={`${etudes} playable inline`}>▶ play</span>}
-                </a>
-                {essay.data.parent && (
-                  <span class="essay-meta-right"><span class="meta-series">part of {essay.data.parent}</span></span>
-                )}
-              </div>
-              {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  )}
 </Base>
 
 <style>
