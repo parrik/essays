@@ -1,6 +1,6 @@
 ---
 title: Memory was never about storage
-subtitle: What you can retrieve under load is what you remember
+subtitle: What survives retrieval under load
 kicker: Method
 tag: essay
 order: 2

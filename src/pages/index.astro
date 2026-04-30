@@ -68,11 +68,15 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
           );
         }
         // Series: parent becomes Part I; children get Part II, III, ...
+        // Series header uses `seriesName` if set, else falls back to the
+        // parent's title — lets each part have its own claim-shaped title
+        // while the series keeps an umbrella name.
         const parts = [essay, ...children];
+        const seriesLabel = essay.data.seriesName ?? essay.data.title;
         return (
           <li class="series">
             <div class="essay-row">
-              <span class="essay-title series-title">{essay.data.title}</span>
+              <span class="essay-title series-title">{seriesLabel}</span>
               {meta}
             </div>
             <ol class="series-parts">
@@ -80,8 +84,13 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
                 <li>
                   <a href={`/essays/${p.id}/`} class="series-part">
                     <span class="part-num">Part {ROMAN[i]}</span>
-                    <span class="part-subtitle">{p.data.subtitle ?? ''}</span>
-                    {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
+                    <span class="part-body">
+                      <span class="part-name">
+                        {p.data.title}
+                        {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
+                      </span>
+                      {p.data.description && <span class="part-description">{p.data.description}</span>}
+                    </span>
                   </a>
                 </li>
               ))}

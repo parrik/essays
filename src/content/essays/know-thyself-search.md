@@ -1,6 +1,6 @@
 ---
-title: Know Thyself, Part II
-subtitle: Search was never about humans
+title: Search was never about humans
+subtitle: Retrieval over typed personal graphs
 kicker: Method
 tag: essay
 order: 1
