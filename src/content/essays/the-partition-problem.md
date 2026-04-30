@@ -6,7 +6,7 @@ order: 1
 description: A cancer cell is not a broken cell. It has lost context.
 pdfUrl: /the-biology-of-belonging.pdf
 publishedAt: 2026-04-21
-status: evergreen
+status: tending
 etudesPrompt: Pick a routine based on how you woke up — and read this essay through your body.
 etudes:
   - label: Coming Home
