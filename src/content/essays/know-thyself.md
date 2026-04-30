@@ -7,7 +7,6 @@ order: 0
 publishedAt: 2026-04-21
 status: tending
 description: After enough conversations, memory becomes a list. The list flattens the distinction between repetition and corroboration.
-pdfUrl: /know-thyself.pdf
 etudes:
   - label: Six Restatements
     url: '#the-mirror-problem'
