@@ -1,0 +1,167 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Every Retrieval Is a Write';
+const subtitle = 'Reconsolidation, played: a scene, a leading question, the trace that comes back changed.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Memory</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/memory-was-never-about-storage/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>The folk model says memory is storage: encode once, retrieve later, the original sits there untouched. The lab work says otherwise. Pulling a trace up returns it to a labile state — protein synthesis is required to put it back. What you remember is what you last re-wrote.</p>
+
+    <div id="stage" class="stage" aria-live="polite"></div>
+
+    <hr />
+
+    <p class="bg-note"><strong>Background.</strong> Loftus's misinformation paradigm — see the 2005 retrospective at <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC1356136/">pmc.ncbi.nlm.nih.gov/articles/PMC1356136/</a> — shows post-event language reshapes the recalled event. Nader, Schafe & LeDoux (2000), <a href="https://www.nature.com/articles/35021052">nature.com/articles/35021052</a>, gave the molecular grammar: a retrieved fear memory needs new protein synthesis to persist. Block the synthesis after recall and the memory is gone. Recall is not read-only.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  const state = { step: 1, answer: null, speed: null };
+
+  function render() {
+    const stage = document.getElementById('stage');
+    if (state.step === 1) {
+      stage.innerHTML = `
+        <h2>What you saw</h2>
+        <div class="scene">
+          <p>A blue sedan slows at a stop sign on Maple Street. Two seconds later, a red truck enters from the side road. They collide.</p>
+        </div>
+        <p class="hint">Sit with the scene for a moment.</p>
+        <button type="button" id="advance" class="ask-btn" disabled>Next</button>
+      `;
+      const btn = document.getElementById('advance');
+      let remaining = 6;
+      btn.textContent = `Next (${remaining})`;
+      const tick = setInterval(() => {
+        remaining -= 1;
+        if (remaining <= 0) {
+          clearInterval(tick);
+          btn.disabled = false;
+          btn.textContent = 'Next';
+        } else {
+          btn.textContent = `Next (${remaining})`;
+        }
+      }, 1000);
+      btn.addEventListener('click', () => { state.step = 2; render(); });
+    }
+    else if (state.step === 2) {
+      stage.innerHTML = `
+        <h2>A few questions about what you saw</h2>
+        <p class="leading">How fast do you estimate the sedan was going when it ran the <strong>yield sign</strong>?</p>
+        <label class="speed-row">
+          <span>Estimated speed:</span>
+          <select id="speed">
+            <option value="">— pick one —</option>
+            <option value="15">around 15 mph</option>
+            <option value="25">around 25 mph</option>
+            <option value="35">around 35 mph</option>
+            <option value="45">around 45 mph</option>
+          </select>
+        </label>
+        <button type="button" id="advance" class="ask-btn" disabled>Continue</button>
+      `;
+      const sel = document.getElementById('speed');
+      const btn = document.getElementById('advance');
+      sel.addEventListener('change', () => {
+        btn.disabled = !sel.value;
+      });
+      btn.addEventListener('click', () => {
+        state.speed = sel.value;
+        state.step = 3;
+        render();
+      });
+    }
+    else if (state.step === 3) {
+      stage.innerHTML = `
+        <h2>Now, recall</h2>
+        <p>Which sign was the sedan at?</p>
+        <div class="choices">
+          <button type="button" data-a="stop" class="choice">stop sign</button>
+          <button type="button" data-a="yield" class="choice">yield sign</button>
+          <button type="button" data-a="none" class="choice">no sign</button>
+          <button type="button" data-a="unsure" class="choice">can't remember</button>
+        </div>
+      `;
+      document.querySelectorAll('.choice').forEach(b => {
+        b.addEventListener('click', () => {
+          state.answer = b.dataset.a;
+          state.step = 'reveal';
+          render();
+        });
+      });
+    }
+    else if (state.step === 'reveal') {
+      let body = '';
+      if (state.answer === 'yield') {
+        body = `<p><strong>The original scene said STOP. The leading question planted YIELD.</strong> In Loftus & colleagues' classic 1978 study, roughly three-quarters of participants who got the misleading question picked the planted detail on later recall. You're in good company — and that's the point.</p>`;
+      } else if (state.answer === 'stop') {
+        body = `<p><strong>You held the original.</strong> About a quarter of participants in the original study did the same. The misinformation effect is statistical, not universal — but it's robust, replicates across decades, and doesn't depend on the subject being gullible or distracted.</p>`;
+      } else if (state.answer === 'none') {
+        body = `<p><strong>Interesting.</strong> Neither sign was absent in the scene — the original named a stop sign; the leading question named a yield sign. Some participants in misinformation studies blend both into a third reading. The retrieved trace is a composite.</p>`;
+      } else {
+        body = `<p><strong>"Can't remember" is the cleanest answer in some ways.</strong> Most people will commit to one detail or the other under pressure, even when the original encoding was thin. Confidence and accuracy are not the same axis.</p>`;
+      }
+      stage.innerHTML = `
+        <h2>What just happened</h2>
+        <div class="reveal">${body}</div>
+        <p class="closing">Every retrieval is a write. The trace you pulled up just now is a blend of what you encoded and everything that's reached you since — including the word "yield" in a question you read thirty seconds ago. Memory is continuously edited. Storage thinking — <em>the original is preserved, retrieval just reads it</em> — gets the physics wrong.</p>
+        <button type="button" id="restart" class="ask-btn">Run it again</button>
+      `;
+      document.getElementById('restart').addEventListener('click', () => {
+        state.step = 1; state.answer = null; state.speed = null; render();
+      });
+    }
+  }
+
+  render();
+</script>
+
+<style>
+  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .stage {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.25rem 1.5rem;
+    background: var(--bg-soft, rgba(0,0,0,0.03));
+    border-left: 3px solid var(--accent);
+    border-radius: 2px;
+    min-height: 8rem;
+  }
+  .stage h2 { font-family: 'Georgia', serif; font-size: 1.2rem; margin: 0 0 0.75rem; }
+  .scene p { font-size: 1.05rem; line-height: 1.6; margin: 0.5rem 0; }
+  .hint { color: var(--muted); font-style: italic; font-size: 0.9rem; margin: 0.75rem 0 1rem; }
+  .leading { font-size: 1.02rem; line-height: 1.55; margin: 0.5rem 0 1rem; }
+  .speed-row { display: flex; gap: 0.6rem; align-items: center; margin: 0.5rem 0 1rem; flex-wrap: wrap; }
+  .speed-row select {
+    font-family: inherit; font-size: 0.95rem; padding: 0.4rem 0.5rem;
+    border: 1px solid var(--accent); background: var(--bg); color: var(--ink); border-radius: 3px;
+  }
+  .ask-btn {
+    font-family: inherit; font-size: 0.95rem; padding: 0.55rem 0.9rem;
+    border: 1px solid var(--accent); background: var(--bg); color: var(--ink);
+    border-radius: 3px; cursor: pointer; transition: background 100ms;
+  }
+  .ask-btn:hover:not(:disabled) { background: rgba(138, 52, 32, 0.08); }
+  .ask-btn:disabled { opacity: 0.5; cursor: default; }
+  .choices { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 0.5rem; }
+  .choice {
+    font-family: inherit; font-size: 0.95rem; padding: 0.5rem 0.85rem;
+    border: 1px solid var(--accent); background: var(--bg); color: var(--ink);
+    border-radius: 3px; cursor: pointer;
+  }
+  .choice:hover { background: rgba(138, 52, 32, 0.08); }
+  .reveal p { line-height: 1.6; margin: 0.5rem 0; }
+  .reveal strong { color: var(--accent); }
+  .closing { color: var(--muted); font-size: 0.97rem; line-height: 1.6; margin: 1rem 0 1.25rem; font-style: italic; }
+  .bg-note { font-size: 0.9rem; color: var(--muted); line-height: 1.55; margin-top: 1.5rem; }
+  .bg-note a { color: var(--accent); }
+</style>

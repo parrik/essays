@@ -1,0 +1,240 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Long Exhale';
+const subtitle = 'Two minutes. Long exhale. Read the essay through your own parasympathetic.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Restorative</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/the-partition-problem/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p class="lede">Inhale four. Exhale eight. The exhale is twice the inhale because the vagus nerve listens to that ratio — long exhales signal the parasympathetic branch to come online. Pranayama is the body's interface to the autonomic nervous system. Two minutes is enough to feel it.</p>
+
+    <div class="breath-stage" id="stage">
+      <div class="breath-circle" id="circle">
+        <span class="breath-cue" id="cue">begin</span>
+      </div>
+    </div>
+
+    <div class="breath-meta" aria-live="polite">
+      <div class="meta-row"><span class="meta-label">Cycles</span><span class="meta-val"><span id="cycles">0</span> / 10</span></div>
+      <div class="meta-row"><span class="meta-label">Time</span><span class="meta-val"><span id="elapsed">0:00</span> / 2:00</span></div>
+      <div class="progress"><div class="progress-fill" id="progress"></div></div>
+    </div>
+
+    <div class="controls">
+      <button type="button" id="start" class="btn btn-primary">Start</button>
+      <button type="button" id="stop" class="btn">Stop</button>
+      <button type="button" id="sample" class="btn btn-ghost">Just one cycle (12s)</button>
+    </div>
+
+    <div id="result" class="result" aria-live="polite"></div>
+
+    <hr />
+
+    <p class="closing">The vagal-tone literature names this directly: long exhales activate the parasympathetic branch via the vagus nerve. Whether you read the rest of the essay or not, you've already received its first claim through your own physiology.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  (function () {
+    const $ = (id) => document.getElementById(id);
+    const circle = $('circle'), cue = $('cue'), cyclesEl = $('cycles'),
+          elapsedEl = $('elapsed'), progressEl = $('progress'), resultEl = $('result'),
+          startBtn = $('start'), stopBtn = $('stop'), sampleBtn = $('sample');
+    const INHALE_MS = 4000, EXHALE_MS = 8000, CYCLE_MS = INHALE_MS + EXHALE_MS;
+    const TOTAL_CYCLES = 10, TOTAL_MS = CYCLE_MS * TOTAL_CYCLES;
+    let running = false, startTs = 0, timers = [], rafId = null, mode = 'full', audioCtx = null;
+
+    const fmt = (ms) => {
+      const s = Math.floor(ms / 1000), m = Math.floor(s / 60), r = s % 60;
+      return m + ':' + (r < 10 ? '0' : '') + r;
+    };
+
+    function tick(freq) {
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+        o.frequency.value = freq; o.type = 'sine'; g.gain.value = 0;
+        o.connect(g); g.connect(audioCtx.destination);
+        const now = audioCtx.currentTime;
+        g.gain.linearRampToValueAtTime(0.04, now + 0.02);
+        g.gain.linearRampToValueAtTime(0.0, now + 0.18);
+        o.start(now); o.stop(now + 0.2);
+      } catch (_) {}
+    }
+
+    function setPhase(phase) {
+      const dur = phase === 'in' ? INHALE_MS : EXHALE_MS;
+      circle.style.transition = 'transform ' + (dur / 1000) + 's cubic-bezier(0.4,0,0.2,1)';
+      circle.classList.remove('inhale', 'exhale');
+      circle.classList.add(phase === 'in' ? 'inhale' : 'exhale');
+      cue.textContent = phase === 'in' ? 'in (4)' : 'out (8)';
+      tick(phase === 'in' ? 330 : 220);
+    }
+
+    function loop() {
+      if (!running) return;
+      const elapsed = performance.now() - startTs;
+      const limit = mode === 'sample' ? CYCLE_MS : TOTAL_MS;
+      cyclesEl.textContent = Math.min(Math.floor(elapsed / CYCLE_MS), TOTAL_CYCLES);
+      elapsedEl.textContent = fmt(Math.min(elapsed, TOTAL_MS));
+      progressEl.style.width = Math.min(100, (elapsed / TOTAL_MS) * 100) + '%';
+      if (elapsed >= limit) return finish();
+      rafId = requestAnimationFrame(loop);
+    }
+
+    function schedulePhases(limit) {
+      setPhase('in');
+      for (let t = 0; t < limit; t += CYCLE_MS) {
+        if (t + INHALE_MS < limit) timers.push(setTimeout(() => running && setPhase('out'), t + INHALE_MS));
+        if (t + CYCLE_MS < limit) timers.push(setTimeout(() => running && setPhase('in'), t + CYCLE_MS));
+      }
+    }
+
+    function clearPhases() { timers.forEach(clearTimeout); timers = []; }
+
+    function start(which) {
+      if (running) return;
+      mode = which; running = true; resultEl.innerHTML = '';
+      startTs = performance.now();
+      schedulePhases(mode === 'sample' ? CYCLE_MS : TOTAL_MS);
+      rafId = requestAnimationFrame(loop);
+      startBtn.disabled = true; sampleBtn.disabled = true;
+    }
+
+    function stop() {
+      if (!running) return;
+      running = false; clearPhases();
+      if (rafId) cancelAnimationFrame(rafId);
+      circle.style.transition = 'transform 1.2s ease';
+      circle.classList.remove('inhale', 'exhale');
+      cue.textContent = 'paused';
+      startBtn.disabled = false; sampleBtn.disabled = false;
+    }
+
+    function finish() {
+      running = false; clearPhases();
+      if (rafId) cancelAnimationFrame(rafId);
+      circle.style.transition = 'transform 2s ease';
+      circle.classList.remove('inhale', 'exhale');
+      cue.textContent = 'rest';
+      progressEl.style.width = '100%';
+      startBtn.disabled = false; sampleBtn.disabled = false;
+      if (mode === 'full') {
+        cyclesEl.textContent = TOTAL_CYCLES; elapsedEl.textContent = '2:00';
+        resultEl.innerHTML = '<p class="result-headline">10 long exhales.</p><p class="result-body">The vagus nerve has been gently keyed for 2 minutes. Notice your shoulders, your jaw, the back of your neck.</p>';
+      } else {
+        resultEl.innerHTML = '<p class="result-headline">One cycle.</p><p class="result-body">A small sample. The full two minutes is where the parasympathetic settles in — when you have a moment, come back.</p>';
+      }
+    }
+
+    startBtn.addEventListener('click', () => start('full'));
+    sampleBtn.addEventListener('click', () => start('sample'));
+    stopBtn.addEventListener('click', stop);
+  })();
+</script>
+
+<style>
+  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2.25rem; margin: 0.5rem 0 0.25rem; line-height: 1.15; }
+  .etude .essay-sub { color: var(--ink-muted, #555); font-style: italic; margin: 0 0 0.75rem; }
+  .lede { font-size: 1.02rem; line-height: 1.65; margin: 1rem 0 1.25rem; color: var(--ink, #222); }
+  .closing { font-style: italic; color: var(--ink-muted, #444); line-height: 1.65; margin: 1.5rem 0 0; }
+
+  .breath-stage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 320px;
+    margin: 1.5rem 0 1rem;
+    background: linear-gradient(180deg, rgba(120,170,170,0.05), rgba(120,170,170,0.12));
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .breath-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 30%, #b8d8d4, #6fa8a4 70%, #4d8a86);
+    box-shadow: 0 0 40px rgba(111, 168, 164, 0.45), inset 0 0 30px rgba(255,255,255,0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(1);
+    transition: transform 1.2s ease;
+    will-change: transform;
+  }
+  .breath-circle.inhale { transform: scale(2.0); }
+  .breath-circle.exhale { transform: scale(1.0); }
+  .breath-cue {
+    color: rgba(255,255,255,0.92);
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  .breath-meta { margin: 1rem 0 1rem; font-variant-numeric: tabular-nums; }
+  .meta-row { display: flex; justify-content: space-between; font-size: 0.95rem; color: var(--ink-muted, #555); margin: 0.25rem 0; }
+  .meta-label { letter-spacing: 0.04em; }
+  .progress {
+    width: 100%;
+    height: 4px;
+    background: rgba(0,0,0,0.06);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #6fa8a4;
+    transition: width 200ms linear;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin: 1rem 0 1.25rem;
+  }
+  .btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--accent, #b87333);
+    background: var(--bg, #fff);
+    color: var(--ink, #222);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 120ms;
+  }
+  .btn:hover:not(:disabled) { background: rgba(184, 115, 51, 0.08); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-primary { background: var(--accent, #b87333); color: #fff; border-color: var(--accent, #b87333); }
+  .btn-primary:hover:not(:disabled) { background: #a06529; }
+  .btn-ghost { border-style: dashed; font-size: 0.88rem; }
+
+  .result { margin: 1rem 0 0; min-height: 1rem; }
+  .result:not(:empty) {
+    padding: 1rem 1.15rem;
+    border-left: 3px solid #6fa8a4;
+    background: rgba(111, 168, 164, 0.08);
+    border-radius: 2px;
+  }
+  .result-headline { font-family: 'Georgia', serif; font-size: 1.15rem; margin: 0 0 0.4rem; color: var(--ink, #222); }
+  .result-body { margin: 0; color: var(--ink-muted, #444); line-height: 1.55; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .breath-circle { transition: transform 200ms linear !important; }
+  }
+</style>

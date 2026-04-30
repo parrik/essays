@@ -1,0 +1,286 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Cascade Simulator';
+const subtitle = 'Click launch. Watch a campaign multiply itself.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · The Campaign Cascade</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/the-campaign-cascade/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>The claim from <em>The Loop</em>: a cross-cutting initiative — a mass-PR migration, say — does not stall quietly. It multiplies. The original campaign stalls. Escalation triggers a new campaign. That one stalls too. The new campaign is rational. So is the next. None of them complete the original work.</p>
+
+    <p>Press launch. Watch four campaigns spawn in sequence. Each is rational. Each is the right idea. The original migration creeps forward at a glacial pace.</p>
+
+    <div class="controls">
+      <button type="button" id="launch" class="launch-btn">Launch campaign</button>
+      <button type="button" id="reset" class="reset-btn" disabled>Reset</button>
+    </div>
+
+    <div class="stage" id="stage">
+      <div class="campaigns" id="campaigns"></div>
+    </div>
+
+    <div class="stats" id="stats">
+      <div class="stat"><span class="stat-label">Campaigns launched</span><span class="stat-value" id="stat-campaigns">0</span></div>
+      <div class="stat"><span class="stat-label">PRs created</span><span class="stat-value" id="stat-prs">0</span></div>
+      <div class="stat"><span class="stat-label">PRs merged</span><span class="stat-value" id="stat-merged">0</span></div>
+      <div class="stat"><span class="stat-label">Original migration completion</span><span class="stat-value" id="stat-completion">0%</span></div>
+      <div class="stat"><span class="stat-label">Wall time</span><span class="stat-value" id="stat-time">0 weeks</span></div>
+      <div class="stat"><span class="stat-label">Effort</span><span class="stat-value" id="stat-effort">0 person-weeks</span></div>
+    </div>
+
+    <div id="banner" class="banner" aria-live="polite"></div>
+
+    <hr />
+
+    <h2>The failure mode</h2>
+    <p>This is the failure mode. Each campaign is rational — escalation, tracking, dashboarding, decommissioning are all the right idea. The system can still fail because the right ideas multiply faster than they finish. The dead zone is where you can identify every part of the cascade and still can't stop it.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  const CAMPAIGNS = [
+    { id: 1, label: 'Campaign 1: migrate to Java 21' },
+    { id: 2, label: 'Campaign 2: escalation framework — track campaign completion at PMR' },
+    { id: 3, label: 'Campaign 3: dashboarding for escalation tracking' },
+    { id: 4, label: 'Campaign 4: process to decommission unused dashboards' },
+  ];
+
+  const DOTS_PER_CAMPAIGN = 30;
+  const FAN_OUT_MS = 600;
+  const SETTLE_MS = 2400;
+  const BETWEEN_MS = 600;
+
+  let running = false;
+  let totals = { campaigns: 0, prs: 0, merged: 0 };
+
+  function pickColor() {
+    const r = Math.random();
+    if (r < 0.30) return 'green';
+    if (r < 0.80) return 'yellow';
+    return 'red';
+  }
+
+  function tickTo(el, target, suffix = '', ms = 800) {
+    const start = parseInt(el.dataset.cur || '0', 10);
+    const t0 = performance.now();
+    function step(now) {
+      const k = Math.min(1, (now - t0) / ms);
+      const eased = 1 - Math.pow(1 - k, 3);
+      const cur = Math.round(start + (target - start) * eased);
+      el.textContent = cur + suffix;
+      el.dataset.cur = String(cur);
+      if (k < 1) requestAnimationFrame(step);
+      else {
+        el.textContent = target + suffix;
+        el.dataset.cur = String(target);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  function setText(el, text) { el.textContent = text; }
+
+  function buildCampaign(c) {
+    const wrap = document.createElement('div');
+    wrap.className = 'campaign';
+    wrap.dataset.id = String(c.id);
+
+    const box = document.createElement('div');
+    box.className = 'campaign-box';
+    box.textContent = c.label;
+    wrap.appendChild(box);
+
+    const grid = document.createElement('div');
+    grid.className = 'dot-grid';
+    for (let i = 0; i < DOTS_PER_CAMPAIGN; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'dot';
+      dot.style.setProperty('--i', String(i));
+      grid.appendChild(dot);
+    }
+    wrap.appendChild(grid);
+
+    const summary = document.createElement('div');
+    summary.className = 'campaign-summary';
+    wrap.appendChild(summary);
+
+    return wrap;
+  }
+
+  function settleDots(wrap) {
+    return new Promise((resolve) => {
+      const dots = wrap.querySelectorAll('.dot');
+      const counts = { green: 0, yellow: 0, red: 0 };
+      dots.forEach((dot, idx) => {
+        const delay = 200 + idx * 60 + Math.random() * 200;
+        setTimeout(() => {
+          const color = pickColor();
+          counts[color]++;
+          dot.classList.add('settled', color);
+          totals.prs += 1;
+          if (color === 'green') totals.merged += 1;
+          updateLiveStats();
+        }, delay);
+      });
+
+      setTimeout(() => {
+        const summary = wrap.querySelector('.campaign-summary');
+        summary.innerHTML =
+          `<span class="chip chip-green">${counts.green} merged</span>` +
+          `<span class="chip chip-yellow">${counts.yellow} stalled</span>` +
+          `<span class="chip chip-red">${counts.red} rejected</span>`;
+        resolve(counts);
+      }, 200 + DOTS_PER_CAMPAIGN * 60 + 400);
+    });
+  }
+
+  function updateLiveStats() {
+    const cEl = document.getElementById('stat-campaigns');
+    const pEl = document.getElementById('stat-prs');
+    const mEl = document.getElementById('stat-merged');
+    cEl.textContent = String(totals.campaigns);
+    pEl.textContent = String(totals.prs);
+    const pct = totals.prs > 0 ? Math.round((totals.merged / totals.prs) * 100) : 0;
+    mEl.textContent = `${totals.merged} (${pct}%)`;
+  }
+
+  async function runCascade() {
+    if (running) return;
+    running = true;
+    document.getElementById('launch').disabled = true;
+    document.getElementById('reset').disabled = true;
+    document.getElementById('banner').innerHTML = '';
+    document.getElementById('banner').className = 'banner';
+
+    const host = document.getElementById('campaigns');
+    host.innerHTML = '';
+    totals = { campaigns: 0, prs: 0, merged: 0 };
+    updateLiveStats();
+    setText(document.getElementById('stat-completion'), '0%');
+    setText(document.getElementById('stat-time'), '0 weeks');
+    setText(document.getElementById('stat-effort'), '0 person-weeks');
+
+    for (let i = 0; i < CAMPAIGNS.length; i++) {
+      const wrap = buildCampaign(CAMPAIGNS[i]);
+      host.appendChild(wrap);
+      // animate fan-in
+      requestAnimationFrame(() => {
+        wrap.classList.add('visible');
+        wrap.querySelectorAll('.dot').forEach(d => d.classList.add('fanned'));
+      });
+
+      totals.campaigns += 1;
+      updateLiveStats();
+
+      await settleDots(wrap);
+      await sleep(BETWEEN_MS);
+    }
+
+    // final stat reveal
+    tickTo(document.getElementById('stat-completion'), 27, '%', 1200);
+    tickTo(document.getElementById('stat-time'), 3, ' weeks', 1200);
+    tickTo(document.getElementById('stat-effort'), 14, ' person-weeks', 1400);
+
+    await sleep(900);
+
+    const banner = document.getElementById('banner');
+    banner.className = 'banner banner-shown';
+    banner.innerHTML =
+      '<strong>The original migration is 27% complete.</strong> ' +
+      'Three other campaigns spawned to track completion. ' +
+      'None of them complete the migration. ' +
+      '<em>Welcome to the cascade.</em>';
+
+    document.getElementById('reset').disabled = false;
+    running = false;
+  }
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  document.getElementById('launch').addEventListener('click', () => {
+    runCascade();
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    if (running) return;
+    document.getElementById('campaigns').innerHTML = '';
+    totals = { campaigns: 0, prs: 0, merged: 0 };
+    updateLiveStats();
+    setText(document.getElementById('stat-completion'), '0%');
+    setText(document.getElementById('stat-time'), '0 weeks');
+    setText(document.getElementById('stat-effort'), '0 person-weeks');
+    document.getElementById('banner').innerHTML = '';
+    document.getElementById('banner').className = 'banner';
+    document.getElementById('launch').disabled = false;
+  });
+</script>
+
+<style>
+  .etude { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .controls { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.25rem 0 0.5rem; }
+  .launch-btn, .reset-btn {
+    font-family: inherit; font-size: 0.95rem; padding: 0.6rem 1rem;
+    border: 1px solid var(--accent); background: var(--bg); color: var(--ink);
+    border-radius: 3px; cursor: pointer; transition: background 100ms, transform 80ms;
+  }
+  .launch-btn { background: var(--accent); color: #fff; }
+  .launch-btn:hover:not(:disabled) { transform: translateY(-1px); }
+  .reset-btn:hover:not(:disabled) { background: rgba(138, 52, 32, 0.08); }
+  .launch-btn:disabled, .reset-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .stage { margin: 1.25rem 0 0.5rem; min-height: 4rem; }
+  .campaigns { display: flex; flex-direction: column; gap: 1rem; }
+  .campaign {
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 280ms ease, transform 280ms ease;
+    padding: 0.85rem 1rem 1rem; border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px; background: rgba(0,0,0,0.015);
+  }
+  .campaign.visible { opacity: 1; transform: translateY(0); }
+  .campaign-box {
+    font-weight: 600; font-size: 0.95rem; margin-bottom: 0.6rem; color: var(--ink);
+    border-left: 3px solid var(--accent); padding-left: 0.6rem;
+  }
+  .dot-grid { display: grid; grid-template-columns: repeat(15, 1fr); gap: 6px; padding: 0.4rem 0; }
+  .dot {
+    width: 14px; height: 14px; border-radius: 50%; background: #c9c9c9;
+    transform: scale(0.2); opacity: 0;
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease, background 220ms ease;
+    transition-delay: calc(var(--i) * 18ms);
+  }
+  .dot.fanned { transform: scale(1); opacity: 1; }
+  .dot.settled.green { background: #3f9650; box-shadow: 0 0 0 2px rgba(63,150,80,0.18); }
+  .dot.settled.yellow { background: #d6a52b; box-shadow: 0 0 0 2px rgba(214,165,43,0.18); }
+  .dot.settled.red { background: #b8413a; box-shadow: 0 0 0 2px rgba(184,65,58,0.18); }
+  .campaign-summary { margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; min-height: 1.4rem; font-size: 0.82rem; }
+  .chip { padding: 0.1rem 0.5rem; border-radius: 10px; font-variant-numeric: tabular-nums; }
+  .chip-green { background: rgba(63,150,80,0.14); color: #2c6b39; }
+  .chip-yellow { background: rgba(214,165,43,0.18); color: #8a6710; }
+  .chip-red { background: rgba(184,65,58,0.14); color: #842c27; }
+  .stats {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1rem;
+    margin: 1.25rem 0; padding: 0.9rem 1rem;
+    border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; background: rgba(0,0,0,0.02);
+  }
+  .stat { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.92rem; gap: 0.5rem; }
+  .stat-label { color: var(--muted); }
+  .stat-value { font-family: 'Menlo', monospace; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+  .banner { margin: 1rem 0; min-height: 1rem; opacity: 0; transform: translateY(6px); transition: opacity 380ms ease, transform 380ms ease; }
+  .banner.banner-shown {
+    opacity: 1; transform: translateY(0);
+    padding: 1rem 1.15rem; border-left: 3px solid var(--accent);
+    background: rgba(138, 52, 32, 0.06); border-radius: 2px; font-size: 1rem; line-height: 1.55;
+  }
+  .banner em { color: var(--accent); font-style: italic; }
+  @media (max-width: 30rem) {
+    .stats { grid-template-columns: 1fr; }
+    .dot-grid { grid-template-columns: repeat(10, 1fr); }
+  }
+</style>

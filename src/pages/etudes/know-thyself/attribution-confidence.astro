@@ -1,0 +1,272 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Attribution ≠ Confidence';
+const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yourself.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Know Thyself</p>
+    <h1>Attribution ≠ Confidence — drill the rule.</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/know-thyself/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>A claim a person has restated five times in conversation is <strong>one</strong> derivation. A claim grounded by five independent episodes is <strong>five</strong> derivations. Real confidence accumulates from independent grounding, not from repetition. Below: six scenarios. Pick the count.</p>
+
+    <div class="progress" id="progress" aria-label="Progress">
+      <span class="dot active" data-i="0"></span>
+      <span class="dot" data-i="1"></span>
+      <span class="dot" data-i="2"></span>
+      <span class="dot" data-i="3"></span>
+      <span class="dot" data-i="4"></span>
+      <span class="dot" data-i="5"></span>
+    </div>
+
+    <div id="stage" class="stage" aria-live="polite"></div>
+
+    <hr />
+
+    <p>The schema doesn't make confidence easier. It makes it slower. Real confidence accumulates from independent grounding — and the only way to count is to walk the provenance.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  const SCENARIOS = [
+    {
+      vignette: "Across six conversations spanning four months, Maya tells the model \"I avoid conflict.\" Different phrasings each time, no specific incidents.",
+      choices: [
+        { label: "1 derivation (repetition)", correct: true },
+        { label: "6 derivations (corroborated)", correct: false },
+        { label: "Contradicted (demote)", correct: false }
+      ],
+      explain: "Six restatements of the same self-attribution trace to one underlying claim. Repetition compresses; it does not corroborate."
+    },
+    {
+      vignette: "Two friends and a coworker, none of whom know each other, each independently describe Devon as \"someone who ghosts when uncomfortable.\"",
+      choices: [
+        { label: "1 derivation (repetition)", correct: false },
+        { label: "3 derivations (corroborated)", correct: true },
+        { label: "Contradicted (demote)", correct: false }
+      ],
+      explain: "Three independent observers, no shared source. Each is a separate grounding. That's corroboration."
+    },
+    {
+      vignette: "Liam restates a fear of failure in three conversations, AND in one of those mentions a specific time he didn't apply for a job because of it.",
+      choices: [
+        { label: "1 derivation (repetition)", correct: false },
+        { label: "2 derivations (mixed)", correct: true },
+        { label: "Contradicted (demote)", correct: false }
+      ],
+      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific job he didn't apply for — is a second, independent derivation."
+    },
+    {
+      vignette: "Avery tells five different therapists, over six months, the same story about her mother. None of the therapists has met the mother.",
+      choices: [
+        { label: "1 derivation (repetition)", correct: true },
+        { label: "5 derivations (corroborated)", correct: false },
+        { label: "Contradicted (demote)", correct: false }
+      ],
+      explain: "Five listeners is not five sources. The claim still traces to one self-attribution. Multiple audiences do not add grounding."
+    },
+    {
+      vignette: "A model summarizes Jordan as \"driven by approval\" based on Jordan's own words in four sessions. Jordan's manager separately writes a performance review describing the same pattern.",
+      choices: [
+        { label: "1 derivation (repetition)", correct: false },
+        { label: "2 derivations (self + observer)", correct: true },
+        { label: "Contradicted (demote)", correct: false }
+      ],
+      explain: "Self-attribution is one derivation. The manager's independent observation is a second. Two, not five."
+    },
+    {
+      vignette: "Sam mentions in passing that he \"never finishes anything,\" but his GitHub shows 12 completed projects, his LinkedIn shows 3 jobs each held >2 years, and his apartment lease shows he stayed 4 years in one place.",
+      choices: [
+        { label: "1 derivation (repetition)", correct: false },
+        { label: "4 derivations (corroborated)", correct: false },
+        { label: "Contradicted (demote)", correct: true }
+      ],
+      explain: "The self-attribution is one derivation; the public record is independent counter-evidence on three axes. Net: the claim should be demoted."
+    }
+  ];
+
+  let i = 0;
+  let score = 0;
+  let answered = false;
+
+  const stage = document.getElementById('stage');
+  const dots = document.querySelectorAll('.progress .dot');
+
+  function updateDots() {
+    dots.forEach((d, idx) => {
+      d.classList.toggle('active', idx === i);
+      d.classList.toggle('done', idx < i);
+    });
+  }
+
+  function renderScenario() {
+    answered = false;
+    updateDots();
+    const s = SCENARIOS[i];
+    const html = `
+      <div class="scenario">
+        <p class="scenario-num">Scenario ${i + 1} of 6</p>
+        <p class="vignette">${s.vignette}</p>
+        <div class="choices">
+          ${s.choices.map((c, idx) => `<button type="button" class="choice-btn" data-idx="${idx}">${c.label}</button>`).join('')}
+        </div>
+        <div class="feedback" id="feedback"></div>
+        <div class="advance" id="advance"></div>
+      </div>
+    `;
+    stage.innerHTML = html;
+    stage.querySelectorAll('.choice-btn').forEach(btn => {
+      btn.addEventListener('click', () => handlePick(parseInt(btn.dataset.idx, 10), btn));
+    });
+  }
+
+  function handlePick(idx, btn) {
+    if (answered) return;
+    answered = true;
+    const s = SCENARIOS[i];
+    const choice = s.choices[idx];
+    const correct = choice.correct;
+    if (correct) score += 1;
+
+    stage.querySelectorAll('.choice-btn').forEach(b => {
+      b.disabled = true;
+      const bIdx = parseInt(b.dataset.idx, 10);
+      if (s.choices[bIdx].correct) b.classList.add('is-correct');
+      if (b === btn && !correct) b.classList.add('is-wrong');
+    });
+
+    const fb = document.getElementById('feedback');
+    fb.className = 'feedback ' + (correct ? 'fb-correct' : 'fb-wrong');
+    fb.innerHTML = `<strong>${correct ? 'Correct.' : 'Not quite.'}</strong> ${s.explain}`;
+
+    const adv = document.getElementById('advance');
+    const last = i === SCENARIOS.length - 1;
+    adv.innerHTML = `<button type="button" id="next-btn" class="next-btn">${last ? 'See score →' : 'Next →'}</button>`;
+    document.getElementById('next-btn').addEventListener('click', advance);
+  }
+
+  function advance() {
+    if (i < SCENARIOS.length - 1) {
+      i += 1;
+      renderScenario();
+    } else {
+      i = SCENARIOS.length;
+      updateDots();
+      renderScore();
+    }
+  }
+
+  function renderScore() {
+    const pct = Math.round((score / SCENARIOS.length) * 100);
+    let blurb;
+    if (score === 6) blurb = "Clean sweep. You have the rule.";
+    else if (score >= 4) blurb = "Solid. The rule is settling in.";
+    else if (score >= 2) blurb = "Halfway. Run it again — the gap is between repetition and grounding.";
+    else blurb = "Run it again. Repetition is seductive; the rule is the antidote.";
+
+    stage.innerHTML = `
+      <div class="score">
+        <div class="badge"><span class="big">${score} / 6</span><span class="pct">${pct}%</span></div>
+        <p class="blurb">${blurb}</p>
+        <button type="button" id="again-btn" class="next-btn">Run it again</button>
+      </div>
+    `;
+    document.getElementById('again-btn').addEventListener('click', () => {
+      i = 0; score = 0;
+      renderScenario();
+    });
+  }
+
+  renderScenario();
+</script>
+
+<style>
+  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .progress { display: flex; gap: 0.45rem; margin: 1.25rem 0 0.75rem; }
+  .progress .dot {
+    width: 0.6rem; height: 0.6rem; border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+    transition: background 150ms ease, transform 150ms ease;
+  }
+  .progress .dot.done { background: var(--accent); }
+  .progress .dot.active { background: var(--accent); transform: scale(1.35); }
+  .stage { margin: 0.5rem 0 1.25rem; min-height: 14rem; }
+  .scenario {
+    padding: 1rem 1.15rem;
+    background: var(--bg-soft, rgba(0,0,0,0.03));
+    border-radius: 4px;
+    border-left: 3px solid var(--accent);
+    animation: slidein 180ms ease;
+  }
+  @keyframes slidein {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .scenario-num {
+    font-size: 0.8rem; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin: 0 0 0.5rem;
+  }
+  .vignette { font-size: 1.02rem; line-height: 1.55; margin: 0 0 1rem; }
+  .choices { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.75rem 0; }
+  .choice-btn {
+    font-family: inherit; font-size: 0.95rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--accent);
+    background: var(--bg); color: var(--ink);
+    border-radius: 3px; cursor: pointer; text-align: left;
+    transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+  }
+  .choice-btn:hover:not(:disabled) { background: rgba(138, 52, 32, 0.08); transform: translateX(2px); }
+  .choice-btn:disabled { cursor: default; opacity: 0.7; }
+  .choice-btn.is-correct {
+    background: rgba(72, 140, 96, 0.18);
+    border-color: rgb(72, 140, 96); opacity: 1;
+    animation: flash-good 360ms ease;
+  }
+  .choice-btn.is-wrong {
+    background: rgba(180, 60, 60, 0.18);
+    border-color: rgb(180, 60, 60); opacity: 1;
+    animation: flash-bad 360ms ease;
+  }
+  @keyframes flash-good { 0% { background: rgba(72, 140, 96, 0.55); } 100% { background: rgba(72, 140, 96, 0.18); } }
+  @keyframes flash-bad { 0% { background: rgba(180, 60, 60, 0.45); } 100% { background: rgba(180, 60, 60, 0.18); } }
+  .feedback { margin: 0.85rem 0 0; font-size: 0.95rem; line-height: 1.5; }
+  .feedback:not(:empty) { padding: 0.65rem 0.85rem; border-radius: 3px; animation: slidein 180ms ease; }
+  .fb-correct { background: rgba(72, 140, 96, 0.10); border-left: 2px solid rgb(72, 140, 96); }
+  .fb-wrong { background: rgba(180, 60, 60, 0.10); border-left: 2px solid rgb(180, 60, 60); }
+  .advance { margin-top: 0.85rem; min-height: 2.4rem; }
+  .next-btn {
+    font-family: inherit; font-size: 0.95rem;
+    padding: 0.55rem 1rem;
+    border: 1px solid var(--accent);
+    background: var(--accent); color: var(--bg);
+    border-radius: 3px; cursor: pointer;
+    transition: opacity 120ms ease, transform 120ms ease;
+  }
+  .next-btn:hover { opacity: 0.88; transform: translateX(2px); }
+  .score {
+    text-align: center; padding: 1.5rem 1rem 1.25rem;
+    background: var(--bg-soft, rgba(0,0,0,0.03));
+    border-radius: 4px; border-left: 3px solid var(--accent);
+    animation: slidein 200ms ease;
+  }
+  .badge {
+    display: inline-flex; flex-direction: column; align-items: center;
+    padding: 0.85rem 1.4rem;
+    background: var(--bg); border: 2px solid var(--accent);
+    border-radius: 6px; margin-bottom: 0.85rem;
+    animation: pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+  .badge .big { font-family: 'Georgia', serif; font-size: 2.1rem; color: var(--accent); line-height: 1; }
+  .badge .pct { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; letter-spacing: 0.05em; }
+  .blurb { font-style: italic; color: var(--muted); margin: 0.5rem 0 1rem; }
+</style>

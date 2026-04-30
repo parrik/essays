@@ -582,6 +582,217 @@ hr {
 }
 .site-nav a:hover { color: var(--accent); }
 
+/* ── Etudes affordance on essays ────────────────────────── */
+/* Top-of-essay picker: invite, don't just list. */
+.essay-etudes {
+  margin: 1.5rem 0 2rem;
+  padding: 1.1rem 1.15rem 1.25rem;
+  border: 1px solid rgba(138, 52, 32, 0.18);
+  background: rgba(138, 52, 32, 0.04);
+  border-radius: 4px;
+}
+.essay-etudes-prompt {
+  margin: 0 0 0.85rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+.essay-etudes-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+.essay-etudes-cards li { margin: 0; }
+.essay-etude-card {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 0.75rem;
+  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 3px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 120ms, transform 120ms;
+}
+.essay-etude-card:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.essay-etude-card-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.essay-etude-card-play {
+  color: var(--accent);
+  font-size: 0.82em;
+}
+.essay-etude-card-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+/* Inline etude embed — the playable widget rendered directly in the essay
+   body, not a link to a separate page. Authored as raw HTML in markdown.
+   The dotted-frame look distinguishes it visually from the prose without
+   feeling like a foreign object. */
+.etude-embed {
+  margin: 1.75rem 0;
+  padding: 1.1rem 1.2rem 1.25rem;
+  border: 1px dashed rgba(138, 52, 32, 0.45);
+  background: rgba(138, 52, 32, 0.035);
+  border-radius: 4px;
+}
+.etude-embed-cue {
+  margin: 0 0 0.7rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+.etude-embed-controls {
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+  margin: 0.85rem 0;
+}
+.etude-embed-btn {
+  font-family: inherit;
+  font-size: 0.92rem;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 100ms, transform 100ms;
+}
+.etude-embed-btn:hover {
+  background: rgba(138, 52, 32, 0.08);
+  transform: translateY(-1px);
+}
+.etude-embed-btn-alt {
+  border-style: solid;
+  border-width: 1.5px;
+}
+.etude-embed-output {
+  margin: 0.9rem 0 0.4rem;
+  min-height: 1.5rem;
+}
+.etude-embed-output:not(:empty) {
+  padding: 0.85rem 1rem;
+  border-left: 3px solid var(--accent);
+  background: var(--bg);
+  border-radius: 2px;
+}
+.etude-embed-foot {
+  margin: 1rem 0 0;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--muted);
+}
+.etude-out-muted { color: var(--muted); margin: 0; }
+.etude-out-bloom { margin: 0; line-height: 1.55; }
+.etude-out-bloom strong { color: var(--accent); }
+
+/* End-of-essay routine picker — used by Partition Problem to send the
+   reader to a 2hr restorative routine matched to body-state. */
+.restorative-picker {
+  margin: 2rem 0 1.5rem;
+  padding: 1.2rem 1.25rem 1.4rem;
+  border: 1px solid rgba(138, 52, 32, 0.2);
+  background: rgba(138, 52, 32, 0.04);
+  border-radius: 4px;
+}
+.restorative-picker-prompt {
+  margin: 0 0 0.95rem;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.restorative-picker-cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.restorative-picker-cards li { margin: 0; }
+.restorative-picker-card {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 3px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 120ms, transform 120ms;
+}
+.restorative-picker-card:hover {
+  border-color: var(--accent);
+  transform: translateX(2px);
+}
+.restorative-picker-label {
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.restorative-picker-note {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+/* Inline etude callout — small "▶ Play" link version (NOT the embed).
+   Use when the etude is too heavy to embed inline (e.g. a wall of 1247
+   notes); link to the standalone /etudes/{slug}/ page instead.
+   Authored as raw HTML in markdown:
+   <aside class="essay-etude-inline">
+     <a href="...">
+       <span class="cue">▶ Try</span>
+       <strong>Label</strong> — short note
+     </a>
+   </aside> */
+.essay-etude-inline {
+  margin: 1.25rem 0;
+  padding: 0.7rem 0.9rem;
+  border-left: 3px solid var(--accent);
+  background: rgba(138, 52, 32, 0.035);
+  font-size: 0.96rem;
+  line-height: 1.5;
+}
+.essay-etude-inline a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+.essay-etude-inline a:hover .cue,
+.essay-etude-inline a:hover strong { color: var(--accent); }
+.essay-etude-inline .cue {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-right: 0.5rem;
+  font-weight: 600;
+}
+.essay-etude-inline strong {
+  border-bottom: 1px solid var(--accent);
+}
+
 /* ── Print ──────────────────────────────────────────────── */
 @media print {
   .reading-progress,
