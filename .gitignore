@@ -6,3 +6,4 @@ dist/
 .netlify/
 npm-debug.log*
 scripts/verify-output/
+_drafts/
