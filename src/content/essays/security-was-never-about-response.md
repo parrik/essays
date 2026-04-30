@@ -6,7 +6,7 @@ tag: essay
 order: 3
 parent: know-thyself
 publishedAt: 2026-04-30
-status: seedling
+status: tending
 description: Security looks like detection-and-response from the outside. The actual discipline is verification — gates fire on action, sweeps fire on cadence, both inside security. Response is what fires when verification fails — and that is a different discipline.
 etudesPrompt: One picker, twelve practices, two disciplines. See which is which.
 etudes:
