@@ -5,6 +5,7 @@ kicker: Method
 tag: essay
 order: 2
 parent: know-thyself
+publishedAt: 2026-04-29
 status: seedling
 description: Storage is a substrate. Memory is what survives retrieval under bound. Same shape across brain, mind, database.
 etudesPrompt: Each section has something to play. Read with your hands.
