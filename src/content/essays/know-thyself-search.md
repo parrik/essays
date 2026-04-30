@@ -5,6 +5,7 @@ kicker: Method
 tag: essay
 order: 1
 parent: know-thyself
+publishedAt: 2026-04-25
 status: tending
 description: Search has always been graph-traversal-with-ranking. The human reader was a contingency. The agent's reader is the latest, sharpest version of an old problem.
 etudesPrompt: Run the demo. Read the essay through the code.
