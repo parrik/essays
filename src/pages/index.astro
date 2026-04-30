@@ -2,16 +2,22 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const all = (await getCollection('essays'))
-  .filter(e => e.data.status !== 'seedling');  // hide work-in-progress drafts
+const all = await getCollection('essays');
 
-// Top-level essays: nothing in `parent`. Sub-essays group under their parent.
-const topLevel = all.filter(e => !e.data.parent);
+// Split by status. Seedlings live in the brewing section; tending /
+// evergreen / unset live in the main essays list. The split is dynamic
+// so a new seedling shows up automatically.
+const published = all.filter(e => e.data.status !== 'seedling');
+const seedlings = all.filter(e => e.data.status === 'seedling');
+
+// Top-level essays (main list): nothing in `parent`. Sub-essays group
+// under their parent.
+const topLevel = published.filter(e => !e.data.parent);
 topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
-// Build a parent-id → ordered children map.
+// Build a parent-id → ordered children map for the main list only.
 const childrenByParent = new Map();
-for (const e of all) {
+for (const e of published) {
   if (!e.data.parent) continue;
   const arr = childrenByParent.get(e.data.parent) ?? [];
   arr.push(e);
@@ -20,6 +26,16 @@ for (const e of all) {
 for (const arr of childrenByParent.values()) {
   arr.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 }
+
+// Brewing list: seedlings, most-recent-first by publishedAt (fallback to
+// order). Future-proof — any new seedling appears automatically; no
+// hardcoded list to update on each new draft.
+seedlings.sort((a, b) => {
+  const at = a.data.publishedAt ? new Date(a.data.publishedAt).getTime() : 0;
+  const bt = b.data.publishedAt ? new Date(b.data.publishedAt).getTime() : 0;
+  if (at !== bt) return bt - at;
+  return (a.data.order ?? 99) - (b.data.order ?? 99);
+});
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
@@ -84,21 +100,30 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
       })}
     </ul>
   </section>
-  <section class="brewing">
-    <h2>brewing</h2>
-    <ul>
-      <li>
-        <div class="essay-row">
-          <a href="/essays/memory-was-never-about-storage/" class="essay-link">
-            <span class="essay-title">Memory was never about storage</span>
-            <span class="play-hint" aria-label="5 playable etudes inline">▶ play</span>
-          </a>
-          <span class="essay-meta-right"><span class="meta-series">part of know-thyself</span></span>
-        </div>
-        <p class="essay-subtitle">What you can retrieve under load is what you remember.</p>
-      </li>
-    </ul>
-  </section>
+  {seedlings.length > 0 && (
+    <section class="brewing">
+      <h2>brewing</h2>
+      <ul>
+        {seedlings.map(essay => {
+          const etudes = countEtudes(essay);
+          return (
+            <li>
+              <div class="essay-row">
+                <a href={`/essays/${essay.id}/`} class="essay-link">
+                  <span class="essay-title">{essay.data.title}</span>
+                  {etudes > 0 && <span class="play-hint" aria-label={`${etudes} playable inline`}>▶ play</span>}
+                </a>
+                {essay.data.parent && (
+                  <span class="essay-meta-right"><span class="meta-series">part of {essay.data.parent}</span></span>
+                )}
+              </div>
+              {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+            </li>
+          );
+        })}
+      </ul>
+    </section>
+  )}
 </Base>
 
 <style>
