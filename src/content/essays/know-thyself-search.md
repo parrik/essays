@@ -526,7 +526,7 @@ Downstream of the major labs:
 - Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) and [context caching](https://ai.google.dev/gemini-api/docs/caching) — the maximalist version of growing C_n. McCarthy names this the inefficient path.
 - The 2024-25 academic line — Park et al. on memory streams ranked by importance × recency × relevance,[^genagents] MemGPT/Letta on virtual-memory paging,[^memgpt] HippoRAG on Personalized PageRank over an extracted graph,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem) on Zettelkasten-style dynamic linking[^amem] — every paper converges: the graph isn't a feature; it's where memory lives.
 
-Both bets are live. Big-context: transformers absorb the graph through scale. MCP/memory-server: graph lives outside the context, model wants typed adjacency at retrieval. The argument above is technical case for the second.
+Both bets are live. Big-context: transformers absorb the graph through scale. MCP/memory-server: graph lives outside the context, model wants typed adjacency at retrieval. The argument above is the technical case for the second.
 
 ## What this essay extends
 
