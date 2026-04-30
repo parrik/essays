@@ -29,11 +29,9 @@ etudes:
     note: ready to unbind and expand
 ---
 
-A cancer cell is not a broken cell.
-
-It divides, consumes, builds, responds — it does everything a cell is supposed to do. What it has lost is not function. What it has lost is *context*. It no longer receives the tissue's continuous broadcast: *you are part of something larger, slow down, wait, listen.* Cut off from that signal, it optimizes for its own survival. It isn't malfunctioning. It's functioning in isolation, inside a model of the world that is no longer true.
-
 There is a particular kind of suffering that looks, from the inside, like health.
+
+A cancer cell is not a broken cell. It divides, consumes, builds, responds — it does everything a cell is supposed to do. What it has lost is not function. What it has lost is *context*. It no longer receives the tissue's continuous broadcast: *you are part of something larger, slow down, wait, listen.* Cut off from that signal, it optimizes for its own survival. It isn't malfunctioning. It's functioning in isolation, inside a model of the world that is no longer true.
 
 The fascia knows this before the mind does.
 
@@ -435,6 +433,8 @@ Restorative yoga increases vagal tone in measurable ways. Long exhales (the 1:2 
   color: #2c6260;
 }
 </style>
+
+The simplest of those queries is the breath.
 
 <div class="etude-embed" data-etude="long-exhale">
   <p class="etude-embed-cue">▶ Play · Long Exhale</p>
