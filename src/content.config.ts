@@ -20,6 +20,19 @@ const essays = defineCollection({
     updatedAt: z.coerce.date().optional(),
     status: z.enum(['seedling', 'tending', 'evergreen']).optional(),
     confidence: z.enum(['speculative', 'likely', 'certain', 'log']).optional(),
+    // Optional list of playable etudes that translate the essay's claim into
+    // something the reader can do, not just read. Renders as a picker card
+    // under the subtitle. `etudesPrompt` is the reader-facing call to action.
+    etudesPrompt: z.string().optional(),
+    etudes: z
+      .array(
+        z.object({
+          label: z.string(),
+          url: z.string(),
+          note: z.string().optional(),
+        })
+      )
+      .optional(),
   }),
 });
 

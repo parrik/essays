@@ -1,0 +1,274 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Three Paths';
+const subtitle = 'Pick your path. The wrong one IS the cascade.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · The Campaign Cascade</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/the-campaign-cascade/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>Every cross-cutting initiative has three valid responses: <strong>centralize</strong> the work, <strong>automate</strong> it end-to-end, or <strong>cut scope</strong> to where the change actually delivers value. Most failures pick the wrong one — and the wrong pick is what spawns the next campaign.</p>
+
+    <p>Four scenarios. Pick a path for each. Instant feedback.</p>
+
+    <div class="dots" id="dots" aria-hidden="true"></div>
+
+    <div id="stage" class="stage" aria-live="polite"></div>
+
+    <hr />
+    <p class="closing"><em>Most cascades start with a centralize answer where automate would have worked, or an automate answer where the right call was to cut scope. Picking the wrong path is what spawns the next campaign. The path itself is half the work.</em></p>
+  </article>
+</Base>
+
+<script is:inline>
+  const SCENARIOS = [
+    {
+      title: 'Migrate 800 services to Java 21',
+      context: 'Hypothetical fleet. Perf wins are the motivation — measurable latency and GC improvements. Owners are scattered across dozens of teams. Target: end of next quarter.',
+      best: 'B',
+      feedback: {
+        A: { verdict: 'wrong', text: 'Centralizing creates a platform-team bottleneck. 800 services through one queue means the migration drags past the quarter, perf wins arrive late, and the platform team becomes the next campaign.' },
+        B: { verdict: 'right', text: 'A codemod fits. The change is mechanical, the perf payoff requires hitting all 800, and one PR per service keeps team ownership intact. Tradeoff: you invest in the codemod up front. Worth it.' },
+        C: { verdict: 'wrong', text: 'Cutting scope undercuts the perf work that motivated this. If you only migrate the hot services, you keep two runtimes forever and pay the operational tax twice.' }
+      }
+    },
+    {
+      title: 'Roll out a new auth library across 200 services',
+      context: 'Hypothetical fleet. No perf change. Security review wants consistent integration across every surface. Test surface is mixed — some services have great coverage, some have none.',
+      best: 'A',
+      feedback: {
+        A: { verdict: 'right', text: 'Centralize. Security review needs one integration pattern, not 200. A platform team owning the rollout end-to-end keeps the threat model consistent. Tradeoff: slower than a codemod, but the consistency is the point.' },
+        B: { verdict: 'partial', text: 'A codemod can work where test coverage is good — but on services with no coverage, you ship a security change blind. Most teams pick this and pay later. Centralize is the safer call.' },
+        C: { verdict: 'wrong', text: 'You cannot cut scope on auth. Either every service is on the new library or your threat model has a hole. This is the scenario where scope-cutting is genuinely wrong.' }
+      }
+    },
+    {
+      title: 'Get every team to add structured logging',
+      context: 'Hypothetical fleet. The actual pain: on-call pages from ~30 services where unstructured logs make root-causing slow. The other 170 services rarely page anyone.',
+      best: 'C',
+      feedback: {
+        A: { verdict: 'wrong', text: 'Centralizing this means a platform team chasing 200 service owners for a change most of them get no value from. Compliance theater. The logging campaign becomes a year-long open thread.' },
+        B: { verdict: 'wrong', text: 'A codemod ships structured logging everywhere — but the value only lands in the 30 services that page. You spent the codemod budget on services that will never benefit. Right tool, wrong target.' },
+        C: { verdict: 'right', text: 'Cut scope. Structured logging in the 30 services that drive on-call pain delivers the entire value of the campaign. The other 170 can wait until they actually page.' }
+      }
+    },
+    {
+      title: 'Decommission the legacy event bus by Q3',
+      context: 'Hypothetical fleet. ~150 services publish or subscribe to it. New bus exists. Hard deadline — old bus contract ends Q3. Need both code changes and a coordinated cutover calendar.',
+      best: 'AB',
+      feedback: {
+        A: { verdict: 'partial', text: 'Centralize alone gets you the rollout calendar but leaves teams hand-editing 150 codebases. Doable, but slow — and a hard deadline punishes slow.' },
+        B: { verdict: 'partial', text: 'A codemod handles the code change cleanly. But cutover order matters (publishers before subscribers, or vice versa) and that is a calendar problem the codemod cannot solve. Half the answer.' },
+        AB: { verdict: 'right', text: 'Codemod plus central ownership of the rollout calendar. The codemod handles 150 mechanical changes; the central team sequences the cutover so nothing breaks mid-flight. Two paths, composed.' },
+        C: { verdict: 'wrong', text: 'Cannot cut scope on a decommission. The old bus contract ends Q3; partial migration means partial outage.' }
+      }
+    }
+  ];
+
+  const stage = document.getElementById('stage');
+  const dotsEl = document.getElementById('dots');
+
+  let idx = 0;
+  let picks = [];
+
+  function renderDots() {
+    dotsEl.innerHTML = SCENARIOS.map((_, i) => {
+      const cls = i < idx ? 'dot dot-done' : i === idx ? 'dot dot-current' : 'dot';
+      return `<span class="${cls}"></span>`;
+    }).join('') + (idx >= SCENARIOS.length ? '<span class="dot dot-done"></span>' : '<span class="dot"></span>');
+  }
+
+  function renderScenario() {
+    renderDots();
+    const s = SCENARIOS[idx];
+    const isCombo = s.best === 'AB';
+    stage.innerHTML = `
+      <div class="scenario">
+        <p class="scen-num">Scenario ${idx + 1} of ${SCENARIOS.length}</p>
+        <h2>${s.title}</h2>
+        <p class="context">${s.context}</p>
+        <div class="paths">
+          <button type="button" class="path-btn" data-pick="A"><strong>(A) Centralize</strong><span>A platform team owns the work end-to-end. Service teams get a PR + a Slack DM.</span></button>
+          <button type="button" class="path-btn" data-pick="B"><strong>(B) Automate</strong><span>Codemod the change everywhere. Service teams get a single PR they review.</span></button>
+          <button type="button" class="path-btn" data-pick="C"><strong>(C) Cut scope</strong><span>Apply only where the change actually delivers value. Leave the rest.</span></button>
+          ${isCombo ? '<button type="button" class="path-btn path-btn-combo" data-pick="AB"><strong>(A+B) Combine</strong><span>Codemod the code change. Central team owns the rollout calendar.</span></button>' : ''}
+        </div>
+        <div class="feedback" id="feedback"></div>
+      </div>
+    `;
+    stage.querySelectorAll('.path-btn').forEach(btn => {
+      btn.addEventListener('click', () => handlePick(btn.dataset.pick));
+    });
+  }
+
+  function handlePick(pick) {
+    const s = SCENARIOS[idx];
+    const fb = s.feedback[pick] || { verdict: 'wrong', text: 'Not a path that fits this scenario.' };
+    const correct = pick === s.best;
+    picks.push({ pick, correct, best: s.best });
+
+    stage.querySelectorAll('.path-btn').forEach(btn => {
+      btn.disabled = true;
+      if (btn.dataset.pick === pick) btn.classList.add('picked');
+      if (btn.dataset.pick === s.best) btn.classList.add('correct');
+    });
+
+    const fbEl = document.getElementById('feedback');
+    const verdictLabel = fb.verdict === 'right' ? 'Right path' : fb.verdict === 'partial' ? 'Partial fit' : 'Wrong path';
+    fbEl.innerHTML = `
+      <p class="verdict verdict-${fb.verdict}"><strong>${verdictLabel}.</strong></p>
+      <p class="verdict-text">${fb.text}</p>
+      <button type="button" class="next-btn" id="next-btn">${idx + 1 < SCENARIOS.length ? 'Next scenario →' : 'See your score →'}</button>
+    `;
+    document.getElementById('next-btn').addEventListener('click', advance);
+  }
+
+  function advance() {
+    idx += 1;
+    if (idx < SCENARIOS.length) {
+      renderScenario();
+    } else {
+      renderScore();
+    }
+  }
+
+  function renderScore() {
+    renderDots();
+    const counts = { A: 0, B: 0, C: 0, AB: 0 };
+    let wrong = 0;
+    picks.forEach(p => {
+      counts[p.pick] = (counts[p.pick] || 0) + 1;
+      if (!p.correct) wrong += 1;
+    });
+    const right = picks.length - wrong;
+    stage.innerHTML = `
+      <div class="score">
+        <p class="scen-num">Done</p>
+        <h2>You picked centralize ${counts.A}, automate ${counts.B}, cut scope ${counts.C}${counts.AB ? `, combine ${counts.AB}` : ''}.</h2>
+        <p class="score-line"><strong>${right}/${picks.length} right.</strong> ${wrong}/${picks.length} wrong.</p>
+        <p class="score-detail">${wrong === 0 ? 'Clean run. You read each scenario for what it actually rewards.' : wrong === picks.length ? 'Every pick was the cascade-spawning one. Worth re-reading the scenarios — the wrong path always looked plausible.' : 'Most failures look like this — one or two wrong calls, each one defensible in isolation. The cascade is built from defensible wrong calls.'}</p>
+        <button type="button" class="next-btn" id="restart-btn">Run it again</button>
+      </div>
+    `;
+    document.getElementById('restart-btn').addEventListener('click', restart);
+  }
+
+  function restart() {
+    idx = 0;
+    picks = [];
+    renderScenario();
+  }
+
+  renderScenario();
+</script>
+
+<style>
+  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .closing { color: var(--muted); line-height: 1.6; }
+  .dots {
+    display: flex;
+    gap: 0.4rem;
+    margin: 1.25rem 0;
+    justify-content: center;
+  }
+  .dot {
+    width: 0.55rem;
+    height: 0.55rem;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.12);
+    transition: background 200ms;
+  }
+  .dot-done { background: var(--accent); }
+  .dot-current { background: var(--accent); box-shadow: 0 0 0 3px rgba(138, 52, 32, 0.18); }
+  .stage { min-height: 20rem; }
+  .scenario, .score {
+    padding: 1.25rem 1.15rem;
+    background: var(--bg-soft, rgba(0,0,0,0.03));
+    border-radius: 4px;
+    border-left: 3px solid var(--accent);
+  }
+  .scen-num {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 0.4rem;
+  }
+  .scenario h2, .score h2 {
+    font-family: 'Georgia', serif;
+    font-size: 1.3rem;
+    margin: 0 0 0.7rem;
+    line-height: 1.3;
+  }
+  .context {
+    line-height: 1.55;
+    margin: 0 0 1rem;
+  }
+  .paths {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin: 1rem 0;
+  }
+  .path-btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    transition: background 100ms, transform 100ms;
+  }
+  .path-btn:hover:not(:disabled) {
+    background: rgba(138, 52, 32, 0.08);
+    transform: translateX(2px);
+  }
+  .path-btn span { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
+  .path-btn:disabled { cursor: default; opacity: 0.5; }
+  .path-btn.picked { opacity: 1; background: rgba(138, 52, 32, 0.12); border-width: 2px; }
+  .path-btn.correct { opacity: 1; border-color: #2d7a3e; background: rgba(45, 122, 62, 0.08); }
+  .path-btn.picked.correct { background: rgba(45, 122, 62, 0.15); }
+  .path-btn-combo { border-style: dashed; }
+  .feedback {
+    margin-top: 1rem;
+  }
+  .feedback:not(:empty) {
+    padding: 0.9rem 1rem;
+    background: var(--bg);
+    border-radius: 3px;
+    border-left: 3px solid var(--muted);
+  }
+  .verdict { margin: 0 0 0.5rem; font-size: 0.95rem; }
+  .verdict-right { color: #2d7a3e; }
+  .verdict-partial { color: #b87333; }
+  .verdict-wrong { color: var(--accent); }
+  .verdict-text { margin: 0 0 0.9rem; line-height: 1.55; color: var(--ink); }
+  .next-btn {
+    font-family: inherit;
+    font-size: 0.9rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: white;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: opacity 100ms;
+  }
+  .next-btn:hover { opacity: 0.85; }
+  .score-line { font-size: 1.05rem; margin: 0.5rem 0 0.7rem; }
+  .score-detail { color: var(--muted); line-height: 1.55; margin: 0 0 1rem; }
+</style>

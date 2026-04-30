@@ -1,0 +1,226 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Three Substrates';
+const subtitle = 'Trace persistence and access affordance are separable. The same shape — trace intact, access broken — appears across substrates with totally different physics.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Memory</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/memory-was-never-about-storage/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p class="lede"><strong>Trace intact. Access broken. — three substrates, one shape.</strong></p>
+
+    <p>The bytes are still there. The cells still hold the pattern. The memory is still encoded. What's broken is the path in. Build the path, and the trace returns — untouched.</p>
+
+    <div class="panels">
+      <section class="panel" data-panel="brain">
+        <div class="visual" aria-hidden="true">
+          <svg viewBox="0 0 120 90" class="svg-vis">
+            <circle cx="60" cy="45" r="14" class="soma" />
+            <line x1="46" y1="45" x2="20" y2="30" class="dendrite" />
+            <line x1="46" y1="45" x2="20" y2="60" class="dendrite" />
+            <line x1="74" y1="45" x2="105" y2="45" class="axon" />
+            <path d="M 8 30 L 18 30" class="arrow dim" marker-end="url(#dimhead)" />
+            <path d="M 8 60 L 18 60" class="arrow bright" marker-end="url(#brighthead)" />
+            <text x="2" y="22" class="lbl dim-lbl">cue</text>
+            <text x="2" y="78" class="lbl bright-lbl">stim</text>
+            <defs>
+              <marker id="dimhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="dim-fill" /></marker>
+              <marker id="brighthead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="bright-fill" /></marker>
+            </defs>
+          </svg>
+        </div>
+        <h3>Brain — silent engram</h3>
+        <p>The cells holding the memory are intact. A natural cue fails to evoke it; direct stimulation of those same cells brings the memory back in full. The trace was never lost — only the read-path through normal channels was.</p>
+        <div class="controls">
+          <button type="button" data-act="brain-cue">natural cue</button>
+          <button type="button" data-act="brain-stim">direct stimulate</button>
+        </div>
+        <div class="readout" data-readout="brain" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" data-panel="mind">
+        <div class="visual" aria-hidden="true">
+          <svg viewBox="0 0 120 90" class="svg-vis">
+            <line x1="10" y1="80" x2="115" y2="80" class="axis" />
+            <line x1="10" y1="10" x2="10" y2="80" class="axis" />
+            <path d="M 10 30 Q 40 30 60 55 T 110 70" class="curve retrieval" />
+            <path d="M 10 25 L 110 25" class="curve storage" stroke-dasharray="3,3" />
+            <text x="14" y="22" class="lbl">storage</text>
+            <text x="60" y="50" class="lbl">retrieval</text>
+          </svg>
+        </div>
+        <h3>Mind — retrieval strength</h3>
+        <p>Storage strength stays high. Retrieval strength fluctuates — sometimes a name, a fact, a face goes blank under load and surfaces hours later untouched. The item never left storage; the access window narrowed.</p>
+        <div class="controls">
+          <button type="button" data-act="mind-test">test under load</button>
+          <label class="chk"><input type="checkbox" data-act="mind-rebuild" /> rebuild access</label>
+        </div>
+        <div class="readout" data-readout="mind" aria-live="polite"></div>
+      </section>
+
+      <section class="panel" data-panel="db">
+        <div class="visual" aria-hidden="true">
+          <svg viewBox="0 0 120 90" class="svg-vis">
+            <rect x="20" y="10" width="80" height="10" class="row" />
+            <rect x="20" y="24" width="80" height="10" class="row" />
+            <rect x="20" y="38" width="80" height="10" class="row target" />
+            <rect x="20" y="52" width="80" height="10" class="row" />
+            <rect x="20" y="66" width="80" height="10" class="row" />
+            <path d="M 5 43 L 17 43" class="arrow dim" marker-end="url(#dimhead2)" />
+            <defs>
+              <marker id="dimhead2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" class="dim-fill" /></marker>
+            </defs>
+          </svg>
+        </div>
+        <h3>Database — row without index</h3>
+        <p>The bytes are stored perfectly. But past a million rows, full-scan under load is functionally not retrievable — the row exists, the query times out. The data was never the bottleneck; the access shape was.</p>
+        <div class="controls">
+          <input type="text" data-act="db-query" placeholder="SELECT WHERE id = 4827193" />
+          <button type="button" data-act="db-run">run</button>
+          <label class="chk"><input type="checkbox" data-act="db-index" /> build index</label>
+        </div>
+        <div class="readout" data-readout="db" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <hr />
+
+    <p class="closing">Same architectural state across three substrates. Same intervention works in each: <em>build the access shape</em>. The trace was never the bottleneck.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  const out = (key, html) => { document.querySelector(`[data-readout="${key}"]`).innerHTML = html; };
+
+  document.querySelector('[data-act="brain-cue"]').addEventListener('click', () => {
+    out('brain', '<span class="dim">no response. the cue passes through; nothing returns.</span>');
+  });
+  document.querySelector('[data-act="brain-stim"]').addEventListener('click', () => {
+    out('brain', '<span class="bright">memory recalls in full. the trace was there the whole time.</span>');
+  });
+
+  document.querySelector('[data-act="mind-test"]').addEventListener('click', () => {
+    const rebuilt = document.querySelector('[data-act="mind-rebuild"]').checked;
+    if (rebuilt) {
+      out('mind', '<span class="bright">retrieved. the access path holds under load.</span>');
+    } else {
+      out('mind', '<span class="dim">blank…</span>');
+      setTimeout(() => out('mind', '<span class="dim">blank…</span><br/><span class="muted">(hours later) — there it is. surfaced unchanged.</span>'), 1400);
+    }
+  });
+  document.querySelector('[data-act="mind-rebuild"]').addEventListener('change', (e) => {
+    if (e.target.checked) out('mind', '<span class="muted">access rebuilt. retrieval strength restored.</span>');
+  });
+
+  document.querySelector('[data-act="db-run"]').addEventListener('click', () => {
+    const indexed = document.querySelector('[data-act="db-index"]').checked;
+    const q = document.querySelector('[data-act="db-query"]').value || 'SELECT WHERE id = 4827193';
+    if (indexed) {
+      out('db', `<code>${q}</code><br/><span class="bright">→ 1 row. 0.3ms. (index seek)</span>`);
+      return;
+    }
+    out('db', `<code>${q}</code><br/><span class="muted">scanning</span> <span class="scan">▮▮▮▮▮▮▮▮▮▮</span>`);
+    let i = 0;
+    const tick = setInterval(() => {
+      i++;
+      const dots = '·'.repeat(i % 6);
+      out('db', `<code>${q}</code><br/><span class="muted">full scan ${(i*100000).toLocaleString()} / 1,000,000 rows ${dots}</span>`);
+      if (i >= 8) {
+        clearInterval(tick);
+        out('db', `<code>${q}</code><br/><span class="dim">timed out under load. the row exists. the path doesn't.</span>`);
+      }
+    }, 280);
+  });
+  document.querySelector('[data-act="db-index"]').addEventListener('change', (e) => {
+    if (e.target.checked) out('db', '<span class="muted">index built. access shape in place.</span>');
+  });
+</script>
+
+<style>
+  .etude { max-width: 64rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .lede { font-size: 1.1rem; text-align: center; margin: 1.5rem 0 0.75rem; letter-spacing: 0.01em; }
+  .panels {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin: 1.75rem 0;
+  }
+  @media (max-width: 820px) { .panels { grid-template-columns: 1fr; } }
+  .panel {
+    border: 1px solid rgba(0,0,0,0.12);
+    border-radius: 4px;
+    padding: 1rem 1rem 1.1rem;
+    background: var(--bg-soft, rgba(0,0,0,0.02));
+    display: flex;
+    flex-direction: column;
+  }
+  .panel h3 { font-family: 'Georgia', serif; font-size: 1.05rem; margin: 0.5rem 0 0.4rem; }
+  .panel p { font-size: 0.92rem; line-height: 1.5; color: var(--ink); margin: 0 0 0.85rem; }
+  .visual { height: 90px; display: flex; align-items: center; justify-content: center; }
+  .svg-vis { width: 100%; height: 100%; }
+  .soma { fill: rgba(138, 52, 32, 0.18); stroke: var(--accent); stroke-width: 1.2; }
+  .dendrite, .axon { stroke: var(--ink); stroke-width: 1; opacity: 0.55; }
+  .arrow { stroke-width: 1.4; fill: none; }
+  .dim { stroke: var(--muted); opacity: 0.55; }
+  .bright { stroke: var(--accent); }
+  .dim-fill { fill: var(--muted); opacity: 0.55; }
+  .bright-fill { fill: var(--accent); }
+  .lbl { font-size: 8px; font-family: 'Georgia', serif; fill: var(--muted); }
+  .dim-lbl { fill: var(--muted); }
+  .bright-lbl { fill: var(--accent); }
+  .axis { stroke: var(--ink); stroke-width: 0.8; opacity: 0.4; }
+  .curve { fill: none; stroke-width: 1.4; }
+  .curve.retrieval { stroke: var(--accent); }
+  .curve.storage { stroke: var(--ink); opacity: 0.5; }
+  .row { fill: rgba(0,0,0,0.06); stroke: var(--ink); stroke-width: 0.5; opacity: 0.7; }
+  .row.target { fill: rgba(138, 52, 32, 0.22); stroke: var(--accent); stroke-width: 1; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin: 0.4rem 0 0.7rem; }
+  .controls button {
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 100ms;
+  }
+  .controls button:hover { background: rgba(138, 52, 32, 0.08); }
+  .controls input[type="text"] {
+    font-family: 'Menlo', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid rgba(0,0,0,0.2);
+    border-radius: 3px;
+    flex: 1;
+    min-width: 0;
+    background: var(--bg);
+    color: var(--ink);
+  }
+  .chk { font-size: 0.82rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.3rem; }
+  .readout {
+    margin-top: auto;
+    min-height: 2.6rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    padding: 0.55rem 0.7rem;
+    background: rgba(0,0,0,0.03);
+    border-left: 2px solid var(--accent);
+    border-radius: 2px;
+  }
+  .readout:empty { background: transparent; border-left-color: rgba(0,0,0,0.08); }
+  .readout .dim { color: var(--muted); font-style: italic; }
+  .readout .bright { color: var(--accent); font-weight: 500; }
+  .readout .muted { color: var(--muted); }
+  .readout code { font-family: 'Menlo', monospace; font-size: 0.78rem; background: rgba(0,0,0,0.05); padding: 0.05rem 0.3rem; border-radius: 2px; }
+  .closing { font-style: italic; color: var(--muted); text-align: center; max-width: 38rem; margin: 1.5rem auto; line-height: 1.6; }
+</style>

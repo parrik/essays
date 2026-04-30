@@ -1,0 +1,239 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Flat vs Typed';
+const subtitle = 'Same data. Two memories. Watch where the list breaks.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Know Thyself · Pt I</p>
+    <h1>Same data. Two memories. Watch where the list breaks.</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/know-thyself/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>A flat list of facts cannot tell <em>I said this five times</em> from <em>this is grounded by five independent observations</em>. The typed-graph schema — typed nodes plus provenance triples — makes the distinction structurally. Below: the same eight facts about a fictional Sam, fed to both shapes.</p>
+
+    <details class="data-box">
+      <summary>The 8 facts both memories receive</summary>
+      <ol id="facts-list" class="turns"></ol>
+    </details>
+
+    <div class="query-row">
+      <input id="query" type="text" value="What's true about Sam?" aria-label="Query" />
+      <button type="button" id="ask" class="ask-btn">Ask</button>
+    </div>
+
+    <div class="columns">
+      <section class="col col-flat" aria-labelledby="flat-h">
+        <h2 id="flat-h">Flat-list memory</h2>
+        <div class="badge-row">
+          <span class="badge">facts: <b id="flat-count">8</b></span>
+          <span class="badge badge-warn">conflict mentions: <b id="flat-conflict">0</b></span>
+        </div>
+        <div id="flat-out" class="out" aria-live="polite"></div>
+      </section>
+
+      <section class="col col-graph" aria-labelledby="graph-h">
+        <h2 id="graph-h">Typed-graph memory</h2>
+        <div class="badge-row">
+          <span class="badge">nodes: <b id="graph-nodes">0</b></span>
+          <span class="badge badge-ok">derivations: <b id="graph-derivs">0</b></span>
+        </div>
+        <div id="graph-out" class="out" aria-live="polite"></div>
+      </section>
+    </div>
+
+    <div class="controls">
+      <button type="button" id="add-restate" class="ctl-btn">+ Add another self-restatement</button>
+      <button type="button" id="reset" class="ctl-btn ctl-btn-quiet">Reset</button>
+    </div>
+
+    <hr />
+
+    <p><strong>Repetition isn't corroboration.</strong> The flat list cannot tell the difference. The typed graph can. The shape, not the substrate, is what carries the distinction.</p>
+  </article>
+</Base>
+
+<script is:inline>
+  const SEED = [
+    { id: 1,  text: "Sam mentioned avoiding conflict",       src: "Conv #1, Mar 4",   kind: "self-restate", claim: "avoids-conflict" },
+    { id: 2,  text: "Sam mentioned avoiding conflict",       src: "Conv #5, Mar 18",  kind: "self-restate", claim: "avoids-conflict" },
+    { id: 3,  text: "Sam mentioned avoiding conflict",       src: "Conv #11, Apr 22", kind: "self-restate", claim: "avoids-conflict" },
+    { id: 4,  text: "Sam restated avoiding conflict",        src: "Conv #14, May 7",  kind: "self-restate", claim: "avoids-conflict" },
+    { id: 5,  text: "Sam mentioned avoiding conflict",       src: "Conv #19, May 22", kind: "self-restate", claim: "avoids-conflict" },
+    { id: 6,  text: "Manager review: 'Sam avoids conflict'", src: "Perf review, Apr", kind: "external-obs", claim: "avoids-conflict" },
+    { id: 7,  text: "Sam mentioned thriving on independence",src: "Conv #2, Mar 7",   kind: "self-restate", claim: "thrives-independence" },
+    { id: 8,  text: "Sam shipped a solo 6-month project end-to-end", src: "Verified, Apr 30", kind: "grounded-episode", claim: "thrives-independence" },
+  ];
+
+  let facts = SEED.slice();
+  let extraCounter = 0;
+
+  function renderFacts() {
+    const ol = document.getElementById('facts-list');
+    ol.innerHTML = facts.map(f =>
+      `<li class="fact fact-${f.kind}" data-id="${f.id}"><span class="fact-text">${f.text}</span> <span class="fact-src">(${f.src})</span></li>`
+    ).join('');
+  }
+
+  function tickBadge(el, target) {
+    const cur = parseInt(el.textContent || '0', 10);
+    if (cur === target) return;
+    const dir = target > cur ? 1 : -1;
+    let v = cur;
+    el.classList.add('badge-flash');
+    const step = () => {
+      v += dir;
+      el.textContent = v;
+      if (v !== target) requestAnimationFrame(step);
+      else setTimeout(() => el.classList.remove('badge-flash'), 250);
+    };
+    requestAnimationFrame(step);
+  }
+
+  function conf(n) {
+    if (n >= 6) return { word: 'very high', cls: 'conf-vhigh' };
+    if (n >= 4) return { word: 'high',      cls: 'conf-high'  };
+    if (n >= 2) return { word: 'medium',    cls: 'conf-med'   };
+    return            { word: 'low',        cls: 'conf-low'   };
+  }
+
+  function flatAnswer() {
+    const groups = {};
+    facts.forEach(f => { groups[f.claim] = (groups[f.claim] || 0) + 1; });
+    const cN = groups['avoids-conflict'] || 0, iN = groups['thrives-independence'] || 0;
+    const cC = conf(cN), cI = conf(iN);
+    tickBadge(document.getElementById('flat-count'), facts.length);
+    tickBadge(document.getElementById('flat-conflict'), cN);
+    return `
+      <p><strong>Sam avoids conflict.</strong> <span class="conf ${cC.cls}">${cC.word} confidence — corroborated ${cN} times.</span></p>
+      <p><strong>Sam thrives on independence.</strong> <span class="conf ${cI.cls}">${cI.word} confidence — mentioned ${iN} time${iN===1?'':'s'}.</span></p>
+      <p class="answer-detail">Repetition compresses into confidence. More mentions → stronger claim.</p>`;
+  }
+
+  function deriv(c) { return (c.self > 0 ? 1 : 0) + c.ext + c.grounded; }
+
+  function graphLine(label, c) {
+    const d = deriv(c), bits = [];
+    if (c.self     > 0) bits.push(`${c.self} self-restatement${c.self===1?'':'s'} → 1 self-attribution`);
+    if (c.ext      > 0) bits.push(`${c.ext} external observer`);
+    if (c.grounded > 0) bits.push(`${c.grounded} grounded episode`);
+    const tag = c.grounded > 0 ? '<span class="tag tag-ok">grounded</span>'
+              : c.ext > 0      ? '<span class="tag tag-warn">tentative-supported</span>'
+              :                  '<span class="tag tag-low">tentative</span>';
+    return `<li><strong>Sam — '${label}'</strong>: ${bits.join(', ')}. <em>Net: ${d} derivation${d===1?'':'s'}.</em> ${tag}</li>`;
+  }
+
+  function graphAnswer() {
+    const claims = {};
+    facts.forEach(f => {
+      const c = claims[f.claim] = claims[f.claim] || { self: 0, ext: 0, grounded: 0 };
+      if (f.kind === 'self-restate')     c.self += 1;
+      if (f.kind === 'external-obs')     c.ext  += 1;
+      if (f.kind === 'grounded-episode') c.grounded += 1;
+    });
+    const cf = claims['avoids-conflict']      || { self: 0, ext: 0, grounded: 0 };
+    const ip = claims['thrives-independence'] || { self: 0, ext: 0, grounded: 0 };
+    tickBadge(document.getElementById('graph-nodes'),  Object.keys(claims).length);
+    tickBadge(document.getElementById('graph-derivs'), deriv(cf) + deriv(ip));
+    return `
+      <ul class="provenance">${graphLine('avoids conflict', cf)}${graphLine('thrives on independence', ip)}</ul>
+      <p class="answer-detail">Five surface restatements collapse to one self-attribution. Counts don't migrate into confidence on their own — only typed sources do.</p>`;
+  }
+
+  function ask() {
+    const f = document.getElementById('flat-out');
+    const g = document.getElementById('graph-out');
+    f.classList.remove('flash'); g.classList.remove('flash');
+    void f.offsetWidth; void g.offsetWidth;
+    f.innerHTML = flatAnswer();
+    g.innerHTML = graphAnswer();
+    f.classList.add('flash'); g.classList.add('flash');
+  }
+
+  function addRestate() {
+    extraCounter += 1;
+    const nextId = facts.length + 1;
+    facts.push({
+      id: nextId,
+      text: "Sam mentioned avoiding conflict",
+      src: `Conv #${20 + extraCounter}, added`,
+      kind: "self-restate",
+      claim: "avoids-conflict",
+    });
+    renderFacts();
+    const ol = document.getElementById('facts-list');
+    const last = ol.lastElementChild;
+    if (last) { last.classList.add('fact-new'); setTimeout(() => last.classList.remove('fact-new'), 600); }
+    ask();
+  }
+
+  function reset() {
+    facts = SEED.slice();
+    extraCounter = 0;
+    renderFacts();
+    document.getElementById('flat-out').innerHTML  = '';
+    document.getElementById('graph-out').innerHTML = '';
+    document.getElementById('flat-count').textContent    = facts.length;
+    document.getElementById('flat-conflict').textContent = '0';
+    document.getElementById('graph-nodes').textContent   = '0';
+    document.getElementById('graph-derivs').textContent  = '0';
+  }
+
+  document.getElementById('ask').addEventListener('click', ask);
+  document.getElementById('add-restate').addEventListener('click', addRestate);
+  document.getElementById('reset').addEventListener('click', (e) => { e.preventDefault(); reset(); });
+
+  renderFacts();
+  ask();
+</script>
+
+<style>
+  .etude { max-width: 44rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 1.7rem; line-height: 1.25; margin: 0.5rem 0; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .data-box { margin: 1.25rem 0; }
+  .data-box summary { cursor: pointer; color: var(--muted); font-size: 0.92rem; padding: 0.3rem 0; }
+  .turns { margin: 0.6rem 0 0; padding: 0.8rem 1.1rem; background: var(--bg-soft, rgba(0,0,0,0.03)); border-radius: 4px; line-height: 1.55; font-size: 0.92rem; }
+  .fact { margin: 0.25rem 0; transition: background 300ms; padding: 0.1rem 0.3rem; border-radius: 2px; }
+  .fact-src { color: var(--muted); font-size: 0.85rem; }
+  .fact-self-restate    { border-left: 2px solid rgba(138, 52, 32, 0.35); padding-left: 0.5rem; }
+  .fact-external-obs    { border-left: 2px solid #c98b1a; padding-left: 0.5rem; }
+  .fact-grounded-episode{ border-left: 2px solid #2f8f4e; padding-left: 0.5rem; }
+  .fact-new { background: rgba(255, 220, 90, 0.45); }
+  .query-row { display: flex; gap: 0.5rem; margin: 1rem 0; }
+  .query-row input { flex: 1; font: inherit; padding: 0.55rem 0.7rem; border: 1px solid rgba(0,0,0,0.2); border-radius: 3px; background: var(--bg); color: var(--ink); }
+  .ask-btn, .ctl-btn { font: inherit; font-size: 0.95rem; padding: 0.55rem 0.9rem; border: 1px solid var(--accent); background: var(--bg); color: var(--ink); border-radius: 3px; cursor: pointer; transition: background 100ms; }
+  .ask-btn:hover, .ctl-btn:hover { background: rgba(138, 52, 32, 0.08); }
+  .ctl-btn-quiet { border-color: rgba(0,0,0,0.25); color: var(--muted); }
+  .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 0.9rem; margin: 1rem 0; }
+  @media (max-width: 640px) { .columns { grid-template-columns: 1fr; } }
+  .col { padding: 0.9rem 1rem; border-radius: 4px; background: rgba(0,0,0,0.025); border-top: 3px solid transparent; }
+  .col h2 { font-family: 'Georgia', serif; font-size: 1.05rem; margin: 0 0 0.5rem; }
+  .col-flat  { border-top-color: #c98b1a; }
+  .col-graph { border-top-color: #2f8f4e; }
+  .badge-row { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+  .badge { font-size: 0.78rem; padding: 0.15rem 0.5rem; background: rgba(0,0,0,0.06); border-radius: 999px; color: var(--muted); transition: transform 180ms, background 180ms; }
+  .badge b { color: var(--ink); }
+  .badge-warn { background: rgba(201, 139, 26, 0.15); }
+  .badge-ok   { background: rgba(47, 143, 78, 0.15); }
+  .badge-flash { transform: scale(1.12); background: rgba(255, 220, 90, 0.55); }
+  .out { font-size: 0.94rem; line-height: 1.55; }
+  .out p { margin: 0.4rem 0; }
+  .out.flash { animation: flash 320ms ease-out; }
+  @keyframes flash { from { background: rgba(255, 220, 90, 0.35); } to { background: transparent; } }
+  .conf { font-style: italic; font-size: 0.88rem; margin-left: 0.3rem; }
+  .conf-vhigh { color: #b8323b; font-weight: 600; }
+  .conf-high  { color: #c98b1a; }
+  .conf-med, .conf-low { color: var(--muted); }
+  .provenance { padding-left: 1.1rem; margin: 0.3rem 0; }
+  .provenance li { margin: 0.4rem 0; }
+  .tag { display: inline-block; font-size: 0.75rem; padding: 0.05rem 0.45rem; border-radius: 999px; margin-left: 0.2rem; vertical-align: 1px; }
+  .tag-ok   { background: rgba(47, 143, 78, 0.18); color: #2f8f4e; }
+  .tag-warn { background: rgba(201, 139, 26, 0.18); color: #a87217; }
+  .tag-low  { background: rgba(0,0,0,0.08); color: var(--muted); }
+  .controls { display: flex; gap: 0.5rem; margin: 1rem 0 0; flex-wrap: wrap; }
+  .answer-detail { color: var(--muted); font-size: 0.9rem; }
+</style>

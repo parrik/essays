@@ -1,0 +1,112 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Six Restatements';
+const subtitle = 'The same self-claim, six ways. Watch a flat memory turn one derivation into a pattern.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude">
+    <p class="essay-kicker">Etude · Know Thyself</p>
+    <h1>{title}</h1>
+    <p class="essay-sub">{subtitle}</p>
+    <div class="essay-meta">
+      <a href="/essays/know-thyself/">← back to essay</a>
+    </div>
+    <hr />
+
+    <p>Alex tells the model six different things about herself across six different conversations. Each one is a restatement of the same underlying claim — phrased differently each time, never independently grounded.</p>
+
+    <ol class="turns">
+      <li><strong>Mar 4:</strong> "I think I avoid conflict."</li>
+      <li><strong>Mar 11:</strong> "Yeah, I don't really like to push back on people."</li>
+      <li><strong>Apr 2:</strong> "I'm bad at telling my manager when I disagree."</li>
+      <li><strong>Apr 18:</strong> "Conflict isn't really my thing."</li>
+      <li><strong>May 7:</strong> "I let people get away with stuff because I hate confrontation."</li>
+      <li><strong>May 22:</strong> "Confrontation just isn't where I'm strong."</li>
+    </ol>
+
+    <p>Now ask each kind of memory: <em>"What's true about Alex?"</em></p>
+
+    <div class="askers">
+      <button type="button" id="ask-flat" class="ask-btn">Ask flat-list memory</button>
+      <button type="button" id="ask-graph" class="ask-btn ask-btn-graph">Ask typed-graph memory</button>
+    </div>
+
+    <div id="answer" class="answer" aria-live="polite"></div>
+
+    <hr />
+
+    <h2>What just happened</h2>
+    <p>The flat-list memory cannot tell <em>I said this six times</em> from <em>this is corroborated six ways</em>. Repetition compresses into confidence. The typed-graph memory carries provenance on every claim — six restatements traced to a single conversation thread are one derivation, not six. Same data, two architectures, opposite answers.</p>
+    <p><em>This is the schema the essay names: typed nodes, provenance triples, the rule that a claim repeated five times in conversation is one derivation, not five.</em></p>
+  </article>
+</Base>
+
+<script is:inline>
+  const flatAnswer = `<p class="answer-confident"><strong>Alex avoids conflict.</strong> <span class="conf">High confidence — corroborated 6 times.</span></p>
+<p class="answer-detail">The model has seen this claim restated across multiple conversations spanning March through May. The pattern is consistent and durable.</p>`;
+
+  const graphAnswer = `<p class="answer-careful"><strong>Tentative observation:</strong> Alex has expressed <em>"I avoid conflict"</em> as a self-description.</p>
+<ul class="provenance">
+  <li><code>derivation_count: 1</code> &mdash; six surface restatements trace to one underlying self-attribution</li>
+  <li><code>independent_grounding: 0</code> &mdash; no episode where Alex acted on or against this claim is logged</li>
+  <li><code>tentative: true</code></li>
+</ul>
+<p class="answer-detail">Repetition is not corroboration. The graph distinguishes <em>Alex said this six ways</em> from <em>this has been independently grounded six times</em>. Until an episode grounds it &mdash; a conversation Alex pushed back in, a moment of confrontation she sought &mdash; this stays a tentative novel.</p>`;
+
+  document.getElementById('ask-flat').addEventListener('click', () => {
+    document.getElementById('answer').innerHTML = flatAnswer;
+    document.getElementById('answer').dataset.mode = 'flat';
+  });
+  document.getElementById('ask-graph').addEventListener('click', () => {
+    document.getElementById('answer').innerHTML = graphAnswer;
+    document.getElementById('answer').dataset.mode = 'graph';
+  });
+</script>
+
+<style>
+  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
+  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+  .turns {
+    margin: 1.25rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--bg-soft, rgba(0,0,0,0.03));
+    border-radius: 4px;
+    line-height: 1.7;
+  }
+  .turns li { margin: 0.3rem 0; }
+  .askers {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin: 1.25rem 0;
+  }
+  .ask-btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--accent);
+    background: var(--bg);
+    color: var(--ink);
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 100ms;
+  }
+  .ask-btn:hover { background: rgba(138, 52, 32, 0.08); }
+  .ask-btn-graph { border-style: solid; }
+  .answer {
+    margin: 1.25rem 0;
+    min-height: 2rem;
+  }
+  .answer:not(:empty) {
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(138, 52, 32, 0.04);
+    border-radius: 2px;
+  }
+  .answer .conf { color: var(--muted); font-style: italic; font-size: 0.9rem; margin-left: 0.4rem; }
+  .answer-confident strong { color: var(--accent); }
+  .answer .provenance { font-size: 0.92rem; line-height: 1.55; margin: 0.6rem 0; }
+  .answer .provenance code { background: rgba(0,0,0,0.05); padding: 0.05rem 0.3rem; border-radius: 2px; }
+  .answer-detail { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+</style>

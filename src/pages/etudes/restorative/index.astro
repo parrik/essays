@@ -1,0 +1,25 @@
+---
+import Base from '../../../layouts/Base.astro';
+---
+<Base title="Restorative etudes" description="Three restorative yoga routines, structured by chakra and timed for a 2-hour session.">
+  <div class="etude-index">
+    <p class="essay-kicker">Etudes · Restorative</p>
+    <h1>Restorative routines</h1>
+    <p class="lede">Three two-hour sequences. Pick one by what you woke up with.</p>
+    <ul class="etude-list">
+      <li><a href="/etudes/restorative/coming-home/"><strong>Coming Home</strong> — for days you feel anxious, scattered, or unsafe in your body.</a></li>
+      <li><a href="/etudes/restorative/tending-the-ember/"><strong>Tending the Ember</strong> — for days you feel low-energy, depleted, or quietly heavy.</a></li>
+      <li><a href="/etudes/restorative/the-open-sky/"><strong>The Open Sky</strong> — for days you want to unbind, expand, and meet what's larger than you.</a></li>
+    </ul>
+    <p class="essay-meta"><a href="/">← home</a></p>
+  </div>
+</Base>
+<style>
+  .etude-index { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+  .etude-index h1 { font-family: 'Georgia', serif; font-size: 2.25rem; margin: 0.5rem 0 0.5rem; }
+  .lede { color: var(--ink-muted, #555); font-style: italic; margin: 0 0 1.5rem; }
+  .etude-list { list-style: none; padding: 0; }
+  .etude-list li { margin: 0.85rem 0; line-height: 1.5; }
+  .etude-list a { text-decoration: none; }
+  .etude-list a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+</style>

@@ -22,6 +22,12 @@ for (const arr of childrenByParent.values()) {
 }
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+
+// "▶ playable" hint: small affordance signaling the essay has playable
+// etudes inline. Renders next to the essay title on the index. Reader
+// register: TikTok-attention bandwidth — one glyph + one word does the
+// work that an inline list would do at higher cost.
+const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
 ---
 <Base title="parrik">
   <section class="intro">
@@ -35,15 +41,11 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
       {topLevel.map(essay => {
         const children = childrenByParent.get(essay.id) ?? [];
         const isSeries = children.length > 0;
-        const status = essay.data.status;
-        // Right-side meta: "a series · tending" / "evergreen" / "tending"
-        const meta = (
+        const meta = isSeries ? (
           <span class="essay-meta-right">
-            {isSeries && <span class="meta-series">a series</span>}
-            {isSeries && status && <span class="meta-sep">·</span>}
-            {status && <span class={`meta-status meta-${status}`}>{status}</span>}
+            <span class="meta-series">a series</span>
           </span>
-        );
+        ) : null;
 
         if (!isSeries) {
           return (
@@ -51,8 +53,8 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
               <div class="essay-row">
                 <a href={`/essays/${essay.id}/`} class="essay-link">
                   <span class="essay-title">{essay.data.title}</span>
+                  {countEtudes(essay) > 0 && <span class="play-hint" aria-label={`${countEtudes(essay)} playable inline`}>▶ play</span>}
                 </a>
-                {meta}
               </div>
               {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
             </li>
@@ -72,6 +74,7 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
                   <a href={`/essays/${p.id}/`} class="series-part">
                     <span class="part-num">Part {ROMAN[i]}</span>
                     <span class="part-subtitle">{p.data.subtitle ?? ''}</span>
+                    {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
                   </a>
                 </li>
               ))}
@@ -86,10 +89,38 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
     <ul>
       <li>
         <div class="essay-row">
-          <span class="essay-title">Memory was never about storage</span>
+          <a href="/essays/memory-was-never-about-storage/" class="essay-link">
+            <span class="essay-title">Memory was never about storage</span>
+            <span class="play-hint" aria-label="5 playable etudes inline">▶ play</span>
+          </a>
           <span class="essay-meta-right"><span class="meta-series">part of know-thyself</span></span>
         </div>
+        <p class="essay-subtitle">What you can retrieve under load is what you remember.</p>
       </li>
     </ul>
   </section>
 </Base>
+
+<style>
+  .play-hint {
+    margin-left: 0.55rem;
+    display: inline-block;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid currentColor;
+    border-radius: 3px;
+    vertical-align: middle;
+    transition: background 120ms, transform 120ms;
+  }
+  .essay-link:hover .play-hint,
+  .series-part:hover .play-hint {
+    background: var(--accent);
+    color: var(--bg, #fff);
+    transform: translateX(2px);
+  }
+</style>
