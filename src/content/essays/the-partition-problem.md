@@ -16,13 +16,13 @@ etudes:
     url: '#the-long-exhale'
     note: 4-in / 8-out for two minutes; the parasympathetic comes online
   - label: Coming Home
-    url: /etudes/restorative/coming-home.pdf
+    url: /etudes/restorative/coming-home/
     note: anxious, hypervigilant, unsafe in your body
   - label: Tending the Ember
-    url: /etudes/restorative/tending-the-ember.pdf
+    url: /etudes/restorative/tending-the-ember/
     note: depleted, heavy, low
   - label: The Open Sky
-    url: /etudes/restorative/the-open-sky.pdf
+    url: /etudes/restorative/the-open-sky/
     note: ready to unbind and expand
 ---
 
@@ -466,23 +466,23 @@ Restorative yoga cannot cure cancer. But it addresses, at the level of nervous s
 The cell is not broken. It is isolated. And isolation, it turns out, is something the body knows how to heal.[^1]
 
 <aside class="restorative-picker">
-  <p class="restorative-picker-prompt">Pick a routine based on how you woke up. Each is a two-hour sequence, structured by chakra, ground-up. PDFs — view or print.</p>
+  <p class="restorative-picker-prompt">Pick a routine based on how you woke up. Each is a two-hour sequence, structured by chakra, ground-up. Print-friendly — use your browser's Print command to save or print.</p>
   <ul class="restorative-picker-cards">
     <li>
-      <a href="/etudes/restorative/coming-home.pdf" class="restorative-picker-card">
-        <span class="restorative-picker-label">Coming Home <span class="restorative-picker-fmt">↓ pdf</span></span>
+      <a href="/etudes/restorative/coming-home/" class="restorative-picker-card">
+        <span class="restorative-picker-label">Coming Home</span>
         <span class="restorative-picker-note">anxious, hypervigilant, unsafe in your body</span>
       </a>
     </li>
     <li>
-      <a href="/etudes/restorative/tending-the-ember.pdf" class="restorative-picker-card">
-        <span class="restorative-picker-label">Tending the Ember <span class="restorative-picker-fmt">↓ pdf</span></span>
+      <a href="/etudes/restorative/tending-the-ember/" class="restorative-picker-card">
+        <span class="restorative-picker-label">Tending the Ember</span>
         <span class="restorative-picker-note">depleted, heavy, low</span>
       </a>
     </li>
     <li>
-      <a href="/etudes/restorative/the-open-sky.pdf" class="restorative-picker-card">
-        <span class="restorative-picker-label">The Open Sky <span class="restorative-picker-fmt">↓ pdf</span></span>
+      <a href="/etudes/restorative/the-open-sky/" class="restorative-picker-card">
+        <span class="restorative-picker-label">The Open Sky</span>
         <span class="restorative-picker-note">ready to unbind and expand</span>
       </a>
     </li>

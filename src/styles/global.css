@@ -771,13 +771,6 @@ hr {
   font-weight: 600;
   flex-shrink: 0;
 }
-.restorative-picker-fmt {
-  font-weight: 400;
-  font-size: 0.78rem;
-  color: var(--muted);
-  margin-left: 0.4rem;
-  letter-spacing: 0.02em;
-}
 .restorative-picker-note {
   color: var(--muted);
   font-size: 0.92rem;
@@ -830,6 +823,8 @@ hr {
   .essay-meta,
   .metadata-stripe,
   .graph-embed,
+  .etude-embed,
+  .restorative-picker,
   iframe {
     display: none !important;
   }
@@ -852,4 +847,25 @@ hr {
   article a[href^="/"]:not([href^="/alex"]):not([href^="/essays"])::after {
     content: "";
   }
+  /* Restorative routine pages — keep pose cards together; chakra banners
+     stay with the next pose. */
+  .pose-card {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin: 0.6em 0;
+  }
+  .chakra-banner {
+    page-break-after: avoid;
+    break-after: avoid;
+    margin-top: 0.8em;
+  }
+  .pose-quote {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  .etude-duration {
+    color: #555;
+    margin-bottom: 0.6em;
+  }
+  hr { border-top: 1px solid #ccc; }
 }
