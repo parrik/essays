@@ -210,12 +210,20 @@ a:hover { text-decoration-color: var(--accent); }
   margin: 0.7rem 0 0 0.15rem;
   padding: 0 0 0 0.95rem;
   border-left: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem 1.4rem;
 }
 .series-parts li {
-  padding: 0.45rem 0;
+  padding: 0.35rem 0;
   border-bottom: none;
 }
-.series-parts li:first-child { padding-top: 0.55rem; }
+@media (max-width: 32rem) {
+  .series-parts {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
 .series-part {
   display: flex;
   align-items: baseline;
@@ -762,6 +770,13 @@ hr {
 .restorative-picker-label {
   font-weight: 600;
   flex-shrink: 0;
+}
+.restorative-picker-fmt {
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-left: 0.4rem;
+  letter-spacing: 0.02em;
 }
 .restorative-picker-note {
   color: var(--muted);

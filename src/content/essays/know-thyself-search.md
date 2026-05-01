@@ -21,15 +21,15 @@ etudes:
     note: ~300 LOC; three retrieval modes
 ---
 
-The human reader was a contingency. Search has always been graph-traversal-with-ranking — and the new reader has a different attention budget.
+Search has always been graph-traversal-with-ranking. The human reader was a contingency. The new reader has a different attention budget.
 
-*Companion to **[Know Thyself](/essays/know-thyself/)**. First essay: personal memory needs structured shape. This one: retrieval over it has always had the same shape. Scaffold at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
+*Companion to **[Know Thyself](/essays/know-thyself/)**. Scaffold: **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
 
 ---
 
 ## The mirror, again
 
-The first essay opened with Alex catching a model making a confident claim about her on six restated assertions, zero independent episodes. Schema fixed it: typed nodes, provenance triples, claim-repeated-five-times-is-one-derivation.
+The first essay opened with Alex catching a model making a confident claim about her on six restated assertions — zero independent episodes. Schema fixed it: typed nodes, provenance triples.
 
 Eight months in, her graph has shape. A few hundred nodes. A spine that holds.
 
@@ -220,50 +220,37 @@ Graph correct. Reader finite. Retrieval is the bridge.
 
 ## The thing that was never about humans
 
-The pattern Alex needs isn't new. It's what Lucene runs at 700M docs. HNSW over a billion vectors. Google for two decades. Your hippocampus every time you recognize a face in a coffee shop.
+Search has always been one shape: **find relevant nodes by walking edges, ranked by some distance function.**[^scales] The human at the SERP was a contingency — ten results because more was too much, first-three ranking because attention had a budget, page summaries because a page was the unit a person could absorb. We mistook the filter for the shape.
 
-Search has always been one shape: **find relevant nodes by walking edges, ranked by some distance function.** What changes is what's *in* a node and who's *reading*. Substrate moves. Shape doesn't.
-
-The human at the SERP was always a contingency. Ten results because more was too much. First-three ranking because attention had a budget. Page summaries because a page was the unit a person could absorb. Web search was a graph problem with a human filter on top — we mistook the filter for the shape.
-
-The reader changed. Different budget, ranking, format. Graph problem unchanged. Filter moved.
-
-*Search was never about humans.* The reader being human was an accident of the era we built the indexes in.
+The reader changed. The graph problem didn't.
 
 ## Four scales of the same shape
 
-Fifty years of information retrieval, same shape instantiated four times.
+Fifty years of information retrieval, same shape instantiated four times. What changes at each scale is *what's in a node, what an edge means, what the query looks like, and who's at the other end.*
 
-**Scale 1 — Inverted index (1990s through now).** Bipartite graph: terms ↔ documents, edges weighted by term frequency. Lucene, Solr, Elasticsearch. BM25 / TF-IDF ranking. *Walk from query terms to documents; rank by overlap.* Reader: human. Format: ten ranked links.
+**Scale 1 — Inverted index.** Bipartite graph: terms on one side, documents on the other; edges weighted by term frequency. The query is a bag of words. The walk goes term → documents, ranked by overlap (BM25, TF-IDF). Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
 
-**Scale 2 — Vector retrieval (2017 onward).** Embedding-as-node, cosine-as-edge. At scale: a *graph of vectors* — HNSW,[^hnsw] log-time ANN as a greedy walk from a sparse top layer through dense lower layers, shuffle-sharding-of-similarity[^shuffle]. Pinecone, Weaviate, Qdrant, FAISS all use HNSW or close variants. (Below 10K vectors, brute-force NumPy beats it; HNSW earns its keep past SIMD's reach. *Literature: ~100K crossover query-bound, ~1M batch — unverified on my laptop. `etudes/hnsw-crossover/` exists; post updates when it runs.*) Reader: mostly human, LLM increasingly present. Format: page summaries, chunk creeping in.
+**Scale 2 — Vector retrieval.** Nodes become embeddings; edges are cosine distance. At scale, the index itself is a graph — a layered small-world built so a greedy walk from the top finds nearest neighbors in log time. Below ~10K vectors, brute-force matmul wins; the layered index earns its keep further out. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
 
-**Scale 3 — Typed knowledge graph (decades of DB research; recently personal).** Nodes are claims; edges typed — `grounds`, `derives_from`, `evidences`, `contradicts`, `emergent_from`. Not decorative — it distinguishes *I said this five times* from *independently grounded twice*. Claims-with-attribution runs in multiple traditions decades back.[^triplet] The [know-thyself](https://github.com/parrik/know-thyself) scaffold extends it to personal memory — see [*What this essay extends*](#what-this-essay-extends). Reader: a self, or an agent on behalf of one. Format: node + provenance + neighborhood.
+**Scale 3 — Typed knowledge graph.** Nodes are *claims*, not documents. Edges are typed — `grounds`, `derives_from`, `evidences`, `contradicts`. The typing is not decorative: it lets retrieval distinguish *I said this five times* from *independently grounded twice.* The query is no longer a string but a structured predicate. Reader: a self, or an agent on behalf of one. Format: node plus provenance plus neighborhood.
 
-**Scale 4 — AI-native search (2023 onward).** [Exa](https://exa.ai) is one well-developed articulation. Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."* Three axes: query complexity (keywords vs structured), volume (ten vs every match), ranking (popularity vs comprehensiveness). Substrate: clustered ANN — Exa rejected HNSW because [it doesn't shard cleanly and doesn't compose with metadata filters](https://exa.ai/blog/building-web-scale-vector-db) — over a Matryoshka-trained embedding, truncated and binary-quantized for SIMD-resident lookup. Hard work at the rim. Shape underneath: still graph + traversal.
+**Scale 4 — AI-native search.** The agent's query is a declarative description of the target, not a keyword string — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on how documents *get cited.* Filtering is separated from ranking and runs first. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
 
-Same shape, four scales:
-
-| Scale | Nodes | Edges | Walk strategy | Reader |
-|---|---|---|---|---|
-| Inverted index | terms + docs | term-occurs-in-doc | exact match + score | human |
-| Vector retrieval | vectors | cosine-near (HNSW layered) | greedy descent | human or agent |
-| Typed KG | claims | grounds, derives_from, … | typed traversal | self / agent |
-| AI-native search | web chunks | semantic + provenance | filter-then-rank | agent |
-
-All *find relevant nodes by walking edges*. What changes: node spec, edge spec, query format, who's at the other end.
+All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
 ## What an AI reader actually needs
 
-Bryk's three axes, right but too narrow:
+Three requirements fall out of the four-scale walk.
 
-**Query format.** Humans type two words; typing is slow. Agents specify intent — JSON, structured filter, precise predicate. Exa takes queries as *declarative descriptions of the target* (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`) — its embedding was [link-prediction-trained](https://www.latent.space/p/exa) on how documents *get cited*, not *get queried*. Generative capacity, not typing budget.
+**Query format.** Humans type two words because typing is slow. Agents specify intent — declarative predicate, structured filter, a sentence that *describes the kind of node it wants to find.* Generative capacity replaces typing budget.
 
-**Result format.** Humans want ten ranked links. Agents want atomic chunks with provenance — chunk plus *where, when, what type, what confidence*. Exa returns `{title, url, score, publishedDate, author, text, highlights[], summary}` — every field stitches into the agent's answer. Page summary doesn't appear; chunk and citation do.
+**Result format.** Humans want ten ranked links. Agents want chunks with provenance attached — *where, when, what type, what confidence* — because the agent's next move is to stitch the chunk into an answer, not click through a page.
 
-**Ranking.** Humans want popularity-as-proxy-for-correctness. Agents want comprehensiveness, recency, type-correctness, provenance-strength. Bryk separates *filtering* (does the doc match?) from *ranking* (which match is best?) — filter first. PageRank counts edges; Exa's ranker learned every way a document gets cited. *"Strictly more powerful because people might refer to that Paul Graham fundraising essay in like a thousand different ways."*
+**Ranking.** Humans get popularity-as-proxy-for-correctness. Agents need filter-first (does the doc match the type and time predicate?) then rank-among-matches by comprehensiveness and provenance strength. PageRank counts edges; an agent-grade ranker has to learn every way a document gets *referred to.*
 
-**Bryk's missing axis: bounded context.** The technical spine.
+The fourth axis is bounded context — the technical spine of the rest of this essay.
+
+Type the same intent two ways. Watch the ranking shift.
 
 
 <div class="etude-embed" data-etude="two-queries">
@@ -502,54 +489,40 @@ Bryk's three axes, right but too narrow:
 
 Four claims, deep prior backing.[^bounded]
 
-**Working memory is bounded.** Miller's 7±2; Cowan's 4±1.
+- Working memory is bounded — Miller's 7±2; Cowan's 4±1.
+- Institutional decision-making is bounded — Simon's bounded rationality.
+- Lossless compression is bounded — Shannon's floor.
+- The space-creating operation that doesn't lose information is *factoring* — shared structure into named nodes with typed edges. Codd's relational model.
 
-**Institutional decision-making is bounded.** Simon's bounded rationality.
+Stack them. When `|K|` exceeds `C_n`, discarding loses information and lossless hits Shannon's floor. **Factoring is graph construction.** The bounded reader needs the graph not as decoration but as the only architecture that lets retrieval scale without degrading.
 
-**Lossless compression is bounded.** Shannon's floor.
-
-**Factoring shared structure into named relations is database normalization.** Codd — recover space without losing the posterior.
-
-Stack them. When `|K|` exceeds `C_n`: discarding loses information, lossless hits Shannon's floor, lossy is "blind discarding with extra steps." The space-creating operation that doesn't lose information is *factoring* — shared structure into a named node with typed edges.
-
-**Factoring is graph construction.** The bounded reader needs the graph not as decoration but as the only architecture that lets retrieval scale without degrading.
-
-Three substrates share the constraint: biological working memory, institutional decision-making, *transformer context windows — large but degrading as irrelevant content fills them.* McCarthy proves the theorem formally for the *scientific* case, with a corollary aimed at the frontier labs:
+Three substrates share the constraint: biological working memory, institutional decision-making, *transformer context windows — large but degrading as irrelevant content fills them.* McCarthy proves it formally for the scientific case, with a corollary aimed at the frontier labs:
 
 > Growing C_n directly does not solve the retrieval problem… The efficient path is not to grow the context window but to grow the encoded knowledge accessible via stored adjacency: **filling the graph, not the context window.**
 
-The race to longer windows — 200K, 1M, 10M, "infinite-context" — is real progress and a confession the substrate hasn't been chosen. Self-attention's O(n²) is the cost of no stored structure: every token-pair compared because the model doesn't know which depends on which. A graph stores dependencies once, walks them many times. The limit isn't tokens; it's untyped flatness.
+The race to longer windows — 200K, 1M, 10M — is real progress and a confession the substrate hasn't been chosen. Self-attention's O(n²) is the cost of no stored structure. A graph stores dependencies once, walks them many times. The limit isn't tokens; it's untyped flatness.
 
-Downstream of the major labs:
-
-- Anthropic ships [MCP](https://www.anthropic.com/news/model-context-protocol) — first reference server is a [knowledge-graph CRUD API](https://github.com/modelcontextprotocol/servers/tree/main/src/memory) backed by JSON. *Memory as just another MCP server*, graph-shaped by reference.
-- OpenAI ships [memory](https://openai.com/index/memory-and-new-controls-for-chatgpt/) in ChatGPT — extracted facts, deduped, surfaced into the system prompt. Unit isn't the turn; it's the typed claim.
-- Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) and [context caching](https://ai.google.dev/gemini-api/docs/caching) — the maximalist version of growing C_n. McCarthy names this the inefficient path.
-- The 2024-25 academic line — Park et al. on memory streams ranked by importance × recency × relevance,[^genagents] MemGPT/Letta on virtual-memory paging,[^memgpt] HippoRAG on Personalized PageRank over an extracted graph,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem) on Zettelkasten-style dynamic linking[^amem] — every paper converges: the graph isn't a feature; it's where memory lives.
+The labs split. Anthropic ships [MCP](https://www.anthropic.com/news/model-context-protocol) — first reference server is a [knowledge-graph CRUD API](https://github.com/modelcontextprotocol/servers/tree/main/src/memory). OpenAI ships [memory](https://openai.com/index/memory-and-new-controls-for-chatgpt/) — extracted typed claims, not turns. Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) — the maximalist path McCarthy names inefficient. The academic line — memory streams,[^genagents] MemGPT,[^memgpt] HippoRAG,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem)[^amem] — converges: the graph isn't a feature; it's where memory lives.
 
 Both bets are live. Big-context: transformers absorb the graph through scale. MCP/memory-server: graph lives outside the context, model wants typed adjacency at retrieval. The argument above is the technical case for the second.
 
 ## What this essay extends
 
-**The personal-graph framing — bounded-context applied to a self rather than a science — is what this essay puts down.** Provenance-triple machinery has roots going back decades.[^triplet]
+The personal-graph framing — bounded-context applied to a self rather than a science — is what this essay puts down. McCarthy's necessity arguments run through selection-under-competition: science prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior, no replication, no external ground truth, fuzzy temporal validity. Three rewrites:
 
-What needs rewriting: predictions about how mature graphs evolve. McCarthy's necessity arguments run through selection-under-competition: science prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior, no replication, no external ground truth, fuzzy temporal validity.
+**`valid_at` / confidence-decay.** Propositions about persons aren't permanently valid. *Propositions don't die, they become less true over time.* Every claim carries a validity window that decays unless re-grounded. First-class field on every node.
 
-Three rewrites:
+**Inverted edge-density.** Paper 1 Corollary 3 predicts mature graphs become edge-dense. True for science. False for personal psychology — a forty-year-old's graph is *node-dense with sparse adjacency*. "Right node, then walk *its* neighborhood" beats "connected clique."
 
-**`valid_at` / confidence-decay axis.** Propositions about persons aren't permanently valid the way physical laws are. *Propositions don't die, they become less true over time.* Retention from survival pressure becomes epistemic humility — every claim carries a validity window that decays unless re-grounded. First-class field on every node.
+**Un-clean action space.** K/A inseparability (Paper 3 Corollary 4) presumes crisp β overlap. Personal action doesn't share one. Schema tolerates K-without-A and A-without-K.
 
-**Inverted edge-density.** Paper 1 Corollary 3 predicts mature graphs become edge-dense. True for science. *False for personal psychology*, where new events spawn new nodes and cross-time edges stay sparse. A forty-year-old's graph is *node-dense with sparse adjacency*. "Connected clique" indexes don't fit; "right node, then walk *its* neighborhood" does.
-
-**Un-clean action space.** K/A inseparability (Paper 3 Corollary 4) presumes a crisp β overlap. *"Respond to this friend,"* *"decide this job move,"* *"interpret last night's dream"* don't share one. Schema tolerates K-without-A and A-without-K. Necessity weakens; engineering absorbs the slack.
-
-Schema carries over cleanly. Retention logic doesn't. This essay extends McCarthy's machinery and rewrites the temporal logic for personal memory.
+Schema carries over cleanly. Retention logic doesn't.
 
 ## A demo, at the personal scale
 
-The bet is testable. The shape that matters for Exa over the web matters for a 300-node personal graph — *the bound is the reader, not the corpus.* Small graph + finite agent = huge graph + finite agent.
+The bet is testable. The bound is the reader, not the corpus. Small graph + finite agent = huge graph + finite agent.
 
-Runnable on a laptop, against [Alex's example graph](https://github.com/parrik/know-thyself/blob/main/example-graph-extended.yaml) (87-node fictional editor from the first essay):
+Runnable on a laptop, against [Alex's example graph](https://github.com/parrik/know-thyself/blob/main/example-graph-extended.yaml):
 
 ```bash
 git clone github.com/parrik/know-thyself-search
@@ -588,50 +561,39 @@ Index: 87 nodes · backend=tfidf
 
 Three things to notice.
 
-**A finds the *theme*. B finds the *episode*.** Cosine finds P01 because the overlap uses the query's words — *"running routine breaks"* verbatim. Right frame, wrong answer to *when*. Type filter retrieves dated episodes. *Schema doing work pure embeddings cannot.* A vector DB doesn't know what kind of node a node is; a typed graph does.
+**A finds the *theme*. B finds the *episode*.** Cosine grabs P01 on word overlap — right frame, wrong answer to *when*. Type filter retrieves dated episodes. Schema doing work pure embeddings cannot.
 
-**C demotes the tentative novel.** Cosine ranked it third; provenance reranking pushed it lower — not because similarity is wrong, but because the schema knows the novel is one-derivation and the overlap is two-grounded. *Attribution ≠ confidence as a retrieval property, not just interpretation.*
+**C demotes the tentative novel.** Provenance reranking knows the novel is one-derivation and the overlap is two-grounded. *Attribution ≠ confidence as a retrieval property.*
 
-**At 87 nodes, none of this needs HNSW.** Brute-force matmul runs in two ms. HNSW kicks in when linear scan stops being free — well past where most personal graphs go. (`hnswlib`: forty lines.) Algorithm scales with problem.[^pinecone] Index graph structure emerges where flat breaks. Same for the typed structure of the knowledge graph itself.
-
-## What this essay puts on the record
-
-Synthesis across all four scales — **inverted index, vector retrieval, typed knowledge graph, AI-native search** — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; knowledge representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
-
-Adjacent work names pieces without the cross-scale claim:
-
-- **Will Bryk** in [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) — the AI-native-search slice.
-- **Lù et al. (2025)** [*Build the Web for Agents, Not Agents for the Web*](https://arxiv.org/abs/2506.10953) — same-shape claim one level up: the whole web, not just search, was designed for human eyes.
-- **Karpathy** hints at it in interviews and his [LLM Wiki gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f).
-- **Patrick D. McCarthy's** [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) — necessity theorems formally for Scale 3. **Anthropic's** [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations) ships the same triplet in the product. Older lineage: RDF, PROV-O, Cowan, Miller.[^triplet][^bounded]
-
-Personal-memory adjacent work converges independently. [Mem0](https://github.com/mem0ai/mem0) (54k stars): facts as the unit. [Graphiti](https://github.com/getzep/graphiti): bitemporally validated memory. [Letta](https://github.com/letta-ai/letta): tiered like virtual memory. [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG): Personalized PageRank over an LLM-extracted graph. [A-Mem](https://github.com/agiresearch/A-mem): graph built dynamically per write. [basicmachines-co/basic-memory](https://github.com/basicmachines-co/basic-memory): hand-edit as markdown.
-
-What these share — what LangChain / LlamaIndex don't ship — is *typed-node-with-provenance*. Frameworks treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped (typed claims, typed edges, provenance triples). Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
+**At 87 nodes, none of this needs HNSW.** Brute-force matmul runs in two ms. HNSW kicks in when linear scan stops being free — well past where most personal graphs go.[^pinecone] Algorithm scales with problem.
 
 ## What this opens
 
-Reader finite, graph isn't: retrieval is the bridge. Same shape across scales, build once:
+Same shape across scales, build once:
 
-- **Schema:** typed nodes carrying claim + attribution + derivation — provenance-triple across RDF, scientific provenance, Anthropic's citations API, McCarthy's open-knowledge-graph. The [know-thyself](https://github.com/parrik/know-thyself) scaffold adds temporal-validity.
-- **Index:** vectors plus typed metadata (the [know-thyself-search](https://github.com/parrik/know-thyself-search) scaffold this essay describes).
-- **Walk:** edge-aware traversal — `walk_provenance(node_id)` returns the typed-edge neighborhood (outbound `grounded_by` / `related_to`, inbound references) in one call. **Shipped Apr 2026.**
+- **Schema:** typed nodes carrying claim + attribution + derivation. The [know-thyself](https://github.com/parrik/know-thyself) scaffold adds temporal-validity.
+- **Index:** vectors plus typed metadata ([know-thyself-search](https://github.com/parrik/know-thyself-search)).
+- **Walk:** edge-aware traversal — `walk_provenance(node_id)` returns typed-edge neighborhood (outbound `grounded_by` / `related_to`, inbound references) in one call. **Shipped Apr 2026.**
 - **Surface:** MCP server — `search_graph` / `get_node` / `walk_provenance` / `list_node_stats` over stdio; any MCP client (Claude Code, Claude Desktop, Cursor) queries natively. **Shipped Apr 2026.**
-- **Next bottleneck:** sub-statement chunking. Long observation nodes accumulate dated sub-sections; whole-statement single-vector dilutes new content. Instance during the edge-aware ship: a query for the newest sub-section of a long log node failed — a stale tangential reference won. Cosine averaged across sub-sections smeared the new content out. Etude queued.
+- **Next bottleneck:** sub-statement chunking. Long observation nodes accumulate dated sub-sections; whole-statement single-vector dilutes new content. Etude queued.
 
-That's the personal-memory stack. Scales up: swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa. Swap the agent for a literature-review assistant — different surface, same architecture. Shape doesn't care.
+Synthesis across all four scales — inverted index, vector retrieval, typed knowledge graph, AI-native search — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
+
+Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
+
+Swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa. Swap the agent for a literature-review assistant — different surface, same architecture. Shape doesn't care.
 
 This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
 
-γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle — being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
+γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
 
 The retrieval problem hasn't changed in two and a half millennia. The reader has.
 
 ## Postscript — DeepSeek V4 (Apr 26 2026)
 
-Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Headline: million-token context. Substrate: hybrid attention — Compressed Sparse + Heavy Compressed — delivering it with **9.5–13.7× less memory** and **10% of the KV cache** of V3.2.
+Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Million-token context via hybrid attention — Compressed Sparse + Heavy Compressed — at **9.5–13.7× less memory** and **10% of the KV cache** of V3.2.
 
-Four-scales extends one substrate further:
+Four-scales extends one further:
 
 | Scale | Nodes | Edges | Walk strategy | Reader |
 |---|---|---|---|---|
@@ -643,22 +605,22 @@ More to follow.
 
 ---
 
-*The retrieval scaffold is open at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)** — three Python CLIs, ~300 LOC. The companion [Know Thyself](/essays/know-thyself/) essay describes the schema. The four-scale synthesis and the temporal-validity extension are this essay's specific contribution.*
+*Same shape, smaller scale — applied to a self. **[Part III — Memory was never about storage →](/essays/memory-was-never-about-storage/)***
 
-[^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004) and [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013) formalized the triplet shape decades before the LLM era. [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations) ships the same triplet inside the model output today. [Patrick D. McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) works the necessity theorems out formally for the *scientific*-knowledge-graph case, theorem by theorem.
+[^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004); [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013); [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on the scientific case.
 
-[^bounded]: [Miller 1956](https://psychclassics.yorku.ca/Miller/) on "7±2" as the information-channel limit; [Cowan 2001](https://doi.org/10.1017/S0140525X01003922) revising to "4±1" for unrelated chunks; [Herbert Simon's bounded rationality](https://www.jstor.org/stable/1884852) (1955; Nobel 1978) on satisficing under cognitive constraints; [Shannon's source coding theorem](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf) (1948); [Codd's relational model](https://dl.acm.org/doi/10.1145/362384.362685) (1970).
+[^bounded]: [Miller 1956](https://psychclassics.yorku.ca/Miller/); [Cowan 2001](https://doi.org/10.1017/S0140525X01003922); [Simon's bounded rationality](https://www.jstor.org/stable/1884852); [Shannon's source coding theorem](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf); [Codd's relational model](https://dl.acm.org/doi/10.1145/362384.362685).
 
-[^hnsw]: Malkov & Yashunin, [*Efficient and robust approximate nearest neighbor search using Hierarchical Navigable Small World graphs*](https://arxiv.org/abs/1603.09320) (2016/2018).
+[^hnsw]: Malkov & Yashunin, [*Hierarchical Navigable Small World graphs*](https://arxiv.org/abs/1603.09320) (2018).
 
-[^shuffle]: AWS Builders' Library, [*Workload isolation using shuffle-sharding*](https://aws.amazon.com/builders-library/workload-isolation-using-shuffle-sharding/) — the distributed-systems analogue.
+[^scales]: Same shape across scales: inverted index (Lucene, BM25/TF-IDF — terms ↔ documents); vector retrieval (HNSW[^hnsw], Pinecone, FAISS — embeddings as nodes, cosine as edges); typed knowledge graph (claims with `grounds` / `derives_from` / `contradicts` edges)[^triplet]; AI-native search ([Exa](https://exa.ai) — clustered ANN over Matryoshka embeddings, [link-prediction-trained](https://www.latent.space/p/exa), [rejected HNSW for sharding/metadata reasons](https://exa.ai/blog/building-web-scale-vector-db); Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."*). What changes: node spec, edge spec, query format, who's reading. Agents want declarative queries (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`), atomic chunks with provenance, ranking by comprehensiveness/recency/type-correctness — filter first, then rank.
 
-[^genagents]: Park et al., [*Generative Agents: Interactive Simulacra of Human Behavior*](https://arxiv.org/abs/2304.03442) (2023) — memory streams ranked by importance × recency × relevance.
+[^genagents]: Park et al., [*Generative Agents*](https://arxiv.org/abs/2304.03442) (2023).
 
-[^memgpt]: Packer et al., [*MemGPT: Towards LLMs as Operating Systems*](https://arxiv.org/abs/2310.08560) (2023) — virtual-memory paging for context.
+[^memgpt]: Packer et al., [*MemGPT*](https://arxiv.org/abs/2310.08560) (2023).
 
-[^hipporag]: Gutiérrez et al., [*HippoRAG: Neurobiologically Inspired Long-Term Memory for Large Language Models*](https://arxiv.org/abs/2405.14831) (2024) — Personalized PageRank over an extracted graph.
+[^hipporag]: Gutiérrez et al., [*HippoRAG*](https://arxiv.org/abs/2405.14831) (2024).
 
-[^amem]: Xu et al., [*A-Mem: Agentic Memory for LLM Agents*](https://arxiv.org/abs/2502.12110) (2025) — Zettelkasten-style dynamic linking.
+[^amem]: Xu et al., [*A-Mem*](https://arxiv.org/abs/2502.12110) (2025).
 
-[^pinecone]: Pinecone, [*Hierarchical Navigable Small Worlds (HNSW)*](https://www.pinecone.io/learn/series/faiss/hnsw/) — tutorial on when graph indexes earn their keep over linear scan.
+[^pinecone]: Pinecone, [*HNSW*](https://www.pinecone.io/learn/series/faiss/hnsw/) — when graph indexes earn their keep over linear scan.
