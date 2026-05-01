@@ -559,7 +559,7 @@ Type the same intent two ways. Watch the ranking shift.
     });
   }
   //
-  root.querySelector('.tq-run').addEventListener('click', runSearch);
+  runSearch();
   window.addEventListener('resize', () => {
     if (root.querySelector('.tq-results-grid')) {
       drawLines(rank('tfidf'), rank('embed'));
