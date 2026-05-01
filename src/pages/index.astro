@@ -80,20 +80,37 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
               {meta}
             </div>
             <ol class="series-parts">
-              {parts.map((p, i) => (
-                <li>
-                  <a href={`/essays/${p.id}/`} class="series-part">
-                    <span class="part-num">Part {ROMAN[i]}</span>
-                    <span class="part-body">
-                      <span class="part-name">
-                        {p.data.title}
-                        {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
+              {parts.map((p, i) => {
+                const muted = i > 0;
+                if (!muted) {
+                  return (
+                    <li>
+                      <a href={`/essays/${p.id}/`} class="series-part">
+                        <span class="part-num">Part {ROMAN[i]}</span>
+                        <span class="part-body">
+                          <span class="part-name">
+                            {p.data.title}
+                            {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
+                          </span>
+                          {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                }
+                return (
+                  <li>
+                    <div class="series-part series-part-muted" aria-disabled="true">
+                      <span class="part-num">Part {ROMAN[i]}</span>
+                      <span class="part-body">
+                        <span class="part-name">{p.data.title}</span>
+                        {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
+                        <a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
                       </span>
-                      {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
-                    </span>
-                  </a>
-                </li>
-              ))}
+                    </div>
+                  </li>
+                );
+              })}
             </ol>
           </li>
         );
