@@ -1,6 +1,6 @@
 ---
 title: Security was never about response
-subtitle: Continuous verification: gates and sweeps
+subtitle: 'Continuous verification: gates and sweeps'
 kicker: Method
 tag: essay
 order: 3
