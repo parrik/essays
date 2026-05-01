@@ -1,6 +1,6 @@
 ---
 title: Security was never about response
-subtitle: Continuous verification — gates fire on action, sweeps fire on cadence
+subtitle: Continuous verification: gates and sweeps
 kicker: Method
 tag: essay
 order: 3
@@ -47,9 +47,18 @@ Response is the work that begins **after** verification has failed.
 
 A leaked key needs to be rotated. A forbidden path returning 200 needs to be patched, the leak window measured, the affected users contacted. A breach disclosed needs comms — to users, to the team, to anyone the disclosure obligation reaches. A compromised endpoint needs forensic triage: what came in, what left, when, through which path.
 
-This work is necessary. It also has nothing to do with security as a verification discipline. It belongs to a sibling profession with its own canon — **DFIR** (digital forensics and incident response), the **CIRT** function in larger orgs, military-shape posture in the most adversarial cases. Different tools, different rhythms, different success criteria. All post-leak.
+This work is necessary. It also has nothing to do with security as a verification discipline. It belongs to a sibling profession with its own canon — **DFIR** (digital forensics and incident response), the **CIRT** function in larger orgs, military-shape posture in the most adversarial cases. All post-leak.
+
+What that work actually contains, named:
+
+- **Tools.** SIEM platforms (Splunk, Datadog Security, Elastic Stack) aggregate logs across services so a forensic analyst can pivot through them. EDR agents (CrowdStrike, SentinelOne, Microsoft Defender) run on endpoints to catch live attacker activity. Forensic disk imagers preserve state for chain-of-custody. SOAR platforms automate the runbook steps. None of these prevent leaks; they reduce blast radius after one happens.
+- **Roles.** Incident commander runs the response and makes the calls. A scribe documents the timeline minute-by-minute. A comms lead drafts the disclosures — to users, regulators, insurance, the team. A forensic analyst reconstructs the attack path. Legal counsel manages obligation. At larger orgs these are different people on a rotation; at smaller scale they collapse into one or two engineers wearing several hats simultaneously.
+- **Rhythms.** On-call rotations cover detection. War rooms convene during active incidents. Runbook rehearsals and tabletop exercises practice the response shape on a quarterly cadence. Postmortems extract lessons after every Sev-2 or higher. The tempo is dictated by the incident, not by sprint planning.
+- **Success metrics.** **MTTD** (mean time to detect), **MTTC** (mean time to contain), **MTTR** (mean time to remediate), **dwell time** (how long the attacker had access before detection). All measured *after* the breach. None of them improve because you wrote a better fire code; they improve because the response practiced. Verification's success metric — *no leaks happened this quarter* — is the inverse: the dial that is supposed to read zero.
 
 NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. The disciplines are adjacent and complementary; they are not the same.
+
+At personal-infrastructure scale, the disciplines collapse into the same person wearing two hats. The hat-switch still matters: when you are running pre-deploy lints, you are doing security; when you are rotating a leaked key, you are doing incident response. Different mindset, different urgency, different success criterion. The trap is to spend all your energy in the second hat — *"I'll fix it when it breaks"* — and starve the first.
 
 If you are in response mode, security has already failed. **Security's success criterion is that response never has to fire.**
 
