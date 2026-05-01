@@ -29,13 +29,11 @@ Search has always been graph-traversal-with-ranking. The human reader was a cont
 
 ## The mirror, again
 
-The first essay opened with Alex catching a model making a confident claim about her on six restated assertions — zero independent episodes. Schema fixed it: typed nodes, provenance triples.
+The first essay opened with Alex catching a model making a confident claim about her on six restated assertions — zero independent episodes. Schema fixed it: typed nodes, provenance triples. Eight months in, her graph has shape — a few hundred nodes, a spine that holds.
 
-Eight months in, her graph has shape. A few hundred nodes. A spine that holds.
+Then she pastes the whole graph in, as she has all year, and Claude pulls up short. *Three thousand nodes is too much for me to read at once.* It worked at 300. At 600. At 1200 with friction. Then it stopped. **Graph correct. Reader finite. Retrieval is the bridge.**
 
-Then she pastes the whole graph in, as she has all year, and Claude pulls up short. *Three thousand nodes is too much for me to read at once.* It worked at 300. At 600. At 1200 with friction. Then it stopped.
-
-Graph correct. Reader finite. Retrieval is the bridge.
+Slide the graph size below. Watch the paste break.
 
 
 <div class="etude-embed" data-etude="token-budget">
@@ -62,7 +60,7 @@ Graph correct. Reader finite. Retrieval is the bridge.
     <div class="tb-msg tb-msg-bot">I see Alex is connected to her sister via a recurring Sunday-call pattern, and her job-search thread links back to a pattern node about deferring decisions when uncertain. Want me to trace either?</div>
   </div>
 <!---->
-  <p class="etude-embed-foot">Slide past 1,200 nodes — the answer turns to mush before the model refuses outright. The graph is correct; the reader is finite.</p>
+  <p class="etude-embed-foot">Slide past 1,200 nodes — the answer turns to mush before the model refuses outright. The graph is correct; the reader is finite. <em>What changes when the reader is no longer human?</em></p>
 </div>
 <script>
 (() => {
@@ -218,37 +216,34 @@ Graph correct. Reader finite. Retrieval is the bridge.
 .etude-embed[data-etude="token-budget"] .tb-msg-bot[data-tier="red"] { color: #8a3a30; opacity: 0.85; }
 </style>
 
-## The thing that was never about humans
-
-Search has always been one shape: **find relevant nodes by walking edges, ranked by some distance function.**[^scales] The human at the SERP was a contingency — ten results because more was too much, first-three ranking because attention had a budget, page summaries because a page was the unit a person could absorb. We mistook the filter for the shape.
-
-The reader changed. The graph problem didn't.
-
 ## Four scales of the same shape
+
+Search has always been one shape: **find relevant nodes by walking edges, ranked by some distance function.**[^scales] Salton's 1968 *Automatic Information Organization and Retrieval* set it; the vector-space-model paper (Salton, Wong, Yang 1975) named the geometry; PageRank (Brin & Page 1998) added link-graph priors. The human at the SERP was a contingency — ten results because more was too much, first-three ranking because attention had a budget, page summaries because a page was the unit a person could absorb. The reader changed; the graph problem didn't.
 
 Fifty years of information retrieval, same shape instantiated four times. What changes at each scale is *what's in a node, what an edge means, what the query looks like, and who's at the other end.*
 
-**Scale 1 — Inverted index.** Bipartite graph: terms on one side, documents on the other; edges weighted by term frequency. The query is a bag of words. The walk goes term → documents, ranked by overlap (BM25, TF-IDF). Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
+**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has a name — BM25 — and an older sibling, TF-IDF. Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
 
-**Scale 2 — Vector retrieval.** Nodes become embeddings; edges are cosine distance. At scale, the index itself is a graph — a layered small-world built so a greedy walk from the top finds nearest neighbors in log time. Below ~10K vectors, brute-force matmul wins; the layered index earns its keep further out. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
+**Scale 2 — Vector retrieval.** The node is no longer a word; it's an embedding — a point in high-dimensional space where meaning lives as direction. Two points are close if the angle between them is small. That's cosine distance. At scale, the index itself becomes a graph: a small-world layered so a greedy walk from the top hops down to the nearest neighbors in log time. Below ten thousand vectors, brute-force multiplication is faster than the index. Past that, the index earns its keep. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
 
-**Scale 3 — Typed knowledge graph.** Nodes are *claims*, not documents. Edges are typed — `grounds`, `derives_from`, `evidences`, `contradicts`. The typing is not decorative: it lets retrieval distinguish *I said this five times* from *independently grounded twice.* The query is no longer a string but a structured predicate. Reader: a self, or an agent on behalf of one. Format: node plus provenance plus neighborhood.
+**Scale 3 — Typed knowledge graph.** A node is no longer a document. It's a *claim*. Edges are no longer "links to" — they're labelled. *Grounds.* *Derives from.* *Evidences.* *Contradicts.* The labels do retrieval work. They let the walk distinguish *I said this five times* from *independently grounded twice.* The query stops being a string and becomes a predicate — a structured request for a kind of node. Reader: a self, or an agent on behalf of one. Format: node plus provenance plus neighborhood.
 
-**Scale 4 — AI-native search.** The agent's query is a declarative description of the target, not a keyword string — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on how documents *get cited.* Filtering is separated from ranking and runs first. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
+**Scale 4 — AI-native search.** The agent doesn't type. It describes. The query is a sentence shaped like the answer — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on the way documents *get cited.* Filtering separates from ranking and runs first; the index throws out the wrong types before scoring the rest. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
 
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
-## What an AI reader actually needs
+<!-- ETUDE PLACEHOLDER — "Latency as Fifth Reset"
+     Translation target: add a Latency column to the four-scales table.
+     Rows: Scale 1 (Lucene tens-of-ms, human-readable) → Scale 2 (HNSW ~10ms, page-load budget) →
+           Scale 3 (typed-graph walk, single-digit ms on small graphs) →
+           Scale 4 (Exa Instant sub-200ms; Exa Deep fan-out seconds).
+     Reader watches the budget collapse from "fast enough to read" → "sub-200ms inside an
+     agent tool-call loop, where ten retrievals stack into one user-perceptible turn."
+     Builder voice. To author: bar chart or table column with two annotations: "human page-load tolerance"
+     and "agent tool-call budget per turn." Embed slot below the four-scales prose.
+-->
 
-Three requirements fall out of the four-scale walk.
-
-**Query format.** Humans type two words because typing is slow. Agents specify intent — declarative predicate, structured filter, a sentence that *describes the kind of node it wants to find.* Generative capacity replaces typing budget.
-
-**Result format.** Humans want ten ranked links. Agents want chunks with provenance attached — *where, when, what type, what confidence* — because the agent's next move is to stitch the chunk into an answer, not click through a page.
-
-**Ranking.** Humans get popularity-as-proxy-for-correctness. Agents need filter-first (does the doc match the type and time predicate?) then rank-among-matches by comprehensiveness and provenance strength. PageRank counts edges; an agent-grade ranker has to learn every way a document gets *referred to.*
-
-The fourth axis is bounded context — the technical spine of the rest of this essay.
+Three requirements fall out of the walk. **Query format** — humans type two words because typing is slow. Agents type a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
 
 Type the same intent two ways. Watch the ranking shift.
 
@@ -273,7 +268,7 @@ Type the same intent two ways. Watch the ranking shift.
 <!---->
   <div class="tq-results" aria-live="polite"></div>
 <!---->
-  <p class="etude-embed-foot">Same intent, different optimal index. The substrate has to know which kind of reader is at the other end.</p>
+  <p class="etude-embed-foot">Same intent, different optimal index. The substrate has to know which kind of reader is at the other end. <em>So what does the bounded reader actually need from the substrate?</em></p>
 </div>
 <script>
 (() => {
@@ -485,6 +480,8 @@ Type the same intent two ways. Watch the ranking shift.
 }
 </style>
 
+The synthesis: same intent rewards different substrate because the reader changed. Bounded context is what makes that change *force* structured memory rather than merely reward it.
+
 ## Why bounded context forces structured memory
 
 Four claims, deep prior backing.[^bounded]
@@ -579,15 +576,24 @@ Same shape across scales, build once:
 
 Synthesis across all four scales — inverted index, vector retrieval, typed knowledge graph, AI-native search — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
 
+<!-- ETUDE PLACEHOLDER — "Known vs Unknown Item"
+     Translation target: a paired query bench, side-by-side.
+     Left: KNOWN-ITEM / entity-discovery query — "find the node where Alex's running routine
+           restarts in March 2025." Agent driving (query-rewrite + filter loop) helps:
+           reranks the dated observation to top-1, demotes thematic overlap.
+     Right: UNKNOWN-ITEM / information-discovery query — "what does Alex believe about
+           regulation?" Agent driving adds nothing measurable; cosine alone returns the same
+           top-3 as the agent loop after multiple turns.
+     Source: Doug Turnbull's Apr 28 2026 finding — agents add value on entity-discovery,
+            not on information-discovery.
+     Reader watches: same substrate, two query archetypes, one helped by agency, one not.
+     Sits inside the synthesis closer as the empirical sharpener: not all queries reward
+     the agent reader equally; the four-scales shift is real but uneven across query types.
+-->
+
 Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
 
 Swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa. Swap the agent for a literature-review assistant — different surface, same architecture. Shape doesn't care.
-
-This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
-
-γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
-
-The retrieval problem hasn't changed in two and a half millennia. The reader has.
 
 ## Postscript — DeepSeek V4 (Apr 26 2026)
 
@@ -601,7 +607,19 @@ Four-scales extends one further:
 
 Graph-traversal-with-ranking internalized one further. The visible feature (long context) is downstream of the memory-architecture move that scales every retrieval system before it. The reader is the model.
 
-More to follow.
+## Run it
+
+The full scaffold is three retrieval modes, ~300 LOC, runnable on a laptop: **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**. Clone, embed Alex's example graph, watch type-filter and provenance-rerank do work pure cosine cannot.
+
+## The loop closes
+
+This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
+
+γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
+
+**The retrieval problem hasn't changed in two and a half millennia. The reader has.**
+
+The bet is testable. More to follow.
 
 ---
 

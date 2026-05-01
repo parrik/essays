@@ -22,15 +22,22 @@ Alex has kept the graph nine months. A Sunday evening, she tries to recall somet
 
 She opens the file, scrolls, finds the node in a minute. The trace was never gone. The cue and the trace had drifted apart.
 
+**Storage is the substrate. Memory is what survives retrieval under bound.**
+
 ## Same shape, three physics
 
-Start with the brain. The cells that store a memory are intact. The natural cue — a smell, a name, a place — usually evokes it. Sometimes the path between cue and trace is interrupted, and the memory feels gone. Stimulate the same cells directly and it returns in full.[^engram] Storage is fine. Access is broken.
+Start with the brain. The cells that store a memory are intact. A smell pulls it up. A name pulls it up. Sometimes the path from cue to cells is interrupted, and the memory feels gone. Stimulate the same cells directly and it returns in full.[^engram] Storage is fine. Access is broken.
 
-Now the storage/retrieval split. Every memory carries two strengths. *Storage strength* only goes up. *Retrieval strength* fluctuates — a name goes blank under load and surfaces hours later untouched. The forgetting curve measures retrieval, not storage. Pull on a memory just before it slips, and the trace gets stronger. Spaced repetition, desirable difficulty, the testing effect — same finding, three names.[^bjork]
+Now the storage/retrieval split. Every memory carries two strengths. *Storage strength* only goes up. *Retrieval strength* fluctuates — a name goes blank under load and surfaces hours later untouched. Recall depends on the match between the cue you have now and the context you encoded in.[^tulving72][^tulving73] The trace is intact. The cue has drifted. Pull on a memory just before it slips, in the shape you'll need it, and the trace gets stronger.[^morris77]
 
-Now a database row without an index. The bytes are perfectly stored. Past a million rows, full-scan under load is functionally not retrievable — the row exists, the query times out. Drop the index, the data stays. The memory is gone.
+Now a database row without an index. The bytes are perfectly stored. Past a million rows, the query times out before the row is found. Drop the index, the data stays. The memory is gone.
 
-Same architectural state across three substrates: trace intact, access broken. Same fix: build the access shape. Forgetting isn't loss. It's retrieval drift, on a substrate that's mostly fine.
+The brain's "index" is a process — pattern-completion across cortical traces, run by the hippocampus.[^teyler] The database's index is a structure — a B-tree the engine seeks. The LLM's index is whatever you built — a vector store, a graph, a key-value cache. What the three share isn't literal indexing. It's *retrieval-is-reconstructive, cue-dependent, bounded*. Same architectural state, same fix: build the access shape sized to the substrate. Forgetting isn't loss. It's retrieval drift, on a substrate that's mostly fine.
+
+The mechanism cuts cleanest when you watch trace and cue come apart in your hands.
+
+<!-- ETUDE PLACEHOLDER: Cue Mismatch — encode under context A, retrieve under context B, watch recall crash; encode with multi-cue, watch it survive. Source: Tulving & Thomson 1973 (encoding specificity); Morris-Bransford-Franks 1977 (transfer-appropriate processing). -->
+
 
 <div class="etude-embed" data-etude="three-substrates">
   <p class="etude-embed-cue">▶ Play · Three Substrates</p>
@@ -106,7 +113,7 @@ Same architectural state across three substrates: trace intact, access broken. S
       <div class="tsub-readout" data-readout="db" aria-live="polite"></div>
     </section>
   </div>
-  <p class="etude-embed-foot">Same architectural state across three substrates. Same fix: build the access shape.</p>
+  <p class="etude-embed-foot">Same architectural state across three substrates. Same fix: build the access shape. <em>Trace intact, access broken — so what happens when the access shape itself becomes the graveyard?</em></p>
 </div>
 <script>
 (() => {
@@ -353,37 +360,37 @@ Same architectural state across three substrates: trace intact, access broken. S
 }
 </style>
 
+## Storage thinking, three failure modes
+
+If trace can be intact while access is broken, the cost isn't in the substrate — it's in what you build on top of it. Storage thinking shows up in three modes:
+
+- **Over-archiving.** A thousand notes, dense links, no typed access shape — every retrieval becomes a full-scan.[^matuschak]
+- **The wrote-it-down illusion.** Capture feels like remembering. It isn't. The trace is on disk; the path in is not.
+- **The long-context bet.** Push the substrate further — bigger window, more notes, more tokens — and assume retrieval scales with it. Storage strength goes up. Retrieval strength doesn't follow. Bury an item in the middle of a million-token window: the model finds it about 60% of the time. The wait grows by a factor of thirty to sixty. The bill grows by a factor of about a thousand. The U-shape is the substrate telling you it's not an index.[^liu24]
+
+<!-- ETUDE PLACEHOLDER: Long Context Bet — slider scrubs context size 8K → 1M; reader watches recall %, latency, cost, and the U-curve emerge. Source: Liu et al. TACL 2024 (Lost-in-the-Middle). -->
+
+The third mode makes the architectural mistake physical: a graph can fail the same way, and the cheapest demonstration is a real search across real notes.
+
+<aside class="essay-etude-inline">
+  <a href="/etudes/memory/zettelkasten-graveyard/">
+    <span class="cue">▶ Play</span>
+    <strong>Zettelkasten Graveyard</strong> — 1,247 notes. Find the one you need. <em>When the access shape is wrong, the substrate is a graveyard. What's the architecture that isn't?</em>
+  </a>
+</aside>
+
 ## The index is the memory
 
-The hippocampus doesn't store memory contents. It stores an index of cortical patterns. Recall is index-lookup; the cortex holds the representation.[^teyler]
+The hippocampus doesn't store memory contents. It stores an index of cortical patterns. Recall is index-lookup; the cortex holds the representation.[^teyler] Forty years later, HippoRAG ports the same architecture into an LLM stack: knowledge graph as hippocampal index, corpus as cortex, PageRank walking the index to find passages.[^hipporag] The know-thyself schema is that architecture again — typed graph as index, YAML claims as substrate, retrieval is the walk.
 
-Forty years later, HippoRAG ports the same architecture into an LLM stack: knowledge graph as hippocampal index, corpus as cortex, PageRank walking the index to find passages.[^hipporag]
+And every retrieval is a write. Pull a memory up and it goes soft for a few hours before it sets again. What sets is the original trace plus whatever's reached you since — the question that primed it, the room you were in, the model that paraphrased it back. The graph carries a `valid_at` field on every claim for the same reason. A claim has a window. Outside the window, it has to be re-grounded or it drifts.[^reconsolidation][^loftus][^chan24]
 
-The know-thyself schema is that architecture again. Typed graph as index. YAML claims as substrate. Retrieval is the walk.
-
-And every retrieval is a write. Pull on a consolidated memory and the trace re-enters a labile state — what you pull up is the trace plus everything that's reached you since. The graph's `valid_at` axis is reconsolidation at the schema layer: claims carry validity windows that decay unless re-grounded.[^reconsolidation][^loftus]
+<!-- ETUDE PLACEHOLDER: Every Retrieval Is a Write — reader types a memory; an "LLM" reflects it back with subtle drift; reader accepts or corrects across 3-4 turns; watches the trace mutate. Source: Chan & Loftus 2024 (LLM-induced reconsolidation distortion); Nader/Schiller (reconsolidation). -->
 
 <aside class="essay-etude-inline">
   <a href="/alex-case-study.html">
     <span class="cue">▶ Open</span>
     <strong>Alex's dashboard</strong> — the index, walked. The substrate is YAML; the memory is the walk.
-  </a>
-</aside>
-
-## Storage up, memory down
-
-Storage thinking shows up in three failure modes:
-
-- **Over-archiving.** A thousand notes, dense links, no typed access shape — every retrieval becomes a full-scan.[^matuschak]
-- **The wrote-it-down illusion.** Capture feels like remembering. It isn't. The trace is on disk; the path in is not.
-- **The long-context bet.** Push the substrate further — bigger window, more notes, more tokens — and assume retrieval scales with it. Storage strength goes up. Retrieval strength doesn't follow.
-
-The etude below makes one of those modes physical: 1,247 notes, real search, find the one you need. Fill the graph, not the window.
-
-<aside class="essay-etude-inline">
-  <a href="/etudes/memory/zettelkasten-graveyard/">
-    <span class="cue">▶ Play</span>
-    <strong>Zettelkasten Graveyard</strong> — 1,247 notes. Find the one you need.
   </a>
 </aside>
 
@@ -395,10 +402,14 @@ The etude below makes one of those modes physical: 1,247 notes, real search, fin
 
 *Series: [Part I](/essays/know-thyself/) · [Part II](/essays/know-thyself-search/) · III · [Part IV](/essays/security-was-never-about-response/) · scaffold at [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
 
-[^bjork]: Bjork & Bjork (1992), *A new theory of disuse* — the storage-strength / retrieval-strength split.
+[^tulving72]: Tulving (1972), *Episodic and semantic memory* — the binding principle: trace plus cue, not trace alone.
+[^tulving73]: Tulving & Thomson (1973), *Encoding specificity and retrieval processes*, Psychological Review — recall depends on match between encoding context and retrieval cue.
+[^morris77]: Morris, Bransford & Franks (1977), *Levels of processing versus transfer-appropriate processing*, JVLVB — practice has to match the retrieval shape, not just go deep.
 [^engram]: Josselyn & Tonegawa (2020), *Memory engrams*, Science — optogenetic engram research established silent engrams.
 [^reconsolidation]: Nader, Schafe & LeDoux (2000), *Fear memories require protein synthesis*, Nature — retrieved memories re-enter a labile state.
 [^loftus]: Loftus (2005), *Planting misinformation in the human mind*, Learning & Memory — leading questions can replace stored detail at recall.
+[^chan24]: Chan & Loftus (2024) on LLM-mediated interview distortion; Schiller et al. (2010, 2017) on reconsolidation update windows.
 [^teyler]: Teyler & DiScenna (1986), *The hippocampal memory indexing theory*; Teyler & Rudy (2007) update.
 [^hipporag]: Gutiérrez et al. (2024), *HippoRAG: Neurobiologically inspired long-term memory for LLMs*, NeurIPS.
 [^matuschak]: Andy Matuschak, evergreen-notes retrospective on the 1,000-note rediscovery loop.
+[^liu24]: Liu et al. (2024), *Lost in the Middle: How language models use long contexts*, TACL — U-shaped recall, ~60% accuracy on middle items at 1M tokens, 30–60× latency, ~1250× cost vs 8K window.

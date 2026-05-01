@@ -40,7 +40,7 @@ There are three ways to honor the principle. The pattern that breaks it — putt
 
 **Enable completely.** Don't do the work for other teams. Tell each team the next action to take and give them the knowledge to do it: a migration guide, known gotchas, estimated effort, a clear owner to ask. The team builds the PR themselves. *Why it works:* the human in the loop has full context because they wrote the change. *Tradeoff:* hard to scale; works best with strong team autonomy.
 
-Different changes reward different paths.
+Different changes reward different paths. The hard part isn't naming the three — it's picking the right one when the scenario is in front of you.
 
 ## Pick the path that fits
 
@@ -52,7 +52,7 @@ Four scenarios. Pick the path for each.
   <div class="tp-dots" aria-hidden="true"></div>
   <div class="tp-stage" aria-live="polite"></div>
 <!---->
-  <p class="etude-embed-foot">The wrong path is what spawns the next campaign. The path itself is half the work.</p>
+  <p class="etude-embed-foot">So the picker ranks the right path. But what does it look like when the wrong path fires across a real fleet?</p>
 </div>
 <script>
 (() => {
@@ -305,7 +305,7 @@ Four scenarios. Pick the path for each.
 
 ## How this fails (the cascade)
 
-Each campaign is rational on its own. Watch three run in a row.
+Watch the failure mode fire. Three campaigns, each rational, run in a row.
 
 <div class="etude-embed" data-etude="cascade-sim">
   <p class="etude-embed-cue">▶ Play · Cascade Simulator</p>
@@ -329,7 +329,7 @@ Each campaign is rational on its own. Watch three run in a row.
 <!---->
   <div class="cs-banner" aria-live="polite"></div>
 <!---->
-  <p class="etude-embed-foot">Each campaign is rational. The right ideas multiply faster than they finish.</p>
+  <p class="etude-embed-foot">The cascade lands on a person. What does that seat actually feel like?</p>
 </div>
 <script>
 (() => {
@@ -563,7 +563,7 @@ Each campaign is rational on its own. Watch three run in a row.
 
 ## What the failure costs
 
-The cost lands on a specific person: an engineer staring at a PR they can't read, written by someone they don't know, in a repo they don't own.
+Sit in that seat for thirty seconds. An engineer staring at a PR they can't read, written by someone they don't know, in a repo they don't own.
 
 <div class="etude-embed" data-etude="review-pr">
   <p class="etude-embed-cue">▶ Play · Review this PR. 30 seconds.</p>
@@ -631,7 +631,7 @@ The cost lands on a specific person: an engineer staring at a PR they can't read
     <button type="button" class="rp-replay">Try again</button>
   </div>
 <!---->
-  <p class="etude-embed-foot">Each individual review is reasonable. The system still fails because the unit of work is wrong.</p>
+  <p class="etude-embed-foot">Every exit was bad. So which precise spot in the pattern produced the no-good-answer seat?</p>
 </div>
 <script>
 (() => {

@@ -10,16 +10,18 @@ status: tending
 description: After enough conversations, memory becomes a list. The list flattens the distinction between repetition and corroboration.
 etudes:
   - label: Flat vs Typed
-    url: '#why-the-default-shape-fails'
+    url: '#the-shape-through-alexs-year'
     note: same data, two memories
   - label: Attribution ≠ Confidence
     url: '#the-operating-rule'
     note: drill the rule
 ---
 
-After a year with the same model, Alex caught it confidently telling her something about herself that wasn't true — and she could trace exactly how it got there.
+One evening in May, nine months into Chicago, Alex asked the model whether there was a pattern in how she handled conflict at work. The reply came back confident, fluent, slightly wrong: she *stayed in misaligned situations because she was afraid of burning the relationship.* It sounded like something she had said. It was — six or seven times, as self-diagnosis. Never a pattern the model had evidence for. She asked it to show its work. Six conversations. Same claim, attributed to her. No independent episodes.
 
-This essay is the argument. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
+She had been talking to a mirror.
+
+A model's memory is a list — bullets, facts, things you said that carried weight. A claim stated once feels the same as a claim grounded in five independent events. The fix is not more memory. It is shape. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
 
 <p class="dashboard-link-wrap">
   <a class="dashboard-link" href="/alex-case-study.html">
@@ -47,27 +49,27 @@ This essay is the argument. The scaffold — open, MIT-licensed — is at **[git
 
 <iframe src="/example-graph-full.html" class="graph-embed" loading="lazy" title="Alex's full example graph — hover any node"></iframe>
 
-*A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The essay below explains why memory needs this shape.*
+*A worked example. Hover any node to see what it is, why Alex cares about it, and what knowing it unlocks for her. The mechanism walk below shows how the shape gets built.*
 
-## The mirror problem
+## The shape, through Alex's year
 
-One evening in May, Alex asked the model: *was there a pattern in how she handled conflict at work?* Nine months into Chicago. She had said the word *conflict* into the chat maybe a dozen times. The model had a lot to draw on.
+After the mirror problem, Alex wanted a memory that could not do this. Not a more careful model. A memory whose shape made the drift structurally impossible. The answer: the memory had to have types.
 
-The reply came back confident, fluent, slightly wrong.
+**Reference — what is.** Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, nine. Facts. The floor the rest of the graph stands on.
 
-It told her she *stayed in misaligned situations because she was afraid of burning the relationship.* The sentence sounded like something she had said. It was — six or seven times, as self-diagnosis or shorthand for a feeling she did not have better words for. Never a pattern the model had evidence for.
+**Observation — what happened.** Each episode gets its own node, dated and bounded. September through November: Alex's first three months in Chicago. Mira came home quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped. One episode, one timestamp, stored as it was — without guessing what it meant. A second observation came in March: the morning of a hard acquisitions meeting, Alex had run beforehand and held her position on a book more clearly than she had in weeks. Two episodes, held separately.
 
-She did what most users never do. She asked the model to show its work. It produced the list. Six conversations. Same claim, attributed to her. No independent episodes. Her own restatement bounced back with a patient nod each time.
+**Overlap — the same shape, twice.** First: running stopped, work extended, Mira struggled. Second: running came back, work stabilized, Mira climbed. One shape: *when the running holds, everything else holds.* That is an overlap. The model can defend it. Contrast the *afraid-to-burn-the-relationship* claim — said six times, never grounded in a specific event. The schema refuses to call it a pattern. One claim said six ways is one derivation, not six.
 
-She had been talking to a mirror.
+**Novel — one derivation, held honestly.** *For Alex, isolation is upstream of routine breakdown.* One episode supports it: she stopped responding to her two friends in Brooklyn, and the running stopped the week after. Flagged tentative: *the order looks like cause, but no one watched it happen — the claim waits for a second, independent stretch.* A novel is the model's honesty that it is guessing.
 
-## Why the default shape fails
+**Emergent — at the intersection.** *Mira's stability in this new city depends on Alex's own routine stability.* Not in the routine overlap alone. Not in the Mira observation alone. It falls out where they cross — Mira's recovery and Alex's running returning land too close in time to be noise. Revise either side, and the claim above them has to be re-checked. The most interesting things live at intersections. So does the quietest drift.
 
-A model's memory is a list — bullets, facts, things you said that carried weight. A list is what memory looks like when it has no shape.
+**Equivalency — the bridge.** *When the running holds, everything else holds* has a name elsewhere. Some researchers call it a keystone habit. Others, listening to the body's own steady signal, call it interoceptive stabilization. The equivalency node points at the outside framework without letting it swallow what Alex actually saw. Pointing is not importing.
 
-A claim stated once feels the same as a claim stated five times, which feels the same as a claim grounded in five independent events. *I said this repeatedly* and *this has been independently confirmed* collapse to one line. After a year, the model believes things about you that rest on a single early inference it has politely restated ever since. You absorb the restatements as agreement. You start quoting yourself back through it.
+**Open — the unanswered, kept first-class.** *Is Chicago a 2–3 year plan, or permanent?* Alex has not decided. Some nights she talks as if permanent, other nights as if temporary. Left alone, the ambiguity would crystallize into a novel — *she has accepted the relocation* — and downstream claims would inherit an unexamined premise. Open is not indecision. It is the refusal to pretend a decision has been made.
 
-The fix is not more memory. It is shape.
+The types are the binding principle: episodic and semantic memory held in distinct stores, not collapsed.[^prior] Now watch what happens when the same eight facts are held flat versus typed.
 
 <div class="etude-embed" data-etude="flat-vs-typed">
   <p class="etude-embed-cue">▶ Play · Flat vs Typed</p>
@@ -102,7 +104,7 @@ The fix is not more memory. It is shape.
     <button type="button" class="etude-embed-btn etude-embed-btn-alt fvt-add">+ Add another self-restatement</button>
     <button type="button" class="etude-embed-btn etude-embed-btn-alt fvt-reset">Reset</button>
   </div>
-  <p class="etude-embed-foot"><em>Repetition isn't corroboration. The flat list cannot tell. The typed graph can.</em></p>
+  <p class="etude-embed-foot"><em>The typed graph caught the difference the flat list couldn't. But what makes one claim earn confidence and another stay tentative? The rule is next.</em></p>
 </div>
 <script>
 (() => {
@@ -285,53 +287,17 @@ The fix is not more memory. It is shape.
 .etude-embed[data-etude="flat-vs-typed"] .fvt-detail { color: var(--muted); font-size: 0.85rem; }
 </style>
 
-## The shape, through Alex's year
-
-After the mirror problem, Alex wanted a memory that could not do this. Not a more careful model. A memory whose shape made the drift structurally impossible. The answer: the memory had to have types.
-
-**Reference — what is.** Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, nine. Facts. The floor the rest of the graph stands on.
-
-**Observation — what happened.** Each episode gets its own node, dated and bounded. September through November: Alex's first three months in Chicago. Mira came home quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped. One episode, one timestamp, stored as it was — without guessing what it meant. A second observation came in March: the morning of a hard acquisitions meeting, Alex had run beforehand and held her position on a book more clearly than she had in weeks. Two episodes, held separately.
-
-**Overlap — the same shape, twice.** First: running stopped, work extended, Mira struggled. Second: running came back, work stabilized, Mira climbed. One shape: *when the running holds, everything else holds.* That is an overlap. The model can defend it. Contrast the *afraid-to-burn-the-relationship* claim — said six times, never grounded in a specific event. The schema refuses to call it a pattern. One claim said six ways is one derivation, not six.
-
-**Novel — one derivation, held honestly.** *For Alex, isolation is upstream of routine breakdown.* One episode supports it: she stopped responding to her two friends in Brooklyn, and the running stopped the week after. Flagged tentative: *causal direction inferred, not observed; needs an independent second.* A novel is the model's honesty that it is guessing.
-
-**Emergent — at the intersection.** *Mira's stability in this new city depends on Alex's own routine stability.* Not in the routine overlap alone. Not in the Mira observation alone. It falls out at the intersection — Mira's recovery timing matches Alex's running returning too closely to be noise. If either parent gets revised, the emergent flags for re-derivation. Emergent claims are where the most interesting things live, and the most at risk of quiet drift.
-
-**Equivalency — the bridge.** *When the running holds, everything else holds* has a name in the literature — self-regulation researchers call it a keystone habit; embodied-cognition researchers, interoceptive stabilization. The equivalency node points at the framework without swallowing Alex's observation. Pointing is not importing.
-
-**Open — the unanswered, kept first-class.** *Is Chicago a 2–3 year plan, or permanent?* Alex has not decided. Some nights she talks as if permanent, other nights as if temporary. Left alone, the ambiguity would crystallize into a novel — *she has accepted the relocation* — and downstream claims would inherit an unexamined premise. Open is not indecision. It is the refusal to pretend a decision has been made.
-
-## What the graph lets her see
-
-Nine months in, Alex's graph has shape. A few dozen nodes, each with its own provenance. More than a record — an instrument.
-
-<iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
-
-*The spine — load-bearing observations and the claims that rise from them.*
-
-**The spine.** Four or five observations carry most of her interpretations. The first three months in Chicago is referenced by four later nodes. Load-bearing. If it were miscoded — if what she had felt was a specific grief, not isolation — those four downstream nodes would need revisiting. Finding the spine is finding where a correction cascades.
-
-**The fragile ones.** Novels without a second instance. *Isolation-upstream-of-routine* is one. Might be true. Might be a story told about one stretch of time. She can see: *these three things I have been quietly believing about myself are inferred from one evening in October.*
-
-**The open questions.** *Chicago 2–3 years or permanent* does not get quietly decided on a tired night. It sits there until she chooses to answer it.
-
-**The risk corridor.** Some of the most useful claims are ones she would never generate on purpose. Intersection readings marked *low probability, high consequence* — a Mira crisis that forces a return East, the drinking trajectory crossing a visible line again, a leadership change at the press flipping her way of holding positions from asset to liability. She did not know any of these as a list until the graph rendered them. Each is an emergent — a claim that exists only where two nodes meet. None is a prediction; each is a corridor to watch. Full set in [Alex's dashboard](/alex-case-study.html).
-
-A flat list has no notion of *intersection*. A typed graph with provenance can tell you things you never said — claims that precipitate structurally from the ones you did.
+<!--
+NEXT ETUDE PLACEHOLDER — "Wiki vs Typed Graph"
+Translation target: take Karpathy's LLM Wiki gist (Apr 4 2026) — model writes a wiki of itself — and stage a head-to-head where the wiki collapses 6 self-restates into a single "synthesis" paragraph while the typed graph keeps them as 1 self-attribution + 5 unresolved mentions. Show the wiki silently launders repetition into authority; the typed graph won't.
+Output should be: side-by-side, same input, wiki section vs graph section, with the wiki's smoothed-prose paragraph next to the graph's annotated 1-derivation count.
+-->
 
 ## The operating rule
 
 > **Attribution ≠ confidence.**
 
-Repetition feels like corroboration. It isn't. Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. Nothing new landed. The claim could be something said once and come to be believed by hearing it said.
-
-Real confidence accumulates only from *independent* grounding: different episodes, different contexts, different evidence types. The schema forces this into the memory itself. A novel cannot quietly become an overlap. It waits for a new, independent observation.
-
-This sounds bureaucratic. It is the opposite. Without it, a polite model drifts into subtle hallucination — confident about things that rest on thin inference because they were said and not objected to. With it, Alex can ask *what do you think you know about me?* and the model can answer: *here are the claims I am most sure of, and why. Here are the ones I am guessing at. Here are the questions you have been answering with guesses instead of deciding.*
-
-That is what it looks like to be known carefully.
+Repetition feels like corroboration. It isn't. Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. The schema forces this into the memory itself: a novel cannot quietly become an overlap. It waits for a new, independent observation. Drill the rule.
 
 <div class="etude-embed" data-etude="attribution-confidence">
   <p class="etude-embed-cue">▶ Play · Drill the Rule</p>
@@ -345,7 +311,7 @@ That is what it looks like to be known carefully.
     <span class="ac-dot" data-i="5"></span>
   </div>
   <div class="ac-stage" aria-live="polite"></div>
-  <p class="etude-embed-foot"><em>The schema doesn't make confidence easier. It makes it slower.</em></p>
+  <p class="etude-embed-foot"><em>Confidence isn't easier — it's slower. So what does the rule unlock once it's running? Intersections, a spine, claims you'd never generate on purpose.</em></p>
 </div>
 <script>
 (() => {
@@ -518,15 +484,37 @@ That is what it looks like to be known carefully.
 .etude-embed[data-etude="attribution-confidence"] .ac-blurb { font-style: italic; color: var(--muted); margin: 0.4rem 0 0.85rem; }
 </style>
 
+<!--
+NEXT ETUDE PLACEHOLDER — "Memanto Counter"
+Translation target: take the Memanto paper (arXiv 2604.22085, Apr 23 2026) — vector-only typed memory wins LongMemEval — and stage a side-by-side where vector memory wins the benchmark BUT graph catches the corroboration drift the benchmark doesn't measure. Two queries: (1) LongMemEval-style "what does the user prefer?" → vector wins on retrieval latency; (2) "is this claim grounded or repeated?" → vector returns 6 high-similarity hits and calls it confirmed; graph returns 1 derivation flagged tentative.
+Output: tabbed or two-pane comparison with the benchmark score next to the drift-catch result. The benchmark measures recall, not provenance.
+-->
+
+## What the graph lets her see
+
+Nine months in, Alex's graph has shape. A few dozen nodes, each with its own provenance. More than a record — an instrument.
+
+<iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
+
+*The spine — load-bearing observations and the claims that rise from them.*
+
+**The spine.** Four or five observations carry most of her interpretations. The first three months in Chicago is referenced by four later nodes. Load-bearing. If it were miscoded — if what she had felt was a specific grief, not isolation — those four downstream nodes would need revisiting. Finding the spine is finding where a correction cascades.
+
+**The fragile ones.** Novels without a second instance. *Isolation-upstream-of-routine* is one. Might be true. Might be a story told about one stretch of time. She can see: *these three things I have been quietly believing about myself are inferred from one evening in October.*
+
+**The open questions.** *Chicago 2–3 years or permanent* does not get quietly decided on a tired night. It sits there until she chooses to answer it.
+
+**The risk corridor.** Some of the most useful claims are ones she would never generate on purpose. Intersection readings marked *low probability, high consequence* — a Mira crisis that forces a return East, the drinking trajectory crossing a visible line again, a leadership change at the press flipping her way of holding positions from asset to liability. She did not know any of these as a list until the graph rendered them. None is a prediction; each is a corridor to watch. Full set in [Alex's dashboard](/alex-case-study.html).
+
+A flat list has no notion of *intersection*. A typed graph with provenance can tell you things you never said.
+
 ## Why the schema outlasts the model
 
-The types are not idiosyncratic — they are the shape rigorous fields use to store claims, with lineages going back decades.[^prior]
+Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is.
 
-Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new model reads the graph and continues. When a model is deprecated, the graph does not care.
+The model is the interlocutor. **The graph is the memory.**
 
-The model is the interlocutor. The graph is the memory.
-
-Which is also the privacy story. **The information is not in the model. It is in the file.** The model only sees what she chooses to paste in. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. The locus of memory is controlled by the owner. Not the vendor.
+Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
 ## The thing
 
@@ -544,4 +532,4 @@ It is the thing.
 
 *The graph holds. The reader is the next thing. **[Part II — Search was never about humans →](/essays/know-thyself-search/)***
 
-[^prior]: Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
+[^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
