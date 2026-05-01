@@ -1,23 +1,37 @@
-// Generate a PDF for one essay by rendering the live dev server URL with
-// Puppeteer. Usage:
+// Generate a PDF by rendering a live dev server URL with Puppeteer. Usage:
 //   npm run dev        # in another terminal
-//   node scripts/pdf.mjs <slug>
-// Output: public/<slug>.pdf
+//   node scripts/pdf.mjs <slug>                       # essay → public/<slug>.pdf
+//   node scripts/pdf.mjs --path <route> --out <file>  # any route → public/<file>
 
 import puppeteer from 'puppeteer';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
+import { mkdirSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const slug = process.argv[2];
+const args = process.argv.slice(2);
 
-if (!slug) {
-  console.error('Usage: node scripts/pdf.mjs <slug>');
-  process.exit(1);
+let url, outputPath;
+if (args[0] === '--path') {
+  const route = args[1];
+  const outIdx = args.indexOf('--out');
+  const out = outIdx >= 0 ? args[outIdx + 1] : null;
+  if (!route || !out) {
+    console.error('Usage: node scripts/pdf.mjs --path <route> --out <file>');
+    process.exit(1);
+  }
+  url = `http://localhost:4321${route}`;
+  outputPath = resolve(__dirname, `../public/${out}`);
+  mkdirSync(dirname(outputPath), { recursive: true });
+} else {
+  const slug = args[0];
+  if (!slug) {
+    console.error('Usage: node scripts/pdf.mjs <slug>');
+    process.exit(1);
+  }
+  url = `http://localhost:4321/essays/${slug}/`;
+  outputPath = resolve(__dirname, `../public/${slug}.pdf`);
 }
-
-const url = `http://localhost:4321/essays/${slug}/`;
-const outputPath = resolve(__dirname, `../public/${slug}.pdf`);
 
 const browser = await puppeteer.launch();
 const page = await browser.newPage();

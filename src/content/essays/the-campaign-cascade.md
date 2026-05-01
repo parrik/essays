@@ -22,7 +22,7 @@ etudes:
 
 ## The principle
 
-Cross-cutting changes — Java 21 upgrades, auth library rollouts, codemod runs across hundreds of services — finish or they don't. The ones that finish all share one constraint: **every human in the loop has the context they need to act on the change in front of them.**
+Cross-cutting changes finish or they don't. The ones that finish share one constraint: **every human in the loop has the context they need to act on the change in front of them.**
 
 Skip that constraint and the work fans out into a cascade. A platform team launches a campaign across two hundred repos. The PRs stall. The director escalates to the SVP, who broadcasts a directive to merge. The directive lands with selective adoption. A tracking campaign gets spun up to chase compliance on the original campaign. Each incomplete campaign spawns the next:
 
@@ -34,16 +34,17 @@ There are three ways to honor the principle. The pattern that breaks it — putt
 
 *If you need a human in the loop, give them context. If you don't need a human, don't put one there.*
 
-|            | Path A: Zero-Touch Operation | Path B: Own It Vertically | Path C: Skillset + Next Intent |
-|------------|------------------------------|---------------------------|--------------------------------|
-| **Approach** | Go all the way. PR creation, validation, and merge are fully automated. No human review needed. | A dedicated team permanently owns the cross-cutting concern with merge authority. It's their core job, not a side quest. They have context because they built the expertise. | Don't do the work for other teams. Tell each team the next action to take on their entity and give them the knowledge to do it themselves. |
-| **Looks like** | Safe automated codemods with CI verification, canary rollout, and auto-merge on green. Zero human touchpoints. | A small platform sub-team that owns migrations end-to-end: writes the PRs, has authority to merge, and is accountable for completion. | Each entity carries a visible next intent: what to do, why it matters, a migration guide, known gotchas, estimated effort, and who to ask. The owning team builds the PR themselves. |
-| **Why it works** | No context problem because no human is in the loop. The machine does the full job. | The human in the loop has deep context and authority. No dependency on another team's bandwidth or motivation. | The human in the loop has full context. They own the change because they wrote it, reviewed it, and understand it. |
-| **Tradeoff** | Only works for mechanically safe changes. | Requires permanent headcount and org commitment. | Hard to scale. Works best with strong team autonomy. |
+**Automate completely.** A codemod or script does every change end-to-end — PR creation, validation, merge — with CI verification and canary rollout. *Why it works:* no context problem because no human is in the loop. The machine does the full job. *Tradeoff:* only works for mechanically safe changes.
+
+**Own it vertically.** A dedicated team permanently owns the cross-cutting concern with merge authority. They write the PRs, hold the context, and are accountable for completion. *Why it works:* the human in the loop has deep context and authority — no dependency on another team's bandwidth or motivation. *Tradeoff:* requires permanent headcount and org commitment.
+
+**Enable completely.** Don't do the work for other teams. Tell each team the next action to take and give them the knowledge to do it: a migration guide, known gotchas, estimated effort, a clear owner to ask. The team builds the PR themselves. *Why it works:* the human in the loop has full context because they wrote the change. *Tradeoff:* hard to scale; works best with strong team autonomy.
+
+Different changes reward different paths.
 
 ## Pick the path that fits
 
-Different changes reward different paths. Try four:
+Four scenarios. Pick the path for each.
 
 <div class="etude-embed" data-etude="three-paths">
   <p class="etude-embed-cue">▶ Play · Three Paths · Pick for each scenario</p>
@@ -304,7 +305,7 @@ Different changes reward different paths. Try four:
 
 ## How this fails (the cascade)
 
-Skip the principle and the failure shape is predictable. Each campaign is rational on its own; the system still fails because the unit of work is wrong. Watch three campaigns run in a row:
+Each campaign is rational on its own. Watch three run in a row.
 
 <div class="etude-embed" data-etude="cascade-sim">
   <p class="etude-embed-cue">▶ Play · Cascade Simulator</p>
@@ -562,7 +563,7 @@ Skip the principle and the failure shape is predictable. Each campaign is ration
 
 ## What the failure costs
 
-The cascade is what the system does. The cost lands on a specific person: an engineer staring at a PR they can't read, written by someone they don't know, in a repo they don't own. Sit in that seat for thirty seconds:
+The cost lands on a specific person: an engineer staring at a PR they can't read, written by someone they don't know, in a repo they don't own.
 
 <div class="etude-embed" data-etude="review-pr">
   <p class="etude-embed-cue">▶ Play · Review this PR. 30 seconds.</p>
@@ -810,9 +811,9 @@ The cascade is what the system does. The cost lands on a specific person: an eng
 
 ## The dead zone
 
-The pattern fails in the middle: you do the work for the team (create the PR) but stop short of completing it (require them to merge).
+The pattern fails in the middle: you do the work for the team (create the PR) but stop short of finishing it (require them to merge).
 
-**No automation. No vertical ownership. No enablement.** A human in the loop with no context. This is where campaigns stall and the cascade starts.
+**No automation. No vertical ownership. No enablement.** A human in the loop with no context. Campaigns stall here. The cascade starts here.
 
 ---
 

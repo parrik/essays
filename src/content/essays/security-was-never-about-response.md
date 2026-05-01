@@ -17,56 +17,41 @@ etudes:
 
 A security team that responds well is a fire department with no fire code.
 
-The fire department is necessary. But if you are calling them, *the building has already caught fire*. The work of making sure it does not catch fire is a different discipline. Confusing the two is how a person ends up with great forensics and chronic leaks.
+The fire department is necessary. But if you are calling them, *the building has already caught fire*. Confusing the two is how a person ends up with great forensics and chronic leaks.
 
 ## Alex builds a publish-gate
 
-Alex has a personal site. A static blog, a few public repos, an account or two with personal data, a domain she registered last year. She spends a Sunday writing a pre-commit hook to scan her staged diff for stray API keys before they leave her laptop. She is pleased with this. She has *a security gate.*
+Alex has a personal site — static blog, a few public repos, a domain she registered last year. One Sunday she writes a pre-commit hook to scan staged diffs for stray API keys. She is pleased. She has *a security gate.*
 
-That week, she edits four blog posts, commits each, pushes, deploys. Nothing leaks. The gate works.
+For two weeks she edits, commits, pushes, deploys. Nothing leaks.
 
-The next week she edits four more. Same flow. Same outcome.
-
-A friend asks her, *"how do you know your gate is actually firing on the edits?"* She is not sure. She runs the gate by hand against the actual edit path, and the gate exits silent. The path patterns she wrote on Sunday do not match the directory she edits in. The gate has been quiet for two weeks, not because nothing was caught — because nothing was *checked.* The reason her site stayed clean was that she happened not to write any keys into any post. There was no margin.
-
-This is the failure mode the rest of this essay is about.
+A friend asks: *"how do you know your gate is actually firing on the edits?"* She runs it by hand and the gate exits silent. The path patterns she wrote on Sunday do not match the directory she edits in. The gate has been quiet for two weeks not because nothing was caught — because nothing was *checked.* The reason her site stayed clean was that she happened not to write any keys into any post. There was no margin.
 
 ## What's in security
 
-Security is **continuous verification.** Two timescales, both inside the discipline:
+Security is **continuous verification.** Two timescales:
 
-- **Boundary-time gates** fire on an action. A pre-commit hook scanning the staged diff. A pre-deploy lint asserting that a config file has not silently exposed something. A pull-request status check that fails when tests turn red. A two-factor prompt at login. The shape: deny-by-default, allow only when a named check passes. The action stops at the boundary unless verification succeeds.
+- **Boundary-time gates** fire on an action. A pre-commit hook scanning the staged diff. A pre-deploy lint asserting no public-asset directive slipped into config. A two-factor prompt at login. Deny-by-default; allow only when a named check passes.
 
-- **Sweep-time gates** fire on a cadence. A weekly `npm audit` run against the production lockfile, looking for vulnerabilities published since last week. A scheduled job that probes the deployed URL for forbidden paths and asserts each returns 4xx. A monthly walk through the gates inventory itself, asking *which surfaces exist, which do not have a gate yet, what new attack classes have shown up in the field since we last looked.* Sweeps catch what gates miss — coverage gaps that show up later, surface drift, vulnerabilities discovered after the artifact shipped.
+- **Sweep-time gates** fire on a cadence. A weekly `npm audit`. An hourly probe asserting `/admin` returns 401. A monthly walk through the gates inventory itself, asking *which surfaces still don't have one.* Sweeps catch what gates miss — coverage gaps where a gate exists but doesn't fire on the actual edit path, surface drift, CVEs published after the artifact shipped.
 
-Both are gates. The gate is continuous. *Boundary-time and sweep-time are the same posture at different cadences.*
+Both are gates. *Boundary-time and sweep-time are the same posture at different cadences.*
 
 ## What's not
 
-Response is the work that begins **after** verification has failed.
+Response is the work that begins **after** verification has failed. Rotating a leaked key. Patching a forbidden path. Running comms. Forensic triage on what came in, what left, when.
 
-A leaked key needs to be rotated. A forbidden path returning 200 needs to be patched, the leak window measured, the affected users contacted. A breach disclosed needs comms — to users, to the team, to anyone the disclosure obligation reaches. A compromised endpoint needs forensic triage: what came in, what left, when, through which path.
+This work has its own canon — **DFIR** (digital forensics and incident response): SIEMs, EDR agents, on-call rotations, war rooms, postmortems. Its success metrics live downstream of the breach: MTTD, MTTC, MTTR, dwell time. Verification's success metric is the inverse — *no leaks happened this quarter* — the dial that is supposed to read zero.
 
-This work is necessary. It also has nothing to do with security as a verification discipline. It belongs to a sibling profession with its own canon — **DFIR** (digital forensics and incident response), the **CIRT** function in larger orgs, military-shape posture in the most adversarial cases. All post-leak.
+NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. Adjacent disciplines, not the same one.
 
-What that work actually contains, named:
-
-- **Tools.** SIEM platforms (Splunk, Datadog Security, Elastic Stack) aggregate logs across services so a forensic analyst can pivot through them. EDR agents (CrowdStrike, SentinelOne, Microsoft Defender) run on endpoints to catch live attacker activity. Forensic disk imagers preserve state for chain-of-custody. SOAR platforms automate the runbook steps. None of these prevent leaks; they reduce blast radius after one happens.
-- **Roles.** Incident commander runs the response and makes the calls. A scribe documents the timeline minute-by-minute. A comms lead drafts the disclosures — to users, regulators, insurance, the team. A forensic analyst reconstructs the attack path. Legal counsel manages obligation. At larger orgs these are different people on a rotation; at smaller scale they collapse into one or two engineers wearing several hats simultaneously.
-- **Rhythms.** On-call rotations cover detection. War rooms convene during active incidents. Runbook rehearsals and tabletop exercises practice the response shape on a quarterly cadence. Postmortems extract lessons after every Sev-2 or higher. The tempo is dictated by the incident, not by sprint planning.
-- **Success metrics.** **MTTD** (mean time to detect), **MTTC** (mean time to contain), **MTTR** (mean time to remediate), **dwell time** (how long the attacker had access before detection). All measured *after* the breach. None of them improve because you wrote a better fire code; they improve because the response practiced. Verification's success metric — *no leaks happened this quarter* — is the inverse: the dial that is supposed to read zero.
-
-NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. The disciplines are adjacent and complementary; they are not the same.
-
-At personal-infrastructure scale, the disciplines collapse into the same person wearing two hats. The hat-switch still matters: when you are running pre-deploy lints, you are doing security; when you are rotating a leaked key, you are doing incident response. Different mindset, different urgency, different success criterion. The trap is to spend all your energy in the second hat — *"I'll fix it when it breaks"* — and starve the first.
+At personal-infrastructure scale, both hats sit on one person. The hat-switch still matters. The trap is to spend all your energy in the second — *"I'll fix it when it breaks"* — and starve the first. *"I'll be careful when I commit."* *"I have backups."* That is planning for the fire department's arrival without writing the fire code.
 
 If you are in response mode, security has already failed. **Security's success criterion is that response never has to fire.**
 
-The mistake that is particularly easy to make at the personal-infrastructure scale — Alex's scale — is investing only in the response side. *"I'll be careful when I commit."* *"If something leaks, I'll fix it."* *"I have backups."* That is planning for the fire department's arrival without writing the fire code. It works until it does not.
-
 ## Verify or respond?
 
-The picker below has twelve concrete practices. For each: is it verification (security's actual scope) or response (incident response's scope)? The test for each is: *does this fire **before** harm, or **after**?*
+Twelve practices below. For each: does it fire **before** the harm or **after**?
 
 <div class="etude-embed" data-etude="verify-or-respond">
   <p class="etude-embed-cue">▶ Play · Verify or Respond? Sort 12 practices into the right discipline.</p>
@@ -339,22 +324,20 @@ The picker below has twelve concrete practices. For each: is it verification (se
 
 ## Back to Alex
 
-The fix for Alex's quiet gate was not a better response process — there had been no leak. The fix was extending the gate's path patterns so they actually matched the directory she edits in, then adding a sweep that walks her live URLs on a cadence and asserts each forbidden path returns 4xx. A boundary-time fix and a sweep-time fix. No incident-response capability was built; none was needed.
+The fix was not a better response process. The fix was extending the gate's path patterns so they actually matched the directory she edits in, then adding a sweep that walks her live URLs on a cadence and asserts each forbidden path returns 4xx. A boundary-time fix and a sweep-time fix. No incident-response capability was built; none was needed.
 
-The harder question for Alex is the second-order one. She thought she had *a security gate.* She actually had two layers (the gate and the sweep), only one of which she had implemented, and the one she had implemented had a coverage gap. Most personal-infrastructure projects look like this. The first round buys a hook because the hook is fashionable. The second round adds a sweep because the hook had a gap. The third round adds a sweep over the sweep — *was the sweep itself running?* — because the sweep can fail too. The gate is continuous; the verification is recursive; *response stays out of scope* because the verification keeps catching things while they are still cheap.
+The harder question is second-order. She thought she had *a gate*; she actually had two layers (gate + sweep), only built one, and the one she built had a coverage gap — the patterns it scanned didn't include the directory she edited in. Most personal-infrastructure projects look like this. First round buys a hook because the hook is fashionable. Second round adds a sweep because the hook had a gap. Third round adds a sweep over the sweep — *was it actually running on the right paths?* The gate is continuous; the verification is recursive; *response stays out of scope* because the verification keeps catching things while they are still cheap.
 
-## What this essay extends
-
-The compressed mnemonic — *"security lives at the gate, not the response"* — is a synthesis. It rhymes with the design philosophy of Brendan Burns' [EarlyWatch](https://github.com/brendandburns/early-watch)[^earlywatch], a Kubernetes admission webhook that denies unsafe cluster changes at the boundary, declaratively, against live state. The phrase itself is not a Burns quote — treat it as a mnemonic, not a citation.
-
-What this essay puts down is the extension that **sweeps are part of the gate.** Boundary-time and sweep-time are the same posture at different cadences. Together they are security's full scope. Apart, each has predictable failure modes — gates without sweeps miss surface drift and post-deploy CVEs; sweeps without gates devolve into detection-and-response.
-
-The corrected framing, stated cleanly:
+The mnemonic — *"security lives at the gate, not the response"* — rhymes with Brendan Burns' [EarlyWatch](https://github.com/brendandburns/early-watch)[^earlywatch], a Kubernetes admission webhook that denies unsafe cluster changes at the boundary, declaratively, against live state. The extension this essay puts down is that **sweeps are part of the gate.** Same posture, different cadence.
 
 > **Security is continuous verification.** Gates fire on action; sweeps fire on cadence. Together they are security's entire scope. Response is what fires when verification fails — and that is a different discipline. Security's success criterion is that response never has to fire.
 
 The picker above is a tool. The principle is the work.
 
-[^nist]: **NIST SP 800-53 Rev. 5** (Joint Task Force, 2020; updated 2023, [csrc.nist.gov/pubs/sp/800/53/r5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)) is the federal control catalog that formalizes the **preventive / detective / responsive** taxonomy this essay's distinction tracks. Preventive controls block non-compliant resources from existing; detective controls observe and alert; responsive controls remediate after the fact. The split predates Kubernetes by a decade — DevOps tooling rediscovered it under names like *shift-left* and *DevSecOps* (see OWASP's [DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/)) without always citing the older work. Adjacent: [Open Policy Agent / Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) generalizes the gate to declarative policy-as-code. The post-compromise discipline goes by **DFIR** (digital forensics and incident response), explicitly defined as "post-compromise investigative response rather than preventive measures."
+---
 
-[^earlywatch]: **EarlyWatch** ([github.com/brendandburns/early-watch](https://github.com/brendandburns/early-watch)) is a Kubernetes validating admission webhook by Brendan Burns. It exposes a `ChangeValidator` CRD with named checks (`ExistingResources`, `NameReferenceCheck`, `ApprovalCheck` with RSA-PSS signatures, `CheckLock`, etc.) that deny unsafe operations — for instance, deleting a Service while Pods matching its selector still run, or deleting Secrets currently in use by a Deployment. The repo is the canonical reference; there is no separate book chapter or paper formalizing it. The design philosophy ("prevent the unsafe operation at the API boundary, against live state") is what this essay's "gate is continuous" framing extends into the personal-infrastructure case.
+*Series complete. The four parts, as one shape: [I — Self-knowledge](/essays/know-thyself/) · [II — Search](/essays/know-thyself-search/) · [III — Memory](/essays/memory-was-never-about-storage/) · IV. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
+
+[^nist]: NIST SP 800-53 Rev. 5 ([csrc.nist.gov/pubs/sp/800/53/r5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)) formalizes the **preventive / detective / responsive** split. Verification covers the first two; DFIR covers the third. [OPA/Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) generalizes the gate to declarative policy-as-code.
+
+[^earlywatch]: [github.com/brendandburns/early-watch](https://github.com/brendandburns/early-watch) — a Kubernetes validating admission webhook that denies unsafe operations against live cluster state (e.g. deleting a Service while Pods matching its selector still run). The design philosophy — prevent the unsafe operation at the API boundary, against live state — is what this essay's "gate is continuous" framing extends into the personal-infrastructure case.
