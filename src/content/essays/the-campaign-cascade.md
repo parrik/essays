@@ -1,6 +1,6 @@
 ---
 title: How to run a cross-cutting campaign
-subtitle: The principle that makes them finish — three paths that honor it, one shape (the cascade) that doesn't.
+subtitle: The principle, the three paths, the cascade
 kicker: Engineering Pattern
 tag: poster
 order: 2
