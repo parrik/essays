@@ -36,7 +36,13 @@ const fullTitle = title === 'parrik' ? 'parrik' : `${title} — parrik`;
       <slot />
     </main>
     <footer class="site-footer">
-      <p><a href="/rss.xml">rss</a> · <a href="https://github.com/parrik/essays">github</a></p>
+      <div class="maxims-grid">
+        <div class="maxim-name">know thyself</div>
+        <div class="maxim-name">reveal thyself</div>
+        <div class="maxim-desc">stay close enough that your own structure precipitates. The seeing.</div>
+        <div class="maxim-desc">let what precipitates act in the world. The doing.</div>
+      </div>
+      <p class="footer-links"><a href="/rss.xml">rss</a> · <a href="https://github.com/parrik/essays">github</a></p>
     </footer>
   </body>
 </html>
