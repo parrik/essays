@@ -1,5 +1,5 @@
 ---
-title: Self-knowledge was never about size
+title: A self was never flat
 seriesName: Know Thyself
 subtitle: A schema for personal memory in LLM conversations
 kicker: Method

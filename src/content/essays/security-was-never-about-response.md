@@ -336,7 +336,7 @@ The picker above is a tool. The principle is the work.
 
 ---
 
-*Series complete. The four parts, as one shape: [I — Self-knowledge](/essays/know-thyself/) · [II — Search](/essays/know-thyself-search/) · [III — Memory](/essays/memory-was-never-about-storage/) · IV. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
+*Series complete. The four parts, as one shape: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · [III — Memory was never about storage](/essays/memory-was-never-about-storage/) · IV. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
 
 [^nist]: NIST SP 800-53 Rev. 5 ([csrc.nist.gov/pubs/sp/800/53/r5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)) formalizes the **preventive / detective / responsive** split. Verification covers the first two; DFIR covers the third. [OPA/Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) generalizes the gate to declarative policy-as-code.
 
