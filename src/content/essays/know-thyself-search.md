@@ -1,6 +1,7 @@
 ---
 title: Search was never about humans
 subtitle: Retrieval over typed personal graphs
+relief: Being known is being legible. Legibility is shape, not exposure.
 kicker: Method
 tag: essay
 order: 1
@@ -230,6 +231,10 @@ Fifty years of information retrieval, same shape instantiated four times. What c
 
 **Scale 4 — AI-native search.** The agent doesn't type. It describes. The query is a sentence shaped like the answer — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on the way documents *get cited.* Filtering separates from ranking and runs first; the index throws out the wrong types before scoring the rest. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
 
+*The retriever now spawns retrievers.* Exa's Feb–Mar 2026 ships make the shift legible: Exa Instant returns neural results in under 200ms — fast enough to sit inside a tool-call loop — while Exa Deep fans out parallel sub-agents per query, and exa-code maintains a code-example index aimed at hallucination-rate reduction.[^exa-ships]
+
+*Search is no longer a URL. It's a tool a model calls.* In December 2025, Anthropic donated the Model Context Protocol to the Linux Foundation; the substrate beneath agent retrieval is now governed as shared infrastructure, not a vendor API.[^mcp-lf]
+
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
 <!-- ETUDE PLACEHOLDER — "Latency as Fifth Reset"
@@ -244,6 +249,8 @@ All four *find relevant nodes by walking edges.* What changes is node spec, edge
 -->
 
 Three requirements fall out of the walk. **Query format** — humans type two words because typing is slow. Agents type a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
+
+*There's a third axis. Not what something looks like, not what it means — what it is.* Turnbull names it: agents query by attribute, and metadata is the retrieval kind that lexical and embedding both miss.[^turnbull-metadata]
 
 Type the same intent two ways. Watch the ranking shift.
 
@@ -615,11 +622,11 @@ The full scaffold is three retrieval modes, ~300 LOC, runnable on a laptop: **[g
 
 This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
 
-*Being known is being legible. Legibility is shape, not exposure.*
-
 γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
 
 **The retrieval problem hasn't changed in two and a half millennia. The reader has.**
+
+*Agents help when you know what you're looking for. They don't help when you don't.* Turnbull's Apr 28 2026 post sharpens the limit: agents add value on entity-discovery — finding a thing whose shape is named — and add nothing on information-discovery, because *if it knew what information was correct, it wouldn't need search.*[^turnbull-agents]
 
 The bet is testable. More to follow.
 
@@ -644,3 +651,11 @@ The bet is testable. More to follow.
 [^amem]: Xu et al., [*A-Mem*](https://arxiv.org/abs/2502.12110) (2025).
 
 [^pinecone]: Pinecone, [*HNSW*](https://www.pinecone.io/learn/series/faiss/hnsw/) — when graph indexes earn their keep over linear scan.
+
+[^exa-ships]: Exa, [*Exa Deep*](https://exa.ai/blog/exa-deep) and [*exa-code*](https://exa.ai/blog/exa-code) (2026); MarkTechPost, [*Exa AI Introduces Exa Instant*](https://www.marktechpost.com/2026/02/13/exa-ai-introduces-exa-instant-) (Feb 2026).
+
+[^mcp-lf]: The New Stack, [*Model Context Protocol Roadmap 2026*](https://thenewstack.io/model-context-protocol-roadmap-2026/) — MCP donated to the Linux Foundation, December 2025.
+
+[^turnbull-metadata]: Doug Turnbull, [*Metadata as the third retrieval kind*](https://softwaredoug.com/blog/2026/04/21/metadata-third-retrieval-kind.html) (Apr 21 2026).
+
+[^turnbull-agents]: Doug Turnbull, [*Can agents replace the search stack?*](https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html) (Apr 28 2026).

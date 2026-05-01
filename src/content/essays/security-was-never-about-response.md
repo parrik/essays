@@ -1,6 +1,7 @@
 ---
 title: Security was never about response
 subtitle: 'Continuous verification: gates and sweeps'
+relief: Security is the love of careful work. Response is what arrives when carefulness arrives late.
 kicker: Method
 tag: essay
 order: 3
@@ -54,9 +55,13 @@ Response is the work that begins **after** verification has failed. Rotating a l
 
 NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. Adjacent disciplines, not the same one.
 
+*The standard caught up with the practice.* In August 2025, NIST shipped SP 800-53 Rev. 5.2.0 — adding control SA-24 ("Develop Cyber-Resiliency Concept of Operations") and SI-02(07) (root-cause analysis of failed software updates), reframing boundary-and-sweep as its own control family rather than a clever pattern.[^nist-resiliency]
+
 At personal-infrastructure scale, both hats sit on one person. The hat-switch still matters. The trap is to spend all your energy in the second — *"I'll fix it when it breaks"* — and starve the first. *"I'll be careful when I commit."* *"I have backups."* That is planning for the fire department's arrival without writing the fire code.
 
 If you are in response mode, security has already failed. So given a list of practices, which discipline does each one actually belong to?
+
+*Not all gates are the same gate.* Kelly Shortridge's case against control-as-strategy and against cybersecurity-as-special is an argument against *humans-as-gates* — the manual review queue, the security-team-as-blocker, the change-board veto. The gates this essay defends are *machines* against *live state*: a hook on a diff, a webhook on an admission request, a probe on a URL. Different target, no contradiction.[^shortridge]
 
 ## Verify or respond?
 
@@ -339,11 +344,11 @@ The harder question is second-order — and it is Saltzer-Schroeder's, fifty yea
 
 The mnemonic — *"security lives at the gate, not the response"* — rhymes with Brendan Burns' [EarlyWatch](https://github.com/brendandburns/early-watch)[^earlywatch], a Kubernetes admission webhook that denies unsafe cluster changes at the boundary, declaratively, against live state. EarlyWatch is the modern instance; Saltzer-Schroeder is the original. The extension this essay puts down is that **sweeps are part of the gate.** Same posture, different cadence.
 
+*The thing that gets tired isn't the gate. It's the engineer holding it.* The 2025–2026 industry conversation about "shift-left fatigue" is about *humans* — review queues moved earlier in the SDLC, alerts piled onto developers, security work pushed onto people who already have a job. A machine gate firing on every commit doesn't burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate.[^shift-left]
+
 > **Security is continuous verification.** Gates fire on action; sweeps fire on cadence. Together they are security's entire scope. Response is what fires when verification fails — and that is a different discipline. *Every response firing is a signal that verification has a gap; the goal is to close the gap, not to staff response.*
 
 The picker above is a tool. The principle is the work.
-
-*Security is the love of careful work. Response is what arrives when carefulness arrives late.*
 
 ---
 
@@ -358,3 +363,9 @@ The picker above is a tool. The principle is the work.
 [^nist]: NIST SP 800-53 Rev. 5 ([csrc.nist.gov/pubs/sp/800/53/r5](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)) formalizes the **preventive / detective / responsive** split. Verification covers the first two; DFIR covers the third. [OPA/Gatekeeper](https://open-policy-agent.github.io/gatekeeper/website/docs/) generalizes the gate to declarative policy-as-code.
 
 [^earlywatch]: [github.com/brendandburns/early-watch](https://github.com/brendandburns/early-watch) — a Kubernetes validating admission webhook that denies unsafe operations against live cluster state (e.g. deleting a Service while Pods matching its selector still run). The design philosophy — prevent the unsafe operation at the API boundary, against live state — is what this essay's "gate is continuous" framing extends into the personal-infrastructure case.
+
+[^nist-resiliency]: NIST SP 800-53 Rev. 5.2.0, August 2025 ([csrc.nist.gov/News/2025/nist-releases-revision-to-sp-800-53-controls](https://csrc.nist.gov/News/2025/nist-releases-revision-to-sp-800-53-controls)). Adds **SA-24 — Develop Cyber-Resiliency Concept of Operations** (treating resiliency as a system-architecture concern with its own control family) and **SI-02(07) — Root-Cause Analysis of Failed Software Updates** (the sweep over the sweep, in standards form). The 5.2.0 update is the formal acknowledgment that boundary-and-sweep is not a clever pattern but a control-family discipline.
+
+[^shortridge]: Kelly Shortridge, ["Cybersecurity Isn't Special"](https://kellyshortridge.com/blog/posts/cybersecurity-isnt-special/) and ["Control vs. Resilience: A Modern Cybersecurity Strategy"](https://kellyshortridge.com/blog/posts/control-vs-resilience-cybersecurity-strategy/). Shortridge's case against control-as-strategy is a case against *humans-as-gates*: the security-team-as-blocker, the change-advisory-board veto, the manual review queue that slows delivery without changing outcomes. Productive tension, not contradiction — this essay's gates are machines (a hook, a webhook, a probe) against live state. The argument against gatekeeping by humans is compatible with the argument for mediation by machines.
+
+[^shift-left]: 2025–2026 industry coverage of "shift-left fatigue" — e.g. Help Net Security, ["Why shift-left security strategies are leaving teams exhausted"](https://www.helpnetsecurity.com/2025/05/23/shift-left-security-strategies/) (May 2025); Dark Reading, ["Shift-Left Pushback Triggers Security Soul-Searching"](https://www.darkreading.com/application-security/shift-left-pushback-triggers-security-soul-searching). The pattern in these pieces: review queues, alert volume, and approval gates moved earlier in the SDLC overload the *engineers* expected to clear them. A pre-commit hook firing on every diff doesn't fatigue; a person hand-reviewing every diff does. The fatigue is a symptom of human gating where machine mediation belongs.

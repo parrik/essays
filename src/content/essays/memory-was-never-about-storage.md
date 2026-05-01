@@ -1,6 +1,7 @@
 ---
 title: Memory was never about storage
 subtitle: What survives retrieval under bound
+relief: Forgetting is not loss. Forgetting is the cue and the trace, drifted.
 kicker: Method
 tag: essay
 order: 2
@@ -368,6 +369,8 @@ If trace can be intact while access is broken, the cost isn't in the substrate �
 - **The wrote-it-down illusion.** Capture feels like remembering. It isn't. The trace is on disk; the path in is not.
 - **The long-context bet.** Push the substrate further — bigger window, more notes, more tokens — and assume retrieval scales with it. Storage strength goes up. Retrieval strength doesn't follow. Bury an item in the middle of a million-token window: the model finds it about 60% of the time. The wait grows by a factor of thirty to sixty. The bill grows by a factor of about a thousand. The U-shape is the substrate telling you it's not an index.[^liu24]
 
+*The field has a new name for the same architecture: LLM as OS, context window as RAM, the index somewhere else.* By mid-2025, the practice once called prompt engineering was renamed context engineering — write, select, compress, isolate — an admission that the window is working memory and the durable state has to live outside it.[^contexteng]
+
 <!-- ETUDE PLACEHOLDER: Long Context Bet — slider scrubs context size 8K → 1M; reader watches recall %, latency, cost, and the U-curve emerge. Source: Liu et al. TACL 2024 (Lost-in-the-Middle). -->
 
 The third mode makes the architectural mistake physical: a graph can fail the same way, and the cheapest demonstration is a real search across real notes.
@@ -383,7 +386,11 @@ The third mode makes the architectural mistake physical: a graph can fail the sa
 
 The hippocampus doesn't store memory contents. It stores an index of cortical patterns. Recall is index-lookup; the cortex holds the representation.[^teyler] Forty years later, HippoRAG ports the same architecture into an LLM stack: knowledge graph as hippocampal index, corpus as cortex, PageRank walking the index to find passages.[^hipporag] The know-thyself schema is that architecture again — typed graph as index, YAML claims as substrate, retrieval is the walk.
 
+*The index is no longer one-shot; the graph keeps learning what to ask itself.* HippoRAG 2 extends the architecture with continual learning, recognition memory for seed-node selection, and context-aware retrieval that pulls neighborhoods rather than isolated nodes.[^hipporag2]
+
 And every retrieval is a write. Pull a memory up and it goes soft for a few hours before it sets again. What sets is the original trace plus whatever's reached you since — the question that primed it, the room you were in, the model that paraphrased it back. The graph carries a `valid_at` field on every claim for the same reason. A claim has a window. Outside the window, it has to be re-grounded or it drifts.[^reconsolidation][^loftus][^chan24]
+
+*The page passes by; the trace doesn't always set.* Matuschak names this transmissionism — the assumption that having read is the same as having understood. The book is a substrate; the understanding is what survives retrieval, not what was on the page.[^matuschak-books]
 
 <!-- ETUDE PLACEHOLDER: Every Retrieval Is a Write — reader types a memory; an "LLM" reflects it back with subtle drift; reader accepts or corrects across 3-4 turns; watches the trace mutate. Source: Chan & Loftus 2024 (LLM-induced reconsolidation distortion); Nader/Schiller (reconsolidation). -->
 
@@ -393,8 +400,6 @@ And every retrieval is a write. Pull a memory up and it goes soft for a few hour
     <strong>Alex's dashboard</strong> — the index, walked. The substrate is YAML; the memory is the walk.
   </a>
 </aside>
-
-*Forgetting is not loss. Forgetting is the cue and the trace, drifted.*
 
 > **Memory is what survives retrieval under bound.** Storage is the substrate. The index is the memory. The personal-graph project is not a notes app — it's the indexing-theory architecture, applied to a self. It's what Alex was reaching for, that Sunday evening — a typed index, sized to her, that survives retrieval.
 
@@ -413,5 +418,8 @@ And every retrieval is a write. Pull a memory up and it goes soft for a few hour
 [^chan24]: Chan & Loftus (2024) on LLM-mediated interview distortion; Schiller et al. (2010, 2017) on reconsolidation update windows.
 [^teyler]: Teyler & DiScenna (1986), *The hippocampal memory indexing theory*; Teyler & Rudy (2007) update.
 [^hipporag]: Gutiérrez et al. (2024), *HippoRAG: Neurobiologically inspired long-term memory for LLMs*, NeurIPS.
+[^hipporag2]: Gutiérrez et al. (2025), *From RAG to Memory: Non-parametric continual learning for LLMs* (HippoRAG 2), arXiv:2502.14802 — recognition memory for seed-node selection, context-aware neighborhood retrieval, continual ingestion.
 [^matuschak]: Andy Matuschak, evergreen-notes retrospective on the 1,000-note rediscovery loop.
+[^matuschak-books]: Andy Matuschak (2019), *Why books don't work*, andymatuschak.org/books — transmissionism critique: comprehension isn't transferred by exposure to the page.
 [^liu24]: Liu et al. (2024), *Lost in the Middle: How language models use long contexts*, TACL — U-shaped recall, ~60% accuracy on middle items at 1M tokens, 30–60× latency, ~1250× cost vs 8K window.
+[^contexteng]: LangChain (2025), *Context Engineering for Agents* — the mid-2025 reframe (Karpathy and others): "LLM as OS, context window as RAM"; the four moves are write, select, compress, isolate.
