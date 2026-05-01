@@ -40,12 +40,278 @@ Security is **continuous verification** built on a **reference monitor** — And
 
 Both are gates. *Boundary-time and sweep-time are the same posture at different cadences.* AWS frames the same posture in builder vocabulary. Formal methods at design time. Fuzzing at test time. Deterministic simulation against the spec. And — the move that matters here — runtime validation of execution traces, checking in production that what the system is actually doing matches what it was specified to do.[^brooker] Verification as a continuous practice, not a gate-shaped one-shot. If the gate is the mechanism, where does it physically *live* — and how has that location changed?
 
-<!-- TODO etude: Gate Moved Into the API Server — three eras of complete mediation:
-     (1) external webhook (EarlyWatch shape, K8s pre-1.30: out-of-process, network hop, can fail open)
-     (2) native CEL ValidatingAdmissionPolicy in apiserver (K8s 1.34, Apr 2026: Gatekeeper v3.22 + Kyverno 1.17 compile to CEL, in-process, cannot be bypassed)
-     (3) sweep checking what gate didn't catch (cadence layer over the kernel layer)
-     Reader watches the gate evolve sidecar → kernel → continuous. This is Saltzer-Schroeder's complete mediation, finally architecturally enforced.
-     Footer: "Three eras of mediation. The fourth question — what about the harm that already landed?" -->
+<div class="etude-embed" data-etude="gate-into-apiserver">
+  <p class="etude-embed-cue">▶ Play · Gate Moved Into the API Server. Three eras of complete mediation — pick one.</p>
+<!---->
+  <div class="gm-dots" aria-hidden="true"></div>
+  <div class="gm-cards"></div>
+  <div class="gm-stage" aria-live="polite"></div>
+<!---->
+  <p class="etude-embed-foot">Three eras of mediation, each closer to Saltzer-Schroeder's *complete mediation* honored in architecture rather than promised in policy. The fourth question — what about the harm that already landed?</p>
+</div>
+<script>
+(() => {
+  const root = document.querySelector('.etude-embed[data-etude="gate-into-apiserver"]');
+  if (!root) return;
+  //
+  const ERAS = [
+    {
+      id: 'webhook',
+      label: 'External webhook',
+      era: 'K8s pre-1.30',
+      tagline: 'EarlyWatch shape',
+      diagram: 'client → apiserver → ⟶ webhook (out-of-process)',
+      diagramLines: [
+        'client',
+        '   ↓',
+        'apiserver',
+        '   ↓  (network hop)',
+        'admission webhook',
+        '   ↓',
+        'allow / deny'
+      ],
+      mediates: 'A separate webhook process sees admission requests over the network. The apiserver pauses, asks the webhook, waits for a verdict.',
+      failure: 'Webhook unreachable → request times out → fail-open by default. The mediator can be bypassed by taking the mediator down.',
+      principle: 'Saltzer-Schroeder *complete mediation*: violated under failure. The gate is present in the happy path; absent the moment the network drops.'
+    },
+    {
+      id: 'cel',
+      label: 'Native CEL in apiserver',
+      era: 'K8s 1.34, Apr 2026',
+      tagline: 'Gatekeeper v3.22 + Kyverno 1.17 compile to ValidatingAdmissionPolicy',
+      diagram: 'client → apiserver-with-CEL (in-process)',
+      diagramLines: [
+        'client',
+        '   ↓',
+        'apiserver',
+        '   ├── CEL policy (in-process)',
+        '   ↓',
+        'allow / deny'
+      ],
+      mediates: 'Policy compiled into the apiserver itself as CEL expressions. No network hop. The gate is part of the kernel that authorizes the request.',
+      failure: 'Coverage gap — the policy can be written wrong, miss a resource kind, mismatch a path pattern (Alex parable in Kubernetes form). Architecturally cannot be bypassed.',
+      principle: 'Saltzer-Schroeder *complete mediation*: honored. To skip the gate you have to take down the apiserver itself, and then there is nothing to mediate.'
+    },
+    {
+      id: 'sweep',
+      label: 'Sweep over the kernel',
+      era: 'Cadence layer',
+      tagline: 'walks live state, catches what the gate missed',
+      diagram: 'client → apiserver-with-CEL + cadence sweep over live state',
+      diagramLines: [
+        'client → apiserver-with-CEL → allow / deny',
+        '                ↑',
+        '       cadence sweep',
+        '       (walks live state)',
+        '                ↑',
+        '   was the sweep running?'
+      ],
+      mediates: 'Even with native CEL, gates have coverage gaps. A cadence job walks the live cluster state on schedule, asserting the invariants the gate was supposed to enforce.',
+      failure: 'The cadence itself can break. The sweep needs a sweep — *was the sweep running on the right paths?* Recursion bottoms out at human attention.',
+      principle: 'Saltzer-Schroeder *complete mediation*: honored at meta-level. The sweep checks coverage of the gate; the meta-sweep checks coverage of the sweep.'
+    },
+  ];
+  //
+  const cardsEl = root.querySelector('.gm-cards');
+  const stage = root.querySelector('.gm-stage');
+  const dotsEl = root.querySelector('.gm-dots');
+  //
+  let active = null;
+  let visited = new Set();
+  //
+  function renderDots() {
+    dotsEl.innerHTML = ERAS.map(e => {
+      const cls = e.id === active ? 'gm-dot gm-dot-current' : visited.has(e.id) ? 'gm-dot gm-dot-done' : 'gm-dot';
+      return `<span class="${cls}"></span>`;
+    }).join('');
+  }
+  //
+  function renderCards() {
+    cardsEl.innerHTML = ERAS.map((e, i) => {
+      const activeCls = e.id === active ? ' gm-card-active' : '';
+      const visitedCls = visited.has(e.id) ? ' gm-card-visited' : '';
+      return `
+        <button type="button" class="gm-card${activeCls}${visitedCls}" data-era="${e.id}">
+          <span class="gm-card-num">Era ${i + 1}</span>
+          <strong class="gm-card-label">${e.label}</strong>
+          <span class="gm-card-era">${e.era}</span>
+          <span class="gm-card-tag">${e.tagline}</span>
+        </button>
+      `;
+    }).join('');
+    cardsEl.querySelectorAll('.gm-card').forEach(btn => {
+      btn.addEventListener('click', () => pick(btn.dataset.era));
+    });
+  }
+  //
+  function pick(id) {
+    active = id;
+    visited.add(id);
+    const e = ERAS.find(x => x.id === id);
+    renderCards();
+    renderDots();
+    const honored = e.principle.includes('honored');
+    const principleClass = honored ? 'gm-principle-honored' : 'gm-principle-violated';
+    stage.innerHTML = `
+      <div class="gm-detail">
+        <p class="gm-detail-num">${e.era}</p>
+        <h3 class="gm-detail-label">${e.label}</h3>
+        <pre class="gm-diagram">${e.diagramLines.join('\n')}</pre>
+        <div class="gm-row"><span class="gm-row-key">What mediates</span><span class="gm-row-val">${e.mediates}</span></div>
+        <div class="gm-row"><span class="gm-row-key">Failure mode</span><span class="gm-row-val">${e.failure}</span></div>
+        <div class="gm-row gm-row-principle ${principleClass}"><span class="gm-row-key">Saltzer-Schroeder</span><span class="gm-row-val">${e.principle}</span></div>
+      </div>
+    `;
+  }
+  //
+  function renderInitial() {
+    stage.innerHTML = `
+      <div class="gm-detail gm-detail-empty">
+        <p class="gm-empty">Pick an era to see where the mediator sits, what bypasses it, and whether complete mediation is honored.</p>
+      </div>
+    `;
+  }
+  //
+  renderCards();
+  renderDots();
+  renderInitial();
+})();
+</script>
+<style>
+.etude-embed[data-etude="gate-into-apiserver"] .gm-dots {
+  display: flex;
+  gap: 0.3rem;
+  margin: 0.85rem 0;
+  justify-content: center;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-dot {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.12);
+  transition: background 200ms;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-dot-done { background: var(--accent); opacity: 0.55; }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-dot-current { background: var(--accent); box-shadow: 0 0 0 3px rgba(138,52,32,0.18); }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.55rem;
+  margin: 0.85rem 0;
+}
+@media (max-width: 600px) {
+  .etude-embed[data-etude="gate-into-apiserver"] .gm-cards { grid-template-columns: 1fr; }
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card {
+  font-family: inherit;
+  text-align: left;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--accent);
+  background: var(--bg);
+  color: var(--ink);
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.18rem;
+  transition: background 120ms, transform 120ms;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card:hover {
+  background: rgba(138,52,32,0.08);
+  transform: translateY(-1px);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-active {
+  background: rgba(138,52,32,0.12);
+  border-width: 2px;
+  padding: calc(0.7rem - 1px) calc(0.8rem - 1px);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-visited:not(.gm-card-active) {
+  background: rgba(138,52,32,0.04);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-num {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-label {
+  font-family: 'Georgia', serif;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-era {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-card-tag {
+  font-size: 0.82rem;
+  color: var(--ink);
+  opacity: 0.78;
+  line-height: 1.4;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-stage { min-height: 14rem; }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-detail {
+  padding: 1.1rem 1rem;
+  background: rgba(0,0,0,0.025);
+  border-radius: 4px;
+  border-left: 3px solid var(--accent);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-detail-empty { border-left-color: var(--muted); }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.93rem;
+  line-height: 1.55;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-detail-num {
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin: 0 0 0.4rem;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-detail-label {
+  font-family: 'Georgia', serif;
+  font-size: 1.15rem;
+  margin: 0 0 0.7rem;
+  line-height: 1.35;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-diagram {
+  font-family: 'Menlo', 'Consolas', monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  background: var(--bg);
+  padding: 0.7rem 0.85rem;
+  border-radius: 3px;
+  border-left: 2px solid var(--muted);
+  margin: 0.5rem 0 0.85rem;
+  white-space: pre;
+  overflow-x: auto;
+  color: var(--ink);
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.7rem;
+  padding: 0.55rem 0;
+  border-top: 1px solid rgba(0,0,0,0.08);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+@media (max-width: 600px) {
+  .etude-embed[data-etude="gate-into-apiserver"] .gm-row { grid-template-columns: 1fr; gap: 0.2rem; }
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-row-key {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  padding-top: 0.1rem;
+}
+.etude-embed[data-etude="gate-into-apiserver"] .gm-row-val { color: var(--ink); }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-row-principle.gm-principle-violated .gm-row-val { color: var(--accent); }
+.etude-embed[data-etude="gate-into-apiserver"] .gm-row-principle.gm-principle-honored .gm-row-val { color: #2d7a3e; }
+</style>
 
 ## What's not
 
