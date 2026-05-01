@@ -83,6 +83,26 @@ main {
   text-decoration-color: var(--accent);
 }
 
+.site-footer .maxims-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2rem;
+  row-gap: 0.4rem;
+}
+.site-footer .maxim-name {
+  color: var(--accent);
+  font-weight: 600;
+}
+.site-footer .maxim-desc {
+  color: var(--muted);
+  line-height: 1.5;
+}
+.site-footer .footer-links {
+  margin-top: 1.2rem;
+  font-size: 0.78rem;
+  opacity: 0.7;
+}
+
 h1 {
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: 500;
