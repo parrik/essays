@@ -32,11 +32,9 @@ A cancer cell is not a broken cell. It divides, consumes, builds, responds — i
 
 The fascia knows this before the mind does.
 
-Under chronic stress it thickens, adheres, goes quiet in certain regions. The body partitions itself — not because anything broke, but because the signal from that region was once associated with danger.
-
 ## Fascia: how the body partitions itself
 
-The connective tissue under your skin is one continuous web — wrapping every muscle, every organ.[^schleip] Healthy fascia is hydrated; the layers slide on each other and the matrix transmits force without holding it. Under chronic bracing, the matrix dehydrates, the layers adhere, the glide slows. Certain regions stop participating. Force routes around them. Signal routes around them. The body partitions itself.
+The connective tissue under your skin is one continuous web — wrapping every muscle, every organ.[^schleip] Healthy fascia is hydrated; the layers slide on each other and the matrix transmits force without holding it. Under chronic bracing, the matrix dehydrates, the layers adhere, the glide slows. Certain regions stop participating. Force routes around them. Signal routes around them. The body partitions itself — not because anything broke, but because the signal from that region was once associated with danger.
 
 Restorative yoga at this layer: long supported holds let the sympathetic system stand down long enough that fascial water redistributes between layers. The matrix re-hydrates. Adhesions soften. The partitioned region rejoins the broadcast.
 
@@ -60,7 +58,7 @@ Click each layer to feel where it lives, and what stillness does to it.
     </div>
   </div>
 <!---->
-  <p class="etude-embed-foot">No anatomical seam separates these layers — they are continuous. Restorative postures act on all of them at once.</p>
+  <p class="etude-embed-foot">No anatomical seam separates these layers — they are continuous. The fascia is one layer. The nervous system is another. How does stillness reach it?</p>
 </div>
 <script>
 (() => {
@@ -224,13 +222,11 @@ Click each layer to feel where it lives, and what stillness does to it.
 }
 </style>
 
-Restorative yoga does one thing, slowly: it reopens the channel. A bolstered chest opener held for seven minutes is not a stretch — it is *re-handshaking.* The nervous system, given time and safety, queries the parts of itself it stopped listening to. The breath drops. The diaphragm releases. The tissue remembers it is part of something.
+Restorative yoga does one thing, slowly: it reopens the channel.
 
 ## The long exhale
 
-The vagus is the body's listening nerve. Locked, it reads alarm; flexible, it reads context. Its flexibility is measurable — heart-rate variability — and low variability tracks the same inflammatory terrain Hanahan and Weinberg name as cancer-permissive.[^1][^porges] The same readout — *can the nervous system flex?* — predicts inflammation, immune function, recovery.
-
-The simplest way to tell the vagus you're safe is to lengthen the exhale. The vagus listens for the 1:2 ratio: inhale four, exhale eight. After two minutes, the parasympathetic comes online.
+The vagus is the body's listening nerve. Locked, it reads alarm; flexible, it reads context. Its flexibility is measurable — heart-rate variability — and low variability tracks the same inflammatory terrain Hanahan and Weinberg name as cancer-permissive.[^1][^porges] The simplest way to tell the vagus you're safe is to lengthen the exhale: the 1:2 ratio. Inhale four, exhale eight.
 
 
 <div class="etude-embed" data-etude="long-exhale">
@@ -252,7 +248,7 @@ The simplest way to tell the vagus you're safe is to lengthen the exhale. The va
     <button class="etude-embed-btn le-sample" type="button">Just one cycle (12s)</button>
   </div>
   <div class="le-result" aria-live="polite"></div>
-  <p class="etude-embed-foot">Whether you read on or stop here, the vagus nerve has already received the essay's first claim through your physiology.</p>
+  <p class="etude-embed-foot">The vagus has received the essay's first claim through your physiology. But what is the body listening *for*? What does the nervous system, given safety, remember?</p>
 </div>
 <script>
 (() => {
