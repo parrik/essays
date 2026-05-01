@@ -795,7 +795,7 @@ And every retrieval is a write. Pull a memory up and it goes soft for a few hour
   <p>Type a memory — a sentence about something that actually happened to you recently. The model reflects it back with subtle drift. Accept the paraphrase, or correct it. Run three or four turns. Watch what gets stored.</p>
   <div class="riw-input-wrap" data-stage="input">
     <label class="riw-label">Your memory (one sentence)</label>
-    <textarea class="riw-textarea" data-act="memory" rows="2" placeholder="Last Tuesday I walked to the bakery in the rain and ran into Sam."></textarea>
+    <textarea class="riw-textarea" data-act="memory" rows="2" placeholder="Last Tuesday I walked to the bakery in the rain and ran into Helen."></textarea>
     <button type="button" class="riw-btn" data-act="seed">Seed the trace</button>
   </div>
   <div class="riw-trace" data-stage="trace" hidden>
