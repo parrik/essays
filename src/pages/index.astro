@@ -63,7 +63,7 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
                   {countEtudes(essay) > 0 && <span class="play-hint" aria-label={`${countEtudes(essay)} playable inline`}>▶ play</span>}
                 </a>
               </div>
-              {essay.data.subtitle && <p class="essay-subtitle">{essay.data.subtitle}</p>}
+              {(essay.data.relief || essay.data.subtitle) && <p class="essay-subtitle">{essay.data.relief ?? essay.data.subtitle}</p>}
             </li>
           );
         }
@@ -89,7 +89,7 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
                         {p.data.title}
                         {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
                       </span>
-                      {p.data.subtitle && <span class="part-description">{p.data.subtitle}</span>}
+                      {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
                     </span>
                   </a>
                 </li>

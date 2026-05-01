@@ -12,6 +12,11 @@ const essays = defineCollection({
     // `title` if unset.
     seriesName: z.string().optional(),
     subtitle: z.string().optional(),
+    // Felt-anchored relief-line in the user's voice — body or felt-state,
+    // parallel two-clause cadence. Used as the homepage subtitle and shown
+    // alongside the technical subtitle at the top of the essay page. Gives
+    // the reader a place to come up for air in the listing surface.
+    relief: z.string().optional(),
     kicker: z.string().optional(),
     tag: z.enum(['essay', 'poster', 'short']).optional(),
     description: z.string().optional(),
