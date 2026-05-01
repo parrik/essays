@@ -13,9 +13,15 @@ etudes:
   - label: Flat vs Typed
     url: '#the-shape-through-alexs-year'
     note: same data, two memories
+  - label: Wiki vs Typed Graph
+    url: '#the-shape-through-alexs-year'
+    note: Karpathy contrast
   - label: Attribution ≠ Confidence
     url: '#the-operating-rule'
     note: drill the rule
+  - label: Memanto Counter
+    url: '#the-operating-rule'
+    note: benchmarks miss provenance
 ---
 
 Alex is 41. Senior editor at the University of Chicago Press. Single parent of her daughter Mira, fourteen. Her older sister Helen died at twenty-three in 2007. Nine months into Chicago, mostly alone.
@@ -349,11 +355,206 @@ The types are the binding principle: episodic and semantic memory held in distin
 .etude-embed[data-etude="flat-vs-typed"] .fvt-detail { color: var(--muted); font-size: 0.85rem; }
 </style>
 
-<!--
-NEXT ETUDE PLACEHOLDER — "Wiki vs Typed Graph"
-Translation target: take Karpathy's LLM Wiki gist (Apr 4 2026) — model writes a wiki of itself — and stage a head-to-head where the wiki collapses 6 self-restates into a single "synthesis" paragraph while the typed graph keeps them as 1 self-attribution + 5 unresolved mentions. Show the wiki silently launders repetition into authority; the typed graph won't.
-Output should be: side-by-side, same input, wiki section vs graph section, with the wiki's smoothed-prose paragraph next to the graph's annotated 1-derivation count.
--->
+A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and dedupe near-duplicates.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches duplicates the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*. Watch the same inputs go into both shapes.
+
+<div class="etude-embed" data-etude="wiki-vs-typed">
+  <p class="etude-embed-cue">▶ Play · Wiki vs Typed Graph</p>
+  <p class="wvt-intro">Seven inputs land in two memories. The wiki lints duplicates. The graph types them. Watch where they diverge.</p>
+  <div class="wvt-controls">
+    <button type="button" class="etude-embed-btn etude-embed-btn-alt wvt-add-restate">+ Add restatement</button>
+    <button type="button" class="etude-embed-btn etude-embed-btn-alt wvt-add-grounded">+ Add grounded counter-episode</button>
+    <button type="button" class="etude-embed-btn etude-embed-btn-alt wvt-reset">Reset</button>
+  </div>
+  <div class="wvt-feed" aria-live="polite"></div>
+  <div class="wvt-cols">
+    <section class="wvt-col wvt-col-wiki">
+      <h4 class="wvt-h">Wiki memory <span class="wvt-sub">markdown + lint</span></h4>
+      <div class="wvt-badges">
+        <span class="wvt-badge">entries: <b class="wvt-wiki-entries">0</b></span>
+        <span class="wvt-badge wvt-badge-warn">deduped: <b class="wvt-wiki-deduped">0</b></span>
+      </div>
+      <div class="wvt-out wvt-wiki-out"></div>
+    </section>
+    <section class="wvt-col wvt-col-graph">
+      <h4 class="wvt-h">Typed graph memory <span class="wvt-sub">8 node types</span></h4>
+      <div class="wvt-badges">
+        <span class="wvt-badge">nodes: <b class="wvt-graph-nodes">0</b></span>
+        <span class="wvt-badge wvt-badge-ok">derivations: <b class="wvt-graph-derivs">0</b></span>
+      </div>
+      <div class="wvt-out wvt-graph-out"></div>
+    </section>
+  </div>
+  <p class="etude-embed-foot"><em>The wiki is honest — it shows what got said. The graph is honest about a different thing — what got grounded. The next etude makes the cost of that distinction measurable.</em></p>
+</div>
+<script>
+(() => {
+  const root = document.querySelector('.etude-embed[data-etude="wiki-vs-typed"]');
+  if (!root) return;
+  //
+  const SEED = [
+    { id: 1, kind: 'self-restate',     text: "Alex avoids conflict at work.",                                         src: "Conv #4, Mar 6"  },
+    { id: 2, kind: 'self-restate',     text: "I tend to back off from confrontation at the press.",                   src: "Conv #9, Mar 24" },
+    { id: 3, kind: 'self-restate',     text: "I avoid hard conversations with editors.",                              src: "Conv #15, Apr 11" },
+    { id: 4, kind: 'self-restate',     text: "I'm conflict-averse at work.",                                          src: "Conv #22, May 2" },
+    { id: 5, kind: 'self-restate',     text: "I sidestep disagreements with senior staff.",                           src: "Conv #28, May 19" },
+    { id: 6, kind: 'self-restate',     text: "Avoiding confrontation is just how I operate at the office.",           src: "Conv #34, Jun 3" },
+    { id: 7, kind: 'grounded-counter', text: "Alex held position against David Ferraro on the Chen book — brought the committee around over two weeks despite the political cost.", src: "O05, Mar 11 2025" }
+  ];
+  let inputs = SEED.slice();
+  let extra = 0;
+  //
+  const feedEl = root.querySelector('.wvt-feed');
+  const wikiEntriesEl = root.querySelector('.wvt-wiki-entries');
+  const wikiDedupedEl = root.querySelector('.wvt-wiki-deduped');
+  const graphNodesEl  = root.querySelector('.wvt-graph-nodes');
+  const graphDerivsEl = root.querySelector('.wvt-graph-derivs');
+  const wikiOutEl  = root.querySelector('.wvt-wiki-out');
+  const graphOutEl = root.querySelector('.wvt-graph-out');
+  //
+  function renderFeed() {
+    feedEl.innerHTML = inputs.map(f =>
+      `<div class="wvt-input wvt-input-${f.kind}"><span class="wvt-tag-kind">${f.kind === 'self-restate' ? 'self-restate' : 'grounded'}</span><span class="wvt-input-text">${f.text}</span> <span class="wvt-input-src">(${f.src})</span></div>`
+    ).join('');
+  }
+  //
+  function renderWiki() {
+    // The lint loop: dedupe near-duplicate self-restates into a synthesis
+    // paragraph. Grounded episodes attach as bullet observations. The wiki
+    // has no slot for "said" vs "grounded" — they smooth into one prose.
+    const restates = inputs.filter(f => f.kind === 'self-restate');
+    const counters = inputs.filter(f => f.kind === 'grounded-counter');
+    const deduped  = Math.max(0, restates.length - 1);
+    const synthesis = restates.length > 0
+      ? `<p class="wvt-wiki-prose"><strong>Conflict at work.</strong> Alex avoids conflict at work. The pattern shows up across ${restates.length} conversation${restates.length===1?'':'s'} — backing off from confrontation, sidestepping disagreement, declining hard conversations with senior editors. <em class="wvt-lint">[lint: ${deduped} near-duplicate${deduped===1?'':'s'} merged]</em></p>`
+      : `<p class="wvt-wiki-prose wvt-empty"><em>(empty)</em></p>`;
+    const obs = counters.length > 0
+      ? `<p class="wvt-wiki-prose"><strong>Notes.</strong></p><ul class="wvt-wiki-list">${counters.map(c => `<li>${c.text} <span class="wvt-input-src">(${c.src})</span></li>`).join('')}</ul>`
+      : '';
+    // Verdict the wiki produces when asked "is Alex conflict-averse?"
+    const verdict = restates.length >= 3
+      ? `<p class="wvt-wiki-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>Yes — consistent across multiple sessions.</em></p>`
+      : restates.length > 0
+      ? `<p class="wvt-wiki-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>Likely — mentioned ${restates.length} time${restates.length===1?'':'s'}.</em></p>`
+      : `<p class="wvt-wiki-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>(no entries)</em></p>`;
+    wikiOutEl.innerHTML = synthesis + obs + verdict + `<p class="wvt-detail">Lint catches duplicates. It cannot catch the difference between repetition and grounding — markdown has no slot for it.</p>`;
+    wikiEntriesEl.textContent = String(restates.length + counters.length);
+    wikiDedupedEl.textContent = String(deduped);
+  }
+  //
+  function renderGraph() {
+    const restates = inputs.filter(f => f.kind === 'self-restate').length;
+    const counters = inputs.filter(f => f.kind === 'grounded-counter').length;
+    const selfAttr = restates > 0 ? 1 : 0;
+    const derivs   = selfAttr + counters;
+    const nodeCt   = (restates > 0 ? 1 : 0) + counters;
+    const status = counters > 0 && selfAttr > 0
+      ? '<span class="wvt-tag wvt-tag-warn">contested</span>'
+      : counters > 0
+      ? '<span class="wvt-tag wvt-tag-ok">grounded</span>'
+      : selfAttr > 0
+      ? '<span class="wvt-tag wvt-tag-low">tentative</span>'
+      : '<span class="wvt-tag wvt-tag-low">empty</span>';
+    const lines = [];
+    if (selfAttr > 0) {
+      lines.push(`<li><strong>N (novel):</strong> <em>Alex avoids conflict at work.</em> ${restates} self-restatement${restates===1?'':'s'} → <strong>1 self-attribution</strong>. Tentative.</li>`);
+    }
+    if (counters > 0) {
+      lines.push(`<li><strong>O05 (observation):</strong> Alex held position against David Ferraro on the Chen book. <strong>1 grounded episode</strong> — counter-evidence to the avoids-conflict claim.</li>`);
+    }
+    const verdict = selfAttr > 0 && counters > 0
+      ? `<p class="wvt-graph-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>Contested — ${restates} self-restatements collapse to 1 self-attribution; 1 grounded episode goes the other way. Net: 2 derivations, opposing.</em></p>`
+      : selfAttr > 0
+      ? `<p class="wvt-graph-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>Tentative — ${restates} self-restatement${restates===1?'':'s'} = 1 derivation. No grounded episode yet.</em></p>`
+      : counters > 0
+      ? `<p class="wvt-graph-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>1 grounded counter-episode. No self-attribution to weigh against.</em></p>`
+      : `<p class="wvt-graph-verdict"><strong>Q: Is Alex conflict-averse at work?</strong> A: <em>(no nodes)</em></p>`;
+    graphOutEl.innerHTML = (lines.length ? `<ul class="wvt-graph-list">${lines.join('')}</ul>` : '<p class="wvt-empty"><em>(empty)</em></p>') + verdict + `<p class="wvt-detail">Self-restatements collapse. Grounded episodes count separately. Status: ${status}.</p>`;
+    graphNodesEl.textContent  = String(nodeCt);
+    graphDerivsEl.textContent = String(derivs);
+  }
+  //
+  function rerender() { renderFeed(); renderWiki(); renderGraph(); }
+  //
+  function addRestate() {
+    extra += 1;
+    const variants = [
+      "I avoid friction with the senior editors.",
+      "I'm not great at staying in disagreement.",
+      "Confrontation at the press isn't my mode.",
+      "I let things go rather than push at meetings."
+    ];
+    inputs.push({
+      id: inputs.length + 1,
+      kind: 'self-restate',
+      text: variants[extra % variants.length],
+      src: `Conv #${40 + extra}, added`
+    });
+    rerender();
+  }
+  //
+  function addGrounded() {
+    inputs.push({
+      id: inputs.length + 1,
+      kind: 'grounded-counter',
+      text: "Alex pushed back on a marketing reframe of the Chen book in the Friday meeting; held her line through three rounds.",
+      src: `O0${6 + extra}, added`
+    });
+    extra += 1;
+    rerender();
+  }
+  //
+  function reset() {
+    inputs = SEED.slice();
+    extra = 0;
+    rerender();
+  }
+  //
+  root.querySelector('.wvt-add-restate').addEventListener('click', addRestate);
+  root.querySelector('.wvt-add-grounded').addEventListener('click', addGrounded);
+  root.querySelector('.wvt-reset').addEventListener('click', (e) => { e.preventDefault(); reset(); });
+  //
+  rerender();
+})();
+</script>
+<style>
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-intro { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-controls { display: flex; gap: 0.5rem; margin: 0.5rem 0 0.6rem; flex-wrap: wrap; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-feed { margin: 0.5rem 0 0.75rem; padding: 0.6rem 0.85rem; background: rgba(0,0,0,0.03); border-radius: 4px; font-size: 0.85rem; line-height: 1.45; max-height: 11rem; overflow-y: auto; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input { margin: 0.25rem 0; padding: 0.15rem 0.35rem; border-radius: 2px; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input-self-restate { border-left: 2px solid rgba(138, 52, 32, 0.35); padding-left: 0.5rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input-grounded-counter { border-left: 2px solid #2f8f4e; padding-left: 0.5rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-tag-kind { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 999px; margin-right: 0.4rem; background: rgba(0,0,0,0.07); color: var(--muted); vertical-align: 1px; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input-grounded-counter .wvt-tag-kind { background: rgba(47, 143, 78, 0.18); color: #2f8f4e; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input-self-restate .wvt-tag-kind { background: rgba(138, 52, 32, 0.15); color: #8a3420; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-input-src { color: var(--muted); font-size: 0.78rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0.5rem 0; }
+@media (max-width: 600px) { .etude-embed[data-etude="wiki-vs-typed"] .wvt-cols { grid-template-columns: 1fr; } }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-col { padding: 0.7rem 0.85rem; border-radius: 4px; background: rgba(0,0,0,0.025); border-top: 3px solid transparent; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-col-wiki { border-top-color: #c98b1a; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-col-graph { border-top-color: #2f8f4e; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-h { font-family: 'Georgia', serif; font-size: 0.98rem; margin: 0 0 0.4rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-sub { font-family: inherit; font-size: 0.78rem; color: var(--muted); font-weight: normal; margin-left: 0.25rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-badge { font-size: 0.74rem; padding: 0.12rem 0.45rem; background: rgba(0,0,0,0.06); border-radius: 999px; color: var(--muted); }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-badge b { color: var(--ink); }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-badge-warn { background: rgba(201, 139, 26, 0.15); }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-badge-ok { background: rgba(47, 143, 78, 0.15); }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-out { font-size: 0.88rem; line-height: 1.5; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-out p { margin: 0.3rem 0; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-wiki-prose { font-family: 'Georgia', serif; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-lint { color: #a87217; font-size: 0.8rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-wiki-list { padding-left: 1.1rem; margin: 0.25rem 0; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-wiki-list li { margin: 0.2rem 0; font-size: 0.85rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-graph-list { padding-left: 1rem; margin: 0.25rem 0; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-graph-list li { margin: 0.4rem 0; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-wiki-verdict, .etude-embed[data-etude="wiki-vs-typed"] .wvt-graph-verdict { padding: 0.5rem 0.7rem; margin-top: 0.5rem; background: rgba(0,0,0,0.04); border-radius: 3px; font-size: 0.86rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-tag { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 999px; margin-left: 0.2rem; vertical-align: 1px; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-tag-ok { background: rgba(47, 143, 78, 0.18); color: #2f8f4e; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-tag-warn { background: rgba(201, 139, 26, 0.18); color: #a87217; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-tag-low { background: rgba(0,0,0,0.08); color: var(--muted); }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-detail { color: var(--muted); font-size: 0.85rem; }
+.etude-embed[data-etude="wiki-vs-typed"] .wvt-empty { color: var(--muted); font-style: italic; }
+</style>
 
 ## The operating rule
 
@@ -546,11 +747,124 @@ Repetition feels like corroboration. It isn't. Six conversations saying the same
 .etude-embed[data-etude="attribution-confidence"] .ac-blurb { font-style: italic; color: var(--muted); margin: 0.4rem 0 0.85rem; }
 </style>
 
-<!--
-NEXT ETUDE PLACEHOLDER — "Memanto Counter"
-Translation target: take the Memanto paper (arXiv 2604.22085, Apr 23 2026) — vector-only typed memory wins LongMemEval — and stage a side-by-side where vector memory wins the benchmark BUT graph catches the corroboration drift the benchmark doesn't measure. Two queries: (1) LongMemEval-style "what does the user prefer?" → vector wins on retrieval latency; (2) "is this claim grounded or repeated?" → vector returns 6 high-similarity hits and calls it confirmed; graph returns 1 derivation flagged tentative.
-Output: tabbed or two-pane comparison with the benchmark score next to the drift-catch result. The benchmark measures recall, not provenance.
--->
+A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) keeps memory as typed vectors only — thirteen categories, no graph — and beats graph hybrids on LongMemEval (89.8%) and LoCoMo (87.1%).[^memanto] On fact-retrieval QA, types-without-edges wins. The benchmark measures recall. It does not measure whether one derivation got mistaken for six. Pick a query.
+
+<div class="etude-embed" data-etude="memanto-counter">
+  <p class="etude-embed-cue">▶ Play · Memanto Counter</p>
+  <p class="mc-intro">Same memory contents. Two queries. Watch where benchmarks measure and where they don't.</p>
+  <div class="mc-queries" role="radiogroup" aria-label="Pick a query">
+    <button type="button" class="mc-q" data-q="fact" aria-pressed="true">Q1: Did Alex move from Brooklyn last August?</button>
+    <button type="button" class="mc-q" data-q="claim" aria-pressed="false">Q2: Is Alex actually conflict-averse?</button>
+  </div>
+  <div class="mc-cols">
+    <section class="mc-col mc-col-vec">
+      <h4 class="mc-h">Typed vector memory <span class="mc-sub">Memanto-shape, no graph</span></h4>
+      <div class="mc-badges">
+        <span class="mc-badge">LongMemEval: <b>89.8%</b></span>
+        <span class="mc-badge">LoCoMo: <b>87.1%</b></span>
+      </div>
+      <div class="mc-out mc-vec-out" aria-live="polite"></div>
+    </section>
+    <section class="mc-col mc-col-graph">
+      <h4 class="mc-h">Typed graph memory <span class="mc-sub">8 node types + provenance</span></h4>
+      <div class="mc-badges">
+        <span class="mc-badge">LongMemEval: <b>~88%</b></span>
+        <span class="mc-badge mc-badge-ok">drift-catch: <b>yes</b></span>
+      </div>
+      <div class="mc-out mc-graph-out" aria-live="polite"></div>
+    </section>
+  </div>
+  <div class="mc-reveal" aria-live="polite"></div>
+  <p class="etude-embed-foot"><em>Benchmarks measure "did you remember the fact." They do not measure "did you mistake one derivation for six." The next essay walks the retrieval architecture under bound.</em></p>
+</div>
+<script>
+(() => {
+  const root = document.querySelector('.etude-embed[data-etude="memanto-counter"]');
+  if (!root) return;
+  //
+  const RESULTS = {
+    fact: {
+      vec: {
+        body: `<p><strong>Match found.</strong> Category: <code>life-event</code>. Vector: <code>[moved, Brooklyn → Chicago, Aug 2024]</code>. Cosine 0.94. Latency 78ms.</p><p><strong>A:</strong> Yes — Alex moved from Brooklyn to Chicago in August 2024.</p>`,
+        verdict: '<span class="mc-tag mc-tag-ok">correct, fast</span>'
+      },
+      graph: {
+        body: `<p><strong>Match found.</strong> Node: <code>R-bio</code> (reference). Field: <em>moved from Brooklyn last August</em>. Provenance: stated by Alex, ungrounded but uncontested. 142ms.</p><p><strong>A:</strong> Yes — Alex moved from Brooklyn to Chicago in August 2024.</p>`,
+        verdict: '<span class="mc-tag mc-tag-ok">correct</span>'
+      },
+      reveal: `<p><strong>Both columns nail it.</strong> Vector even faster. On fact-retrieval QA — what LongMemEval and LoCoMo measure — typed vectors win on latency and tie on accuracy. The graph carries no advantage here. <em>This is the benchmark Memanto wins.</em></p>`
+    },
+    claim: {
+      vec: {
+        body: `<p><strong>6 high-similarity matches.</strong> Category: <code>self-attribute</code>. Cosine ≥ 0.91 across all six.</p><ul class="mc-hits"><li>"Alex avoids conflict at work." — Conv #4</li><li>"backs off from confrontation at the press" — Conv #9</li><li>"avoids hard conversations with editors" — Conv #15</li><li>"conflict-averse at work" — Conv #22</li><li>"sidesteps disagreements with senior staff" — Conv #28</li><li>"avoiding confrontation is just how I operate" — Conv #34</li></ul><p><strong>A:</strong> <em>Yes — strongly attested. Six high-similarity matches across four months. Confidence: high.</em></p>`,
+        verdict: '<span class="mc-tag mc-tag-warn">passes the corpus, fails the person</span>'
+      },
+      graph: {
+        body: `<p><strong>2 derivations, opposing.</strong></p><ul class="mc-hits"><li><strong>N (novel):</strong> <em>Alex avoids conflict at work.</em> 6 self-restatements → <strong>1 self-attribution</strong>. Tentative.</li><li><strong>O05 (observation):</strong> Alex held position against David Ferraro on the Chen book — brought the committee around over two weeks despite the political cost. <strong>1 grounded counter-episode.</strong></li></ul><p><strong>A:</strong> <em>Contested. The self-attribution stands as one derivation; one grounded episode goes the other way. Net: claim flagged, not confirmed.</em></p>`,
+        verdict: '<span class="mc-tag mc-tag-ok">contested — flagged</span>'
+      },
+      reveal: `<p><strong>The graph isn't there to retrieve — it's there to prevent corroboration drift.</strong> Vector-only typed memory will pass LoCoMo and still fail Alex. Six self-restates collapse into "high recall on the corpus" and read as confirmation. The graph keeps them as one self-attribution — and the Ferraro episode flips the verdict from <em>confirmed</em> to <em>contested</em>. The benchmark didn't ask. The model would never know.</p>`
+    }
+  };
+  //
+  const buttons = root.querySelectorAll('.mc-q');
+  const vecOut    = root.querySelector('.mc-vec-out');
+  const graphOut  = root.querySelector('.mc-graph-out');
+  const revealEl  = root.querySelector('.mc-reveal');
+  //
+  function pick(q) {
+    buttons.forEach(b => {
+      const on = b.dataset.q === q;
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      b.classList.toggle('mc-q-on', on);
+    });
+    const r = RESULTS[q];
+    vecOut.classList.remove('mc-pulse');
+    graphOut.classList.remove('mc-pulse');
+    void vecOut.offsetWidth; void graphOut.offsetWidth;
+    vecOut.innerHTML   = r.vec.body   + `<p class="mc-verdict">Verdict: ${r.vec.verdict}</p>`;
+    graphOut.innerHTML = r.graph.body + `<p class="mc-verdict">Verdict: ${r.graph.verdict}</p>`;
+    revealEl.innerHTML = `<div class="mc-reveal-inner">${r.reveal}</div>`;
+    vecOut.classList.add('mc-pulse');
+    graphOut.classList.add('mc-pulse');
+  }
+  //
+  buttons.forEach(b => b.addEventListener('click', () => pick(b.dataset.q)));
+  pick('fact');
+})();
+</script>
+<style>
+.etude-embed[data-etude="memanto-counter"] .mc-intro { margin: 0 0 0.5rem; font-size: 0.95rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-queries { display: flex; gap: 0.5rem; margin: 0.5rem 0 0.75rem; flex-wrap: wrap; }
+.etude-embed[data-etude="memanto-counter"] .mc-q { font: inherit; font-size: 0.9rem; padding: 0.5rem 0.85rem; border: 1px solid var(--accent); background: var(--bg); color: var(--ink); border-radius: 3px; cursor: pointer; text-align: left; flex: 1; min-width: 14rem; transition: background 120ms ease, transform 120ms ease; }
+.etude-embed[data-etude="memanto-counter"] .mc-q:hover { background: rgba(138, 52, 32, 0.08); }
+.etude-embed[data-etude="memanto-counter"] .mc-q-on { background: var(--accent); color: var(--bg); }
+.etude-embed[data-etude="memanto-counter"] .mc-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin: 0.5rem 0; }
+@media (max-width: 600px) { .etude-embed[data-etude="memanto-counter"] .mc-cols { grid-template-columns: 1fr; } }
+.etude-embed[data-etude="memanto-counter"] .mc-col { padding: 0.7rem 0.85rem; border-radius: 4px; background: rgba(0,0,0,0.025); border-top: 3px solid transparent; }
+.etude-embed[data-etude="memanto-counter"] .mc-col-vec   { border-top-color: #c98b1a; }
+.etude-embed[data-etude="memanto-counter"] .mc-col-graph { border-top-color: #2f8f4e; }
+.etude-embed[data-etude="memanto-counter"] .mc-h { font-family: 'Georgia', serif; font-size: 0.98rem; margin: 0 0 0.4rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-sub { font-family: inherit; font-size: 0.78rem; color: var(--muted); font-weight: normal; margin-left: 0.25rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-badges { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-badge { font-size: 0.74rem; padding: 0.12rem 0.45rem; background: rgba(0,0,0,0.06); border-radius: 999px; color: var(--muted); }
+.etude-embed[data-etude="memanto-counter"] .mc-badge b { color: var(--ink); }
+.etude-embed[data-etude="memanto-counter"] .mc-badge-ok { background: rgba(47, 143, 78, 0.15); }
+.etude-embed[data-etude="memanto-counter"] .mc-out { font-size: 0.88rem; line-height: 1.5; }
+.etude-embed[data-etude="memanto-counter"] .mc-out p { margin: 0.3rem 0; }
+.etude-embed[data-etude="memanto-counter"] .mc-out code { font-size: 0.82rem; padding: 0.05rem 0.3rem; background: rgba(0,0,0,0.06); border-radius: 2px; }
+.etude-embed[data-etude="memanto-counter"] .mc-hits { padding-left: 1rem; margin: 0.3rem 0; font-size: 0.85rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-hits li { margin: 0.2rem 0; }
+.etude-embed[data-etude="memanto-counter"] .mc-verdict { color: var(--muted); font-size: 0.82rem; margin-top: 0.4rem; }
+.etude-embed[data-etude="memanto-counter"] .mc-tag { display: inline-block; font-size: 0.7rem; padding: 0.05rem 0.4rem; border-radius: 999px; margin-left: 0.2rem; vertical-align: 1px; }
+.etude-embed[data-etude="memanto-counter"] .mc-tag-ok { background: rgba(47, 143, 78, 0.18); color: #2f8f4e; }
+.etude-embed[data-etude="memanto-counter"] .mc-tag-warn { background: rgba(201, 139, 26, 0.18); color: #a87217; }
+.etude-embed[data-etude="memanto-counter"] .mc-reveal { margin: 0.5rem 0 0; }
+.etude-embed[data-etude="memanto-counter"] .mc-reveal-inner { padding: 0.7rem 0.9rem; background: rgba(138, 52, 32, 0.06); border-left: 3px solid var(--accent); border-radius: 3px; font-size: 0.9rem; line-height: 1.5; animation: mc-slide 200ms ease; }
+@keyframes mc-slide { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+.etude-embed[data-etude="memanto-counter"] .mc-pulse { animation: mc-pulse-anim 320ms ease-out; }
+@keyframes mc-pulse-anim { from { background: rgba(255, 220, 90, 0.25); } to { background: rgba(0,0,0,0.025); } }
+</style>
 
 ## What the graph lets her see
 
@@ -607,3 +921,7 @@ It is the thing.
 [^managed-memory]: Anthropic, [Managed Agents memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Persistent memory exposed as a mounted filesystem at `/mnt/memory/`; a YAML graph fits the primitive without adaptation.
 
 [^mccarthy-edges]: Patrick D. McCarthy, [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph). Edge vocabulary — `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes` — each carrying `(attribution, evidence, derivation)` triples. The eight node types map onto these edges directly.
+
+[^karpathy-wiki]: Andrej Karpathy, *LLM Wiki* (gist, Apr 4 2026). Plain-markdown self-edited memory with a lint loop for duplicates and contradictions; no types, no provenance. The lint catches duplicates the flat list cannot — and still has no slot for the distinction between *said* and *grounded*.
+
+[^memanto]: *Memanto: Typed-Vector Memory for Long-Horizon Agents* (arXiv:2604.22085, Apr 23 2026). Thirteen-category vector memory, no graph; reports 89.8% on LongMemEval and 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall. The benchmarks measure fact retrieval, not corroboration provenance.

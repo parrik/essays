@@ -237,16 +237,203 @@ Fifty years of information retrieval, same shape instantiated four times. What c
 
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
-<!-- ETUDE PLACEHOLDER — "Latency as Fifth Reset"
-     Translation target: add a Latency column to the four-scales table.
-     Rows: Scale 1 (Lucene tens-of-ms, human-readable) → Scale 2 (HNSW ~10ms, page-load budget) →
-           Scale 3 (typed-graph walk, single-digit ms on small graphs) →
-           Scale 4 (Exa Instant sub-200ms; Exa Deep fan-out seconds).
-     Reader watches the budget collapse from "fast enough to read" → "sub-200ms inside an
-     agent tool-call loop, where ten retrievals stack into one user-perceptible turn."
-     Builder voice. To author: bar chart or table column with two annotations: "human page-load tolerance"
-     and "agent tool-call budget per turn." Embed slot below the four-scales prose.
--->
+There's a fifth column the four scales reset, less visible than node, edge, query, ranking — *latency*. Each scale inherits a budget from the reader at the other end. Slide the loop depth and watch the per-call budget collapse.
+
+
+<div class="etude-embed" data-etude="latency-fifth">
+  <p class="etude-embed-cue">▶ Play · Latency as Fifth Reset</p>
+<!---->
+  <table class="lf-table">
+    <thead>
+      <tr>
+        <th>Scale</th>
+        <th>Substrate</th>
+        <th>Per-retrieval latency</th>
+        <th>Budget belongs to</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr data-scale="1">
+        <td>1 — inverted index</td>
+        <td>Lucene / BM25</td>
+        <td><span class="lf-ms" data-ms="40">~40 ms</span></td>
+        <td>human page-load</td>
+      </tr>
+      <tr data-scale="2">
+        <td>2 — vector retrieval</td>
+        <td>HNSW / ANN</td>
+        <td><span class="lf-ms" data-ms="10">~10 ms</span></td>
+        <td>human page-load</td>
+      </tr>
+      <tr data-scale="3">
+        <td>3 — typed-graph walk</td>
+        <td>filter + edge-aware</td>
+        <td><span class="lf-ms" data-ms="5">~5 ms</span></td>
+        <td>caller (often agent)</td>
+      </tr>
+      <tr data-scale="4">
+        <td>4 — AI-native</td>
+        <td>Exa Instant</td>
+        <td><span class="lf-ms" data-ms="180">&lt;200 ms</span></td>
+        <td>agent tool-call loop</td>
+      </tr>
+    </tbody>
+  </table>
+<!---->
+  <div class="lf-loop">
+    <label class="lf-loop-label" for="lf-depth">Tool-call loop depth</label>
+    <input class="lf-depth" id="lf-depth" type="range" min="1" max="10" step="1" value="1" />
+    <div class="lf-readout">Depth: 1 · per-call budget: 200 ms · turn cost: 200 ms</div>
+    <div class="lf-bar-wrap">
+      <div class="lf-bar-fill"></div>
+      <div class="lf-bar-marks">
+        <span class="lf-mark" style="left: 10%"><em>readable</em></span>
+        <span class="lf-mark lf-mark-mid" style="left: 50%"><em>perceptible</em></span>
+        <span class="lf-mark lf-mark-end" style="left: 95%"><em>laggy</em></span>
+      </div>
+    </div>
+    <div class="lf-verdict" aria-live="polite">Sub-200 ms — fits inside a tool-call loop.</div>
+  </div>
+<!---->
+  <p class="etude-embed-foot">The fifth constant. Below 200 ms is the new "fast enough to read." <em>What does the bounded reader actually need from the substrate?</em></p>
+</div>
+<script>
+(() => {
+  const root = document.querySelector('.etude-embed[data-etude="latency-fifth"]');
+  if (!root) return;
+  //
+  const slider = root.querySelector('.lf-depth');
+  const readout = root.querySelector('.lf-readout');
+  const fill = root.querySelector('.lf-bar-fill');
+  const verdict = root.querySelector('.lf-verdict');
+  //
+  const PER_CALL_MS = 200;
+  const CEILING_MS = 2000;
+  //
+  function fmt(n) { return n.toLocaleString('en-US'); }
+  //
+  function update(depth) {
+    const turnMs = depth * PER_CALL_MS;
+    const frac = Math.min(1, turnMs / CEILING_MS);
+    const pct = Math.round(frac * 100);
+    //
+    readout.textContent = `Depth: ${depth} · per-call budget: ${PER_CALL_MS} ms · turn cost: ${fmt(turnMs)} ms`;
+    fill.style.width = (frac * 100).toFixed(1) + '%';
+    //
+    let tier = 'ok';
+    if (turnMs >= 1500) tier = 'red';
+    else if (turnMs >= 800) tier = 'amber';
+    fill.dataset.tier = tier;
+    verdict.dataset.tier = tier;
+    //
+    if (tier === 'red') verdict.textContent = `${fmt(turnMs)} ms — user-perceptible turn; the budget collapsed.`;
+    else if (tier === 'amber') verdict.textContent = `${fmt(turnMs)} ms — felt as latency; readers notice.`;
+    else verdict.textContent = `${fmt(turnMs)} ms — fits inside a tool-call loop.`;
+  }
+  //
+  slider.addEventListener('input', e => update(parseInt(e.target.value, 10)));
+  update(parseInt(slider.value, 10));
+})();
+</script>
+<style>
+.etude-embed[data-etude="latency-fifth"] .lf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.4rem 0 0.9rem;
+  font-size: 0.88rem;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-table th,
+.etude-embed[data-etude="latency-fifth"] .lf-table td {
+  text-align: left;
+  padding: 0.4rem 0.5rem;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+  vertical-align: top;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-table th {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-weight: normal;
+  color: var(--muted);
+  font-size: 0.82rem;
+  border-bottom: 1px solid rgba(0,0,0,0.18);
+}
+.etude-embed[data-etude="latency-fifth"] .lf-table td:first-child { font-weight: 500; }
+.etude-embed[data-etude="latency-fifth"] .lf-ms {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.84rem;
+  color: var(--ink);
+  background: rgba(0,0,0,0.04);
+  padding: 0.05rem 0.35rem;
+  border-radius: 2px;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-table tr[data-scale="4"] .lf-ms {
+  background: rgba(138,52,32,0.08);
+  color: #8a3a30;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-loop {
+  margin: 0.4rem 0 0.4rem;
+  padding: 0.7rem 0.8rem;
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-loop-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-depth {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-readout {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.84rem;
+  color: var(--ink);
+  margin: 0.55rem 0 0.55rem;
+  letter-spacing: 0.01em;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-bar-wrap {
+  position: relative;
+  margin: 0.3rem 0 1.4rem;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-bar-fill {
+  height: 14px;
+  width: 10%;
+  background: var(--accent);
+  border-radius: 3px;
+  transition: width 220ms cubic-bezier(.2,.8,.2,1), background-color 240ms;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-bar-fill[data-tier="amber"] { background: #c98a1a; }
+.etude-embed[data-etude="latency-fifth"] .lf-bar-fill[data-tier="red"] { background: #b53826; }
+.etude-embed[data-etude="latency-fifth"] .lf-bar-marks {
+  position: relative;
+  height: 1rem;
+  margin-top: 0.3rem;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-mark {
+  position: absolute;
+  transform: translateX(-50%);
+  font-size: 0.74rem;
+  color: var(--muted);
+}
+.etude-embed[data-etude="latency-fifth"] .lf-mark em { font-style: italic; }
+.etude-embed[data-etude="latency-fifth"] .lf-verdict {
+  font-size: 0.86rem;
+  color: var(--ink);
+  margin-top: 0.4rem;
+  transition: color 220ms;
+}
+.etude-embed[data-etude="latency-fifth"] .lf-verdict[data-tier="amber"] { color: #8a6a2a; }
+.etude-embed[data-etude="latency-fifth"] .lf-verdict[data-tier="red"] { color: #8a3a30; }
+@media (max-width: 640px) {
+  .etude-embed[data-etude="latency-fifth"] .lf-table { font-size: 0.82rem; }
+  .etude-embed[data-etude="latency-fifth"] .lf-table th,
+  .etude-embed[data-etude="latency-fifth"] .lf-table td { padding: 0.3rem 0.35rem; }
+}
+</style>
 
 Three requirements fall out of the walk. **Query format** — humans type two words because typing is slow. Agents type a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
 
@@ -579,20 +766,248 @@ Same shape across scales, build once:
 
 Synthesis across all four scales — inverted index, vector retrieval, typed knowledge graph, AI-native search — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; representation must change at every scale because the shape is fractal. *That synthesis is the specific contribution this essay stakes.*
 
-<!-- ETUDE PLACEHOLDER — "Known vs Unknown Item"
-     Translation target: a paired query bench, side-by-side.
-     Left: KNOWN-ITEM / entity-discovery query — "find the node where Alex's running routine
-           restarts in March 2025." Agent driving (query-rewrite + filter loop) helps:
-           reranks the dated observation to top-1, demotes thematic overlap.
-     Right: UNKNOWN-ITEM / information-discovery query — "what does Alex believe about
-           regulation?" Agent driving adds nothing measurable; cosine alone returns the same
-           top-3 as the agent loop after multiple turns.
-     Source: Doug Turnbull's Apr 28 2026 finding — agents add value on entity-discovery,
-            not on information-discovery.
-     Reader watches: same substrate, two query archetypes, one helped by agency, one not.
-     Sits inside the synthesis closer as the empirical sharpener: not all queries reward
-     the agent reader equally; the four-scales shift is real but uneven across query types.
--->
+Two query archetypes, one substrate, asymmetric returns to agency. Pick a query.
+
+
+<div class="etude-embed" data-etude="known-unknown">
+  <p class="etude-embed-cue">▶ Play · Known vs Unknown Item</p>
+<!---->
+  <div class="ku-picker">
+    <button type="button" class="etude-embed-btn ku-pick ku-pick-active" data-mode="known">
+      <span class="ku-pick-label">Known item</span>
+      <span class="ku-pick-q">"Get me the Salton 1968 paper."</span>
+    </button>
+    <button type="button" class="etude-embed-btn ku-pick" data-mode="unknown">
+      <span class="ku-pick-label">Unknown item</span>
+      <span class="ku-pick-q">"What should I read about IR theory?"</span>
+    </button>
+  </div>
+<!---->
+  <div class="ku-trace">
+    <div class="ku-trace-h">Agent fan-out</div>
+    <ol class="ku-steps"></ol>
+  </div>
+<!---->
+  <div class="ku-score">
+    <div class="ku-score-row">
+      <span class="ku-score-l">Baseline (single query)</span>
+      <div class="ku-score-bar"><div class="ku-score-fill ku-score-base"></div></div>
+      <span class="ku-score-v ku-score-v-base"></span>
+    </div>
+    <div class="ku-score-row">
+      <span class="ku-score-l">After agent fan-out</span>
+      <div class="ku-score-bar"><div class="ku-score-fill ku-score-agent"></div></div>
+      <span class="ku-score-v ku-score-v-agent"></span>
+    </div>
+    <div class="ku-delta" aria-live="polite"></div>
+  </div>
+<!---->
+  <p class="etude-embed-foot">Agents help where you know what you're looking for. They don't help when you don't. <em>The retrieval problem hasn't changed in two and a half millennia. The reader has.</em></p>
+</div>
+<script>
+(() => {
+  const root = document.querySelector('.etude-embed[data-etude="known-unknown"]');
+  if (!root) return;
+  //
+  const stepsEl = root.querySelector('.ku-steps');
+  const baseFill = root.querySelector('.ku-score-base');
+  const agentFill = root.querySelector('.ku-score-agent');
+  const baseV = root.querySelector('.ku-score-v-base');
+  const agentV = root.querySelector('.ku-score-v-agent');
+  const deltaEl = root.querySelector('.ku-delta');
+  //
+  const scenarios = {
+    known: {
+      steps: [
+        'sub-query: "Salton 1968 SMART"',
+        'sub-query: "automatic information organization Salton"',
+        'filter: type = paper, author = Salton',
+        'rerank by year proximity → 1968',
+        'top-1: Automatic Information Organization and Retrieval (Salton, 1968)'
+      ],
+      base: 0.289,
+      agent: 0.453,
+      verdict: 'Agent driving helps. Sub-queries plus type filter pinned the entity.'
+    },
+    unknown: {
+      steps: [
+        'sub-query: "what should I read about IR theory"',
+        '— no rewrite improves a query that doesn\'t name the answer',
+        'one passage retrieval; coverage is the bottleneck, not planning',
+        'rerank operates on the same candidate set',
+        'top-3 unchanged from baseline cosine'
+      ],
+      base: 0.312,
+      agent: 0.318,
+      verdict: 'Agent driving adds nothing. If it knew what information was correct, it wouldn\'t need search.'
+    }
+  };
+  //
+  let current = 'known';
+  //
+  function fmt(n) { return n.toFixed(3); }
+  //
+  function render(mode) {
+    const s = scenarios[mode];
+    stepsEl.innerHTML = '';
+    s.steps.forEach((step, i) => {
+      const li = document.createElement('li');
+      li.textContent = step;
+      li.style.animationDelay = (i * 90) + 'ms';
+      stepsEl.appendChild(li);
+    });
+    //
+    baseFill.style.width = (s.base * 100).toFixed(1) + '%';
+    baseV.textContent = fmt(s.base);
+    //
+    agentFill.style.width = '0%';
+    agentV.textContent = fmt(s.base);
+    deltaEl.textContent = '';
+    //
+    setTimeout(() => {
+      agentFill.style.width = (s.agent * 100).toFixed(1) + '%';
+      agentV.textContent = fmt(s.agent);
+      const delta = s.agent - s.base;
+      const helped = delta >= 0.05;
+      agentFill.dataset.tier = helped ? 'up' : 'flat';
+      deltaEl.dataset.tier = helped ? 'up' : 'flat';
+      deltaEl.textContent = (helped ? '+' : '±') + fmt(Math.abs(delta)) + ' · ' + s.verdict;
+    }, 600);
+  }
+  //
+  root.querySelectorAll('.ku-pick').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mode = btn.dataset.mode;
+      if (mode === current) return;
+      current = mode;
+      root.querySelectorAll('.ku-pick').forEach(b => b.classList.remove('ku-pick-active'));
+      btn.classList.add('ku-pick-active');
+      render(mode);
+    });
+  });
+  //
+  render(current);
+})();
+</script>
+<style>
+.etude-embed[data-etude="known-unknown"] .ku-picker {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin: 0.4rem 0 0.7rem;
+}
+.etude-embed[data-etude="known-unknown"] .ku-pick {
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.55rem 0.7rem;
+  background: var(--bg);
+  border: 1px solid rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: border-color 200ms, background-color 200ms;
+}
+.etude-embed[data-etude="known-unknown"] .ku-pick:hover {
+  border-color: var(--accent);
+}
+.etude-embed[data-etude="known-unknown"] .ku-pick-active {
+  border-color: var(--accent);
+  background: rgba(0,0,0,0.03);
+}
+.etude-embed[data-etude="known-unknown"] .ku-pick-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: 'Georgia', serif;
+  font-style: italic;
+}
+.etude-embed[data-etude="known-unknown"] .ku-pick-q {
+  font-size: 0.9rem;
+  color: var(--ink);
+  font-weight: 500;
+}
+.etude-embed[data-etude="known-unknown"] .ku-trace {
+  margin: 0.5rem 0 0.7rem;
+  padding: 0.65rem 0.85rem;
+  background: var(--bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 2px;
+}
+.etude-embed[data-etude="known-unknown"] .ku-trace-h {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+.etude-embed[data-etude="known-unknown"] .ku-steps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.83rem;
+  line-height: 1.5;
+}
+.etude-embed[data-etude="known-unknown"] .ku-steps li {
+  padding: 0.15rem 0;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(3px);
+  animation: ku-stepin 280ms cubic-bezier(.2,.8,.2,1) forwards;
+}
+@keyframes ku-stepin {
+  to { opacity: 1; transform: translateY(0); }
+}
+.etude-embed[data-etude="known-unknown"] .ku-score {
+  margin: 0.4rem 0 0.5rem;
+}
+.etude-embed[data-etude="known-unknown"] .ku-score-row {
+  display: grid;
+  grid-template-columns: 12rem 1fr 4rem;
+  gap: 0.6rem;
+  align-items: center;
+  margin: 0.35rem 0;
+}
+.etude-embed[data-etude="known-unknown"] .ku-score-l {
+  font-size: 0.83rem;
+  color: var(--muted);
+}
+.etude-embed[data-etude="known-unknown"] .ku-score-bar {
+  height: 12px;
+  background: rgba(0,0,0,0.06);
+  border-radius: 3px;
+  overflow: hidden;
+}
+.etude-embed[data-etude="known-unknown"] .ku-score-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(0,0,0,0.32);
+  border-radius: 3px;
+  transition: width 600ms cubic-bezier(.2,.8,.2,1), background-color 300ms;
+}
+.etude-embed[data-etude="known-unknown"] .ku-score-fill.ku-score-agent[data-tier="up"] { background: #1a6b3a; }
+.etude-embed[data-etude="known-unknown"] .ku-score-fill.ku-score-agent[data-tier="flat"] { background: rgba(0,0,0,0.32); }
+.etude-embed[data-etude="known-unknown"] .ku-score-v {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.etude-embed[data-etude="known-unknown"] .ku-delta {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  min-height: 1.2rem;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.etude-embed[data-etude="known-unknown"] .ku-delta[data-tier="up"] { color: #1a6b3a; }
+.etude-embed[data-etude="known-unknown"] .ku-delta[data-tier="flat"] { color: var(--muted); }
+@media (max-width: 640px) {
+  .etude-embed[data-etude="known-unknown"] .ku-picker { grid-template-columns: 1fr; }
+  .etude-embed[data-etude="known-unknown"] .ku-score-row { grid-template-columns: 1fr; gap: 0.2rem; }
+  .etude-embed[data-etude="known-unknown"] .ku-score-v { text-align: left; }
+}
+</style>
 
 Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
 
