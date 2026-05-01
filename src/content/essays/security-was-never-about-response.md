@@ -343,6 +343,8 @@ The mnemonic — *"security lives at the gate, not the response"* — rhymes wit
 
 The picker above is a tool. The principle is the work.
 
+*Security is the love of careful work. Response is what arrives when carefulness arrives late.*
+
 ---
 
 *Series complete. The four parts, as one shape: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · [III — Memory was never about storage](/essays/memory-was-never-about-storage/) · IV. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*

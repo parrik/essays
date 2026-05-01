@@ -394,6 +394,8 @@ And every retrieval is a write. Pull a memory up and it goes soft for a few hour
   </a>
 </aside>
 
+*Forgetting is not loss. Forgetting is the cue and the trace, drifted.*
+
 > **Memory is what survives retrieval under bound.** Storage is the substrate. The index is the memory. The personal-graph project is not a notes app — it's the indexing-theory architecture, applied to a self. It's what Alex was reaching for, that Sunday evening — a typed index, sized to her, that survives retrieval.
 
 ---
