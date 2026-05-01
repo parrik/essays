@@ -615,6 +615,8 @@ The full scaffold is three retrieval modes, ~300 LOC, runnable on a laptop: **[g
 
 This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
 
+*Being known is being legible. Legibility is shape, not exposure.*
+
 γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
 
 **The retrieval problem hasn't changed in two and a half millennia. The reader has.**

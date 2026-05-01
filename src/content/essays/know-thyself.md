@@ -516,6 +516,8 @@ The model is the interlocutor. **The graph is the memory.**
 
 Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
+*You are not what you have said six times. You are what you have done, dated and bounded.*
+
 ## The thing
 
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
