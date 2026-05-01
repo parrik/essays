@@ -10,9 +10,6 @@ status: tending
 description: Storage is a substrate. Memory is what survives retrieval under bound. Same shape across brain, mind, database.
 etudesPrompt: Each section has something to play. Read with your hands.
 etudes:
-  - label: Silent Engram
-    url: /etudes/memory/silent-engram/
-    note: try the cue. try the stimulation. feel the split.
   - label: Three Substrates
     url: /etudes/memory/three-substrates/
     note: brain, mind, database — same shape, three physics.
@@ -25,43 +22,9 @@ Alex has kept the graph nine months. A Sunday evening, she tries to recall somet
 
 She opens the file, scrolls, finds the node in a minute. The trace was never gone. The cue and the trace had drifted apart.
 
-A silent engram is not a forgotten memory. The trace is intact. Direct stimulation evokes it. The cue just doesn't reach.[^engram] What Alex hit on the couch is the schema-layer version of the same thing — typed cells, intact, reachable by direct scroll, not by the cue she tried first.
-
-<div class="etude-embed" data-etude="silent-engram">
-  <p class="etude-embed-cue">▶ Play · Silent Engram</p>
-  <p>Hold a memory in mind. A kitchen, summer 1996. Late afternoon light on linoleum. Your grandmother's hands, dusted with flour, folding dough at the counter.</p>
-  <div class="etude-embed-controls">
-    <button type="button" class="etude-embed-btn" data-action="cue">Try the natural cue</button>
-    <button type="button" class="etude-embed-btn etude-embed-btn-alt" data-action="stim">Direct stimulation</button>
-  </div>
-  <div class="etude-embed-output" aria-live="polite"></div>
-  <p class="etude-embed-foot">The trace was never gone. The retrieval pathway was broken. Storage is fine; access is broken.</p>
-</div>
-<script>
-(() => {
-  const root = document.querySelector('.etude-embed[data-etude="silent-engram"]');
-  if (!root) return;
-  const out = root.querySelector('.etude-embed-output');
-  const cueAns = '<p class="etude-out-muted">...</p>';
-  const cueResolved = '<p class="etude-out-muted">the cue passes. nothing surfaces. you go on with your day.</p>';
-  const stimAns = '<p class="etude-out-bloom"><strong>The kitchen returns.</strong> Flour on the counter, a fine pale dust along the edge of the wooden board. Her hands move without thinking — fold, press, quarter-turn, fold. The dough gives under her knuckles. Somewhere behind you, a screen door bangs once and settles. The radio is playing something with horns. You are seven, and the afternoon is enormous.</p>';
-  root.querySelectorAll('button[data-action]').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const action = btn.dataset.action;
-      if (action === 'cue') {
-        out.innerHTML = cueAns;
-        setTimeout(() => { if (out.innerHTML === cueAns) out.innerHTML = cueResolved; }, 900);
-      } else if (action === 'stim') {
-        out.innerHTML = stimAns;
-      }
-    });
-  });
-})();
-</script>
-
 ## Same shape, three physics
 
-Start with the silent engram. The cells holding the memory are intact; a natural cue fails; direct stimulation of the same cells brings the memory back in full. Storage is fine. Access is broken.
+Start with the brain. The cells that store a memory are intact. The natural cue — a smell, a name, a place — usually evokes it. Sometimes the path between cue and trace is interrupted, and the memory feels gone. Stimulate the same cells directly and it returns in full.[^engram] Storage is fine. Access is broken.
 
 Now the storage/retrieval split. Every memory carries two strengths. *Storage strength* only goes up. *Retrieval strength* fluctuates — a name goes blank under load and surfaces hours later untouched. The forgetting curve measures retrieval, not storage. Pull on a memory just before it slips, and the trace gets stronger. Spaced repetition, desirable difficulty, the testing effect — same finding, three names.[^bjork]
 
@@ -90,7 +53,7 @@ Same architectural state across three substrates: trace intact, access broken. S
           <text x="2" y="78" class="tsub-lbl tsub-bright-lbl">stim</text>
         </svg>
       </div>
-      <h4 class="tsub-h">Brain — silent engram</h4>
+      <h4 class="tsub-h">Brain — cells intact, cue broken</h4>
       <p class="tsub-desc">The cells holding the memory are intact. A natural cue fails to evoke it; direct stimulation of those same cells brings the memory back in full. The trace was never lost — only the read-path was.</p>
       <div class="tsub-controls">
         <button type="button" class="tsub-btn" data-act="brain-cue">natural cue</button>

@@ -466,7 +466,7 @@ Restorative yoga cannot cure cancer. But it addresses, at the level of nervous s
 The cell is not broken. It is isolated. And isolation, it turns out, is something the body knows how to heal.[^1]
 
 <aside class="restorative-picker">
-  <p class="restorative-picker-prompt">Pick a routine based on how you woke up. Each is a two-hour sequence, structured by chakra, ground-up. Print-friendly — use your browser's Print command to save or print.</p>
+  <p class="restorative-picker-prompt">Pick a routine based on how you woke up. Each is a two-hour sequence, ground-up. Print-friendly — use your browser's Print command to save or print.</p>
   <ul class="restorative-picker-cards">
     <li>
       <a href="/etudes/restorative/coming-home/" class="restorative-picker-card">
