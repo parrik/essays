@@ -18,7 +18,9 @@ etudes:
     note: drill the rule
 ---
 
-One evening in May, nine months into Chicago, Alex asked the model whether there was a pattern in how she handled conflict at work. The reply came back confident, fluent, slightly wrong: she *stayed in misaligned situations because she was afraid of burning the relationship.* It sounded like something she had said. It was — six or seven times, as self-diagnosis. Never a pattern the model had evidence for. She asked it to show its work. Six conversations. Same claim, attributed to her. No independent episodes.
+Alex is 41. Senior editor at the University of Chicago Press. Single parent of her daughter Mira, fourteen. Her older sister Helen died at twenty-three in 2007. Nine months into Chicago, mostly alone.
+
+One evening in May she asks the model whether there's a pattern in how she handles conflict at work. The reply comes back confident, fluent, slightly wrong: she *stays in misaligned situations because she's afraid of burning the relationship.* It sounds like something she's said. It is — six or seven times, as self-diagnosis. Never a pattern the model had evidence for. She asks it to show its work. Six conversations. Same claim, attributed to her. No independent episodes.
 
 She had been talking to a mirror.
 
@@ -60,7 +62,7 @@ After the mirror problem, Alex wanted a memory that could not do this. Not a mor
 
 The academic frame for memory-with-types is already named. Sumers, Yao, and Narasimhan's *Cognitive Architectures for Language Agents* (2023) carves agent memory into working, episodic, semantic, and procedural.[^coala] The eight types here are an opinionated refinement of the semantic side — what makes a claim about a person earn standing.
 
-**Reference — what is.** Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, nine. Facts. The floor the rest of the graph stands on.
+**Reference — what is.** Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, fourteen. Older sister Helen, died at twenty-three in 2007. Facts. The floor the rest of the graph stands on.
 
 **Observation — what happened.** Each episode gets its own node, dated and bounded. September through November: Alex's first three months in Chicago. Mira came home quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped. One episode, one timestamp, stored as it was — without guessing what it meant. A second observation came in March: the morning of a hard acquisitions meeting, Alex had run beforehand and held her position on a book more clearly than she had in weeks. Two episodes, held separately.
 
@@ -84,7 +86,7 @@ The types are the binding principle: episodic and semantic memory held in distin
     <ol class="fvt-facts"></ol>
   </details>
   <div class="fvt-row">
-    <input class="fvt-query" type="text" value="What's true about Sam?" aria-label="Query" />
+    <input class="fvt-query" type="text" value="Does Alex avoid conflict?" aria-label="Query" placeholder="ask the graph (try: conflict, running, what's true)" />
     <button type="button" class="etude-embed-btn fvt-ask">Ask</button>
   </div>
   <div class="fvt-cols">
@@ -117,17 +119,33 @@ The types are the binding principle: episodic and semantic memory held in distin
   if (!root) return;
   //
   const SEED = [
-    { id: 1,  text: "Sam mentioned avoiding conflict",       src: "Conv #1, Mar 4",   kind: "self-restate", claim: "avoids-conflict" },
-    { id: 2,  text: "Sam mentioned avoiding conflict",       src: "Conv #5, Mar 18",  kind: "self-restate", claim: "avoids-conflict" },
-    { id: 3,  text: "Sam mentioned avoiding conflict",       src: "Conv #11, Apr 22", kind: "self-restate", claim: "avoids-conflict" },
-    { id: 4,  text: "Sam restated avoiding conflict",        src: "Conv #14, May 7",  kind: "self-restate", claim: "avoids-conflict" },
-    { id: 5,  text: "Sam mentioned avoiding conflict",       src: "Conv #19, May 22", kind: "self-restate", claim: "avoids-conflict" },
-    { id: 6,  text: "Manager review: 'Sam avoids conflict'", src: "Perf review, Apr", kind: "external-obs", claim: "avoids-conflict" },
-    { id: 7,  text: "Sam mentioned thriving on independence",src: "Conv #2, Mar 7",   kind: "self-restate", claim: "thrives-independence" },
-    { id: 8,  text: "Sam shipped a solo 6-month project end-to-end", src: "Verified, Apr 30", kind: "grounded-episode", claim: "thrives-independence" }
+    { id: 1, text: "Alex mentioned avoiding conflict at work",  src: "Conv #4, Mar 6",       kind: "self-restate",     claim: "avoids-conflict", supports: true },
+    { id: 2, text: "Alex mentioned avoiding conflict at work",  src: "Conv #9, Mar 24",      kind: "self-restate",     claim: "avoids-conflict", supports: true },
+    { id: 3, text: "Alex mentioned avoiding conflict at work",  src: "Conv #15, Apr 11",     kind: "self-restate",     claim: "avoids-conflict", supports: true },
+    { id: 4, text: "Performance review: 'Alex avoids confrontation'", src: "OUP review, Apr 2024", kind: "external-obs", claim: "avoids-conflict", supports: true },
+    { id: 5, text: "Alex held position against David Ferraro on the Chen book — brought committee around over 2 weeks despite the political cost", src: "O05, Mar 11 2025",     kind: "grounded-episode", claim: "avoids-conflict", supports: false },
+    { id: 6, text: "Alex says her running keeps her stable",    src: "Conv #6, Mar 12",      kind: "self-restate",     claim: "running-stabilizes", supports: true },
+    { id: 7, text: "Sep–Nov 2024: running stopped → drinking rose, Mira's grades dropped, work hours extended", src: "O01, Dec 2024", kind: "grounded-episode", claim: "running-stabilizes", supports: true },
+    { id: 8, text: "Mar 2025: running came back → Mira's grades recovered to A/B, household stabilized",        src: "O04, Apr 2025", kind: "grounded-episode", claim: "running-stabilizes", supports: true }
   ];
   let facts = SEED.slice();
   let extraCounter = 0;
+  //
+  const CLAIM_KEYS = {
+    'avoids-conflict':    ['conflict','avoid','confront','fight','ferraro','hold','position','disagreement'],
+    'running-stabilizes': ['running','run','routine','stable','stabilize','exercise','habit','sunday','regulation','recover','recovered']
+  };
+  const ALL_CLAIMS = Object.keys(CLAIM_KEYS);
+  function pickClaims(query) {
+    const q = (query || '').toLowerCase();
+    if (!q.trim()) return ALL_CLAIMS;
+    const hits = ALL_CLAIMS.filter(c => CLAIM_KEYS[c].some(k => q.includes(k)));
+    return hits.length ? hits : ALL_CLAIMS;
+  }
+  const CLAIM_LABEL = {
+    'avoids-conflict':    "Alex avoids conflict at work",
+    'running-stabilizes': "Alex's running stabilizes the rest"
+  };
   //
   const ol = root.querySelector('.fvt-facts');
   const flatCount = root.querySelector('.fvt-count');
@@ -165,50 +183,88 @@ The types are the binding principle: episodic and semantic memory held in distin
     return            { word: 'low',        cls: 'fvt-c-low'   };
   }
   //
-  function flatAnswer() {
-    const groups = {};
-    facts.forEach(f => { groups[f.claim] = (groups[f.claim] || 0) + 1; });
-    const cN = groups['avoids-conflict'] || 0, iN = groups['thrives-independence'] || 0;
-    const cC = conf(cN), cI = conf(iN);
+  function flatAnswer(active) {
+    // Flat list collapses ALL mentions into one count per claim — no
+    // sense of which mentions "support" vs "contradict." It just counts.
+    const supportCount = {};
+    let totalMentions = 0;
+    active.forEach(claim => { supportCount[claim] = 0; });
+    facts.forEach(f => {
+      if (!active.includes(f.claim)) return;
+      supportCount[f.claim] = (supportCount[f.claim] || 0) + 1;
+      totalMentions += 1;
+    });
     tickBadge(flatCount, facts.length);
-    tickBadge(flatConflict, cN);
-    return `<p><strong>Sam avoids conflict.</strong> <span class="fvt-conf ${cC.cls}">${cC.word} confidence — corroborated ${cN} times.</span></p><p><strong>Sam thrives on independence.</strong> <span class="fvt-conf ${cI.cls}">${cI.word} confidence — mentioned ${iN} time${iN===1?'':'s'}.</span></p><p class="fvt-detail">Repetition compresses into confidence. More mentions → stronger claim.</p>`;
+    tickBadge(flatConflict, totalMentions);
+    const blocks = active.map(claim => {
+      const n = supportCount[claim] || 0;
+      const c = conf(n);
+      return `<p><strong>${CLAIM_LABEL[claim]}.</strong> <span class="fvt-conf ${c.cls}">${c.word} confidence — corroborated ${n} time${n===1?'':'s'}.</span></p>`;
+    }).join('');
+    return `${blocks}<p class="fvt-detail">Mentions compress into confidence. Repetition reads as evidence.</p>`;
   }
   //
   function deriv(c) { return (c.self > 0 ? 1 : 0) + c.ext + c.grounded; }
   //
-  function graphLine(label, c) {
+  function graphLine(claim, c) {
     const d = deriv(c), bits = [];
     if (c.self     > 0) bits.push(`${c.self} self-restatement${c.self===1?'':'s'} → 1 self-attribution`);
     if (c.ext      > 0) bits.push(`${c.ext} external observer`);
-    if (c.grounded > 0) bits.push(`${c.grounded} grounded episode`);
-    const tag = c.grounded > 0 ? '<span class="fvt-tag fvt-tag-ok">grounded</span>'
-              : c.ext > 0      ? '<span class="fvt-tag fvt-tag-warn">tentative-supported</span>'
-              :                  '<span class="fvt-tag fvt-tag-low">tentative</span>';
-    return `<li><strong>Sam — '${label}'</strong>: ${bits.join(', ')}. <em>Net: ${d} derivation${d===1?'':'s'}.</em> ${tag}</li>`;
+    if (c.grounded > 0) bits.push(`${c.grounded} grounded episode${c.grounded===1?'':'s'}`);
+    if (c.counter  > 0) bits.push(`<span class="fvt-counter">${c.counter} grounded counter-episode${c.counter===1?'':'s'}</span>`);
+    let tag;
+    if (c.counter > 0) tag = '<span class="fvt-tag fvt-tag-warn">contested</span>';
+    else if (c.grounded >= 2) tag = '<span class="fvt-tag fvt-tag-ok">grounded — overlap</span>';
+    else if (c.grounded > 0) tag = '<span class="fvt-tag fvt-tag-ok">grounded</span>';
+    else if (c.ext > 0) tag = '<span class="fvt-tag fvt-tag-warn">tentative-supported</span>';
+    else tag = '<span class="fvt-tag fvt-tag-low">tentative</span>';
+    return `<li><strong>${CLAIM_LABEL[claim]}</strong>: ${bits.join(', ')}. <em>Net: ${d} derivation${d===1?'':'s'}.</em> ${tag}</li>`;
   }
   //
-  function graphAnswer() {
+  function graphAnswer(active) {
+    // Typed graph distinguishes self-restate / external-obs / grounded /
+    // grounded-counter. Same mentions, different shapes.
     const claims = {};
+    let nodeCount = 0;
     facts.forEach(f => {
-      const c = claims[f.claim] = claims[f.claim] || { self: 0, ext: 0, grounded: 0 };
+      if (!active.includes(f.claim)) return;
+      const c = claims[f.claim] = claims[f.claim] || { self: 0, ext: 0, grounded: 0, counter: 0 };
       if (f.kind === 'self-restate')     c.self += 1;
       if (f.kind === 'external-obs')     c.ext  += 1;
-      if (f.kind === 'grounded-episode') c.grounded += 1;
+      if (f.kind === 'grounded-episode') {
+        if (f.supports === false) c.counter += 1;
+        else c.grounded += 1;
+      }
     });
-    const cf = claims['avoids-conflict']      || { self: 0, ext: 0, grounded: 0 };
-    const ip = claims['thrives-independence'] || { self: 0, ext: 0, grounded: 0 };
-    tickBadge(graphNodes,  Object.keys(claims).length);
-    tickBadge(graphDerivs, deriv(cf) + deriv(ip));
-    return `<ul class="fvt-prov">${graphLine('avoids conflict', cf)}${graphLine('thrives on independence', ip)}</ul><p class="fvt-detail">Five surface restatements collapse to one self-attribution. Counts don't migrate into confidence on their own — only typed sources do.</p>`;
+    nodeCount = Object.keys(claims).length;
+    let totalDeriv = 0;
+    active.forEach(claim => {
+      const c = claims[claim] || { self: 0, ext: 0, grounded: 0, counter: 0 };
+      totalDeriv += deriv(c);
+    });
+    tickBadge(graphNodes,  nodeCount);
+    tickBadge(graphDerivs, totalDeriv);
+    const lines = active.map(claim => {
+      const c = claims[claim] || { self: 0, ext: 0, grounded: 0, counter: 0 };
+      return graphLine(claim, c);
+    }).join('');
+    // The teaching: counts compressed; types distinguish — and surface
+    // contradictions the flat list cannot see.
+    const hasCounter = active.some(claim => (claims[claim] && claims[claim].counter > 0));
+    const detail = hasCounter
+      ? `Counts mislead. Three self-restatements and an external observer collapse to one self-attribution + one observer — and one grounded episode contradicts the claim. The flat list cannot see the contradiction.`
+      : `Self-restatements collapse to one self-attribution. Grounded episodes count separately. Two grounded episodes for the same shape is an overlap (P01).`;
+    return `<ul class="fvt-prov">${lines}</ul><p class="fvt-detail">${detail}</p>`;
   }
   //
   function ask() {
+    const queryEl = root.querySelector('.fvt-query');
+    const active = pickClaims(queryEl ? queryEl.value : '');
     flatOut.classList.remove('fvt-pulse');
     graphOut.classList.remove('fvt-pulse');
     void flatOut.offsetWidth; void graphOut.offsetWidth;
-    flatOut.innerHTML = flatAnswer();
-    graphOut.innerHTML = graphAnswer();
+    flatOut.innerHTML = flatAnswer(active);
+    graphOut.innerHTML = graphAnswer(active);
     flatOut.classList.add('fvt-pulse');
     graphOut.classList.add('fvt-pulse');
   }
@@ -218,10 +274,11 @@ The types are the binding principle: episodic and semantic memory held in distin
     const nextId = facts.length + 1;
     facts.push({
       id: nextId,
-      text: "Sam mentioned avoiding conflict",
-      src: `Conv #${20 + extraCounter}, added`,
+      text: "Alex mentioned avoiding conflict at work",
+      src: `Conv #${22 + extraCounter}, added`,
       kind: "self-restate",
-      claim: "avoids-conflict"
+      claim: "avoids-conflict",
+      supports: true
     });
     renderFacts();
     const last = ol.lastElementChild;
@@ -325,7 +382,7 @@ Repetition feels like corroboration. It isn't. Six conversations saying the same
   //
   const SCENARIOS = [
     {
-      vignette: "Across six conversations spanning four months, Maya tells the model \"I avoid conflict.\" Different phrasings each time, no specific incidents.",
+      vignette: "Across six conversations spanning four months, Alex tells the model \"I avoid conflict at work.\" Different phrasings each time, no specific incidents named.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "6 derivations (corroborated)", correct: false },
@@ -334,7 +391,7 @@ Repetition feels like corroboration. It isn't. Six conversations saying the same
       explain: "Six restatements of the same self-attribution trace to one underlying claim. Repetition compresses; it does not corroborate."
     },
     {
-      vignette: "Two friends and a coworker, none of whom know each other, each independently describe Devon as \"someone who ghosts when uncomfortable.\"",
+      vignette: "Three colleagues at UChicago Press — none of whom know each other — each independently mention to a fourth person that Alex \"goes formal-polite when overruled.\"",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "3 derivations (corroborated)", correct: true },
@@ -343,16 +400,16 @@ Repetition feels like corroboration. It isn't. Six conversations saying the same
       explain: "Three independent observers, no shared source. Each is a separate grounding. That's corroboration."
     },
     {
-      vignette: "Liam restates a fear of failure in three conversations, AND in one of those mentions a specific time he didn't apply for a job because of it.",
+      vignette: "Alex restates \"I'm bad at staying with discomfort\" across three conversations, AND in one of those names a specific instance — she ended the 2020 affair with the OUP author by email.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (mixed)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific job he didn't apply for — is a second, independent derivation."
+      explain: "The three restatements collapse to one self-attribution. The grounded episode — the email-ended affair — is a second, independent derivation."
     },
     {
-      vignette: "Avery tells five different therapists, over six months, the same story about her mother. None of the therapists has met the mother.",
+      vignette: "Alex tells five different friends, over a year, the same story about her ex-husband Daniel. None of the friends has met Daniel.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "5 derivations (corroborated)", correct: false },
@@ -361,16 +418,16 @@ Repetition feels like corroboration. It isn't. Six conversations saying the same
       explain: "Five listeners is not five sources. The claim still traces to one self-attribution. Multiple audiences do not add grounding."
     },
     {
-      vignette: "A model summarizes Jordan as \"driven by approval\" based on Jordan's own words in four sessions. Jordan's manager separately writes a performance review describing the same pattern.",
+      vignette: "A model summarizes Alex as \"goes interpretive instead of toward feeling\" based on her own words across four therapy sessions. Her therapist's case notes — written before any of those sessions — describe the same pattern.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (self + observer)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "Self-attribution is one derivation. The manager's independent observation is a second. Two, not five."
+      explain: "Self-attribution is one derivation. The therapist's independent observation is a second. Two, not five."
     },
     {
-      vignette: "Sam mentions in passing that he \"never finishes anything,\" but his GitHub shows 12 completed projects, his LinkedIn shows 3 jobs each held >2 years, and his apartment lease shows he stayed 4 years in one place.",
+      vignette: "Alex mentions in passing that she \"never sticks with anything for long.\" But her running log shows 25 miles a week for six years before the move; her letter correspondence with three authors has held fifteen years; her monthly Hyde Park dinners have run since January.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "4 derivations (corroborated)", correct: false },

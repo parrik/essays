@@ -259,18 +259,14 @@ Type the same intent two ways. Watch the ranking shift.
   <p class="etude-embed-cue">▶ Play · Two Queries</p>
 <!---->
   <div class="tq-queries">
-    <label class="tq-qcol">
+    <div class="tq-qcol">
       <span class="tq-qlabel">Human-style keyword query</span>
-      <input class="tq-q-human" type="text" placeholder="LLM evaluation" />
-    </label>
-    <label class="tq-qcol">
+      <code class="tq-qbox">LLM evaluation</code>
+    </div>
+    <div class="tq-qcol">
       <span class="tq-qlabel">Agent-style declarative query</span>
-      <input class="tq-q-agent" type="text" placeholder="Here is a great article about evaluating LLM outputs against benchmark suites:" />
-    </label>
-  </div>
-<!---->
-  <div class="etude-embed-controls">
-    <button type="button" class="etude-embed-btn tq-run">Search both</button>
+      <code class="tq-qbox">Here is a great article about evaluating LLM outputs against benchmark suites:</code>
+    </div>
   </div>
 <!---->
   <div class="tq-results" aria-live="polite"></div>
