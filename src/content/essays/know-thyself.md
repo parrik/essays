@@ -910,7 +910,7 @@ It is the thing.
 
 ---
 
-*The graph holds. The reader is the next thing. **[Part II — Search was never about humans →](/essays/know-thyself-search/)***
+*The graph holds. The reader is the next thing. **[Part II — Memory was never about storage →](/essays/memory-was-never-about-storage/)***
 
 [^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
 

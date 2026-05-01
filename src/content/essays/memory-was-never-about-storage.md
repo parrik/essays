@@ -4,19 +4,22 @@ subtitle: What survives retrieval under bound
 relief: Forgetting is not loss. Forgetting is the cue and the trace, drifted.
 kicker: Method
 tag: essay
-order: 2
+order: 1
 parent: know-thyself
-publishedAt: 2026-04-29
+publishedAt: 2026-05-01
 status: tending
-description: Storage is a substrate. Memory is what survives retrieval under bound. Same shape across brain, mind, database.
-etudesPrompt: Each section has something to play. Read with your hands.
+description: Storage is the substrate. Memory is what survives retrieval under bound. Same shape across brain, mind, database, agent.
+etudesPrompt: Two demos. Read the essay through them.
 etudes:
   - label: Three Substrates
-    url: /etudes/memory/three-substrates/
-    note: brain, mind, database — same shape, three physics.
-  - label: Zettelkasten Graveyard
-    url: /etudes/memory/zettelkasten-graveyard/
-    note: find one note in 1,247.
+    url: '#same-shape-three-physics'
+    note: brain, mind, database — trace intact, access broken
+  - label: Every Retrieval Is a Write
+    url: '#every-retrieval-is-a-write'
+    note: type a memory; watch it drift
+  - label: know-thyself-search repo
+    url: https://github.com/parrik/know-thyself-search
+    note: ~300 LOC; three retrieval modes
 ---
 
 Alex has kept the graph nine months. A Sunday evening, she tries to recall something her sister told her about their mother, on a call three months back. She types a name; nothing comes. A phrase; nothing comes. She *knows* it's in the graph because she put it there.
@@ -34,203 +37,6 @@ Now the storage/retrieval split. Every memory carries two strengths. *Storage st
 Now a database row without an index. The bytes are perfectly stored. Past a million rows, the query times out before the row is found. Drop the index, the data stays. The memory is gone.
 
 The brain's "index" is a process — pattern-completion across cortical traces, run by the hippocampus.[^teyler] The database's index is a structure — a B-tree the engine seeks. The LLM's index is whatever you built — a vector store, a graph, a key-value cache. What the three share isn't literal indexing. It's *retrieval-is-reconstructive, cue-dependent, bounded*. Same architectural state, same fix: build the access shape sized to the substrate. Forgetting isn't loss. It's retrieval drift, on a substrate that's mostly fine.
-
-The mechanism cuts cleanest when you watch trace and cue come apart in your hands.
-
-<div class="etude-embed" data-etude="cue-mismatch">
-  <p class="etude-embed-cue">▶ Play · Cue Mismatch</p>
-  <p>One fact. Encode it in one context. Try to retrieve it in another. Watch what happens to recall when the cue and the trace come apart — then re-encode with multiple anchors and watch retrieval survive across all of them.</p>
-  <div class="cm-fact">
-    <span class="cm-fact-label">the fact</span>
-    <span class="cm-fact-text">Mira's grades recovered to A/B in Q3 2025.</span>
-  </div>
-  <div class="cm-grid">
-    <section class="cm-col">
-      <h4 class="cm-h">1. Encoding context</h4>
-      <p class="cm-desc">The context you laid the trace down in.</p>
-      <label class="cm-radio"><input type="radio" name="cm-encode" value="kitchen" checked /> morning kitchen</label>
-      <label class="cm-radio"><input type="radio" name="cm-encode" value="run" /> post-run, Sunday morning</label>
-      <label class="cm-radio"><input type="radio" name="cm-encode" value="manuscripts" /> while reviewing manuscripts</label>
-    </section>
-    <section class="cm-col">
-      <h4 class="cm-h">2. Retrieval cue</h4>
-      <p class="cm-desc">The context you reach for it from.</p>
-      <label class="cm-radio"><input type="radio" name="cm-retrieve" value="kitchen" checked /> morning kitchen</label>
-      <label class="cm-radio"><input type="radio" name="cm-retrieve" value="run" /> post-run, Sunday morning</label>
-      <label class="cm-radio"><input type="radio" name="cm-retrieve" value="manuscripts" /> while reviewing manuscripts</label>
-      <label class="cm-radio"><input type="radio" name="cm-retrieve" value="other" /> different context entirely</label>
-    </section>
-  </div>
-  <div class="cm-bar-wrap">
-    <div class="cm-bar-label">Recall <span class="cm-pct" data-readout="pct">100%</span></div>
-    <div class="cm-bar"><div class="cm-bar-fill" data-readout="bar" style="width: 100%"></div></div>
-    <div class="cm-note" data-readout="note">Encoding matches retrieval. The trace surfaces clean.</div>
-  </div>
-  <div class="cm-controls">
-    <button type="button" class="cm-btn" data-act="multi">Re-encode with multi-cue</button>
-    <span class="cm-status" data-readout="status">single anchor</span>
-  </div>
-  <p class="etude-embed-foot">Recall depends on the match. Build the path with multiple anchors and the trace survives more cues. <em>What happens when the access shape itself becomes the graveyard?</em></p>
-</div>
-<script>
-(() => {
-  const root = document.querySelector('.etude-embed[data-etude="cue-mismatch"]');
-  if (!root) return;
-  let multi = false;
-  const recallFor = (enc, ret) => {
-    if (multi) return { pct: 96, note: 'Multi-cue anchors. Any context surfaces the trace.' };
-    if (enc === ret) return { pct: 98, note: 'Encoding matches retrieval. The trace surfaces clean.' };
-    if (ret === 'other') return { pct: 28, note: 'Cue and trace far apart. Most of the trace stays under.' };
-    return { pct: 58, note: 'Cue drifted from encoding. Partial recall — name on the tongue.' };
-  };
-  const update = () => {
-    const enc = root.querySelector('input[name="cm-encode"]:checked');
-    const ret = root.querySelector('input[name="cm-retrieve"]:checked');
-    if (!enc || !ret) return;
-    const r = recallFor(enc.value, ret.value);
-    const bar = root.querySelector('[data-readout="bar"]');
-    const pct = root.querySelector('[data-readout="pct"]');
-    const note = root.querySelector('[data-readout="note"]');
-    if (bar) bar.style.width = r.pct + '%';
-    if (pct) pct.textContent = r.pct + '%';
-    if (note) note.textContent = r.note;
-    if (bar) {
-      bar.classList.toggle('cm-bar-low', r.pct < 50);
-      bar.classList.toggle('cm-bar-mid', r.pct >= 50 && r.pct < 85);
-      bar.classList.toggle('cm-bar-high', r.pct >= 85);
-    }
-  };
-  root.querySelectorAll('input[type="radio"]').forEach(el => el.addEventListener('change', update));
-  const btn = root.querySelector('[data-act="multi"]');
-  const status = root.querySelector('[data-readout="status"]');
-  if (btn) btn.addEventListener('click', () => {
-    multi = !multi;
-    if (status) status.textContent = multi ? 'multi-cue anchors active' : 'single anchor';
-    btn.textContent = multi ? 'Reset to single anchor' : 'Re-encode with multi-cue';
-    update();
-  });
-  update();
-})();
-</script>
-<style>
-.etude-embed[data-etude="cue-mismatch"] .cm-fact {
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-  padding: 0.6rem 0.85rem;
-  background: rgba(0,0,0,0.03);
-  border-left: 2px solid var(--accent, #8a3420);
-  border-radius: 2px;
-  margin: 0.75rem 0 1rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-fact-label {
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--muted, #888);
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-fact-text {
-  font-family: 'Georgia', serif;
-  font-size: 0.95rem;
-  font-style: italic;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  margin: 0.75rem 0;
-}
-@media (max-width: 700px) {
-  .etude-embed[data-etude="cue-mismatch"] .cm-grid {
-    grid-template-columns: 1fr;
-  }
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-col {
-  border: 1px solid rgba(0,0,0,0.12);
-  border-radius: 4px;
-  padding: 0.7rem 0.85rem;
-  background: rgba(0,0,0,0.02);
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-h {
-  font-family: 'Georgia', serif;
-  font-size: 0.95rem;
-  margin: 0 0 0.3rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-desc {
-  font-size: 0.82rem;
-  color: var(--muted, #888);
-  margin: 0 0 0.55rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-radio {
-  display: block;
-  font-size: 0.85rem;
-  padding: 0.18rem 0;
-  cursor: pointer;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-radio input {
-  margin-right: 0.45rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-wrap {
-  margin: 0.85rem 0 0.6rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 0.3rem;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-pct {
-  font-family: 'Menlo', monospace;
-  color: var(--accent, #8a3420);
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-bar {
-  height: 10px;
-  background: rgba(0,0,0,0.06);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-fill {
-  height: 100%;
-  background: var(--accent, #8a3420);
-  transition: width 240ms ease, background 240ms;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-fill.cm-bar-low { background: var(--muted, #888); }
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-fill.cm-bar-mid { background: rgba(138,52,32,0.55); }
-.etude-embed[data-etude="cue-mismatch"] .cm-bar-fill.cm-bar-high { background: var(--accent, #8a3420); }
-.etude-embed[data-etude="cue-mismatch"] .cm-note {
-  font-size: 0.83rem;
-  color: var(--muted, #888);
-  margin-top: 0.4rem;
-  font-style: italic;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-controls {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 0.7rem;
-  flex-wrap: wrap;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-btn {
-  font-family: inherit;
-  font-size: 0.82rem;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid var(--accent, #8a3420);
-  background: var(--bg, #fff);
-  color: var(--ink, #222);
-  border-radius: 3px;
-  cursor: pointer;
-  transition: background 100ms;
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-btn:hover {
-  background: rgba(138, 52, 32, 0.08);
-}
-.etude-embed[data-etude="cue-mismatch"] .cm-status {
-  font-size: 0.78rem;
-  color: var(--muted, #888);
-  font-family: 'Menlo', monospace;
-}
-</style>
-
 
 <div class="etude-embed" data-etude="three-substrates">
   <p class="etude-embed-cue">▶ Play · Three Substrates</p>
@@ -553,6 +359,20 @@ The mechanism cuts cleanest when you watch trace and cue come apart in your hand
 }
 </style>
 
+## Same shape across scales
+
+Same architectural state shows up one substrate up, too — search itself. Trace intact, access broken; same fix, build the access shape. What changes across scales is the reader.
+
+**Inverted index.** Terms ↔ documents, weighted by overlap (TF-IDF, BM25). Reader: human at a SERP. Lucene at 700M docs is still this shape.
+
+**Vector retrieval.** Nodes are embeddings; edges are cosine distance. The index itself becomes a graph — a small-world (HNSW) layered so a greedy walk hops to nearest neighbors in log time. Reader: still mostly human.
+
+**Typed knowledge graph.** Nodes are claims; edges are labelled (*grounds, derives_from, contradicts*). The labels do retrieval work — distinguishing *said five times* from *grounded twice independently.* Reader: a self, or an agent on its behalf.
+
+**AI-native search.** The agent describes rather than types. *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on how documents get cited. Filter first, rank by comprehensiveness and provenance. Reader: an agent inside a tool-call loop, sub-200ms per call.
+
+One shape, four readers. The bound is the reader, not the corpus. Personal-memory and AI-search-for-agents are the same problem at different scales.
+
 ## Storage thinking, three failure modes
 
 If trace can be intact while access is broken, the cost isn't in the substrate — it's in what you build on top of it. Storage thinking shows up in three modes:
@@ -562,223 +382,6 @@ If trace can be intact while access is broken, the cost isn't in the substrate �
 - **The long-context bet.** Push the substrate further — bigger window, more notes, more tokens — and assume retrieval scales with it. Storage strength goes up. Retrieval strength doesn't follow. Bury an item in the middle of a million-token window: the model finds it about 60% of the time. The wait grows by a factor of thirty to sixty. The bill grows by a factor of about a thousand. The U-shape is the substrate telling you it's not an index.[^liu24]
 
 *The field has a new name for the same architecture: LLM as OS, context window as RAM, the index somewhere else.* By mid-2025, the practice once called prompt engineering was renamed context engineering — write, select, compress, isolate — an admission that the window is working memory and the durable state has to live outside it.[^contexteng]
-
-<div class="etude-embed" data-etude="long-context-bet">
-  <p class="etude-embed-cue">▶ Play · Long Context Bet</p>
-  <p>Push the substrate further — bigger window, more notes, more tokens. Watch what storage strength buys you, and what it doesn't. Slide the context size and read what the bet costs.</p>
-  <div class="lcb-slider-wrap">
-    <label class="lcb-label">
-      Context size
-      <span class="lcb-size" data-readout="size">8K tokens</span>
-    </label>
-    <input type="range" class="lcb-slider" min="0" max="100" value="0" step="1" data-act="slider" />
-    <div class="lcb-ticks">
-      <span>8K</span><span>32K</span><span>128K</span><span>500K</span><span>1M</span>
-    </div>
-  </div>
-  <div class="lcb-metrics">
-    <div class="lcb-metric">
-      <div class="lcb-metric-label">Recall on middle items</div>
-      <div class="lcb-metric-value" data-readout="recall">99%</div>
-      <div class="lcb-metric-note" data-readout="recall-note">edges and middle hold.</div>
-    </div>
-    <div class="lcb-metric">
-      <div class="lcb-metric-label">Latency multiplier</div>
-      <div class="lcb-metric-value" data-readout="latency">1×</div>
-      <div class="lcb-metric-note">vs an 8K window</div>
-    </div>
-    <div class="lcb-metric">
-      <div class="lcb-metric-label">Cost multiplier</div>
-      <div class="lcb-metric-value" data-readout="cost">1×</div>
-      <div class="lcb-metric-note">vs an 8K window</div>
-    </div>
-  </div>
-  <div class="lcb-curve-wrap">
-    <div class="lcb-curve-label">Recall % by position in window</div>
-    <svg viewBox="0 0 300 110" class="lcb-svg" aria-hidden="true">
-      <line x1="30" y1="95" x2="290" y2="95" class="lcb-axis" />
-      <line x1="30" y1="10" x2="30" y2="95" class="lcb-axis" />
-      <text x="26" y="14" class="lcb-tick" text-anchor="end">100</text>
-      <text x="26" y="55" class="lcb-tick" text-anchor="end">80</text>
-      <text x="26" y="95" class="lcb-tick" text-anchor="end">60</text>
-      <text x="30" y="106" class="lcb-tick" text-anchor="start">start</text>
-      <text x="160" y="106" class="lcb-tick" text-anchor="middle">middle</text>
-      <text x="290" y="106" class="lcb-tick" text-anchor="end">end</text>
-      <path d="" class="lcb-curve" data-readout="curve" />
-      <circle cx="160" cy="55" r="3" class="lcb-mid-dot" data-readout="mid-dot" />
-    </svg>
-  </div>
-  <p class="etude-embed-foot">Bury an item in the middle of a million-token window — the model finds it about 60% of the time. The wait grows by a factor of thirty to sixty. The bill grows by a factor of about a thousand. <em>Fill the graph, not the window.</em></p>
-</div>
-<script>
-(() => {
-  const root = document.querySelector('.etude-embed[data-etude="long-context-bet"]');
-  if (!root) return;
-  // logarithmic mapping: t in [0,1] → context size in tokens (8K → 1M)
-  const minLog = Math.log(8000), maxLog = Math.log(1000000);
-  const fmt = (n) => {
-    if (n >= 1000000) return (n/1000000).toFixed(n>=1000000 ? 0 : 1).replace(/\.0$/, '') + 'M tokens';
-    if (n >= 1000) return Math.round(n/1000) + 'K tokens';
-    return n + ' tokens';
-  };
-  const slider = root.querySelector('[data-act="slider"]');
-  const update = () => {
-    const t = (slider ? +slider.value : 0) / 100;
-    const tokens = Math.round(Math.exp(minLog + (maxLog - minLog) * t));
-    // recall on middle: 99 at 8K → ~60 at 1M, smooth decay
-    const middleRecall = 99 - 39 * t;
-    // latency multiplier: 1 at 8K → 60 at 1M (exponential-ish)
-    const latency = Math.round(1 + (60 - 1) * Math.pow(t, 1.4));
-    // cost multiplier: 1 at 8K → 1250 at 1M (closer to quadratic in tokens)
-    const cost = Math.round(1 + (1250 - 1) * Math.pow(t, 1.9));
-    const sizeEl = root.querySelector('[data-readout="size"]');
-    const recallEl = root.querySelector('[data-readout="recall"]');
-    const recallNote = root.querySelector('[data-readout="recall-note"]');
-    const latEl = root.querySelector('[data-readout="latency"]');
-    const costEl = root.querySelector('[data-readout="cost"]');
-    if (sizeEl) sizeEl.textContent = fmt(tokens);
-    if (recallEl) recallEl.textContent = Math.round(middleRecall) + '%';
-    if (recallNote) {
-      recallNote.textContent = middleRecall > 90 ? 'edges and middle hold.'
-        : middleRecall > 75 ? 'middle starting to slip.'
-        : middleRecall > 65 ? 'U-shape pronounced.'
-        : 'middle items lost about 40% of the time.';
-    }
-    if (latEl) latEl.textContent = latency + '×';
-    if (costEl) costEl.textContent = cost.toLocaleString() + '×';
-    // build U-curve: y = 95 (60% line) ... 10 (100% line). recall at edges high, dip at middle.
-    const xs = [];
-    const W = 260, x0 = 30;
-    const N = 30;
-    for (let i = 0; i <= N; i++) {
-      const px = i / N; // 0..1 position in window
-      const x = x0 + px * W;
-      // U-shape: edges = 99 (independent of t), middle = middleRecall
-      // depth grows with t; shape: cosine-ish dip
-      const dipDepth = (99 - middleRecall) * (0.5 - 0.5 * Math.cos(2 * Math.PI * px));
-      const recallAt = 99 - dipDepth;
-      // map recall (60..100) to y (95..10): y = 95 - (recall-60) * (95-10)/(100-60)
-      const y = 95 - (recallAt - 60) * (85 / 40);
-      xs.push((i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + y.toFixed(1));
-    }
-    const curve = root.querySelector('[data-readout="curve"]');
-    if (curve) curve.setAttribute('d', xs.join(' '));
-    const midDot = root.querySelector('[data-readout="mid-dot"]');
-    if (midDot) {
-      const yMid = 95 - (middleRecall - 60) * (85 / 40);
-      midDot.setAttribute('cy', yMid.toFixed(1));
-    }
-  };
-  if (slider) slider.addEventListener('input', update);
-  update();
-})();
-</script>
-<style>
-.etude-embed[data-etude="long-context-bet"] .lcb-slider-wrap {
-  margin: 1rem 0 0.6rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.85rem;
-  margin-bottom: 0.4rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-size {
-  font-family: 'Menlo', monospace;
-  color: var(--accent, #8a3420);
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-slider {
-  width: 100%;
-  accent-color: var(--accent, #8a3420);
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-ticks {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.7rem;
-  color: var(--muted, #888);
-  font-family: 'Menlo', monospace;
-  margin-top: 0.15rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-metrics {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin: 0.85rem 0;
-}
-@media (max-width: 600px) {
-  .etude-embed[data-etude="long-context-bet"] .lcb-metrics {
-    grid-template-columns: 1fr;
-  }
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-metric {
-  border: 1px solid rgba(0,0,0,0.12);
-  border-radius: 4px;
-  padding: 0.55rem 0.7rem;
-  background: rgba(0,0,0,0.02);
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-metric-label {
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--muted, #888);
-  margin-bottom: 0.18rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-metric-value {
-  font-family: 'Menlo', monospace;
-  font-size: 1.4rem;
-  color: var(--accent, #8a3420);
-  line-height: 1.1;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-metric-note {
-  font-size: 0.74rem;
-  color: var(--muted, #888);
-  margin-top: 0.18rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-curve-wrap {
-  border: 1px solid rgba(0,0,0,0.12);
-  border-radius: 4px;
-  padding: 0.6rem 0.7rem 0.4rem;
-  background: rgba(0,0,0,0.02);
-  margin-bottom: 0.4rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-curve-label {
-  font-size: 0.78rem;
-  color: var(--muted, #888);
-  margin-bottom: 0.3rem;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-svg {
-  width: 100%;
-  height: 130px;
-  display: block;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-axis {
-  stroke: var(--ink, #222);
-  stroke-width: 0.6;
-  opacity: 0.4;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-tick {
-  font-family: 'Menlo', monospace;
-  font-size: 7px;
-  fill: var(--muted, #888);
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-curve {
-  fill: none;
-  stroke: var(--accent, #8a3420);
-  stroke-width: 1.6;
-}
-.etude-embed[data-etude="long-context-bet"] .lcb-mid-dot {
-  fill: var(--accent, #8a3420);
-}
-</style>
-
-The third mode makes the architectural mistake physical: a graph can fail the same way, and the cheapest demonstration is a real search across real notes.
-
-<aside class="essay-etude-inline">
-  <a href="/etudes/memory/zettelkasten-graveyard/">
-    <span class="cue">▶ Play</span>
-    <strong>Zettelkasten Graveyard</strong> — 1,247 notes. Find the one you need. <em>When the access shape is wrong, the substrate is a graveyard. What's the architecture that isn't?</em>
-  </a>
-</aside>
 
 ## The index is the memory
 
@@ -1092,13 +695,37 @@ And every retrieval is a write. Pull a memory up and it goes soft for a few hour
   </a>
 </aside>
 
+## A demo
+
+Three retrieval modes, ~300 LOC, runnable on a laptop:
+
+```bash
+git clone github.com/parrik/know-thyself-search
+python embed.py examples/example-graph-extended.yaml
+python compare.py "when did the running routine break down"
+```
+
+Mode A finds the *theme*. Mode B (type filter) finds the *episode*. Mode C (provenance rerank) demotes the tentative novel — *attribution ≠ confidence as a retrieval property.* Schema doing work pure cosine cannot.
+
+At 87 nodes, none of this needs HNSW. Brute-force matmul runs in two ms. Algorithm scales with problem.
+
 > **Memory is what survives retrieval under bound.** Storage is the substrate. The index is the memory. The personal-graph project is not a notes app — it's the indexing-theory architecture, applied to a self. It's what Alex was reaching for, that Sunday evening — a typed index, sized to her, that survives retrieval.
+
+## Two maxims
+
+The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
+
+γνῶθι σεαυτόν. **Know thyself** — stay close enough that your own structure precipitates. Build the index.
+
+**Reveal thyself** — let what precipitates act in the world. Walk the index in public.
+
+The retrieval problem hasn't changed in two and a half millennia. The reader has.
 
 ---
 
-*The graph is open by design. What closes it from leak. **[Part IV — Security was never about response →](/essays/security-was-never-about-response/)***
+*The graph is open by design. What closes it from leak. **[Part III — Security was never about response →](/essays/security-was-never-about-response/)***
 
-*Series: [Part I](/essays/know-thyself/) · [Part II](/essays/know-thyself-search/) · III · [Part IV](/essays/security-was-never-about-response/) · scaffold at [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
+*Series: [Part I](/essays/know-thyself/) · II · [Part III](/essays/security-was-never-about-response/) · scaffold at [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
 
 [^tulving72]: Tulving (1972), *Episodic and semantic memory* — the binding principle: trace plus cue, not trace alone.
 [^tulving73]: Tulving & Thomson (1973), *Encoding specificity and retrieval processes*, Psychological Review — recall depends on match between encoding context and retrieval cue.
