@@ -1,28 +1,32 @@
 ---
 import Base from '../../../layouts/Base.astro';
 const title = 'Three Paths';
-const subtitle = 'Pick your path. The wrong one IS the cascade.';
+const subtitle = 'Pick your path. The wrong one is the cascade.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · The Campaign Cascade</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/the-campaign-cascade/">← back to essay</a>
-    </div>
-    <hr />
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Campaign Cascade</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/campaign-cascade/">← campaign cascade etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/essays/the-campaign-cascade/">essay</a>
+      </nav>
+    </header>
 
-    <p>Every cross-cutting initiative has three valid responses: <strong>centralize</strong> the work, <strong>automate</strong> it end-to-end, or <strong>cut scope</strong> to where the change actually delivers value. Most failures pick the wrong one — and the wrong pick is what spawns the next campaign.</p>
+    <section class="etude-intro">
+      <p>Every cross-cutting initiative has three valid responses: <strong>centralize</strong> the work, <strong>automate</strong> it end-to-end, or <strong>cut scope</strong> to where the change actually delivers value. Most failures pick the wrong one — and the wrong pick is what spawns the next campaign.</p>
+      <p>Four scenarios. Pick a path for each. Instant feedback.</p>
+    </section>
 
-    <p>Four scenarios. Pick a path for each. Instant feedback.</p>
+    <div class="etude-progress" id="dots" aria-hidden="true"></div>
+    <div id="stage" class="etude-stage" aria-live="polite"></div>
 
-    <div class="dots" id="dots" aria-hidden="true"></div>
-
-    <div id="stage" class="stage" aria-live="polite"></div>
-
-    <hr />
-    <p class="closing"><em>Most cascades start with a centralize answer where automate would have worked, or an automate answer where the right call was to cut scope. Picking the wrong path is what spawns the next campaign. The path itself is half the work.</em></p>
+    <footer class="etude-coda">
+      <p>Most cascades start with a centralize answer where automate would have worked, or an automate answer where the right call was to cut scope. The path itself is half the work.</p>
+    </footer>
   </article>
 </Base>
 
@@ -30,7 +34,7 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
   const SCENARIOS = [
     {
       title: 'Migrate 800 services to Java 21',
-      context: 'Hypothetical fleet. Perf wins are the motivation — measurable latency and GC improvements. Owners are scattered across dozens of teams. Target: end of next quarter.',
+      context: 'Hypothetical fleet. Perf wins are the motivation — measurable latency and GC improvements. Owners scattered across dozens of teams. Target: end of next quarter.',
       best: 'B',
       feedback: {
         A: { verdict: 'wrong', text: 'Centralizing creates a platform-team bottleneck. 800 services through one queue means the migration drags past the quarter, perf wins arrive late, and the platform team becomes the next campaign.' },
@@ -78,10 +82,11 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
   let picks = [];
 
   function renderDots() {
+    const total = SCENARIOS.length;
     dotsEl.innerHTML = SCENARIOS.map((_, i) => {
-      const cls = i < idx ? 'dot dot-done' : i === idx ? 'dot dot-current' : 'dot';
-      return `<span class="${cls}"></span>`;
-    }).join('') + (idx >= SCENARIOS.length ? '<span class="dot dot-done"></span>' : '<span class="dot"></span>');
+      const cls = i < idx ? 'etude-dot etude-dot-done' : i === idx ? 'etude-dot etude-dot-current' : 'etude-dot';
+      return `<span class="${cls}" aria-label="step ${i+1} of ${total}"></span>`;
+    }).join('');
   }
 
   function renderScenario() {
@@ -89,20 +94,33 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
     const s = SCENARIOS[idx];
     const isCombo = s.best === 'AB';
     stage.innerHTML = `
-      <div class="scenario">
-        <p class="scen-num">Scenario ${idx + 1} of ${SCENARIOS.length}</p>
-        <h2>${s.title}</h2>
-        <p class="context">${s.context}</p>
-        <div class="paths">
-          <button type="button" class="path-btn" data-pick="A"><strong>(A) Centralize</strong><span>A platform team owns the work end-to-end. Service teams get a PR + a Slack DM.</span></button>
-          <button type="button" class="path-btn" data-pick="B"><strong>(B) Automate</strong><span>Codemod the change everywhere. Service teams get a single PR they review.</span></button>
-          <button type="button" class="path-btn" data-pick="C"><strong>(C) Cut scope</strong><span>Apply only where the change actually delivers value. Leave the rest.</span></button>
-          ${isCombo ? '<button type="button" class="path-btn path-btn-combo" data-pick="AB"><strong>(A+B) Combine</strong><span>Codemod the code change. Central team owns the rollout calendar.</span></button>' : ''}
+      <div class="etude-card">
+        <p class="etude-step">Scenario ${idx + 1} of ${SCENARIOS.length}</p>
+        <h2 class="etude-card-title">${s.title}</h2>
+        <p class="etude-card-context">${s.context}</p>
+        <div class="etude-choices" role="group" aria-label="Pick a path">
+          <button type="button" class="etude-choice" data-pick="A">
+            <span class="etude-choice-label"><span class="etude-choice-letter">A</span>Centralize</span>
+            <span class="etude-choice-desc">A platform team owns the work end-to-end. Service teams get a PR and a Slack DM.</span>
+          </button>
+          <button type="button" class="etude-choice" data-pick="B">
+            <span class="etude-choice-label"><span class="etude-choice-letter">B</span>Automate</span>
+            <span class="etude-choice-desc">Codemod the change everywhere. Service teams get a single PR they review.</span>
+          </button>
+          <button type="button" class="etude-choice" data-pick="C">
+            <span class="etude-choice-label"><span class="etude-choice-letter">C</span>Cut scope</span>
+            <span class="etude-choice-desc">Apply only where the change actually delivers value. Leave the rest.</span>
+          </button>
+          ${isCombo ? `
+          <button type="button" class="etude-choice etude-choice-combo" data-pick="AB">
+            <span class="etude-choice-label"><span class="etude-choice-letter">A+B</span>Combine</span>
+            <span class="etude-choice-desc">Codemod the code change. Central team owns the rollout calendar.</span>
+          </button>` : ''}
         </div>
-        <div class="feedback" id="feedback"></div>
+        <div class="etude-feedback" id="feedback"></div>
       </div>
     `;
-    stage.querySelectorAll('.path-btn').forEach(btn => {
+    stage.querySelectorAll('.etude-choice').forEach(btn => {
       btn.addEventListener('click', () => handlePick(btn.dataset.pick));
     });
   }
@@ -113,18 +131,20 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
     const correct = pick === s.best;
     picks.push({ pick, correct, best: s.best });
 
-    stage.querySelectorAll('.path-btn').forEach(btn => {
+    stage.querySelectorAll('.etude-choice').forEach(btn => {
       btn.disabled = true;
-      if (btn.dataset.pick === pick) btn.classList.add('picked');
-      if (btn.dataset.pick === s.best) btn.classList.add('correct');
+      if (btn.dataset.pick === pick) btn.classList.add('etude-choice-picked');
+      if (btn.dataset.pick === s.best) btn.classList.add('etude-choice-correct');
     });
 
     const fbEl = document.getElementById('feedback');
     const verdictLabel = fb.verdict === 'right' ? 'Right path' : fb.verdict === 'partial' ? 'Partial fit' : 'Wrong path';
     fbEl.innerHTML = `
-      <p class="verdict verdict-${fb.verdict}"><strong>${verdictLabel}.</strong></p>
-      <p class="verdict-text">${fb.text}</p>
-      <button type="button" class="next-btn" id="next-btn">${idx + 1 < SCENARIOS.length ? 'Next scenario →' : 'See your score →'}</button>
+      <div class="etude-verdict etude-verdict-${fb.verdict}">
+        <p class="etude-verdict-label">${verdictLabel}</p>
+        <p class="etude-verdict-text">${fb.text}</p>
+        <button type="button" class="etude-next" id="next-btn">${idx + 1 < SCENARIOS.length ? 'Next scenario' : 'See your score'}</button>
+      </div>
     `;
     document.getElementById('next-btn').addEventListener('click', advance);
   }
@@ -147,13 +167,18 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
       if (!p.correct) wrong += 1;
     });
     const right = picks.length - wrong;
+    const summary = wrong === 0
+      ? 'Clean run. You read each scenario for what it actually rewards.'
+      : wrong === picks.length
+        ? 'Every pick was the cascade-spawning one. Worth re-reading the scenarios — the wrong path always looked plausible.'
+        : 'Most failures look like this — one or two wrong calls, each one defensible in isolation. The cascade is built from defensible wrong calls.';
     stage.innerHTML = `
-      <div class="score">
-        <p class="scen-num">Done</p>
-        <h2>You picked centralize ${counts.A}, automate ${counts.B}, cut scope ${counts.C}${counts.AB ? `, combine ${counts.AB}` : ''}.</h2>
-        <p class="score-line"><strong>${right}/${picks.length} right.</strong> ${wrong}/${picks.length} wrong.</p>
-        <p class="score-detail">${wrong === 0 ? 'Clean run. You read each scenario for what it actually rewards.' : wrong === picks.length ? 'Every pick was the cascade-spawning one. Worth re-reading the scenarios — the wrong path always looked plausible.' : 'Most failures look like this — one or two wrong calls, each one defensible in isolation. The cascade is built from defensible wrong calls.'}</p>
-        <button type="button" class="next-btn" id="restart-btn">Run it again</button>
+      <div class="etude-card etude-card-score">
+        <p class="etude-step">Done</p>
+        <p class="etude-score-headline"><span class="etude-score-fraction">${right}<span class="etude-score-divider">/</span>${picks.length}</span> right</p>
+        <p class="etude-score-mix">You picked centralize ${counts.A}, automate ${counts.B}, cut scope ${counts.C}${counts.AB ? `, combine ${counts.AB}` : ''}.</p>
+        <p class="etude-score-detail">${summary}</p>
+        <button type="button" class="etude-next" id="restart-btn">Run it again</button>
       </div>
     `;
     document.getElementById('restart-btn').addEventListener('click', restart);
@@ -169,106 +194,312 @@ const subtitle = 'Pick your path. The wrong one IS the cascade.';
 </script>
 
 <style>
-  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
-  .closing { color: var(--muted); line-height: 1.6; }
-  .dots {
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* === progress === */
+  .etude-progress {
     display: flex;
-    gap: 0.4rem;
-    margin: 1.25rem 0;
+    gap: 0.5rem;
+    margin: 2rem 0 1.25rem;
     justify-content: center;
   }
-  .dot {
-    width: 0.55rem;
-    height: 0.55rem;
+  .etude-dot {
+    width: 0.5rem;
+    height: 0.5rem;
     border-radius: 50%;
-    background: rgba(0,0,0,0.12);
-    transition: background 200ms;
+    background: var(--line);
+    transition: background 240ms ease, transform 240ms ease, box-shadow 240ms ease;
   }
-  .dot-done { background: var(--accent); }
-  .dot-current { background: var(--accent); box-shadow: 0 0 0 3px rgba(138, 52, 32, 0.18); }
-  .stage { min-height: 20rem; }
-  .scenario, .score {
-    padding: 1.25rem 1.15rem;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 4px;
-    border-left: 3px solid var(--accent);
-  }
-  .scen-num {
-    font-size: 0.78rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin: 0 0 0.4rem;
-  }
-  .scenario h2, .score h2 {
-    font-family: 'Georgia', serif;
-    font-size: 1.3rem;
-    margin: 0 0 0.7rem;
-    line-height: 1.3;
-  }
-  .context {
-    line-height: 1.55;
-    margin: 0 0 1rem;
-  }
-  .paths {
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
-    margin: 1rem 0;
-  }
-  .path-btn {
-    font-family: inherit;
-    font-size: 0.95rem;
-    text-align: left;
-    padding: 0.75rem 0.9rem;
-    border: 1px solid var(--accent);
-    background: var(--bg);
-    color: var(--ink);
-    border-radius: 3px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    transition: background 100ms, transform 100ms;
-  }
-  .path-btn:hover:not(:disabled) {
-    background: rgba(138, 52, 32, 0.08);
-    transform: translateX(2px);
-  }
-  .path-btn span { color: var(--muted); font-size: 0.88rem; line-height: 1.45; }
-  .path-btn:disabled { cursor: default; opacity: 0.5; }
-  .path-btn.picked { opacity: 1; background: rgba(138, 52, 32, 0.12); border-width: 2px; }
-  .path-btn.correct { opacity: 1; border-color: #2d7a3e; background: rgba(45, 122, 62, 0.08); }
-  .path-btn.picked.correct { background: rgba(45, 122, 62, 0.15); }
-  .path-btn-combo { border-style: dashed; }
-  .feedback {
-    margin-top: 1rem;
-  }
-  .feedback:not(:empty) {
-    padding: 0.9rem 1rem;
-    background: var(--bg);
-    border-radius: 3px;
-    border-left: 3px solid var(--muted);
-  }
-  .verdict { margin: 0 0 0.5rem; font-size: 0.95rem; }
-  .verdict-right { color: #2d7a3e; }
-  .verdict-partial { color: #b87333; }
-  .verdict-wrong { color: var(--accent); }
-  .verdict-text { margin: 0 0 0.9rem; line-height: 1.55; color: var(--ink); }
-  .next-btn {
-    font-family: inherit;
-    font-size: 0.9rem;
-    padding: 0.5rem 0.9rem;
-    border: 1px solid var(--accent);
+  .etude-dot-done {
     background: var(--accent);
-    color: white;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: opacity 100ms;
   }
-  .next-btn:hover { opacity: 0.85; }
-  .score-line { font-size: 1.05rem; margin: 0.5rem 0 0.7rem; }
-  .score-detail { color: var(--muted); line-height: 1.55; margin: 0 0 1rem; }
+  .etude-dot-current {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+
+  .etude-stage {
+    min-height: 22rem;
+  }
+
+  /* === scenario card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-card-title {
+    font-family: var(--serif-display);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .etude-card-context {
+    margin: 0 0 1.4rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === choices === */
+  .etude-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .etude-choice {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    text-align: left;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: var(--text);
+    transition: border-color 180ms ease, background 180ms ease, transform 120ms ease, box-shadow 180ms ease;
+  }
+  .etude-choice:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--bg);
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.06);
+  }
+  .etude-choice:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+  .etude-choice:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-choice:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+  .etude-choice-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .etude-choice-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--line);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 180ms ease, color 180ms ease;
+  }
+  .etude-choice:hover:not(:disabled) .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .etude-choice-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 2.05rem;
+  }
+  .etude-choice-combo {
+    border-style: dashed;
+  }
+  .etude-choice-picked {
+    opacity: 1;
+    border-color: var(--accent);
+    background: rgba(138, 52, 32, 0.06);
+  }
+  .etude-choice-picked .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .etude-choice-correct {
+    opacity: 1;
+    border-color: #2d7a3e;
+    background: rgba(45, 122, 62, 0.05);
+  }
+  .etude-choice-correct .etude-choice-letter {
+    background: #2d7a3e;
+    color: white;
+  }
+  .etude-choice-picked.etude-choice-correct {
+    background: rgba(45, 122, 62, 0.1);
+  }
+
+  /* === verdict === */
+  .etude-feedback:not(:empty) {
+    margin-top: 1.25rem;
+  }
+  .etude-verdict {
+    border-top: 1px solid var(--line);
+    padding-top: 1.1rem;
+  }
+  .etude-verdict-label {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.55rem;
+  }
+  .etude-verdict-right .etude-verdict-label { color: #2d7a3e; }
+  .etude-verdict-partial .etude-verdict-label { color: #b87333; }
+  .etude-verdict-wrong .etude-verdict-label { color: var(--accent); }
+  .etude-verdict-text {
+    margin: 0 0 1.25rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === next button === */
+  .etude-next {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 180ms ease, transform 120ms ease;
+  }
+  .etude-next:hover {
+    background: var(--accent);
+  }
+  .etude-next:active {
+    transform: scale(0.97);
+  }
+  .etude-next:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-next::after {
+    content: ' →';
+  }
+
+  /* === score === */
+  .etude-card-score {
+    text-align: left;
+  }
+  .etude-score-headline {
+    font-family: var(--serif-display);
+    font-size: 2rem;
+    line-height: 1.1;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-score-fraction {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .etude-score-divider {
+    color: var(--muted);
+    font-weight: 400;
+    margin: 0 0.05em;
+  }
+  .etude-score-mix {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .etude-score-detail {
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .etude-card-title { font-size: 1.3rem; }
+    .etude-choice { padding: 0.75rem 0.85rem; }
+    .etude-choice-desc { padding-left: 0; }
+  }
 </style>

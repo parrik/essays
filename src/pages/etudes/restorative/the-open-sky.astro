@@ -4,124 +4,310 @@ const title = 'The Open Sky';
 const subtitle = 'For days when you feel momentum, hope, or readiness to expand.';
 const duration = '2 Hours · 7:00 – 9:00';
 ---
-<Base title={title} description={'For days when you feel momentum, hope, or readiness to expand.'}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · Restorative</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <p class="etude-duration">{duration}</p>
-    <div class="essay-meta">
-      <a href="/etudes/restorative/">← all restorative etudes</a>
-    </div>
-    <hr />
-    <div class="essay-body etude-body">
-      <h2>When to reach for this routine</h2>
+<Base title={title} description={subtitle}>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Restorative</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <p class="etude-duration">{duration}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/restorative/">← restorative etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/essays/the-partition-problem/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p class="etude-section-label">When to reach for this routine</p>
       <p>Something shifted. Maybe you slept well. Maybe a decision you made is starting to bear weight. Maybe you caught a glimpse of the life you’re building — the health, the independence, the people you haven’t met yet — and for the first time in a while, it felt real instead of theoretical. This is the day to expand. Not recklessly, not as performance, but as a genuine leaning toward what is good. This routine builds upward: core activation, heart openers, an inversion that flips your perspective. It ends wrapped and held. Use it when the honest answer to "how are you?" is "I think I’m ready for more."</p>
-      <h2>Warm-Ups (Optional)</h2>
-      <p>Gentle neck rolls, shoulder circles, seated spinal twists, wrist and ankle rotations. Let the body wake up with intention — you are orienting yourself toward the horizon.</p>
-      <h2>PRANAYAMA — Nadi Shodhana (Alternate Nostril Breath)</h2>
-      <p>Right hand in Vishnu mudra. Close right nostril — inhale left. Close both; pause. Release right; exhale. Inhale right. Close both; pause. Exhale left. Five rounds. The two channels balance — effort and surrender, the life you are building and the life already here.</p>
-      <h2>POSES — Root to Crown</h2>
+    </section>
+
+    <section class="etude-card">
+      <p class="etude-step">Warm-Ups (Optional)</p>
+      <p class="etude-card-context">Gentle neck rolls, shoulder circles, seated spinal twists, wrist and ankle rotations. Let the body wake up with intention — you are orienting yourself toward the horizon.</p>
+    </section>
+
+    <section class="etude-card">
+      <p class="etude-step">Pranayama</p>
+      <h2 class="etude-card-title">Nadi Shodhana — Alternate Nostril Breath</h2>
+      <p class="etude-card-context">Right hand in Vishnu mudra. Close right nostril — inhale left. Close both; pause. Release right; exhale. Inhale right. Close both; pause. Exhale left. Five rounds. The two channels balance — effort and surrender, the life you are building and the life already here.</p>
+    </section>
+
+    <div class="etude-stage">
+      <p class="etude-section-label etude-section-label-stage">Poses — Root to Crown</p>
+
       <p class="chakra-banner"><strong>◆</strong> Muladhara — I am rooted. From here I can grow anything.</p>
-      <section class="pose-card">
-        <h3>1. Balasana – Child’s Pose (Reverse Chair Version)</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 1 · Root</p>
+        <h3 class="etude-card-title">Balasana – Child’s Pose (Reverse Chair Version)</h3>
         <p class="pose-time">7:15 – 7:28</p>
         <p class="pose-benefits">Benefits – Calms the mind; relieves lower back tension; grounds the body before expansion; props anchor before the practice opens upward; Root. Cautions – Hip or knee issues; pregnancy — use standard Child’s Pose with wide knees. Alt: Balasana – Floor Version; Balasana – Reverse Wall Version.</p>
         <blockquote class="pose-quote">“I relax from outer involvement into my inner haven of peace.”</blockquote>
         <p class="pose-body">Before a tree reaches the sky it grows its roots — every great expansion begins in stillness, in the dark, in the ground; this pose is not passive, it is preparation. Feel the roots reach down; from this ground you can grow anything.</p>
       </section>
+
       <p class="chakra-banner"><strong>◆</strong> Svadhishthana — I welcome growth. I am ready for more.</p>
-      <section class="pose-card">
-        <h3>2. Upavistha Konasana – Seated Forward Fold</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 2 · Sacral</p>
+        <h3 class="etude-card-title">Upavistha Konasana – Seated Forward Fold</h3>
         <p class="pose-time">7:28 – 7:46</p>
         <p class="pose-benefits">Benefits – Opens and elongates the spine from hips to shoulders; stimulates the digestive system; calming and cooling for the nervous system; may lower blood pressure; Sacral. Cautions – Hip or knee replacements; back injuries; spondylolisthesis. Support abdomen in pregnancy. Alt: Seated upright over bolster with chair support; Baddha Konasana – Supported.</p>
         <blockquote class="pose-quote">“I welcome every opportunity for further growth.”</blockquote>
         <p class="pose-body">As you fold forward you bow in gratitude — not in defeat, but in acknowledgment of how far you have come and what is still ahead. Every opportunity for growth is already present in the soil; welcome it, bow toward it, then rise to meet it.</p>
       </section>
+
       <p class="chakra-banner"><strong>◆</strong> Manipura — Within my every breath is infinite power.</p>
-      <section class="pose-card">
-        <h3>3. Navasana – Boat Pose (Supported)</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 3 · Solar Plexus</p>
+        <h3 class="etude-card-title">Navasana – Boat Pose (Supported)</h3>
         <p class="pose-time">7:46 – 8:01</p>
         <p class="pose-benefits">Benefits – Activates core strength and Agni (digestive fire); stimulates abdominal organs; builds steady inner power and confidence; Solar Plexus (Manipura). Cautions – Lower back injuries; hip flexor issues; pregnancy; recent abdominal surgery. Use full prop support. Alt: Balasana – Reverse Chair Version; Instant Maui.</p>
         <blockquote class="pose-quote">“Within my every breath is infinite power.”</blockquote>
         <p class="pose-body">Feel the solar plexus alive right now — not as striving, but as the steady, renewable energy of someone who knows who they are and where they are going. This power does not run out; it is the fire at your center, ancient, sufficient, yours.</p>
       </section>
+
       <p class="chakra-banner"><strong>◆</strong> Anahata — I offer every thought as a bridge. I am ready.</p>
-      <section class="pose-card">
-        <h3>4. Setu Bandhasana – Bridge Pose</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 4 · Heart</p>
+        <h3 class="etude-card-title">Setu Bandhasana – Bridge Pose</h3>
         <p class="pose-time">8:01 – 8:16</p>
         <p class="pose-benefits">Benefits – Opens chest, shoulders, and heart; may improve thyroid function; counteracts forward-collapsing posture; builds physical and energetic foundation for heart-opening; Solar Plexus, Heart, Throat . Cautions – Neck injuries; spondylolisthesis; pregnancy. Alt: Mountain Brook; Matsyasana – Fish Pose.</p>
         <blockquote class="pose-quote">“I offer every thought as a bridge to divine grace.”</blockquote>
         <p class="pose-body">Your chest opens toward the enormous sky above — not as performance, but as a genuine reaching toward what is good. The soul is more resilient than anything that has ever happened to it; let it rise and float on waves of cosmic light.</p>
       </section>
+
       <p class="chakra-banner"><strong>◆</strong> Vishuddha → Ajna — I rise above past and future into the Now.</p>
-      <section class="pose-card">
-        <h3>5. Rajakapotasana – Supported Pigeon Pose</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 5 · Throat → Third Eye</p>
+        <h3 class="etude-card-title">Rajakapotasana – Supported Pigeon Pose</h3>
         <p class="pose-time">8:28 – 8:46 (both sides)</p>
         <p class="pose-benefits">Benefits – Stretches hips and hip flexors; relieves tension in lower back, shoulders, and hips; massages digestive organs; deeply calming; hips store emotional memory — this pose releases what words cannot reach. Cautions – Hip or knee replacements; sacroiliac issues. Pelvis level; support hip of front leg fully. Alt: Supine Figure Four; Baddha Konasana – Supported.</p>
         <blockquote class="pose-quote">“I rise above all thought of past and future, into the Eternal Now.”</blockquote>
         <p class="pose-body">Side 1: breathe light and space into this hip on the inhale and release on the exhale — not all at once, just this breath, this moment. Side 2: above all stories there is a version of you that is simply here, simply breathing, simply alive — rise into it, it is always available.</p>
       </section>
+
       <p class="chakra-banner"><strong>◆</strong> Sahasrara — I am He! Blissful Spirit, I am He!</p>
-      <section class="pose-card">
-        <h3>6. Sirshasana – Supported Headstand • then Savasana – Burrito</h3>
+      <section class="etude-card pose-card">
+        <p class="etude-step">Pose 6 · Crown</p>
+        <h3 class="etude-card-title">Sirshasana – Supported Headstand • then Savasana – Burrito</h3>
         <p class="pose-time">8:46 – 9:00+</p>
         <p class="pose-benefits">Benefits – Headstand: inverts the entire system, stimulates Crown, builds confidence and new perspective. Savasana – Burrito: integrates all poses; profound sense of being held on all sides; releases identification with the body. Cautions – Headstand requires trained spotters at all times — see pose sheet. Skip to Savasana if needed. Pregnancy: Side Lying Savasana. Alt: Skip Sirshasana → Savasana – Burrito directly; Viparita Karani – Simple.</p>
         <blockquote class="pose-quote">“I am He! I am He! Blissful Spirit, I am He!”</blockquote>
         <p class="pose-body">The world looks different from upside down — new perspective is available in any moment, it only requires the willingness to invert your assumptions. Then Savasana: blissful spirit is what you are underneath everything else — intact, radiant, going somewhere good; rest in that.</p>
       </section>
-      <h2>Exit cues</h2>
-      <p>Begin to sense your body returning… like dawn light filling a sky slowly. Wiggle fingers and toes. Let a deep breath expand the chest. Roll to one side and rest a moment. When ready, press up to seated. A few minutes of meditative silence.</p>
-      <h2>Closing</h2>
-      <p>Let’s close by sending gratitude to the open sky and to the light available even on overcast days. Visualize the life you are building — not as fantasy, but as direction; surround that vision with the light generated in this practice… (pause)… And bring it into the body you actually have, on this actual morning. This is where it begins. Thank yourself for being here. Namaste.</p>
     </div>
+
+    <section class="etude-card">
+      <p class="etude-step">Exit cues</p>
+      <p class="etude-card-context">Begin to sense your body returning… like dawn light filling a sky slowly. Wiggle fingers and toes. Let a deep breath expand the chest. Roll to one side and rest a moment. When ready, press up to seated. A few minutes of meditative silence.</p>
+    </section>
+
+    <footer class="etude-coda">
+      <p>Let’s close by sending gratitude to the open sky and to the light available even on overcast days. Visualize the life you are building — not as fantasy, but as direction; surround that vision with the light generated in this practice… (pause)… And bring it into the body you actually have, on this actual morning. This is where it begins. Thank yourself for being here. Namaste.</p>
+    </footer>
   </article>
 </Base>
 
 <style>
-  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2.25rem; margin: 0.5rem 0 0.25rem; line-height: 1.15; }
-  .etude .essay-sub { color: var(--ink-muted, #555); font-style: italic; margin: 0 0 0.5rem; }
-  .etude-duration { font-size: 0.92rem; color: var(--ink-muted, #555); margin: 0 0 1rem; }
-  .etude-body h2 {
-    font-family: 'Georgia', serif;
-    font-size: 1.15rem;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted, #444);
-    margin: 2.25rem 0 0.75rem;
-  }
-  .chakra-banner {
-    border-left: 3px solid var(--accent, #b87333);
-    padding: 0.45rem 0.85rem;
-    margin: 1.5rem 0 1rem;
-    background: var(--accent-subtle, rgba(184,115,51,0.06));
-    font-style: italic;
-    font-size: 0.98rem;
-  }
-  .pose-card {
-    margin: 1.25rem 0 2rem;
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
     padding: 0;
   }
-  .pose-card h3 {
-    font-family: 'Georgia', serif;
-    font-size: 1.18rem;
-    margin: 0 0 0.25rem;
-    line-height: 1.3;
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 0.5rem;
+    line-height: 1.45;
+  }
+  .etude-duration {
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin: 0 0 1rem;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  /* === intro === */
+  .etude-intro {
+    margin: 0 0 1.75rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.65;
+  }
+
+  .etude-section-label {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+  .etude-section-label-stage {
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  /* === stage (poses cluster) === */
+  .etude-stage {
+    margin: 0 0 1.5rem;
+  }
+
+  /* === card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+    margin: 0 0 1rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-card-title {
+    font-family: var(--serif-display);
+    font-size: 1.4rem;
+    line-height: 1.25;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .etude-card-context {
+    margin: 0;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  /* === chakra banner (between cards) === */
+  .chakra-banner {
+    border-left: 3px solid var(--accent);
+    padding: 0.55rem 0.95rem;
+    margin: 1.75rem 0 1rem;
+    background: rgba(184, 115, 51, 0.06);
+    font-family: var(--serif);
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--text);
+    line-height: 1.5;
+    border-radius: 0 6px 6px 0;
+  }
+  .chakra-banner strong {
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+
+  /* === pose-specific elements === */
+  .pose-card {
+    /* inherits etude-card */
   }
   .pose-time {
-    font-size: 0.88rem;
-    color: var(--ink-muted, #666);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
     font-variant-numeric: tabular-nums;
-    margin: 0 0 0.75rem;
+    margin: 0 0 0.85rem;
+    letter-spacing: 0.02em;
   }
-  .pose-benefits { font-size: 0.92rem; color: var(--ink-muted, #555); margin: 0 0 0.75rem; }
+  .pose-benefits {
+    font-size: 0.9rem;
+    color: var(--muted);
+    line-height: 1.55;
+    margin: 0 0 0.95rem;
+  }
   .pose-quote {
-    border-left: 2px solid var(--accent, #b87333);
-    padding-left: 0.85rem;
-    margin: 0.75rem 0;
+    border-left: 2px solid var(--accent);
+    padding: 0.1rem 0 0.1rem 0.95rem;
+    margin: 0.95rem 0;
+    font-family: var(--serif);
     font-style: italic;
-    color: var(--ink, #222);
+    color: var(--text);
+    line-height: 1.55;
   }
-  .pose-body { margin: 0.5rem 0; }
+  .pose-body {
+    margin: 0.6rem 0 0;
+    line-height: 1.65;
+    color: var(--text);
+  }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.65;
+    margin: 0;
+    font-family: var(--serif);
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .etude-card-title { font-size: 1.2rem; }
+    .chakra-banner { margin: 1.4rem 0 0.85rem; font-size: 0.94rem; }
+  }
+
+  /* === print === */
+  @media print {
+    .etude-page { max-width: none; }
+    .etude-nav { display: none; }
+    .etude-card,
+    .chakra-banner {
+      background: transparent;
+      border-radius: 0;
+      padding: 0.5rem 0;
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+    .chakra-banner {
+      border-left: 3px solid #000;
+      padding-left: 0.8rem;
+    }
+    .pose-quote { border-left: 2px solid #000; }
+    .etude-coda { border-top: 1px solid #000; }
+  }
 </style>

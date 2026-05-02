@@ -4,6 +4,7 @@ export default defineConfig({
   site: 'https://parrik.com',
   redirects: {
     '/essays/memory-was-never-about-storage/': '/essays/security-was-never-about-response/',
+    '/side-channels/': '/crossings/',
   },
   markdown: {
     // Light syntax theme so code blocks sit on the cream palette,

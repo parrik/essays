@@ -29,12 +29,6 @@ for (const arr of childrenByParent.values()) {
 }
 
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
-
-// "▶ playable" hint: small affordance signaling the essay has playable
-// etudes inline. Renders next to the essay title on the index. Reader
-// register: TikTok-attention bandwidth — one glyph + one word does the
-// work that an inline list would do at higher cost.
-const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
 ---
 <Base title="parrik">
   <section class="intro">
@@ -60,7 +54,6 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
               <div class="essay-row">
                 <a href={`/essays/${essay.id}/`} class="essay-link">
                   <span class="essay-title">{essay.data.title}</span>
-                  {countEtudes(essay) > 0 && <span class="play-hint" aria-label={`${countEtudes(essay)} playable inline`}>▶ play</span>}
                 </a>
               </div>
               {(essay.data.relief || essay.data.subtitle) && <p class="essay-subtitle">{essay.data.relief ?? essay.data.subtitle}</p>}
@@ -90,7 +83,6 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
                         <span class="part-body">
                           <span class="part-name">
                             {p.data.title}
-                            {countEtudes(p) > 0 && <span class="play-hint" aria-label={`${countEtudes(p)} playable inline`}>▶ play</span>}
                           </span>
                           {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
                         </span>
@@ -125,21 +117,3 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
   </section>
 </Base>
 
-<style>
-  .play-hint {
-    margin-left: 0.5rem;
-    display: inline-block;
-    font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-weight: 500;
-    vertical-align: middle;
-    opacity: 0.7;
-    transition: color 140ms, opacity 140ms;
-  }
-  .essay-link:hover .play-hint,
-  .series-part:hover .play-hint {
-    color: var(--accent);
-    opacity: 1;
-  }
-</style>
