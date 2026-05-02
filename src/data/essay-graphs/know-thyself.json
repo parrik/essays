@@ -2,7 +2,10 @@
   "slug": "know-thyself",
   "essayTitle": "A self was never flat",
   "spineId": "S13-graph-is-the-memory",
-  "viewBox": { "width": 700, "height": 480 },
+  "viewBox": {
+    "width": 980,
+    "height": 672
+  },
   "nodes": [
     {
       "id": "S01-mirror-problem",
@@ -25,7 +28,9 @@
       "claim": "The fix is not more memory. The fix is shape.",
       "where": "turn (after Alex)",
       "why": "The load-bearing claim. The whole essay derives from this pivot — that adding memory cannot undo the mirror because the bug lives in the structure, not the volume.",
-      "derives_from": ["S01-mirror-problem"]
+      "derives_from": [
+        "S01-mirror-problem"
+      ]
     },
     {
       "id": "C09-karpathy-wiki",
@@ -41,7 +46,9 @@
       "claim": "Memory must have types — episodic and semantic held in distinct stores, not collapsed into a flat list.",
       "where": "the shape",
       "why": "The first concrete consequence of \"fix is shape.\" Without typed slots, the schema cannot tell said apart from grounded; types are the binding principle.",
-      "derives_from": ["S02-fix-is-shape"]
+      "derives_from": [
+        "S02-fix-is-shape"
+      ]
     },
     {
       "id": "C04-tulving",
@@ -72,7 +79,10 @@
       "claim": "Attribution ≠ confidence. The operating rule.",
       "where": "the rule",
       "why": "The single sentence that does the work. Adopted from McCarthy's scientific-knowledge graphs and applied to personal memory — the rule that prevents repetition from masquerading as corroboration.",
-      "derives_from": ["S03-memory-must-have-types", "C12-mccarthy-edges"]
+      "derives_from": [
+        "S03-memory-must-have-types",
+        "C12-mccarthy-edges"
+      ]
     },
     {
       "id": "S08-repetition-isnt-corroboration",
@@ -80,7 +90,9 @@
       "claim": "Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. A novel cannot quietly become an overlap; it waits for a new, independent observation.",
       "where": "the rule, applied",
       "why": "The operational consequence of the rule. This is the discipline the schema enforces structurally — the schema makes repetition-as-evidence impossible by construction.",
-      "derives_from": ["S07-attribution-neq-confidence"]
+      "derives_from": [
+        "S07-attribution-neq-confidence"
+      ]
     },
     {
       "id": "C10-memanto",
@@ -104,37 +116,153 @@
       "claim": "The graph IS the memory. A YAML file the user owns; models read it and pick up the thread; when a model retires, the graph stays.",
       "where": "the punchline",
       "why": "The architectural claim the whole essay points at. The schema outlasts any model because the memory is not in the model — it is a file the user keeps. Privacy, portability, and provenance fall out of this one shape.",
-      "derives_from": ["C12-mccarthy-edges", "C11-anthropic-memory"]
+      "derives_from": [
+        "C12-mccarthy-edges",
+        "C11-anthropic-memory"
+      ]
     }
   ],
   "positions": {
-    "S13-graph-is-the-memory":          { "cx": 350, "cy": 240, "r": 34, "labelY": 295, "labelText": "S13 · spine" },
-    "S01-mirror-problem":               { "cx": 350, "cy": 100, "r": 26, "labelY": 65,  "labelText": "S01" },
-    "S02-fix-is-shape":                 { "cx": 483, "cy": 196, "r": 28, "labelY": 158, "labelText": "S02" },
-    "S03-memory-must-have-types":       { "cx": 432, "cy": 354, "r": 26, "labelY": 395, "labelText": "S03" },
-    "S07-attribution-neq-confidence":   { "cx": 268, "cy": 354, "r": 26, "labelY": 395, "labelText": "S07" },
-    "S08-repetition-isnt-corroboration":{ "cx": 217, "cy": 196, "r": 26, "labelY": 158, "labelText": "S08" },
-    "C06-mirror-study":                 { "cx": 350, "cy": 30,  "r": 20, "labelY": 70,  "labelText": "C06" },
-    "C09-karpathy-wiki":                { "cx": 605, "cy": 130, "r": 20, "labelY": 168, "labelText": "C09" },
-    "C04-tulving":                      { "cx": 620, "cy": 270, "r": 20, "labelY": 308, "labelText": "C04" },
-    "C05-coala":                        { "cx": 555, "cy": 415, "r": 20, "labelY": 453, "labelText": "C05" },
-    "C10-memanto":                      { "cx": 145, "cy": 415, "r": 20, "labelY": 453, "labelText": "C10" },
-    "C12-mccarthy-edges":               { "cx": 80,  "cy": 270, "r": 20, "labelY": 308, "labelText": "C12" },
-    "C11-anthropic-memory":             { "cx": 95,  "cy": 130, "r": 20, "labelY": 168, "labelText": "C11" }
+    "S13-graph-is-the-memory": {
+      "cx": 490,
+      "cy": 336,
+      "r": 34,
+      "labelText": "S13 · spine"
+    },
+    "S01-mirror-problem": {
+      "cx": 490,
+      "cy": 140,
+      "r": 26,
+      "labelText": "S01"
+    },
+    "S02-fix-is-shape": {
+      "cx": 676,
+      "cy": 274,
+      "r": 28,
+      "labelText": "S02"
+    },
+    "S03-memory-must-have-types": {
+      "cx": 605,
+      "cy": 496,
+      "r": 26,
+      "labelText": "S03"
+    },
+    "S07-attribution-neq-confidence": {
+      "cx": 375,
+      "cy": 496,
+      "r": 26,
+      "labelText": "S07"
+    },
+    "S08-repetition-isnt-corroboration": {
+      "cx": 304,
+      "cy": 274,
+      "r": 26,
+      "labelText": "S08"
+    },
+    "C06-mirror-study": {
+      "cx": 490,
+      "cy": 42,
+      "r": 20,
+      "labelText": "C06"
+    },
+    "C09-karpathy-wiki": {
+      "cx": 847,
+      "cy": 182,
+      "r": 20,
+      "labelText": "C09"
+    },
+    "C04-tulving": {
+      "cx": 868,
+      "cy": 378,
+      "r": 20,
+      "labelText": "C04"
+    },
+    "C05-coala": {
+      "cx": 777,
+      "cy": 581,
+      "r": 20,
+      "labelText": "C05"
+    },
+    "C10-memanto": {
+      "cx": 203,
+      "cy": 581,
+      "r": 20,
+      "labelText": "C10"
+    },
+    "C12-mccarthy-edges": {
+      "cx": 112,
+      "cy": 378,
+      "r": 20,
+      "labelText": "C12"
+    },
+    "C11-anthropic-memory": {
+      "cx": 133,
+      "cy": 182,
+      "r": 20,
+      "labelText": "C11"
+    }
   },
   "edges": [
-    { "from": "S01-mirror-problem", "to": "S02-fix-is-shape", "kind": "derives" },
-    { "from": "S02-fix-is-shape", "to": "S03-memory-must-have-types", "kind": "derives" },
-    { "from": "S03-memory-must-have-types", "to": "S07-attribution-neq-confidence", "kind": "derives" },
-    { "from": "C12-mccarthy-edges", "to": "S07-attribution-neq-confidence", "kind": "derives" },
-    { "from": "S07-attribution-neq-confidence", "to": "S08-repetition-isnt-corroboration", "kind": "derives" },
-    { "from": "C12-mccarthy-edges", "to": "S13-graph-is-the-memory", "kind": "derives" },
-    { "from": "C11-anthropic-memory", "to": "S13-graph-is-the-memory", "kind": "derives" },
-    { "from": "C06-mirror-study", "to": "S01-mirror-problem", "kind": "grounds" },
-    { "from": "C09-karpathy-wiki", "to": "S02-fix-is-shape", "kind": "grounds" },
-    { "from": "C04-tulving", "to": "S03-memory-must-have-types", "kind": "grounds" },
-    { "from": "C05-coala", "to": "S03-memory-must-have-types", "kind": "grounds" },
-    { "from": "C10-memanto", "to": "S07-attribution-neq-confidence", "kind": "grounds" }
+    {
+      "from": "S01-mirror-problem",
+      "to": "S02-fix-is-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-fix-is-shape",
+      "to": "S03-memory-must-have-types",
+      "kind": "derives"
+    },
+    {
+      "from": "S03-memory-must-have-types",
+      "to": "S07-attribution-neq-confidence",
+      "kind": "derives"
+    },
+    {
+      "from": "C12-mccarthy-edges",
+      "to": "S07-attribution-neq-confidence",
+      "kind": "derives"
+    },
+    {
+      "from": "S07-attribution-neq-confidence",
+      "to": "S08-repetition-isnt-corroboration",
+      "kind": "derives"
+    },
+    {
+      "from": "C12-mccarthy-edges",
+      "to": "S13-graph-is-the-memory",
+      "kind": "derives"
+    },
+    {
+      "from": "C11-anthropic-memory",
+      "to": "S13-graph-is-the-memory",
+      "kind": "derives"
+    },
+    {
+      "from": "C06-mirror-study",
+      "to": "S01-mirror-problem",
+      "kind": "grounds"
+    },
+    {
+      "from": "C09-karpathy-wiki",
+      "to": "S02-fix-is-shape",
+      "kind": "grounds"
+    },
+    {
+      "from": "C04-tulving",
+      "to": "S03-memory-must-have-types",
+      "kind": "grounds"
+    },
+    {
+      "from": "C05-coala",
+      "to": "S03-memory-must-have-types",
+      "kind": "grounds"
+    },
+    {
+      "from": "C10-memanto",
+      "to": "S07-attribution-neq-confidence",
+      "kind": "grounds"
+    }
   ],
   "eyes": [
     {
@@ -142,9 +270,16 @@
       "what": "The eight node types (Reference / Observation / Overlap / Novel / Emergent / Equivalency / Practice / Open) are the author's opinionated refinement of CoALA's four. The specific cuts — especially Novel, Emergent, Open — are author-original.",
       "why": "CoALA grounds working/episodic/semantic/procedural. The further partition of the semantic side is the essay's contribution, not yet validated externally. Empirical work showing these specific cuts reduce one-derivation-as-six errors would harden the case.",
       "ground_with": [
-        { "label": "CoALA — working/episodic/semantic/procedural", "url": "https://arxiv.org/abs/2309.02427" },
-        { "label": "Park et al., Generative Agents (UIST 2023) — observation vs reflection separation" },
-        { "label": "A targeted user study on typed-vs-flat memory and sycophancy outcomes" }
+        {
+          "label": "CoALA — working/episodic/semantic/procedural",
+          "url": "https://arxiv.org/abs/2309.02427"
+        },
+        {
+          "label": "Park et al., Generative Agents (UIST 2023) — observation vs reflection separation"
+        },
+        {
+          "label": "A targeted user study on typed-vs-flat memory and sycophancy outcomes"
+        }
       ]
     },
     {
@@ -152,8 +287,13 @@
       "what": "The Mira/Alex case is illustrative, not empirical. No user study cited testing whether graph-shaped memory reduces sycophancy at the user-experience level — only the CHI 2026 paper showing flat memory amplifies it.",
       "why": "The negative result (flat memory amplifies sycophancy) is grounded. The positive result (typed-and-edged memory reduces it) is asserted by construction, not measured. The essay would land harder with a paired study.",
       "ground_with": [
-        { "label": "CHI 2026 mirror study (the negative case, already cited)", "url": "https://news.mit.edu/2026/personalization-features-can-make-llms-more-agreeable-0218" },
-        { "label": "A within-subjects study comparing flat vs typed memory on sycophancy metrics" }
+        {
+          "label": "CHI 2026 mirror study (the negative case, already cited)",
+          "url": "https://news.mit.edu/2026/personalization-features-can-make-llms-more-agreeable-0218"
+        },
+        {
+          "label": "A within-subjects study comparing flat vs typed memory on sycophancy metrics"
+        }
       ]
     },
     {
@@ -161,9 +301,16 @@
       "what": "The architectural claim (\"graph IS the memory\") rests on two recent shipped/proposed pieces (Anthropic memory tool, McCarthy edge vocabulary). It is a synthesis claim, not yet stress-tested at scale.",
       "why": "The composition is sharp but new. Any production deployment story — even a single user running the YAML graph against a real model over months — would move this from elegant proposal to demonstrated architecture.",
       "ground_with": [
-        { "label": "Anthropic memory tool docs", "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool" },
-        { "label": "Stateful vs stateless agent architecture surveys" },
-        { "label": "A longitudinal case study of one user running know-thyself for ≥6 months" }
+        {
+          "label": "Anthropic memory tool docs",
+          "url": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool"
+        },
+        {
+          "label": "Stateful vs stateless agent architecture surveys"
+        },
+        {
+          "label": "A longitudinal case study of one user running know-thyself for ≥6 months"
+        }
       ]
     },
     {
@@ -171,8 +318,14 @@
       "what": "Memanto's benchmark wins (89.8% LongMemEval, 87.1% LoCoMo) are dispatched in one sentence: \"the benchmark measures recall.\" That move needs more weight.",
       "why": "A reader sympathetic to vector-only memory will not be convinced by a one-line dismissal. An eyes-item that names the specific benchmark task (multi-hop fact retrieval) and contrasts it with the corroboration-provenance task the essay cares about would close the gap.",
       "ground_with": [
-        { "label": "LongMemEval task definition", "url": "https://arxiv.org/abs/2410.10813" },
-        { "label": "LoCoMo benchmark", "url": "https://arxiv.org/abs/2402.17753" }
+        {
+          "label": "LongMemEval task definition",
+          "url": "https://arxiv.org/abs/2410.10813"
+        },
+        {
+          "label": "LoCoMo benchmark",
+          "url": "https://arxiv.org/abs/2402.17753"
+        }
       ]
     }
   ],

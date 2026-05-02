@@ -2,7 +2,10 @@
   "slug": "know-thyself-security",
   "essayTitle": "Security was never about response",
   "spineId": "S02-continuous-verification",
-  "viewBox": { "width": 700, "height": 460 },
+  "viewBox": {
+    "width": 980,
+    "height": 644
+  },
   "nodes": [
     {
       "id": "S01-fire-department-no-fire-code",
@@ -23,7 +26,11 @@
       "type": "synthesis",
       "claim": "Verification runs at two timescales: boundary-time gates fire on action, sweep-time gates fire on cadence.",
       "where": "what's in security",
-      "derives_from": ["S02-continuous-verification", "C01-saltzer-schroeder", "C02-anderson"],
+      "derives_from": [
+        "S02-continuous-verification",
+        "C01-saltzer-schroeder",
+        "C02-anderson"
+      ],
       "why": "Splits the spine into the two cadences the essay names. Boundary-time is the familiar pre-commit-hook shape; sweep-time is the cron-and-probe shape. The split is what lets the next synthesis collapse them."
     },
     {
@@ -31,7 +38,10 @@
       "type": "synthesis",
       "claim": "Both are gates. Boundary-time and sweep-time are the same posture at different cadences — sweeps are gates too.",
       "where": "what's in security · the synthesis",
-      "derives_from": ["S03-two-timescales", "C03-brooker"],
+      "derives_from": [
+        "S03-two-timescales",
+        "C03-brooker"
+      ],
       "why": "The essay's named contribution. The industry treats sweeps as monitoring or response-adjacent; the essay collapses them into the gate posture. AWS's runtime validation of execution traces is the builder-voice instance of the same move."
     },
     {
@@ -39,7 +49,10 @@
       "type": "synthesis",
       "claim": "Response is what fires when verification fails — a different discipline.",
       "where": "what's not",
-      "derives_from": ["S02-continuous-verification", "C04-nist"],
+      "derives_from": [
+        "S02-continuous-verification",
+        "C04-nist"
+      ],
       "why": "Carves the boundary the essay refuses to soften. Verification covers preventive + detective; response covers responsive. Adjacent disciplines, not the same one — and conflating them starves the first."
     },
     {
@@ -47,7 +60,10 @@
       "type": "derivation",
       "claim": "The thing that gets tired isn't the gate; it's the engineer holding it.",
       "where": "shift-left fatigue",
-      "derives_from": ["S04-same-posture-different-cadence", "C06-shortridge"],
+      "derives_from": [
+        "S04-same-posture-different-cadence",
+        "C06-shortridge"
+      ],
       "why": "The shift-left-fatigue debate reframed: a machine gate firing on every commit doesn't burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate."
     },
     {
@@ -99,31 +115,135 @@
     }
   ],
   "positions": {
-    "S01-fire-department-no-fire-code":   { "cx": 90,  "cy": 70,  "r": 26, "labelY": 115, "labelText": "S01 · hook" },
-    "S03-two-timescales":                 { "cx": 350, "cy": 90,  "r": 28, "labelY": 138, "labelText": "S03" },
-    "C01-saltzer-schroeder":              { "cx": 230, "cy": 50,  "r": 16, "labelY": 30,  "labelText": "C01" },
-    "C02-anderson":                       { "cx": 470, "cy": 50,  "r": 16, "labelY": 30,  "labelText": "C02" },
-    "C03-brooker":                        { "cx": 540, "cy": 130, "r": 16, "labelY": 165, "labelText": "C03" },
-    "S02-continuous-verification":        { "cx": 350, "cy": 220, "r": 34, "labelY": 274, "labelText": "S02 · spine" },
-    "S04-same-posture-different-cadence": { "cx": 540, "cy": 240, "r": 28, "labelY": 288, "labelText": "S04" },
-    "S05-response-different-discipline":  { "cx": 160, "cy": 240, "r": 26, "labelY": 288, "labelText": "S05" },
-    "C04-nist":                           { "cx": 70,  "cy": 310, "r": 16, "labelY": 345, "labelText": "C04" },
-    "C05-earlywatch":                     { "cx": 615, "cy": 320, "r": 16, "labelY": 355, "labelText": "C05" },
-    "C06-shortridge":                     { "cx": 470, "cy": 380, "r": 16, "labelY": 415, "labelText": "C06" },
-    "D06-engineer-not-gate":              { "cx": 350, "cy": 400, "r": 26, "labelY": 445, "labelText": "D06" }
+    "S01-fire-department-no-fire-code": {
+      "cx": 126,
+      "cy": 98,
+      "r": 26,
+      "labelText": "S01 · hook"
+    },
+    "S03-two-timescales": {
+      "cx": 490,
+      "cy": 126,
+      "r": 28,
+      "labelText": "S03"
+    },
+    "C01-saltzer-schroeder": {
+      "cx": 322,
+      "cy": 70,
+      "r": 16,
+      "labelText": "C01"
+    },
+    "C02-anderson": {
+      "cx": 658,
+      "cy": 70,
+      "r": 16,
+      "labelText": "C02"
+    },
+    "C03-brooker": {
+      "cx": 756,
+      "cy": 182,
+      "r": 16,
+      "labelText": "C03"
+    },
+    "S02-continuous-verification": {
+      "cx": 490,
+      "cy": 308,
+      "r": 34,
+      "labelText": "S02 · spine"
+    },
+    "S04-same-posture-different-cadence": {
+      "cx": 756,
+      "cy": 336,
+      "r": 28,
+      "labelText": "S04"
+    },
+    "S05-response-different-discipline": {
+      "cx": 224,
+      "cy": 336,
+      "r": 26,
+      "labelText": "S05"
+    },
+    "C04-nist": {
+      "cx": 98,
+      "cy": 434,
+      "r": 16,
+      "labelText": "C04"
+    },
+    "C05-earlywatch": {
+      "cx": 861,
+      "cy": 448,
+      "r": 16,
+      "labelText": "C05"
+    },
+    "C06-shortridge": {
+      "cx": 658,
+      "cy": 532,
+      "r": 16,
+      "labelText": "C06"
+    },
+    "D06-engineer-not-gate": {
+      "cx": 490,
+      "cy": 560,
+      "r": 26,
+      "labelText": "D06"
+    }
   },
   "edges": [
-    { "from": "C01-saltzer-schroeder", "to": "S03-two-timescales", "kind": "derives" },
-    { "from": "C02-anderson", "to": "S03-two-timescales", "kind": "derives" },
-    { "from": "S03-two-timescales", "to": "S02-continuous-verification", "kind": "derives" },
-    { "from": "S03-two-timescales", "to": "S04-same-posture-different-cadence", "kind": "derives" },
-    { "from": "C03-brooker", "to": "S04-same-posture-different-cadence", "kind": "derives" },
-    { "from": "S02-continuous-verification", "to": "S04-same-posture-different-cadence", "kind": "derives" },
-    { "from": "S02-continuous-verification", "to": "S05-response-different-discipline", "kind": "derives" },
-    { "from": "C04-nist", "to": "S05-response-different-discipline", "kind": "derives" },
-    { "from": "S04-same-posture-different-cadence", "to": "D06-engineer-not-gate", "kind": "derives" },
-    { "from": "C06-shortridge", "to": "D06-engineer-not-gate", "kind": "derives" },
-    { "from": "C05-earlywatch", "to": "S04-same-posture-different-cadence", "kind": "derives" }
+    {
+      "from": "C01-saltzer-schroeder",
+      "to": "S03-two-timescales",
+      "kind": "derives"
+    },
+    {
+      "from": "C02-anderson",
+      "to": "S03-two-timescales",
+      "kind": "derives"
+    },
+    {
+      "from": "S03-two-timescales",
+      "to": "S02-continuous-verification",
+      "kind": "derives"
+    },
+    {
+      "from": "S03-two-timescales",
+      "to": "S04-same-posture-different-cadence",
+      "kind": "derives"
+    },
+    {
+      "from": "C03-brooker",
+      "to": "S04-same-posture-different-cadence",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-continuous-verification",
+      "to": "S04-same-posture-different-cadence",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-continuous-verification",
+      "to": "S05-response-different-discipline",
+      "kind": "derives"
+    },
+    {
+      "from": "C04-nist",
+      "to": "S05-response-different-discipline",
+      "kind": "derives"
+    },
+    {
+      "from": "S04-same-posture-different-cadence",
+      "to": "D06-engineer-not-gate",
+      "kind": "derives"
+    },
+    {
+      "from": "C06-shortridge",
+      "to": "D06-engineer-not-gate",
+      "kind": "derives"
+    },
+    {
+      "from": "C05-earlywatch",
+      "to": "S04-same-posture-different-cadence",
+      "kind": "derives"
+    }
   ],
   "eyes": [
     {
@@ -131,8 +251,14 @@
       "what": "\"Sweeps are gates too\" is the author's named synthesis. The industry has adjacent vocabulary (policy-as-code, drift detection) but no clean prior naming of the same posture at two cadences.",
       "why": "The synthesis is sharp and useful, but external corroboration — a published taxonomy or operational pattern that already collapses boundary checks and cadence checks into one posture — would let the essay sit alongside it instead of asserting the move solo.",
       "ground_with": [
-        { "label": "Google SRE Book — policy as code, drift detection", "url": "https://sre.google/sre-book/table-of-contents/" },
-        { "label": "Open Policy Agent / Gatekeeper — declarative policy across boundary and audit", "url": "https://open-policy-agent.github.io/gatekeeper/website/docs/" }
+        {
+          "label": "Google SRE Book — policy as code, drift detection",
+          "url": "https://sre.google/sre-book/table-of-contents/"
+        },
+        {
+          "label": "Open Policy Agent / Gatekeeper — declarative policy across boundary and audit",
+          "url": "https://open-policy-agent.github.io/gatekeeper/website/docs/"
+        }
       ]
     },
     {
@@ -145,8 +271,14 @@
       "what": "\"The engineer holding the gate\" framing is the author's reframe of shift-left fatigue. The reframe is plausible but the quantitative ground is thin.",
       "why": "The trade press articles cited (Help Net Security, Dark Reading) are themselves observational. Stronger grounding would come from quantitative studies on developer-tooling friction and review-queue load.",
       "ground_with": [
-        { "label": "DORA / Accelerate State of DevOps reports", "url": "https://dora.dev/research/" },
-        { "label": "Stack Overflow Developer Survey — tooling friction sections", "url": "https://survey.stackoverflow.co/" }
+        {
+          "label": "DORA / Accelerate State of DevOps reports",
+          "url": "https://dora.dev/research/"
+        },
+        {
+          "label": "Stack Overflow Developer Survey — tooling friction sections",
+          "url": "https://survey.stackoverflow.co/"
+        }
       ]
     }
   ],

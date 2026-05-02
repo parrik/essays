@@ -2,7 +2,10 @@
   "slug": "know-thyself-search",
   "essayTitle": "Search was never about humans",
   "spineId": "S01-search-one-shape",
-  "viewBox": { "width": 720, "height": 520 },
+  "viewBox": {
+    "width": 1008,
+    "height": 728
+  },
   "nodes": [
     {
       "id": "S01-search-one-shape",
@@ -31,7 +34,9 @@
       "type": "synthesis",
       "claim": "Scale 1 — Inverted index (Lucene, BM25/TF-IDF). Terms ↔ documents, weighted by frequency. Reader: human. Format: ten ranked links.",
       "where": "four scales · §2",
-      "derives_from": ["S01-search-one-shape"],
+      "derives_from": [
+        "S01-search-one-shape"
+      ],
       "why": "The first instance of the spine. Two-word query, short walk, ranking by overlap. Still alive at Lucene scale because the shape is correct — only the constants are old."
     },
     {
@@ -39,7 +44,9 @@
       "type": "synthesis",
       "claim": "Scale 2 — Vector retrieval. Embeddings as nodes; cosine as edge; HNSW as the index that becomes a graph itself. Reader: human or LLM.",
       "where": "four scales · §2",
-      "derives_from": ["S01-search-one-shape"],
+      "derives_from": [
+        "S01-search-one-shape"
+      ],
       "why": "The node specification flips from word to embedding. Same walk; same ranking; new geometry. The index itself is a small-world graph — the spine recurses."
     },
     {
@@ -55,7 +62,9 @@
       "type": "synthesis",
       "claim": "Scale 3 — Typed knowledge graph. Nodes are claims, not documents; edges are labelled (grounds, derives_from, contradicts). Reader: a self or its agent.",
       "where": "four scales · §2",
-      "derives_from": ["S01-search-one-shape"],
+      "derives_from": [
+        "S01-search-one-shape"
+      ],
       "why": "The labels stop being decoration and start doing retrieval work — distinguishing said-five-times from independently-grounded-twice. Where attribution-≠-confidence enters the index."
     },
     {
@@ -63,7 +72,9 @@
       "type": "synthesis",
       "claim": "Scale 4 — AI-native search. Query is a declarative sentence shaped like the answer; results are atomic chunks with provenance. Reader: an agent.",
       "where": "four scales · §2",
-      "derives_from": ["S01-search-one-shape"],
+      "derives_from": [
+        "S01-search-one-shape"
+      ],
       "why": "The reader changes again. Filter first, then rank. Comprehensiveness, recency, type-correctness, provenance-strength replace popularity. The retriever spawns retrievers."
     },
     {
@@ -71,7 +82,9 @@
       "type": "synthesis",
       "claim": "Bounded context forces structured memory. When |K| exceeds C_n, lossless compression hits Shannon's floor; factoring into typed nodes is the only operation that scales.",
       "where": "the necessity argument · §3",
-      "derives_from": ["S01-search-one-shape"],
+      "derives_from": [
+        "S01-search-one-shape"
+      ],
       "why": "The load-bearing turn. Promotes the four scales from \"convenient pattern\" to \"the only architecture that survives a finite reader.\" The essay's pivot from descriptive to deductive."
     },
     {
@@ -94,7 +107,10 @@
       "type": "synthesis",
       "claim": "Two query archetypes — humans type two words, agents emit declarative sentences shaped like the answer.",
       "where": "four scales · §2",
-      "derives_from": ["S02-scale-1-inverted-index", "S05-scale-4-ai-native"],
+      "derives_from": [
+        "S02-scale-1-inverted-index",
+        "S05-scale-4-ai-native"
+      ],
       "why": "The reader-shape collapse. Same retrieval problem; opposite query format; the bridge that explains why search APIs built for humans break for agents and vice versa."
     },
     {
@@ -102,7 +118,12 @@
       "type": "derivation",
       "claim": "The four scales reset constants, not shape. Node spec, edge spec, query format, reader change; graph-traversal-with-ranking does not.",
       "where": "§2 close",
-      "derives_from": ["S02-scale-1-inverted-index", "S03-scale-2-vector-retrieval", "S04-scale-3-typed-graph", "S05-scale-4-ai-native"],
+      "derives_from": [
+        "S02-scale-1-inverted-index",
+        "S03-scale-2-vector-retrieval",
+        "S04-scale-3-typed-graph",
+        "S05-scale-4-ai-native"
+      ],
       "why": "The cross-scale claim — the essay's synthesis. Once the four scales are listed, the invariant pops out as a derivation, not a posit."
     },
     {
@@ -110,7 +131,10 @@
       "type": "synthesis",
       "claim": "Postscript — DeepSeek V4. Hybrid sparse + heavily-compressed attention at 7–10% of V3.2 KV cache: graph-traversal-with-ranking internalized one further. The reader is the model.",
       "where": "postscript · Apr 26 2026",
-      "derives_from": ["S05-scale-4-ai-native", "S06-bounded-context-forces-graph"],
+      "derives_from": [
+        "S05-scale-4-ai-native",
+        "S06-bounded-context-forces-graph"
+      ],
       "why": "The shape recurses inside the model. Tokens become nodes; sparse attention becomes a walk; compression becomes ranking. McCarthy's \"fill the graph\" applied to weights."
     },
     {
@@ -131,44 +155,204 @@
     }
   ],
   "positions": {
-    "S01-search-one-shape":             { "cx": 360, "cy": 260, "r": 34, "labelY": 312, "labelText": "S01 · spine" },
-    "S02-scale-1-inverted-index":       { "cx": 260, "cy": 170, "r": 28, "labelY": 215, "labelText": "S02 · scale 1" },
-    "S03-scale-2-vector-retrieval":     { "cx": 460, "cy": 170, "r": 28, "labelY": 215, "labelText": "S03 · scale 2" },
-    "S04-scale-3-typed-graph":          { "cx": 460, "cy": 350, "r": 28, "labelY": 395, "labelText": "S04 · scale 3" },
-    "S05-scale-4-ai-native":            { "cx": 260, "cy": 350, "r": 28, "labelY": 395, "labelText": "S05 · scale 4" },
-    "S06-bounded-context-forces-graph": { "cx": 360, "cy": 460, "r": 30, "labelY": 506, "labelText": "S06 · necessity" },
-    "S07-two-query-archetypes":         { "cx": 130, "cy": 260, "r": 24, "labelY": 300, "labelText": "S07 · two queries" },
-    "S08-deepseek-v4-postscript":       { "cx": 615, "cy": 445, "r": 24, "labelY": 488, "labelText": "S08 · postscript" },
-    "D01-same-shape-across-scales":     { "cx": 595, "cy": 260, "r": 26, "labelY": 304, "labelText": "D01 · invariant" },
-    "C01-salton-1968":                  { "cx": 195, "cy": 80,  "r": 20, "labelY": 118, "labelText": "C01 · Salton" },
-    "C02-pagerank-1998":                { "cx": 360, "cy": 60,  "r": 20, "labelY": 98,  "labelText": "C02 · PageRank" },
-    "C03-hnsw-2018":                    { "cx": 580, "cy": 90,  "r": 20, "labelY": 128, "labelText": "C03 · HNSW" },
-    "C04-bounded-context-stack":        { "cx": 200, "cy": 460, "r": 22, "labelY": 500, "labelText": "C04 · stack" },
-    "C05-mccarthy-okg-theorem-4":       { "cx": 480, "cy": 470, "r": 22, "labelY": 510, "labelText": "C05 · McCarthy" },
-    "C06-turnbull-metadata":            { "cx": 130, "cy": 400, "r": 20, "labelY": 438, "labelText": "C06 · Turnbull-1" },
-    "C07-turnbull-agents":              { "cx": 660, "cy": 360, "r": 20, "labelY": 398, "labelText": "C07 · Turnbull-2" }
+    "S01-search-one-shape": {
+      "cx": 504,
+      "cy": 364,
+      "r": 34,
+      "labelText": "S01 · spine"
+    },
+    "S02-scale-1-inverted-index": {
+      "cx": 364,
+      "cy": 238,
+      "r": 28,
+      "labelText": "S02 · scale 1"
+    },
+    "S03-scale-2-vector-retrieval": {
+      "cx": 644,
+      "cy": 238,
+      "r": 28,
+      "labelText": "S03 · scale 2"
+    },
+    "S04-scale-3-typed-graph": {
+      "cx": 644,
+      "cy": 490,
+      "r": 28,
+      "labelText": "S04 · scale 3"
+    },
+    "S05-scale-4-ai-native": {
+      "cx": 364,
+      "cy": 490,
+      "r": 28,
+      "labelText": "S05 · scale 4"
+    },
+    "S06-bounded-context-forces-graph": {
+      "cx": 504,
+      "cy": 644,
+      "r": 30,
+      "labelText": "S06 · necessity"
+    },
+    "S07-two-query-archetypes": {
+      "cx": 182,
+      "cy": 364,
+      "r": 24,
+      "labelText": "S07 · two queries"
+    },
+    "S08-deepseek-v4-postscript": {
+      "cx": 861,
+      "cy": 623,
+      "r": 24,
+      "labelText": "S08 · postscript"
+    },
+    "D01-same-shape-across-scales": {
+      "cx": 833,
+      "cy": 364,
+      "r": 26,
+      "labelText": "D01 · invariant"
+    },
+    "C01-salton-1968": {
+      "cx": 273,
+      "cy": 112,
+      "r": 20,
+      "labelText": "C01 · Salton"
+    },
+    "C02-pagerank-1998": {
+      "cx": 504,
+      "cy": 84,
+      "r": 20,
+      "labelText": "C02 · PageRank"
+    },
+    "C03-hnsw-2018": {
+      "cx": 812,
+      "cy": 126,
+      "r": 20,
+      "labelText": "C03 · HNSW"
+    },
+    "C04-bounded-context-stack": {
+      "cx": 280,
+      "cy": 644,
+      "r": 22,
+      "labelText": "C04 · stack"
+    },
+    "C05-mccarthy-okg-theorem-4": {
+      "cx": 672,
+      "cy": 658,
+      "r": 22,
+      "labelText": "C05 · McCarthy"
+    },
+    "C06-turnbull-metadata": {
+      "cx": 182,
+      "cy": 560,
+      "r": 20,
+      "labelText": "C06 · Turnbull-1"
+    },
+    "C07-turnbull-agents": {
+      "cx": 924,
+      "cy": 504,
+      "r": 20,
+      "labelText": "C07 · Turnbull-2"
+    }
   },
   "edges": [
-    { "from": "S02-scale-1-inverted-index",       "to": "S01-search-one-shape",             "kind": "derives" },
-    { "from": "S03-scale-2-vector-retrieval",     "to": "S01-search-one-shape",             "kind": "derives" },
-    { "from": "S04-scale-3-typed-graph",          "to": "S01-search-one-shape",             "kind": "derives" },
-    { "from": "S05-scale-4-ai-native",            "to": "S01-search-one-shape",             "kind": "derives" },
-    { "from": "S06-bounded-context-forces-graph", "to": "S01-search-one-shape",             "kind": "derives" },
-    { "from": "S07-two-query-archetypes",         "to": "S02-scale-1-inverted-index",       "kind": "derives" },
-    { "from": "S07-two-query-archetypes",         "to": "S05-scale-4-ai-native",            "kind": "derives" },
-    { "from": "D01-same-shape-across-scales",     "to": "S03-scale-2-vector-retrieval",     "kind": "derives" },
-    { "from": "D01-same-shape-across-scales",     "to": "S04-scale-3-typed-graph",          "kind": "derives" },
-    { "from": "D01-same-shape-across-scales",     "to": "S02-scale-1-inverted-index",       "kind": "derives" },
-    { "from": "D01-same-shape-across-scales",     "to": "S05-scale-4-ai-native",            "kind": "derives" },
-    { "from": "S08-deepseek-v4-postscript",       "to": "S05-scale-4-ai-native",            "kind": "derives" },
-    { "from": "S08-deepseek-v4-postscript",       "to": "S06-bounded-context-forces-graph", "kind": "derives" },
-    { "from": "C01-salton-1968",                  "to": "S01-search-one-shape",             "kind": "grounds" },
-    { "from": "C02-pagerank-1998",                "to": "S01-search-one-shape",             "kind": "grounds" },
-    { "from": "C03-hnsw-2018",                    "to": "S03-scale-2-vector-retrieval",     "kind": "grounds" },
-    { "from": "C04-bounded-context-stack",        "to": "S06-bounded-context-forces-graph", "kind": "grounds" },
-    { "from": "C05-mccarthy-okg-theorem-4",       "to": "S06-bounded-context-forces-graph", "kind": "grounds" },
-    { "from": "C06-turnbull-metadata",            "to": "S05-scale-4-ai-native",            "kind": "grounds" },
-    { "from": "C07-turnbull-agents",              "to": "S08-deepseek-v4-postscript",       "kind": "grounds" }
+    {
+      "from": "S02-scale-1-inverted-index",
+      "to": "S01-search-one-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S03-scale-2-vector-retrieval",
+      "to": "S01-search-one-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S04-scale-3-typed-graph",
+      "to": "S01-search-one-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S05-scale-4-ai-native",
+      "to": "S01-search-one-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S06-bounded-context-forces-graph",
+      "to": "S01-search-one-shape",
+      "kind": "derives"
+    },
+    {
+      "from": "S07-two-query-archetypes",
+      "to": "S02-scale-1-inverted-index",
+      "kind": "derives"
+    },
+    {
+      "from": "S07-two-query-archetypes",
+      "to": "S05-scale-4-ai-native",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-same-shape-across-scales",
+      "to": "S03-scale-2-vector-retrieval",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-same-shape-across-scales",
+      "to": "S04-scale-3-typed-graph",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-same-shape-across-scales",
+      "to": "S02-scale-1-inverted-index",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-same-shape-across-scales",
+      "to": "S05-scale-4-ai-native",
+      "kind": "derives"
+    },
+    {
+      "from": "S08-deepseek-v4-postscript",
+      "to": "S05-scale-4-ai-native",
+      "kind": "derives"
+    },
+    {
+      "from": "S08-deepseek-v4-postscript",
+      "to": "S06-bounded-context-forces-graph",
+      "kind": "derives"
+    },
+    {
+      "from": "C01-salton-1968",
+      "to": "S01-search-one-shape",
+      "kind": "grounds"
+    },
+    {
+      "from": "C02-pagerank-1998",
+      "to": "S01-search-one-shape",
+      "kind": "grounds"
+    },
+    {
+      "from": "C03-hnsw-2018",
+      "to": "S03-scale-2-vector-retrieval",
+      "kind": "grounds"
+    },
+    {
+      "from": "C04-bounded-context-stack",
+      "to": "S06-bounded-context-forces-graph",
+      "kind": "grounds"
+    },
+    {
+      "from": "C05-mccarthy-okg-theorem-4",
+      "to": "S06-bounded-context-forces-graph",
+      "kind": "grounds"
+    },
+    {
+      "from": "C06-turnbull-metadata",
+      "to": "S05-scale-4-ai-native",
+      "kind": "grounds"
+    },
+    {
+      "from": "C07-turnbull-agents",
+      "to": "S08-deepseek-v4-postscript",
+      "kind": "grounds"
+    }
   ],
   "eyes": [
     {
@@ -176,9 +360,17 @@
       "what": "The cross-scale \"same shape, four times\" claim is the author's synthesis. No external source names this exact invariance — graph-traversal-with-ranking across inverted index, vector retrieval, typed graph, and AI-native search.",
       "why": "Adjacent literature names the pieces (Bryk on Scale 4, Lù et al. on agent web, McCarthy on Scale 3) but stops short of the cross-scale invariant. The synthesis is plausible from first-hand engineering, but external corroboration would let it sit alongside named prior work.",
       "ground_with": [
-        { "label": "Bryk, Why Google Search Sucks for AI", "url": "https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/" },
-        { "label": "Lù et al., Build the Web for Agents", "url": "https://arxiv.org/abs/2506.10953" },
-        { "label": "Scale-invariance / fractal data structures in DB & IR literature" }
+        {
+          "label": "Bryk, Why Google Search Sucks for AI",
+          "url": "https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/"
+        },
+        {
+          "label": "Lù et al., Build the Web for Agents",
+          "url": "https://arxiv.org/abs/2506.10953"
+        },
+        {
+          "label": "Scale-invariance / fractal data structures in DB & IR literature"
+        }
       ]
     },
     {
@@ -186,9 +378,18 @@
       "what": "\"Fill the graph, not the context window\" is the central technical wager. McCarthy proves it for the scientific case; the essay extends it to personal-memory and agent-retrieval without the same selection pressure.",
       "why": "The wager hinges on long-context degradation as |K| grows. Empirical needle-in-haystack and lost-in-the-middle results corroborate the direction, but the exact crossover where graph retrieval beats raw context for a typed-personal-graph at the scale this essay names has not been benchmarked.",
       "ground_with": [
-        { "label": "Liu et al., Lost in the Middle (long-context degradation)", "url": "https://arxiv.org/abs/2307.03172" },
-        { "label": "Anthropic, Claude needle-in-haystack benchmarks", "url": "https://www.anthropic.com/news/claude-2-1-prompting" },
-        { "label": "McCarthy, open-knowledge-graph — Theorem 4 (scientific case)", "url": "https://github.com/patdmc/open-knowledge-graph" }
+        {
+          "label": "Liu et al., Lost in the Middle (long-context degradation)",
+          "url": "https://arxiv.org/abs/2307.03172"
+        },
+        {
+          "label": "Anthropic, Claude needle-in-haystack benchmarks",
+          "url": "https://www.anthropic.com/news/claude-2-1-prompting"
+        },
+        {
+          "label": "McCarthy, open-knowledge-graph — Theorem 4 (scientific case)",
+          "url": "https://github.com/patdmc/open-knowledge-graph"
+        }
       ]
     },
     {
@@ -196,8 +397,12 @@
       "what": "The personal-graph rewrites of McCarthy — `valid_at` / confidence-decay, inverted edge-density, K-without-A — are extrapolations. McCarthy proves necessity arguments under selection-under-competition; personal-memory has none of those pressures.",
       "why": "The personal case has not been empirically tested at scale. A forty-year-old's graph being node-dense with sparse adjacency is a plausible introspective claim, not a measured property of n personal graphs.",
       "ground_with": [
-        { "label": "Episodic vs semantic memory literature (Tulving 1972)" },
-        { "label": "Aging and autobiographical memory empirical results" }
+        {
+          "label": "Episodic vs semantic memory literature (Tulving 1972)"
+        },
+        {
+          "label": "Aging and autobiographical memory empirical results"
+        }
       ]
     },
     {
@@ -205,8 +410,13 @@
       "what": "The DeepSeek V4 postscript bridges hardware-level memory architecture (KV cache, sparse attention) to retrieval-as-attention as one further scale of graph-traversal-with-ranking. The bridge is suggestive, not benchmarked.",
       "why": "The 7–10% KV-cache figure is real; the framing of compressed attention as \"graph-traversal-with-ranking internalized\" is the author's. A direct benchmark — DeepSeek V4 long-context retrieval vs typed-graph retrieval at equivalent token counts — would let the postscript pay its own bill.",
       "ground_with": [
-        { "label": "DeepSeek V4 release notes", "url": "https://huggingface.co/blog/deepseekv4" },
-        { "label": "Compressed Sparse Attention (CSA) papers" }
+        {
+          "label": "DeepSeek V4 release notes",
+          "url": "https://huggingface.co/blog/deepseekv4"
+        },
+        {
+          "label": "Compressed Sparse Attention (CSA) papers"
+        }
       ]
     },
     {
@@ -214,7 +424,10 @@
       "what": "\"Humans type two words, agents emit declarative sentences\" is the author's framing, well-aligned with Exa's training data on link-anchor citations but not yet a published taxonomy.",
       "why": "The query-format split is the load-bearing reason agent search and human search diverge — but the claim would be stronger with measured query-length distributions across human SERPs vs agent tool-call corpora.",
       "ground_with": [
-        { "label": "Exa training corpus / link-prediction objective", "url": "https://www.latent.space/p/exa" }
+        {
+          "label": "Exa training corpus / link-prediction objective",
+          "url": "https://www.latent.space/p/exa"
+        }
       ]
     }
   ],

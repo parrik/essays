@@ -365,7 +365,10 @@ a:hover { text-decoration-color: var(--accent); }
 .essay-meta a:hover { color: var(--accent); }
 
 /* === Knowledge-graph viz polish — applied globally so all 5 essay
-       dashboards inherit the same hand-drawn-feeling base treatment. === */
+       dashboards inherit the same hand-drawn-feeling base treatment.
+       Single source of truth for .viz-node colours, filters, and
+       .edge styling; embedded dashboard styles must not redefine
+       these. === */
 
 .graph-viz {
   position: relative;
@@ -405,24 +408,78 @@ a:hover { text-decoration-color: var(--accent); }
     drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
   transform: translateY(-1px);
 }
+.viz-node-link:focus-visible {
+  outline: none;
+}
+.viz-node-link:focus-visible .viz-node {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
 
-/* Letter inside the shape — bigger and bolder than the per-file rule
-   used to ship; the geometry now leads, the letter labels it. */
-.viz-node-letter {
-  fill: rgba(255, 253, 247, 0.96);
+/* Per-type fill / stroke. Single source of truth — dashboards inherit. */
+.viz-node-synthesis {
+  fill: #b8e0c2;
+  stroke: #2a6a3a;
+  stroke-width: 1.5;
+}
+.viz-node-citation {
+  fill: #c8dcf0;
+  stroke: #3a5e7a;
+  stroke-width: 1.5;
+}
+.viz-node-derivation {
+  fill: #d9c8e8;
+  stroke: #5e3a7a;
+  stroke-width: 1.5;
+}
+.viz-node-observation {
+  fill: #f5c8c8;
+  stroke: #7a2a2a;
+  stroke-width: 1.5;
+}
+.viz-node-spine {
+  stroke-width: 3;
+  stroke: var(--accent);
+}
+
+/* Inside-shape label text. The shape is the primary identifier for type;
+   the text inside is a 1-2 line abbreviation (the `where` kicker if present,
+   else a short prefix of the claim). Mirrors example-graph-full.html. */
+.viz-node-text {
+  fill: #2b2520;
+  font-family: var(--serif, Georgia, 'Times New Roman', Times, serif);
+  font-size: 11px;
+  font-weight: 500;
+  text-anchor: middle;
+  pointer-events: none;
+  letter-spacing: 0.005em;
+  /* Exempt label text from the hand-drawn wobble filter so it stays
+     crisp; only the shape gets the turbulence displacement. */
+  filter: none;
+}
+.viz-node-chip-letter {
+  filter: none;
+}
+/* Type-letter chip in the corner of each node — a small filled circle
+   in the type colour with the letter (S/C/D/O) on top. Secondary
+   affordance to the shape. */
+.viz-node-chip {
+  pointer-events: none;
+  stroke-width: 1;
+}
+.viz-node-chip-synthesis   { fill: #2a6a3a; stroke: #1f4e2b; }
+.viz-node-chip-citation    { fill: #3a5e7a; stroke: #2a445b; }
+.viz-node-chip-derivation  { fill: #5e3a7a; stroke: #432857; }
+.viz-node-chip-observation { fill: #7a2a2a; stroke: #5a1f1f; }
+.viz-node-chip-letter {
+  fill: #fffdf7;
   font-family: var(--sans, system-ui, sans-serif);
-  font-size: 17px;
+  font-size: 9px;
   font-weight: 700;
   text-anchor: middle;
   pointer-events: none;
-  letter-spacing: 0.02em;
-}
-.viz-node-id {
-  fill: var(--muted);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
-  text-anchor: middle;
-  pointer-events: none;
+  letter-spacing: 0.03em;
 }
 
 /* Edges: slightly off-black, gentle taper. Derives stays dashed,
@@ -437,6 +494,22 @@ a:hover { text-decoration-color: var(--accent); }
   stroke: rgba(40, 30, 20, 0.42);
 }
 
+/* Reduced motion — drop the wobble filter and the hover translate.
+   Soft drop-shadow remains so depth still reads. */
+@media (prefers-reduced-motion: reduce) {
+  .viz-node {
+    filter: drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
+    transition: none;
+  }
+  .edge {
+    filter: none;
+  }
+  .viz-node-link:hover .viz-node {
+    filter: drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
+    transform: none;
+  }
+}
+
 /* === end graph viz polish === */
 
 /* Essay-page tab nav: home / etudes / knowledge graph */
@@ -446,21 +519,35 @@ a:hover { text-decoration-color: var(--accent); }
   margin: 1rem 0 0;
   padding: 0.3rem;
   background: var(--bg-soft);
-  border-radius: 999px;
+  border-radius: 6px;
   width: fit-content;
   font-family: system-ui, sans-serif;
   font-size: 0.82rem;
 }
 .essay-tab {
+  /* Min-height keeps the touch target ≥ 44px on small viewports
+     where the chips would otherwise shrink under that floor. */
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
   padding: 0.4rem 0.95rem;
-  border-radius: 999px;
+  border-radius: 4px;
   color: var(--muted);
   text-decoration: none;
-  transition: background 200ms ease, color 200ms ease;
+  transition: color 200ms ease;
 }
+/* Quiet hover — colour shift only, no background flip. The active /
+   selected fill is reserved for the corresponding dashboard tabbar
+   button; on the essay-tab nav, hover stays restrained. */
 .essay-tab:hover {
-  background: var(--text);
-  color: var(--bg);
+  color: var(--text);
+}
+.essay-tab:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .essay-tab { transition: none; }
 }
 
 hr {

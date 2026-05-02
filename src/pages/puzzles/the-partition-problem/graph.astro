@@ -308,7 +308,7 @@ const counts = nodes.reduce(
     margin: 1.5rem 0 1.5rem;
     padding: 0.3rem;
     background: var(--bg-soft);
-    border-radius: 999px;
+    border-radius: 6px;
     width: fit-content;
   }
   .tabbar button {
@@ -320,10 +320,13 @@ const counts = nodes.reduce(
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--muted);
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
+    padding: 0.55rem 1rem;
+    /* 44px touch-target floor (Apple HIG). Important on mobile where the
+       responsive block below shrinks the horizontal padding. */
+    min-height: 44px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background 240ms ease, color 240ms ease;
+    transition: color 240ms ease;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
@@ -331,12 +334,20 @@ const counts = nodes.reduce(
   .tabbar button:hover {
     color: var(--text);
   }
+  .tabbar button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
   .tabbar button.active {
     background: var(--text);
     color: var(--bg);
+    transition: background 240ms ease, color 240ms ease;
   }
   .tabbar button.active:hover {
     color: var(--bg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tabbar button { transition: none; }
   }
   .tab-count {
     font-size: 0.75rem;
@@ -427,63 +438,24 @@ const counts = nodes.reduce(
     display: block;
     width: 100%;
     height: auto;
-    max-height: 480px;
+    max-height: 672px;
   }
-  .edge {
-    stroke: var(--line);
-    stroke-width: 1.5;
-    fill: none;
-    transition: stroke 200ms ease, stroke-width 200ms ease;
-  }
-  .edge-derives {
-    stroke-dasharray: 4 3;
-  }
-  .viz-node-link {
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .viz-node {
-    transition: transform 180ms ease, filter 180ms ease;
-    transform-origin: center;
-    transform-box: fill-box;
-  }
-  .viz-node-link:hover .viz-node {
-    filter: brightness(1.08) drop-shadow(0 2px 6px rgba(40,30,20,0.18));
-  }
-  .viz-node-synthesis {
-    fill: #b8e0c2;
-    stroke: #2a6a3a;
-    stroke-width: 1.5;
-  }
-  .viz-node-citation {
-    fill: #c8dcf0;
-    stroke: #3a5e7a;
-    stroke-width: 1.5;
-  }
-  .viz-node-derivation {
-    fill: #d9c8e8;
-    stroke: #5e3a7a;
-    stroke-width: 1.5;
-  }
-  .viz-node-observation {
-    fill: #f5c8c8;
-    stroke: #7a2a2a;
-    stroke-width: 1.5;
-  }
-  .viz-node-spine {
-    stroke-width: 3;
-    stroke: var(--accent);
-  }
+  /* .viz-node, .edge, per-type colours, .viz-node-text, .viz-node-chip*
+     all live in global.css — single source of truth. Don't redefine here. */
 
   /* === Issue link CTA on eyes / apply cards === */
   .card-cta {
-    margin: 0.75rem 0 0;
-    padding-top: 0.75rem;
+    margin: 0.85rem 0 0;
+    padding-top: 0.85rem;
     border-top: 1px dashed var(--line);
     font-family: var(--sans);
     font-size: 0.85rem;
   }
   .issue-link {
+    /* 44px touch target — important since these are primary CTAs. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
     color: var(--accent);
     text-decoration: none;
     font-weight: 500;
@@ -493,27 +465,19 @@ const counts = nodes.reduce(
   .issue-link:hover {
     border-bottom-color: var(--accent);
   }
+  .issue-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .issue-link { transition: none; }
+  }
   .issue-link-arrow {
     font-size: 0.85em;
     margin-left: 0.15em;
     opacity: 0.7;
   }
-  .viz-node-letter {
-    fill: #fffdf7;
-    font-family: var(--sans);
-    font-size: 16px;
-    font-weight: 700;
-    text-anchor: middle;
-    pointer-events: none;
-  }
-  .viz-node-id {
-    fill: var(--muted);
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 11px;
-    text-anchor: middle;
-    pointer-events: none;
-  }
-
   /* === Graph tab — node cards === */
   .dash-counts {
     display: flex;
@@ -524,10 +488,30 @@ const counts = nodes.reduce(
     background: var(--bg-soft);
     border-radius: 10px;
   }
+  /* Base chip — the .essay-body .graph-legend .chip rule in global.css
+     is scoped to essay body only, so dashboards need their own base. */
+  .dash-page .chip {
+    display: inline-block;
+    min-width: 1.8rem;
+    padding: 0.1em 0.45em;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid;
+    border-radius: 3px;
+    font-family: var(--sans);
+    flex-shrink: 0;
+  }
+  .dash-page .chip-ref { background: #ECECEC; border-color: #666666; color: #333; }
+  .dash-page .chip-obs { background: #C8DCF0; border-color: #3A5E7A; color: #1a3854; }
+  .dash-page .chip-ovl { background: #B8E0C2; border-color: #2A6A3A; color: #18472a; }
+  .dash-page .chip-emg { background: #E0C8F0; border-color: #5A3A7A; color: #3e2858; }
+  .dash-page .chip-eqv { background: #F5C890; border-color: #7A4A0E; color: #5a340a; }
   .dash-counts .chip {
     display: inline-flex;
     align-items: center;
-    padding: 0.2rem 0.55rem;
+    padding: 0.25rem 0.6rem;
   }
   .chip-count {
     font-family: var(--sans);
@@ -535,6 +519,7 @@ const counts = nodes.reduce(
     color: var(--muted);
     margin-left: 0.35rem;
     font-weight: 500;
+    font-variant-numeric: tabular-nums;
   }
   .graph-nodes {
     display: flex;
@@ -730,7 +715,9 @@ const counts = nodes.reduce(
   @media (max-width: 32rem) {
     .dash-title { font-size: 1.5rem; }
     .tabbar { width: 100%; justify-content: space-between; }
-    .tabbar button { padding: 0.5rem 0.7rem; font-size: 0.85rem; }
+    /* min-height is inherited from the base .tabbar button rule (44px),
+       so even with tighter horizontal padding the tap target holds. */
+    .tabbar button { padding: 0.55rem 0.7rem; font-size: 0.85rem; }
     .graph-node, .eyes-item, .actions-item { padding: 0.85rem 0.95rem; }
   }
 </style>

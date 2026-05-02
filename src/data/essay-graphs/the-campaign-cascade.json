@@ -2,7 +2,10 @@
   "slug": "the-campaign-cascade",
   "essayTitle": "How to run a cross-cutting campaign",
   "spineId": "S02-context-in-hand",
-  "viewBox": { "width": 600, "height": 380 },
+  "viewBox": {
+    "width": 840,
+    "height": 532
+  },
   "nodes": [
     {
       "id": "S01-cross-cutting-finish-or-not",
@@ -22,21 +25,28 @@
       "id": "D03-cascade-loop",
       "type": "derivation",
       "claim": "Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.",
-      "derives_from": ["S02-context-in-hand"],
+      "derives_from": [
+        "S02-context-in-hand"
+      ],
       "why": "The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug."
     },
     {
       "id": "S04-three-paths",
       "type": "synthesis",
       "claim": "Three valid responses — automate, centralize, enable.",
-      "derives_from": ["S02-context-in-hand"],
+      "derives_from": [
+        "S02-context-in-hand"
+      ],
       "why": "The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship."
     },
     {
       "id": "D05-dead-zone",
       "type": "derivation",
       "claim": "The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.",
-      "derives_from": ["S02-context-in-hand", "S04-three-paths"],
+      "derives_from": [
+        "S02-context-in-hand",
+        "S04-three-paths"
+      ],
       "why": "The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can't evaluate it. None of the three paths, all of the cost."
     },
     {
@@ -49,18 +59,64 @@
     }
   ],
   "positions": {
-    "S01-cross-cutting-finish-or-not": { "cx": 100, "cy": 80,  "r": 26, "labelY": 125, "labelText": "S01" },
-    "S02-context-in-hand":              { "cx": 300, "cy": 80,  "r": 32, "labelY": 130, "labelText": "S02 · principle" },
-    "S04-three-paths":                  { "cx": 500, "cy": 80,  "r": 26, "labelY": 125, "labelText": "S04" },
-    "D03-cascade-loop":                 { "cx": 175, "cy": 200, "r": 26, "labelY": 245, "labelText": "D03" },
-    "D05-dead-zone":                    { "cx": 425, "cy": 200, "r": 26, "labelY": 245, "labelText": "D05" },
-    "C01-codemod":                      { "cx": 300, "cy": 310, "r": 22, "labelY": 350, "labelText": "C01" }
+    "S01-cross-cutting-finish-or-not": {
+      "cx": 140,
+      "cy": 112,
+      "r": 26,
+      "labelText": "S01"
+    },
+    "S02-context-in-hand": {
+      "cx": 420,
+      "cy": 112,
+      "r": 32,
+      "labelText": "S02 · principle"
+    },
+    "S04-three-paths": {
+      "cx": 700,
+      "cy": 112,
+      "r": 26,
+      "labelText": "S04"
+    },
+    "D03-cascade-loop": {
+      "cx": 245,
+      "cy": 280,
+      "r": 26,
+      "labelText": "D03"
+    },
+    "D05-dead-zone": {
+      "cx": 595,
+      "cy": 280,
+      "r": 26,
+      "labelText": "D05"
+    },
+    "C01-codemod": {
+      "cx": 420,
+      "cy": 434,
+      "r": 22,
+      "labelText": "C01"
+    }
   },
   "edges": [
-    { "from": "S04-three-paths",  "to": "S02-context-in-hand", "kind": "derives" },
-    { "from": "D03-cascade-loop", "to": "S02-context-in-hand", "kind": "derives" },
-    { "from": "D05-dead-zone",    "to": "S02-context-in-hand", "kind": "derives" },
-    { "from": "D05-dead-zone",    "to": "S04-three-paths",     "kind": "derives" }
+    {
+      "from": "S04-three-paths",
+      "to": "S02-context-in-hand",
+      "kind": "derives"
+    },
+    {
+      "from": "D03-cascade-loop",
+      "to": "S02-context-in-hand",
+      "kind": "derives"
+    },
+    {
+      "from": "D05-dead-zone",
+      "to": "S02-context-in-hand",
+      "kind": "derives"
+    },
+    {
+      "from": "D05-dead-zone",
+      "to": "S04-three-paths",
+      "kind": "derives"
+    }
   ],
   "eyes": [
     {
@@ -68,8 +124,14 @@
       "what": "The cascade loop (Campaign → Stall → Escalate → Directive → New) is the author's observation. No external citation naming this exact failure mode.",
       "why": "The pattern is plausible from first-hand engineering experience, but external corroboration would strengthen the claim. Adjacent literature exists.",
       "ground_with": [
-        { "label": "Brooks's law (Mythical Man-Month, 1975)", "url": "https://en.wikipedia.org/wiki/Brooks%27s_law" },
-        { "label": "Conway's law on org structure → system structure", "url": "https://en.wikipedia.org/wiki/Conway%27s_law" }
+        {
+          "label": "Brooks's law (Mythical Man-Month, 1975)",
+          "url": "https://en.wikipedia.org/wiki/Brooks%27s_law"
+        },
+        {
+          "label": "Conway's law on org structure → system structure",
+          "url": "https://en.wikipedia.org/wiki/Conway%27s_law"
+        }
       ]
     },
     {

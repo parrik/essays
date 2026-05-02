@@ -2,7 +2,10 @@
   "slug": "the-partition-problem",
   "essayTitle": "The Partition Problem",
   "spineId": "S01-cancer-cell-lost-context",
-  "viewBox": { "width": 680, "height": 480 },
+  "viewBox": {
+    "width": 952,
+    "height": 672
+  },
   "nodes": [
     {
       "id": "S01-cancer-cell-lost-context",
@@ -42,7 +45,10 @@
       "type": "derivation",
       "claim": "Fascia partitions — the body partitions itself when signal is associated with danger.",
       "where": "fascia section",
-      "derives_from": ["S01-cancer-cell-lost-context", "C04-schleip-stecco"],
+      "derives_from": [
+        "S01-cancer-cell-lost-context",
+        "C04-schleip-stecco"
+      ],
       "why": "The somatic instantiation of the spine. What context-loss looks like in connective tissue: dehydration, adhesion, regions stop participating, force routes around them."
     },
     {
@@ -59,7 +65,9 @@
       "type": "derivation",
       "claim": "Restorative yoga reopens the channel — long supported holds let the matrix re-hydrate, adhesions soften, the partitioned region rejoins surrounding signal.",
       "where": "fascia section",
-      "derives_from": ["D01-fascia-partitions"],
+      "derives_from": [
+        "D01-fascia-partitions"
+      ],
       "why": "The intervention claim at the fascia layer. Mechanism-level (re-hydration, adhesion-softening), not outcome-level (cure)."
     },
     {
@@ -67,7 +75,10 @@
       "type": "derivation",
       "claim": "The vagus is the body's listening line — long exhale signals safety; HRV measures its flexibility.",
       "where": "long exhale section",
-      "derives_from": ["S01-cancer-cell-lost-context", "C05-porges"],
+      "derives_from": [
+        "S01-cancer-cell-lost-context",
+        "C05-porges"
+      ],
       "why": "The nervous-system instantiation of the spine. Locked vagus reads alarm; flexible vagus reads context. Same partition dynamic, different tissue."
     },
     {
@@ -92,36 +103,144 @@
       "type": "synthesis",
       "claim": "A cancer cell is a cell that has lost the signal that says: you are held.",
       "where": "closer",
-      "derives_from": ["S01-cancer-cell-lost-context", "D01-fascia-partitions", "D03-vagus-listening-line", "C06-williams-hrv"],
+      "derives_from": [
+        "S01-cancer-cell-lost-context",
+        "D01-fascia-partitions",
+        "D03-vagus-listening-line",
+        "C06-williams-hrv"
+      ],
       "why": "The full synthesis. Connects hallmarks-of-cancer to the nervous-system / fascia frame — same partition dynamic, three tissues. Not a cure claim; a frame claim."
     }
   ],
   "positions": {
-    "S01-cancer-cell-lost-context":    { "cx": 340, "cy": 100, "r": 34, "labelY": 152, "labelText": "S01 · spine" },
-    "C01-hanahan-weinberg":            { "cx": 220, "cy": 50,  "r": 20, "labelY": 22,  "labelText": "C01" },
-    "C02-sonnenschein-soto":           { "cx": 460, "cy": 50,  "r": 20, "labelY": 22,  "labelText": "C02" },
-    "C03-mccarthy-okg":                { "cx": 600, "cy": 100, "r": 20, "labelY": 142, "labelText": "C03" },
-    "D01-fascia-partitions":           { "cx": 180, "cy": 230, "r": 26, "labelY": 275, "labelText": "D01" },
-    "C04-schleip-stecco":              { "cx": 60,  "cy": 230, "r": 20, "labelY": 272, "labelText": "C04" },
-    "D02-restorative-reopens-channel": { "cx": 180, "cy": 360, "r": 24, "labelY": 403, "labelText": "D02" },
-    "D03-vagus-listening-line":        { "cx": 500, "cy": 230, "r": 26, "labelY": 275, "labelText": "D03" },
-    "C05-porges":                      { "cx": 620, "cy": 230, "r": 20, "labelY": 272, "labelText": "C05" },
-    "C06-williams-hrv":                { "cx": 620, "cy": 320, "r": 20, "labelY": 362, "labelText": "C06" },
-    "S02-cell-that-lost-the-signal":   { "cx": 340, "cy": 420, "r": 30, "labelY": 470, "labelText": "S02 · closer" }
+    "S01-cancer-cell-lost-context": {
+      "cx": 476,
+      "cy": 140,
+      "r": 34,
+      "labelText": "S01 · spine"
+    },
+    "C01-hanahan-weinberg": {
+      "cx": 308,
+      "cy": 70,
+      "r": 20,
+      "labelText": "C01"
+    },
+    "C02-sonnenschein-soto": {
+      "cx": 644,
+      "cy": 70,
+      "r": 20,
+      "labelText": "C02"
+    },
+    "C03-mccarthy-okg": {
+      "cx": 840,
+      "cy": 140,
+      "r": 20,
+      "labelText": "C03"
+    },
+    "D01-fascia-partitions": {
+      "cx": 252,
+      "cy": 322,
+      "r": 26,
+      "labelText": "D01"
+    },
+    "C04-schleip-stecco": {
+      "cx": 84,
+      "cy": 322,
+      "r": 20,
+      "labelText": "C04"
+    },
+    "D02-restorative-reopens-channel": {
+      "cx": 252,
+      "cy": 504,
+      "r": 24,
+      "labelText": "D02"
+    },
+    "D03-vagus-listening-line": {
+      "cx": 700,
+      "cy": 322,
+      "r": 26,
+      "labelText": "D03"
+    },
+    "C05-porges": {
+      "cx": 868,
+      "cy": 322,
+      "r": 20,
+      "labelText": "C05"
+    },
+    "C06-williams-hrv": {
+      "cx": 868,
+      "cy": 448,
+      "r": 20,
+      "labelText": "C06"
+    },
+    "S02-cell-that-lost-the-signal": {
+      "cx": 476,
+      "cy": 588,
+      "r": 30,
+      "labelText": "S02 · closer"
+    }
   },
   "edges": [
-    { "from": "C01-hanahan-weinberg",            "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "C02-sonnenschein-soto",           "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "C03-mccarthy-okg",                "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "D01-fascia-partitions",           "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "D01-fascia-partitions",           "to": "C04-schleip-stecco",            "kind": "derives" },
-    { "from": "D02-restorative-reopens-channel", "to": "D01-fascia-partitions",         "kind": "derives" },
-    { "from": "D03-vagus-listening-line",        "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "D03-vagus-listening-line",        "to": "C05-porges",                    "kind": "derives" },
-    { "from": "S02-cell-that-lost-the-signal",   "to": "S01-cancer-cell-lost-context", "kind": "derives" },
-    { "from": "S02-cell-that-lost-the-signal",   "to": "D01-fascia-partitions",         "kind": "derives" },
-    { "from": "S02-cell-that-lost-the-signal",   "to": "D03-vagus-listening-line",      "kind": "derives" },
-    { "from": "S02-cell-that-lost-the-signal",   "to": "C06-williams-hrv",              "kind": "derives" }
+    {
+      "from": "C01-hanahan-weinberg",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "C02-sonnenschein-soto",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "C03-mccarthy-okg",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-fascia-partitions",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "D01-fascia-partitions",
+      "to": "C04-schleip-stecco",
+      "kind": "derives"
+    },
+    {
+      "from": "D02-restorative-reopens-channel",
+      "to": "D01-fascia-partitions",
+      "kind": "derives"
+    },
+    {
+      "from": "D03-vagus-listening-line",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "D03-vagus-listening-line",
+      "to": "C05-porges",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-cell-that-lost-the-signal",
+      "to": "S01-cancer-cell-lost-context",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-cell-that-lost-the-signal",
+      "to": "D01-fascia-partitions",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-cell-that-lost-the-signal",
+      "to": "D03-vagus-listening-line",
+      "kind": "derives"
+    },
+    {
+      "from": "S02-cell-that-lost-the-signal",
+      "to": "C06-williams-hrv",
+      "kind": "derives"
+    }
   ],
   "eyes": [
     {
@@ -129,8 +248,14 @@
       "what": "The HRV → inflammation → cancer-permissive bridge is the author's synthesis across three literatures, not a cited consensus. The footnote names this explicitly; flagging here for transparency.",
       "why": "Williams 2019 covers HRV-to-inflammation; Hanahan-Weinberg names tumor-promoting inflammation as enabling characteristic. No single paper closes the loop. Worth empirical follow-up.",
       "ground_with": [
-        { "label": "Williams et al. 2019 — HRV-inflammation meta-analysis", "url": "https://pubmed.ncbi.nlm.nih.gov/30872091/" },
-        { "label": "Hanahan & Weinberg 2011 — tumor-promoting inflammation as enabling characteristic", "url": "https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9" }
+        {
+          "label": "Williams et al. 2019 — HRV-inflammation meta-analysis",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30872091/"
+        },
+        {
+          "label": "Hanahan & Weinberg 2011 — tumor-promoting inflammation as enabling characteristic",
+          "url": "https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9"
+        }
       ]
     },
     {
@@ -138,7 +263,10 @@
       "what": "\"Restorative yoga cannot cure cancer\" is the disclaimer. The positive claim — reopening the partition channel — is mechanism-level, not outcome-level.",
       "why": "Mechanism plausibility (matrix re-hydration, adhesion softening) draws on mechanical-loading studies, not restorative-yoga trials. Some oncology supportive-care trials of yoga exist; worth citing if findable.",
       "ground_with": [
-        { "label": "Yoga in oncology supportive care — supportive-care trials", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871291/" }
+        {
+          "label": "Yoga in oncology supportive care — supportive-care trials",
+          "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871291/"
+        }
       ]
     },
     {
@@ -151,7 +279,10 @@
       "what": "The fascia mechanism (hydration, glide, densification) is solid for mechanical-loading contexts. The bridge from \"long supported holds\" to \"matrix re-hydrates\" is mechanism-plausible but not directly observed in restorative-yoga studies.",
       "why": "Schleip + Stecco grounds the tissue mechanics; the specific intervention pathway (long supported holds → ANS-mediated viscosity change → re-hydration) is inferred from Schleip Part 2 (ANS-mediated viscosity changes), not directly trialed.",
       "ground_with": [
-        { "label": "Schleip \"Fascial plasticity Part 2\" — ANS-mediated viscosity", "url": "https://www.fasciaresearch.de/" }
+        {
+          "label": "Schleip \"Fascial plasticity Part 2\" — ANS-mediated viscosity",
+          "url": "https://www.fasciaresearch.de/"
+        }
       ]
     }
   ],
