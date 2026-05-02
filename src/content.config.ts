@@ -20,7 +20,6 @@ const essays = defineCollection({
     kicker: z.string().optional(),
     tag: z.enum(['essay', 'poster', 'short']).optional(),
     description: z.string().optional(),
-    pdfUrl: z.string().optional(),
     order: z.number().optional(),
     // If set, this essay belongs to a sibling track (e.g. "out-of-band")
     // and is excluded from the main homepage; surfaces on its own index.

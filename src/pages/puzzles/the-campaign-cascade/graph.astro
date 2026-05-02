@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 
 const slug = 'the-campaign-cascade';
 const essayTitle = 'How to run a cross-cutting campaign';
-const subtitle = 'The essay\'s knowledge, dashboard-shaped — fractal, eyes, actions.';
+const subtitle = 'The essay\'s knowledge, dashboard-shaped — graph, eyes, actions.';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
 type Node = {
@@ -156,13 +156,59 @@ const counts = nodes.reduce(
     </header>
 
     <nav class="tabbar" role="tablist">
-      <button type="button" data-tab="fractal" class="active" role="tab" aria-selected="true">Fractal</button>
+      <button type="button" data-tab="graph" class="active" role="tab" aria-selected="true">Graph</button>
       <button type="button" data-tab="eyes" role="tab" aria-selected="false">Eyes <span class="tab-count">{eyes.length}</span></button>
       <button type="button" data-tab="actions" role="tab" aria-selected="false">Actions <span class="tab-count">{actions.length}</span></button>
     </nav>
 
-    <section id="tab-fractal" class="tab-panel active" role="tabpanel">
-      <p class="tab-lead">The essay's claims, typed. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Hover an anchor to see what claims rest on what.</p>
+    <section id="tab-graph" class="tab-panel active" role="tabpanel">
+      <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
+
+      <div class="graph-viz">
+        <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
+          {/* edges first so nodes paint over them */}
+          {/* S04 → S02 */}
+          <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
+          {/* D03 → S02 */}
+          <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
+          {/* D05 → S02 */}
+          <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
+          {/* D05 → S04 */}
+          <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
+
+          {/* nodes */}
+          <a href="#S01-cross-cutting-finish-or-not" class="viz-node-link">
+            <circle cx="100" cy="80" r="26" class="viz-node viz-node-synthesis" />
+            <text x="100" y="85" class="viz-node-letter">S</text>
+            <text x="100" y="125" class="viz-node-id">S01</text>
+          </a>
+          <a href="#S02-context-in-hand" class="viz-node-link">
+            <circle cx="300" cy="80" r="32" class="viz-node viz-node-synthesis viz-node-spine" />
+            <text x="300" y="85" class="viz-node-letter">S</text>
+            <text x="300" y="130" class="viz-node-id">S02 · principle</text>
+          </a>
+          <a href="#S04-three-paths" class="viz-node-link">
+            <circle cx="500" cy="80" r="26" class="viz-node viz-node-synthesis" />
+            <text x="500" y="85" class="viz-node-letter">S</text>
+            <text x="500" y="125" class="viz-node-id">S04</text>
+          </a>
+          <a href="#D03-cascade-loop" class="viz-node-link">
+            <circle cx="175" cy="200" r="26" class="viz-node viz-node-derivation" />
+            <text x="175" y="205" class="viz-node-letter">D</text>
+            <text x="175" y="245" class="viz-node-id">D03</text>
+          </a>
+          <a href="#D05-dead-zone" class="viz-node-link">
+            <circle cx="425" cy="200" r="26" class="viz-node viz-node-derivation" />
+            <text x="425" y="205" class="viz-node-letter">D</text>
+            <text x="425" y="245" class="viz-node-id">D05</text>
+          </a>
+          <a href="#C01-codemod" class="viz-node-link">
+            <circle cx="300" cy="310" r="22" class="viz-node viz-node-citation" />
+            <text x="300" y="315" class="viz-node-letter">C</text>
+            <text x="300" y="350" class="viz-node-id">C01</text>
+          </a>
+        </svg>
+      </div>
 
       <div class="dash-counts">
         {(Object.keys(counts) as NodeType[]).map((t) => (
@@ -269,13 +315,20 @@ const counts = nodes.reduce(
     });
   });
 
-  // Deep-link via hash: #tab-eyes / #tab-actions
+  // Deep-link via hash: #tab-eyes / #tab-actions / #tab-graph
   const hash = window.location.hash.replace('#', '');
   if (hash.startsWith('tab-')) {
     const name = hash.slice(4);
     const btn = document.querySelector(`.tabbar [data-tab="${name}"]`);
     if (btn) btn.click();
   }
+  // Node click in viz → switch back to graph tab if needed, then anchor handles it
+  document.querySelectorAll('.viz-node-link').forEach((a) => {
+    a.addEventListener('click', () => {
+      const graphBtn = document.querySelector('.tabbar [data-tab="graph"]');
+      if (graphBtn && !graphBtn.classList.contains('active')) graphBtn.click();
+    });
+  });
 </script>
 
 <style is:global>
@@ -370,7 +423,77 @@ const counts = nodes.reduce(
     font-style: italic;
   }
 
-  /* === Fractal tab — node cards === */
+  /* === Graph tab — SVG viz === */
+  .graph-viz {
+    margin: 0 0 1.75rem;
+    padding: 1rem;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .graph-viz svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+  }
+  .edge {
+    stroke: var(--line);
+    stroke-width: 1.5;
+    fill: none;
+    transition: stroke 200ms ease, stroke-width 200ms ease;
+  }
+  .edge-derives {
+    stroke-dasharray: 4 3;
+  }
+  .viz-node-link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .viz-node {
+    transition: transform 180ms ease, filter 180ms ease;
+    transform-origin: center;
+    transform-box: fill-box;
+  }
+  .viz-node-link:hover .viz-node {
+    filter: brightness(1.08) drop-shadow(0 2px 6px rgba(40,30,20,0.18));
+  }
+  .viz-node-synthesis {
+    fill: #c9a98e;
+    stroke: #8a6b50;
+    stroke-width: 1.5;
+  }
+  .viz-node-spine {
+    stroke-width: 2.5;
+    stroke: var(--accent);
+  }
+  .viz-node-derivation {
+    fill: #b8c4a8;
+    stroke: #6f7d5f;
+    stroke-width: 1.5;
+  }
+  .viz-node-citation {
+    fill: #9eb3b8;
+    stroke: #5e7479;
+    stroke-width: 1.5;
+  }
+  .viz-node-letter {
+    fill: #fffdf7;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 700;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+  .viz-node-id {
+    fill: var(--muted);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 11px;
+    text-anchor: middle;
+    pointer-events: none;
+  }
+
+  /* === Graph tab — node cards === */
   .dash-counts {
     display: flex;
     flex-wrap: wrap;

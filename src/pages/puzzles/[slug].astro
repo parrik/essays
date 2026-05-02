@@ -42,7 +42,6 @@ const hasGraph = slugsWithGraph.has(essay.id);
     <div class="essay-meta">
       <a href="/">← home</a>
       {hasGraph && <a href={`/puzzles/${essay.id}/graph/`}>knowledge dashboard</a>}
-      {essay.data.pdfUrl && <a href={essay.data.pdfUrl}>download pdf</a>}
     </div>
     <hr />
     <div class="essay-body e-content">

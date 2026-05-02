@@ -5,7 +5,6 @@ tag: essay
 track: crossings
 order: 2
 description: A cancer cell is not a broken cell. It has lost context.
-pdfUrl: /the-biology-of-belonging.pdf
 publishedAt: 2026-04-21
 etudes:
   - label: Long Exhale
