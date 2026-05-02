@@ -4,7 +4,7 @@ subtitle: 'Continuous verification: gates and sweeps'
 relief: Security is the love of careful work. Response is what arrives when carefulness arrives late.
 kicker: Method
 tag: essay
-order: 3
+order: 2
 parent: know-thyself
 publishedAt: 2026-04-30
 status: tending
@@ -618,7 +618,7 @@ The picker above is a tool. The principle is the work.
 
 ---
 
-*Series complete. The four parts, as one shape: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · [III — Memory was never about storage](/essays/memory-was-never-about-storage/) · IV. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
+*Series complete. The three parts, as one shape: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · III. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
 
 [^anderson]: James P. Anderson, *Computer Security Technology Planning Study* (USAF ESD-TR-73-51, 1972). Volume II names the **reference monitor** — the abstraction of an access mediator that (1) is invoked on every reference, (2) is tamper-proof, (3) is small enough to be analyzed and tested for correctness. Every gate this essay names — pre-commit hook, admission webhook, CEL policy in the apiserver — is a reference-monitor instance. Fifty-four years on, the three properties still define what a gate has to be.
 

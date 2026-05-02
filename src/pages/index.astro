@@ -11,7 +11,7 @@ const all = await getCollection('essays');
 // the reader can see *Planted ... · seedling* or *... · tending* and
 // know what they are reading. The homepage's job is to show the
 // structure of the body of work.
-const topLevel = all.filter(e => !e.data.parent);
+const topLevel = all.filter(e => !e.data.parent && !e.data.track);
 topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 // Build a parent-id → ordered children map. Children include all
@@ -39,7 +39,8 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
 <Base title="parrik">
   <section class="intro">
     <h1>on love, nature, and nurture</h1>
-    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure. Nature is the structure when you find it. Nurture is what you do once you can see it. The same shape across distributed systems, biology, and the practice. Written by AI, lived by human.</p>
+    <p>Love here isn't enthusiasm. It's the willingness to stay with something long enough that it starts to show you its structure. Nature is the structure when you find it. Nurture is what you do once you can see it. The same shape across distributed systems, biology, and the practice.</p>
+    <p class="byline">Twelve-plus years on distributed-systems infrastructure — AWS, Cruise, Bloomberg, Microsoft.</p>
   </section>
   <section class="essays">
     <h2>puzzle-shape problems</h2>
@@ -97,14 +98,20 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
                     </li>
                   );
                 }
+                const desc = p.data.relief ?? p.data.subtitle;
                 return (
                   <li>
                     <div class="series-part series-part-muted" aria-disabled="true">
                       <span class="part-num">Part {ROMAN[i]}</span>
                       <span class="part-body">
                         <span class="part-name">{p.data.title}</span>
-                        {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
-                        <a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
+                        {desc ? (
+                          <span class="part-description">
+                            {desc}{' '}<a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
+                          </span>
+                        ) : (
+                          <a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
+                        )}
                       </span>
                     </div>
                   </li>
@@ -116,28 +123,27 @@ const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
       })}
     </ul>
   </section>
+  <div slot="footer-extra" class="maxims-grid">
+    <div class="maxim-name">know thyself</div>
+    <div class="maxim-name">reveal thyself</div>
+  </div>
 </Base>
 
 <style>
   .play-hint {
-    margin-left: 0.55rem;
+    margin-left: 0.5rem;
     display: inline-block;
     font-family: system-ui, -apple-system, sans-serif;
-    font-size: 0.66rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    font-weight: 600;
-    padding: 0.1rem 0.4rem;
-    border: 1px solid currentColor;
-    border-radius: 3px;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 500;
     vertical-align: middle;
-    transition: background 120ms, transform 120ms;
+    opacity: 0.7;
+    transition: color 140ms, opacity 140ms;
   }
   .essay-link:hover .play-hint,
   .series-part:hover .play-hint {
-    background: var(--accent);
-    color: var(--bg, #fff);
-    transform: translateX(2px);
+    color: var(--accent);
+    opacity: 1;
   }
 </style>

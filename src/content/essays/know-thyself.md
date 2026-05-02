@@ -2,7 +2,7 @@
 title: A self was never flat
 seriesName: Know Thyself
 subtitle: A schema for personal memory in LLM conversations
-relief: You are not what you have said six times. You are what you have done, dated and bounded.
+relief: Not what you said six times. What you did, dated and bounded.
 kicker: Method
 tag: essay
 order: 0
@@ -24,9 +24,9 @@ etudes:
     note: benchmarks miss provenance
 ---
 
-Alex is 41. Senior editor at the University of Chicago Press. Single parent of her daughter Mira, fourteen. Her older sister Helen died at twenty-three in 2007. Nine months into Chicago, mostly alone.
+Alex is 41. Senior editor at the University of Chicago Press. Single parent of her daughter Mira, fourteen. Nine months into Chicago, mostly alone.
 
-One evening in May she asks the model whether there's a pattern in how she handles conflict at work. The reply comes back confident, fluent, slightly wrong: she *stays in misaligned situations because she's afraid of burning the relationship.* It sounds like something she's said. It is — six or seven times, as self-diagnosis. Never a pattern the model had evidence for. She asks it to show its work. Six conversations. Same claim, attributed to her. No independent episodes.
+One evening she asks the model whether there's a pattern in how she handles conflict at work. The reply comes back confident, fluent, slightly wrong: she *stays in misaligned situations because she's afraid of burning the relationship.* It sounds like something she's said. It is — six times, as self-diagnosis. She asks it to show its work. Same claim, attributed to her. No independent episodes.
 
 She had been talking to a mirror.
 

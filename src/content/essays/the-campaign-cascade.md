@@ -1,9 +1,10 @@
 ---
 title: How to run a cross-cutting campaign
 subtitle: The principle, the three paths, the cascade
+relief: Cross-cutting changes finish or they don't. The ones that finish distribute context, not just code. Three paths through, one constraint that decides everything.
 kicker: Engineering Pattern
 tag: poster
-order: 2
+order: 1
 description: How to ship a cross-cutting change without spawning the cascade.
 pdfUrl: /campaign-cascade.pdf
 publishedAt: 2026-04-21
