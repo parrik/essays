@@ -23,11 +23,11 @@ For two weeks she edits, commits, pushes, deploys. Nothing leaks.
 
 A friend asks: *"how do you know your gate is actually firing on the edits?"* She runs it by hand and the gate exits silent. The path patterns she wrote on Sunday do not match the directory she edits in. The gate has been quiet for two weeks not because nothing was caught — because nothing was *checked.* The reason her site stayed clean was that she happened not to write any keys into any post. There was no margin.
 
-This is exactly Saltzer & Schroeder's **complete mediation failure**[^saltzer] — a guarded boundary that does not, in fact, mediate every access. The 1975 paper named it; fifty years later the failure mode is unchanged.
+This is exactly Saltzer & Schroeder's **complete mediation failure**[^saltzer] — a gate that is supposed to check every access but doesn't. The 1975 paper named it; fifty years later the failure mode is unchanged.
 
 ## What's in security
 
-Security is **continuous verification** built on a **reference monitor** — Anderson's 1972 term[^anderson] for a mediator that sees every access, cannot be bypassed, and is small enough to verify. Two timescales:
+Security is **continuous verification.** Every access gets checked by something that can't be bypassed and is small enough to audit — what Anderson in 1972 called a **reference monitor.**[^anderson] Verification runs at two timescales:
 
 - **Boundary-time gates** fire on an action. A pre-commit hook scanning the staged diff. A pre-deploy lint asserting no public-asset directive slipped into config. A two-factor prompt at login. Deny-by-default; allow only when a named check passes.
 
@@ -37,9 +37,9 @@ Both are gates. *Boundary-time and sweep-time are the same posture at different 
 
 ## What's not
 
-Response is the work that begins **after** verification has failed. Rotating a leaked key. Patching a forbidden path. Running comms. Forensic triage on what came in, what left, when.
+Response is the work that begins **after** verification has failed. Rotating a leaked key. Patching a forbidden path. Running comms. Reading logs backward to figure out what came in, what left, and when.
 
-**DFIR** — digital forensics and incident response — is the work that begins after the fire. Logs read backward. The leak window measured. The compromised laptop imaged for evidence. Its metrics live downstream of the breach: how fast we noticed, how fast we contained, how long they were in. Verification's metric is the inverse — *no leaks this quarter* — the dial that is supposed to read zero.
+This is **DFIR** — digital forensics and incident response — the discipline that begins after the fire. The leak window gets measured. The compromised laptop gets imaged for evidence. Its metrics live downstream of the breach: how fast we noticed, how fast we contained, how long they were in. Verification's metric is the inverse — *no leaks this quarter* — the dial that is supposed to read zero.
 
 NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. Adjacent disciplines, not the same one.
 
@@ -57,15 +57,15 @@ The fix was not a better response process. The fix was extending the gate's path
 
 The harder question is second-order — and it is Saltzer-Schroeder's, fifty years on. She thought she had *a gate*; she actually had two layers (gate + sweep), only built one, and the one she built had a coverage gap — the patterns it scanned didn't include the directory she edited in. Complete mediation isn't *a* check; it's the property that *every* path is checked. Most personal-infrastructure projects look like Alex's first pass. First round buys a hook because the hook is fashionable. Second round adds a sweep because the hook had a gap. Third round adds a sweep over the sweep — *was it actually running on the right paths?* The gate is continuous; the verification is recursive; *response stays out of scope* because the verification keeps catching things while they are still cheap.
 
-The mnemonic — *"security lives at the gate, not the response"* — rhymes with Brendan Burns' [EarlyWatch](https://github.com/brendandburns/early-watch)[^earlywatch], a Kubernetes admission webhook that denies unsafe cluster changes at the boundary, declaratively, against live state. EarlyWatch is the modern instance; Saltzer-Schroeder is the original. The extension this essay puts down is that **sweeps are part of the gate.** Same posture, different cadence.
+The mnemonic — *"security lives at the gates, not the response"* — rhymes with Brendan Burns' [EarlyWatch](https://github.com/brendandburns/early-watch)[^earlywatch], a Kubernetes plug-in that intercepts cluster changes at the API boundary and rejects unsafe ones before they apply, declaratively, against live state. EarlyWatch is the modern instance; Saltzer-Schroeder is the original. The extension this essay puts down is that **sweeps are gates too.** Same posture, different cadence.
 
-*The thing that gets tired isn't the gate. It's the engineer holding it.* The 2025–2026 industry conversation about "shift-left fatigue" is about *humans* — review queues moved earlier in the SDLC, alerts piled onto developers, security work pushed onto people who already have a job. A machine gate firing on every commit doesn't burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate.[^shift-left]
+*The thing that gets tired isn't the gate. It's the engineer holding it.* The 2025–2026 industry conversation about **shift-left fatigue** — moving security checks earlier in the development cycle until the people doing the checking are buried — is about *humans*: review queues piled onto developers, alerts piled onto developers, security work pushed onto people who already have a job. A machine gate firing on every commit doesn't burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate.[^shift-left]
 
 > **Security is continuous verification.** Gates fire on action; sweeps fire on cadence. Together they are security's entire scope. Response is what fires when verification fails — and that is a different discipline. *Every response firing is a signal that verification has a gap; the goal is to close the gap, not to staff response.*
 
 ---
 
-*Series complete. The three parts, as one shape: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · III. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
+*Series complete. The three parts, read together: [I — A self was never flat](/essays/know-thyself/) · [II — Search was never about humans](/essays/know-thyself-search/) · III. Start a graph: [github.com/parrik/know-thyself](https://github.com/parrik/know-thyself).*
 
 [^anderson]: James P. Anderson, *Computer Security Technology Planning Study* (USAF ESD-TR-73-51, 1972). Volume II names the **reference monitor** — the abstraction of an access mediator that (1) is invoked on every reference, (2) is tamper-proof, (3) is small enough to be analyzed and tested for correctness. Every gate this essay names — pre-commit hook, admission webhook, CEL policy in the apiserver — is a reference-monitor instance. Fifty-four years on, the three properties still define what a gate has to be.
 

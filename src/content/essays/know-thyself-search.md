@@ -15,7 +15,7 @@ etudes:
     note: slide the graph size; watch the paste break
 ---
 
-Search has always been graph-traversal-with-ranking. The human reader was a contingency. The new reader has a different attention budget.
+Search has always been graph-traversal-with-ranking. The human reader was a contingency. The new reader — an agent — has a different attention budget.
 
 *Companion to **[Know Thyself](/essays/know-thyself/)**. Scaffold: **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**.*
 
@@ -33,9 +33,9 @@ Search has always been one shape: **find relevant nodes by walking edges, ranked
 
 Fifty years of information retrieval, same shape instantiated four times. What changes at each scale is *what's in a node, what an edge means, what the query looks like, and who's at the other end.*
 
-**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has a name — BM25 — and an older sibling, TF-IDF. Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
+**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has names — TF-IDF (rare words count more) and its successor BM25 (same idea, with length normalization). Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
 
-**Scale 2 — Vector retrieval.** The node is no longer a word; it's an embedding — a point in high-dimensional space where meaning lives as direction. Two points are close if the angle between them is small. That's cosine distance. At scale, the index itself becomes a graph: a small-world layered so a greedy walk from the top hops down to the nearest neighbors in log time. Below ten thousand vectors, brute-force multiplication is faster than the index. Past that, the index earns its keep. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
+**Scale 2 — Vector retrieval.** The node is no longer a word; it's an embedding — a point in high-dimensional space where meaning lives as direction. Two points are close if the angle between them is small (cosine distance — the standard similarity metric for embeddings). At scale, the index itself becomes a graph: a small-world layered so a greedy walk from the top hops down to the nearest neighbors in log time. Below ten thousand vectors, brute-force multiplication is faster than the index. Past that, the index earns its keep. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
 
 **Scale 3 — Typed knowledge graph.** A node is no longer a document. It's a *claim*. Edges are no longer "links to" — they're labelled. *Grounds.* *Derives from.* *Evidences.* *Contradicts.* The labels do retrieval work. They let the walk distinguish *I said this five times* from *independently grounded twice.* The query stops being a string and becomes a predicate — a structured request for a kind of node. Reader: a self, or an agent on behalf of one. Format: node plus provenance plus neighborhood.
 
@@ -43,13 +43,13 @@ Fifty years of information retrieval, same shape instantiated four times. What c
 
 *The retriever now spawns retrievers.* Exa's Feb–Mar 2026 ships make the shift legible: Exa Instant returns neural results in under 200ms — fast enough to sit inside a tool-call loop — while Exa Deep fans out parallel sub-agents per query, and exa-code maintains a code-example index aimed at hallucination-rate reduction.[^exa-ships]
 
-*Search is no longer a URL. It's a tool a model calls.* In December 2025, Anthropic donated the Model Context Protocol to the Linux Foundation; the substrate beneath agent retrieval is now governed as shared infrastructure, not a vendor API.[^mcp-lf]
+*Search is no longer a URL. It's a tool a model calls.* In December 2025, Anthropic donated the Model Context Protocol — MCP, the open standard that lets a model invoke external tools and data sources — to the Linux Foundation; the substrate beneath agent retrieval is now governed as shared infrastructure, not a vendor API.[^mcp-lf]
 
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
 There's a fifth column the four scales reset, less visible than node, edge, query, ranking — *latency*. Each scale inherits a budget from the reader at the other end.
 
-Three requirements fall out of the walk. **Query format** — humans type two words because typing is slow. Agents type a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
+Three requirements fall out of the walk, and they shift when readers shift from human to agent. **Query format** — humans type two words because typing is slow. Agents emit a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
 
 *There's a third axis. Not what something looks like, not what it means — what it is.* Turnbull names it: agents query by attribute, and metadata is the retrieval kind that lexical and embedding both miss.[^turnbull-metadata]
 
@@ -66,7 +66,7 @@ Four claims, deep prior backing.[^bounded]
 
 Stack them. When `|K|` exceeds `C_n`, discarding loses information and lossless hits Shannon's floor. **Factoring is graph construction.** The bounded reader needs the graph not as decoration but as the only architecture that lets retrieval scale without degrading.
 
-Three substrates share the constraint: biological working memory, institutional decision-making, *transformer context windows — large but degrading as irrelevant content fills them.* McCarthy proves it formally for the scientific case, with a corollary aimed at the frontier labs:
+Three substrates share the constraint: biological working memory, institutional decision-making, *transformer context windows — the span of text a model can hold in active attention; large now, but degrading as irrelevant content fills them.* McCarthy proves it formally for the scientific case, with a corollary aimed at the frontier labs:
 
 > Growing C_n directly does not solve the retrieval problem… The efficient path is not to grow the context window but to grow the encoded knowledge accessible via stored adjacency: **filling the graph, not the context window.**
 
@@ -154,7 +154,7 @@ Three things to notice.
 
 **C demotes the tentative novel.** Provenance reranking knows the novel is one-derivation and the overlap is two-grounded. *Attribution ≠ confidence as a retrieval property.*
 
-**At 87 nodes, none of this needs HNSW.** Brute-force matmul runs in two ms. HNSW kicks in when linear scan stops being free — well past where most personal graphs go.[^pinecone] Algorithm scales with problem.
+**At 87 nodes, none of this needs HNSW** — the small-world graph index that makes vector lookup log-time at scale. Brute-force matmul runs in two ms. HNSW kicks in when linear scan stops being free — well past where most personal graphs go.[^pinecone] Algorithm scales with problem.
 
 ## What this opens
 

@@ -29,7 +29,7 @@ There are three ways to honor the principle. The pattern that breaks it — putt
 
 *If you need a human in the loop, give them context. If you don't need a human, don't put one there.*
 
-**Automate completely.** A codemod or script does every change end-to-end — PR creation, validation, merge — with CI verification and canary rollout. *Why it works:* no context problem because no human is in the loop. The machine does the full job. *Tradeoff:* only works for mechanically safe changes.
+**Automate completely.** A script (or a codemod — a program that rewrites source code mechanically) does every change end-to-end — PR creation, validation, merge — with CI verification and canary rollout. *Why it works:* no context problem because no human is in the loop. The machine does the full job. *Tradeoff:* only works for mechanically safe changes.
 
 **Own it vertically.** A dedicated team permanently owns the cross-cutting concern with merge authority. They write the PRs, hold the context, and are accountable for completion. *Why it works:* the human in the loop has deep context and authority — no dependency on another team's bandwidth or motivation. *Tradeoff:* requires permanent headcount and org commitment.
 

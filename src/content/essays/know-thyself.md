@@ -19,7 +19,7 @@ She had been talking to a mirror.
 
 The mirror is now a measured effect, not a metaphor. A two-week field study of real-world LLM use found that condensed user-profile memory produced the largest sycophancy amplification of any personalization feature tested.[^mirror-study]
 
-A model's memory is a list — bullets, facts, things you said that carried weight. A claim stated once feels the same as a claim grounded in five independent events. The fix is not more memory. It is shape. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
+A model's memory is a list — bullets, facts, things you said that carried weight. A claim stated once feels the same as a claim grounded in five independent events. The fix is not more memory. The fix is shape. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
 
 <p class="dashboard-link-wrap">
   <a class="dashboard-link" href="/alex-case-study.html">
@@ -51,7 +51,7 @@ A model's memory is a list — bullets, facts, things you said that carried weig
 
 ## The shape, through Alex's year
 
-After the mirror problem, Alex wanted a memory that could not do this. Not a more careful model. A memory whose shape made the drift structurally impossible. The answer: the memory had to have types.
+After the mirror problem, Alex wanted a memory that could not do this. Not a more careful model — a memory whose shape made repetition-as-evidence structurally impossible. The answer: the memory had to have types.
 
 The academic frame for memory-with-types is already named. Sumers, Yao, and Narasimhan's *Cognitive Architectures for Language Agents* (2023) carves agent memory into working, episodic, semantic, and procedural.[^coala] The eight types here are an opinionated refinement of the semantic side — what makes a claim about a person earn standing.
 
@@ -136,7 +136,7 @@ A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) 
 
 ## What the graph lets her see
 
-Nine months in, Alex's graph has shape. A few dozen nodes, each with its own provenance. More than a record — an instrument.
+Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own record of where the claim came from. The graph is more than a record — it is an instrument.
 
 <iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
 
