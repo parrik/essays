@@ -74,6 +74,16 @@
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') close();
     });
+    // Click anywhere outside the drawer panel closes it — except clicks
+    // on a graph node, which swap the drawer content in place.
+    document.addEventListener('click', (e) => {
+      if (drawer.getAttribute('aria-hidden') !== 'false') return;
+      const t = e.target;
+      if (!(t instanceof Element)) return;
+      if (t.closest('.viz-drawer-panel')) return;
+      if (t.closest('.viz-node-link')) return;
+      close();
+    });
   })();
 </script>
 
