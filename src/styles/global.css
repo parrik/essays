@@ -365,10 +365,9 @@ a:hover { text-decoration-color: var(--accent); }
 .essay-meta a:hover { color: var(--accent); }
 
 /* === Knowledge-graph viz polish — applied globally so all 5 essay
-       dashboards inherit the same hand-drawn-feeling base treatment.
-       Single source of truth for .viz-node colours, filters, and
-       .edge styling; embedded dashboard styles must not redefine
-       these. === */
+       dashboards inherit the same clean geometric treatment.
+       Single source of truth for .viz-node colours and .edge styling;
+       embedded dashboard styles must not redefine these. === */
 
 .graph-viz {
   position: relative;
@@ -380,23 +379,18 @@ a:hover { text-decoration-color: var(--accent); }
   overflow: visible;
 }
 
-/* Hand-drawn wobble (via Base.astro filter defs) + soft drop-shadow.
-   The combination — feDisplacementMap turbulence over the path, then
-   layered shadow — gives the cream-paper, slightly-raised, hand-sketched
-   feel that matches /example-graph-full.html. */
+/* Clean geometric shapes with a soft shadow. No turbulence filter —
+   the example-graph reference (/example-graph-full.html) is sharp and
+   inviting, not sketchy. A subtle drop-shadow gives depth without
+   visual noise. */
 .viz-node {
-  filter:
-    url(#hand-drawn)
-    drop-shadow(2px 3px 0 rgba(40, 30, 20, 0.09))
-    drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
-  transition: filter 220ms ease, transform 220ms ease;
+  filter: drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
+  transition: filter 200ms ease, transform 200ms ease;
   transform-box: fill-box;
   transform-origin: center;
 }
-/* Edges get the wobble too — without it, geometric lines into wobbled
-   nodes read as inconsistent. */
 .edge {
-  filter: url(#hand-drawn);
+  /* No filter — clean geometric line into a clean shape. */
 }
 .viz-node-link {
   cursor: pointer;
@@ -404,8 +398,8 @@ a:hover { text-decoration-color: var(--accent); }
 }
 .viz-node-link:hover .viz-node {
   filter:
-    drop-shadow(3px 4px 0 rgba(40, 30, 20, 0.13))
-    drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
+    drop-shadow(0 4px 10px rgba(40, 30, 20, 0.18))
+    drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
   transform: translateY(-1px);
 }
 .viz-node-link:focus-visible {
@@ -482,32 +476,22 @@ a:hover { text-decoration-color: var(--accent); }
   letter-spacing: 0.03em;
 }
 
-/* Edges: slightly off-black, gentle taper. Derives stays dashed,
-   grounds (citation→synthesis) stays solid. */
+/* Edges: light gray with gentle taper, matching the example-graph
+   reference. Derives stays dashed, grounds (citation→synthesis)
+   stays solid. */
 .edge {
-  stroke: rgba(40, 30, 20, 0.32);
-  stroke-width: 1.6;
+  stroke: #bbbbbb;
+  stroke-width: 1;
   fill: none;
 }
 .edge-derives {
   stroke-dasharray: 5 4;
-  stroke: rgba(40, 30, 20, 0.42);
+  stroke: #b8b0a0;
 }
 
-/* Reduced motion — drop the wobble filter and the hover translate.
-   Soft drop-shadow remains so depth still reads. */
 @media (prefers-reduced-motion: reduce) {
-  .viz-node {
-    filter: drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
-    transition: none;
-  }
-  .edge {
-    filter: none;
-  }
-  .viz-node-link:hover .viz-node {
-    filter: drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
-    transform: none;
-  }
+  .viz-node { transition: none; }
+  .viz-node-link:hover .viz-node { transform: none; }
 }
 
 /* === end graph viz polish === */
