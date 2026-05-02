@@ -88,29 +88,6 @@ jobs:
             'dist/**/*.html'
           fail: false  # external links flake, don't block
 
-  html-validate:
-    name: HTML sanity check
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-
-      - name: Install html-validate
-        run: npm install --no-save html-validate
-
-      - name: Validate essay pages
-        run: |
-          npx html-validate \
-            --formatter stylish \
-            'dist/**/*.html' \
-            --preset recommended \
-            || exit 0  # informational; tighten later
-        continue-on-error: true
-
   styles-loaded:
     # Catches the specific failure class where a page renders without CSS
     # because the stylesheet link or build chunking broke. Validates that
@@ -150,3 +127,30 @@ jobs:
             fi
           done
           exit $fail
+
+  lighthouse:
+    name: Lighthouse audit (perf / a11y / best-practices / SEO)
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install Lighthouse CI
+        run: npm install --no-save @lhci/cli
+
+      - name: Run Lighthouse against built site
+        run: |
+          npx @lhci/cli autorun \
+            --config=.lighthouserc.json \
+            --collect.staticDistDir=./dist \
+            --upload.target=temporary-public-storage

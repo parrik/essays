@@ -12,14 +12,58 @@ have caught it at PR time."
 | `astro check` | Content-collection schema + unused imports | PR + push |
 | **Internal link check** (lychee, internal-only) | Broken `href` to a page that doesn't exist — e.g. `/essays/know-thyself-v2/` that we actually shipped | PR + push |
 | **Stylesheet-presence guard** | Page renders without CSS because the `<link rel="stylesheet">` was omitted or the bundle was missing | PR + push |
-| **Playwright visual regression** | Layout breaks, typography regressions, broken responsive breakpoints — compared against committed screenshots in `tests/screenshots/` | PR |
-| **Axe accessibility audit** | Missing alt text, low contrast, missing landmarks, keyboard traps | PR |
-| **Lighthouse CI** | Perf / a11y / SEO regressions below budgets (`.lighthouserc.json`) | PR |
-| **Post-deploy live verification** (puppeteer) | What the user actually sees is broken — e.g. the deployed CSS chunk 404s | push (after deploy) |
+| **Lighthouse CI** | Perf / a11y / SEO regressions below budgets (`.lighthouserc.json`) — a11y `0.95` and SEO `0.9` are `error`-level assertions, so a regression below those thresholds fails the merge | PR + push |
+| **Post-deploy live verification** (puppeteer) | What the user actually sees is broken — e.g. the deployed CSS chunk 404s | every 6h schedule + manual |
 
 External link checks, markdown lint, and spellcheck run informational only —
 external links flake, spellcheck has too many false positives on engineer
 register, markdown lint is mostly stylistic.
+
+## Local pre-push gates (not CI)
+
+| Hook | What it catches | Installed via |
+|---|---|---|
+| **PD-audit pre-commit** | Personal-data patterns and personal-graph node IDs in staged files (full pattern set lives in the harness, not vendored here) | `bash $HARNESS/scripts/install-pd-hooks.sh` (run once per repo) |
+| **PD-audit pre-push** | Same scan applied to the commit range being pushed — last line of defense before the diff leaves the machine | same install script |
+
+These are local hooks, not CI — re-run the install script on a fresh clone or
+when joining from a new device. The harness script is idempotent.
+
+## What was deferred / removed
+
+- **Playwright visual regression** and **axe accessibility audit** were
+  documented here but never built. Removed from the table to keep the doc
+  honest. Add when there's a real layout regression to defend against and
+  `tests/screenshots/` baseline images are worth committing.
+- **html-validate** ran in CI but was double-suppressed (`|| exit 0` AND
+  `continue-on-error: true`), so it produced no signal. Removed. Add back
+  if there's a specific HTML correctness class worth gating that
+  Lighthouse's `best-practices` doesn't already cover.
+
+## Lighthouse debt carve-outs (current floor, not aspirational)
+
+When Lighthouse was un-suppressed, three categories of pre-existing debt
+surfaced. They're carved out in `.lighthouserc.json` so the gate stays
+honest (any *new* regression below the current floor still fails) but the
+known debt doesn't block unrelated PRs:
+
+- **`color-contrast`: warn** — multiple essay pages have text/background
+  combinations that score below 0.9 on the per-audit minScore. Pay down by
+  auditing the design tokens against WCAG AA (4.5:1 body, 3:1 large) and
+  promoting back to `error` once clean.
+- **`aria-prohibited-attr`: warn** — the homepage has an ARIA attribute
+  on an element where the current ARIA spec prohibits it. Identify the
+  offending element, remove or replace, promote back to `error`.
+- **`network-dependency-tree-insight`, `dom-size-insight`,
+  `max-potential-fid`: off** — Lighthouse v12 preset additions; they
+  flag opportunities (mostly fonts and the reading-progress div) but don't
+  reflect actual user-perceived issues. Re-enable when there's a perf
+  regression worth investigating.
+
+Category-level floors are now `error` at `0.9` for performance, accessibility,
+best-practices, and SEO — current scores are 0.91–1.0 across the four pages
+LHCI audits, so any drop below 0.9 will block. Ratchet the threshold up as
+debt is paid down.
 
 ## Mistakes this session and the guardrails that now catch them
 

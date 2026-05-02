@@ -7,3 +7,5 @@ dist/
 npm-debug.log*
 scripts/verify-output/
 _drafts/
+.lhci-local/
+.lighthouseci/
