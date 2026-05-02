@@ -1,0 +1,191 @@
+---
+type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
+
+interface Props {
+  type: NodeType;
+  cx: number;
+  cy: number;
+  r?: number;
+  width?: number;
+  height?: number;
+  isSpine?: boolean;
+  id: string;
+  claim: string;
+  why?: string;
+  where?: string;
+  label: string;
+  letter: string;
+  typeLabel: string;
+  /** Deprecated. Kept for back-compat; ignored — labels render inside the shape. */
+  labelY?: number;
+}
+
+const {
+  type,
+  cx,
+  cy,
+  r,
+  width: widthProp,
+  height: heightProp,
+  isSpine = false,
+  id,
+  claim,
+  why = '',
+  where = '',
+  label,
+  letter,
+  typeLabel,
+} = Astro.props;
+
+// Back-compat: if only `r` provided, derive a text-bearing rect bbox.
+// Tuned so r=26 yields ~ 78x44, comfortable for 2 lines of 11px text.
+const baseR = r ?? 24;
+const width = widthProp ?? baseR * 3.0;
+const height = heightProp ?? Math.max(baseR * 1.7, 38);
+
+// Pick the inside-text line(s).
+// Prefer `where` (curator-authored kicker, e.g. "the principle", "spine").
+// Else fall back to a short prefix of the claim, trimmed at a word boundary.
+function shorten(s: string, max = 22): string {
+  const t = (s || '').replace(/\s+/g, ' ').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const lastSpace = cut.lastIndexOf(' ');
+  return (lastSpace > 6 ? cut.slice(0, lastSpace) : cut) + '…';
+}
+
+function wrapTwoLines(s: string, perLine = 16): [string, string?] {
+  const t = (s || '').trim();
+  if (t.length <= perLine) return [t];
+  // Try to split at a space close to the middle.
+  const target = Math.min(perLine, Math.ceil(t.length / 2));
+  let splitAt = -1;
+  for (let i = target; i < Math.min(t.length, perLine + 6); i++) {
+    if (t[i] === ' ') { splitAt = i; break; }
+  }
+  if (splitAt < 0) {
+    // Look backwards.
+    for (let i = target; i > 4; i--) {
+      if (t[i] === ' ') { splitAt = i; break; }
+    }
+  }
+  if (splitAt < 0) return [shorten(t, perLine + 4)];
+  const a = t.slice(0, splitAt).trim();
+  let b = t.slice(splitAt + 1).trim();
+  if (b.length > perLine + 4) b = shorten(b, perLine + 2);
+  // If line 2 is too short or only punctuation/dash, collapse into line 1 with ellipsis.
+  const stripPunct = b.replace(/[^A-Za-z0-9]/g, '');
+  if (stripPunct.length < 3) {
+    return [a + '…'];
+  }
+  return [a, b];
+}
+
+// Pick the inside-text source.
+//   - Use `where` when it reads like a kicker ("the principle", "spine", "opening").
+//   - Skip `where` when it is a footnote pointer ("footnote [^1]") — those are
+//     navigation crumbs, not labels; fall back to the claim instead.
+const whereLooksLikeFootnote = /^footnote\b|\[\^/i.test(where || '');
+const useWhere = !!where && !whereLooksLikeFootnote;
+const insideRaw = useWhere ? where : shorten(claim, 38);
+const lines = wrapTwoLines(insideRaw, 17);
+
+// Geometry helpers
+const halfW = width / 2;
+const halfH = height / 2;
+const left = cx - halfW;
+const top = cy - halfH;
+const right = cx + halfW;
+const bottom = cy + halfH;
+
+// Hex (observation) — slightly inflated so inscribed text doesn't kiss the edge
+const hexHalfW = halfW * 1.10;
+const hexHalfH = halfH * 1.05;
+const hexInset = hexHalfW * 0.32;
+const hexPoints = [
+  [cx - hexHalfW + hexInset, cy - hexHalfH],
+  [cx + hexHalfW - hexInset, cy - hexHalfH],
+  [cx + hexHalfW, cy],
+  [cx + hexHalfW - hexInset, cy + hexHalfH],
+  [cx - hexHalfW + hexInset, cy + hexHalfH],
+  [cx - hexHalfW, cy],
+]
+  .map(([x, y]) => `${x},${y}`)
+  .join(' ');
+
+// Diamond (derivation) — inflated ~40% so the text fits inside the inscribed rect
+const diaHalfW = halfW * 1.55;
+const diaHalfH = halfH * 1.55;
+const diamondPoints = [
+  [cx, cy - diaHalfH],
+  [cx + diaHalfW, cy],
+  [cx, cy + diaHalfH],
+  [cx - diaHalfW, cy],
+]
+  .map(([x, y]) => `${x},${y}`)
+  .join(' ');
+
+// Ellipse (synthesis) — fills the bbox
+const ellipseRx = halfW;
+const ellipseRy = halfH;
+
+// Rect (citation)
+const rectRx = 8;
+
+const spineClass = isSpine ? ' viz-node-spine' : '';
+const baseClass = `viz-node viz-node-${type}${spineClass}`;
+
+// Letter chip placement.
+// For ellipse / rect / hex the bbox top-left works (with inset).
+// For diamond, the bbox corners are outside the polygon — pin the chip near the top tip instead.
+const chipR = 8;
+let chipCx: number;
+let chipCy: number;
+if (type === 'derivation') {
+  chipCx = cx;
+  chipCy = cy - diaHalfH + chipR + 4;
+} else if (type === 'observation') {
+  chipCx = cx - hexHalfW + hexInset + chipR + 2;
+  chipCy = cy - hexHalfH + chipR + 2;
+} else {
+  chipCx = left + chipR + 4;
+  chipCy = top + chipR + 4;
+}
+
+// Vertical centering for inside text
+const lineHeight = 13;
+const textBaseY = lines.length === 2
+  ? cy - lineHeight / 2 + 4
+  : cy + 4;
+---
+<a
+  href={`#${id}`}
+  class="viz-node-link"
+  data-id={id}
+  data-claim={claim}
+  data-why={why}
+  data-type={typeLabel}
+  data-where={where}
+  aria-label={`${typeLabel} ${id}`}
+>
+  {type === 'synthesis' && (
+    <ellipse cx={cx} cy={cy} rx={ellipseRx} ry={ellipseRy} class={baseClass} />
+  )}
+  {type === 'citation' && (
+    <rect x={left} y={top} width={width} height={height} rx={rectRx} ry={rectRx} class={baseClass} />
+  )}
+  {type === 'derivation' && (
+    <polygon points={diamondPoints} class={baseClass} />
+  )}
+  {type === 'observation' && (
+    <polygon points={hexPoints} class={baseClass} />
+  )}
+
+  <text x={cx} y={textBaseY} class="viz-node-text">
+    <tspan x={cx} dy="0">{lines[0]}</tspan>
+    {lines[1] && <tspan x={cx} dy={lineHeight}>{lines[1]}</tspan>}
+  </text>
+
+  <circle cx={chipCx} cy={chipCy} r={chipR} class={`viz-node-chip viz-node-chip-${type}`} />
+  <text x={chipCx} y={chipCy + 3} class="viz-node-chip-letter">{letter}</text>
+</a>

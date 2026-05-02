@@ -1,0 +1,725 @@
+---
+import Base from '../../../layouts/Base.astro';
+import GraphNode from '../../../components/GraphNode.astro';
+import IssueLink from '../../../components/IssueLink.astro';
+import EssayTabs from '../../../components/EssayTabs.astro';
+import data from '../../../data/essay-graphs/know-thyself-search.json';
+const etudesUrl = '/etudes/know-thyself/';
+
+type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
+
+const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actions } = data as {
+  slug: string;
+  essayTitle: string;
+  spineId: string;
+  viewBox: { width: number; height: number };
+  nodes: { id: string; type: NodeType; claim: string; where?: string; source?: string; url?: string; derives_from?: string[]; why?: string }[];
+  positions: Record<string, { cx: number; cy: number; r: number; labelY: number; labelText: string }>;
+  edges: { from: string; to: string; kind?: string }[];
+  eyes: { id: string; what: string; why: string; ground_with?: { label: string; url?: string }[] }[];
+  actions: { kind: 'etude' | 'apply' | 'next'; label: string; body: string; href?: string }[];
+};
+
+const subtitle = "The essay's knowledge, dashboard-shaped — graph, eyes, actions. The graph is the source of truth; the prose follows.";
+
+const typeMeta: Record<NodeType, { letter: string; label: string; chip: string }> = {
+  synthesis: { letter: 'S', label: 'synthesis', chip: 'chip-emg' },
+  citation: { letter: 'C', label: 'citation', chip: 'chip-eqv' },
+  derivation: { letter: 'D', label: 'derivation', chip: 'chip-ovl' },
+  observation: { letter: 'O', label: 'observation', chip: 'chip-obs' },
+};
+
+const counts = nodes.reduce(
+  (acc, n) => {
+    acc[n.type] = (acc[n.type] || 0) + 1;
+    return acc;
+  },
+  {} as Record<NodeType, number>,
+);
+---
+<Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
+  <article class="dash-page">
+    <header class="dash-head">
+      <p class="dash-kicker">Knowledge dashboard</p>
+      <h1 class="dash-title">{essayTitle}</h1>
+      <p class="dash-relief">{subtitle}</p>
+      <EssayTabs slug={slug} activeTab="knowledge-graph" etudesUrl={etudesUrl} hasGraph={true} />
+    </header>
+
+    <nav class="tabbar" role="tablist">
+      <button type="button" data-tab="graph" class="active" role="tab" aria-selected="true">Graph</button>
+      <button type="button" data-tab="eyes" role="tab" aria-selected="false">Eyes <span class="tab-count">{eyes.length}</span></button>
+      <button type="button" data-tab="actions" role="tab" aria-selected="false">Actions <span class="tab-count">{actions.length}</span></button>
+    </nav>
+
+    <section id="tab-graph" class="tab-panel active" role="tabpanel">
+      <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
+
+      <div class="graph-viz">
+        <svg viewBox={`0 0 ${viewBox.width} ${viewBox.height}`} role="img" aria-label={`Knowledge graph — ${essayTitle}`}>
+          {edges.map((edge) => {
+            const from = positions[edge.from];
+            const to = positions[edge.to];
+            if (!from || !to) return null;
+            return <line x1={from.cx} y1={from.cy} x2={to.cx} y2={to.cy} class={`edge edge-${edge.kind || 'derives'}`} />;
+          })}
+
+          {nodes.map((n) => {
+            const p = positions[n.id];
+            if (!p) return null;
+            return (
+              <GraphNode
+                type={n.type}
+                cx={p.cx}
+                cy={p.cy}
+                r={p.r}
+                isSpine={n.id === spineId}
+                id={n.id}
+                claim={n.claim}
+                why={n.why}
+                where={n.where}
+                label={p.labelText}
+                letter={typeMeta[n.type].letter}
+                typeLabel={typeMeta[n.type].label}
+                labelY={p.labelY}
+              />
+            );
+          })}
+        </svg>
+        <div id="viz-tooltip" class="viz-tooltip" aria-hidden="true"></div>
+      </div>
+
+      <div class="dash-counts">
+        {(Object.keys(counts) as NodeType[]).map((t) => (
+          <span class={`chip ${typeMeta[t].chip}`}>
+            {typeMeta[t].letter}
+            <span class="chip-count"> {counts[t]}</span>
+          </span>
+        ))}
+      </div>
+
+      <div class="graph-nodes">
+        {nodes.map((n) => (
+          <article class={`graph-node graph-node-${n.type}`} id={n.id}>
+            <p class="graph-node-head">
+              <span class={`chip ${typeMeta[n.type].chip}`}>{typeMeta[n.type].letter}</span>
+              <code class="graph-node-id">{n.id}</code>
+              {n.where && <span class="graph-node-where">· {n.where}</span>}
+            </p>
+            <p class="graph-node-claim">{n.claim}</p>
+            {n.source && (
+              <p class="graph-node-source">
+                <span class="graph-node-edge-label">grounds:</span>{' '}
+                {n.url ? <a href={n.url} rel="noopener">{n.source}</a> : <span>{n.source}</span>}
+              </p>
+            )}
+            {n.derives_from && n.derives_from.length > 0 && (
+              <p class="graph-node-derives">
+                <span class="graph-node-edge-label">derives_from:</span>{' '}
+                {n.derives_from.map((d, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    <a href={`#${d}`}><code>{d}</code></a>
+                  </>
+                ))}
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="tab-eyes" class="tab-panel" role="tabpanel">
+      <p class="tab-lead">Claims that need more grounding. The essay's confident synthesis — but where external corroboration would strengthen the case, or an open question is implicit.</p>
+
+      <div class="eyes-list">
+        {eyes.map((e) => (
+          <article class="eyes-item">
+            <p class="eyes-item-head">
+              <a href={`#${e.id}`} class="eyes-item-id"><code>{e.id}</code></a>
+            </p>
+            <p class="eyes-what">{e.what}</p>
+            <p class="eyes-why"><em>Why eyes:</em> {e.why}</p>
+            {e.ground_with && e.ground_with.length > 0 && (
+              <p class="eyes-ground">
+                <span class="eyes-ground-label">ground_with:</span>
+                <ul>
+                  {e.ground_with.map((g) => (
+                    <li>
+                      {g.url ? <a href={g.url} rel="noopener">{g.label}</a> : <span>{g.label}</span>}
+                    </li>
+                  ))}
+                </ul>
+              </p>
+            )}
+            <p class="card-cta">
+              <IssueLink kind="eyes" slug={slug} item={e} />
+            </p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section id="tab-actions" class="tab-panel" role="tabpanel">
+      <p class="tab-lead">What the essay implies for the reader. Etudes drill specific claims; <em>apply</em> items put the principle to work; <em>next</em> points at sibling essays.</p>
+
+      <div class="actions-list">
+        {actions.map((a) => (
+          <article class={`actions-item actions-item-${a.kind}`}>
+            <p class="actions-item-head">
+              <span class={`actions-kind actions-kind-${a.kind}`}>{a.kind}</span>
+              {a.href ? (
+                <a href={a.href} class="actions-item-label">{a.label} →</a>
+              ) : (
+                <span class="actions-item-label">{a.label}</span>
+              )}
+            </p>
+            <p class="actions-item-body">{a.body}</p>
+            {a.kind === 'apply' && (
+              <p class="card-cta">
+                <IssueLink kind="apply" slug={slug} item={a} />
+              </p>
+            )}
+          </article>
+        ))}
+      </div>
+    </section>
+  </article>
+</Base>
+
+<script is:inline>
+  document.querySelectorAll('.tabbar [data-tab]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const name = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tabbar [data-tab]').forEach((b) => {
+        const active = b.getAttribute('data-tab') === name;
+        b.classList.toggle('active', active);
+        b.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      document.querySelectorAll('.tab-panel').forEach((p) => {
+        p.classList.toggle('active', p.id === 'tab-' + name);
+      });
+    });
+  });
+
+  // Deep-link via hash: #tab-eyes / #tab-actions / #tab-graph
+  const hash = window.location.hash.replace('#', '');
+  if (hash.startsWith('tab-')) {
+    const name = hash.slice(4);
+    const btn = document.querySelector(`.tabbar [data-tab="${name}"]`);
+    if (btn) btn.click();
+  }
+  // Node click in viz → switch back to graph tab if needed, then anchor handles it
+  document.querySelectorAll('.viz-node-link').forEach((a) => {
+    a.addEventListener('click', () => {
+      const graphBtn = document.querySelector('.tabbar [data-tab="graph"]');
+      if (graphBtn && !graphBtn.classList.contains('active')) graphBtn.click();
+    });
+  });
+
+  // Hover tooltip on graph nodes — pattern from /example-graph-full.html
+  const tip = document.getElementById('viz-tooltip');
+  if (tip) {
+    const escape = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    document.querySelectorAll('.viz-node-link').forEach((a) => {
+      a.addEventListener('mouseenter', () => {
+        const id = a.getAttribute('data-id');
+        const claim = a.getAttribute('data-claim');
+        const why = a.getAttribute('data-why');
+        const type = a.getAttribute('data-type');
+        const where = a.getAttribute('data-where');
+        let html = '<div class="vt-type">' + escape(type);
+        if (where) html += '<span class="vt-dot">·</span>' + escape(where);
+        html += '</div>';
+        html += '<div class="vt-id"><code>' + escape(id) + '</code></div>';
+        html += '<div class="vt-claim">' + escape(claim) + '</div>';
+        if (why) html += '<div class="vt-why"><span class="vt-label">Why this node:</span> ' + escape(why) + '</div>';
+        tip.innerHTML = html;
+        tip.classList.add('visible');
+      });
+      a.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+      a.addEventListener('mousemove', (e) => {
+        const pad = 12;
+        const margin = 6;
+        const w = tip.offsetWidth || 280;
+        const h = tip.offsetHeight || 100;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        let x = e.clientX + pad;
+        if (x + w > vw - margin) x = e.clientX - w - pad;
+        if (x < margin) x = margin;
+        if (x + w > vw - margin) x = vw - w - margin;
+        let y = e.clientY + pad;
+        if (y + h > vh - margin) y = e.clientY - h - pad;
+        if (y < margin) y = margin;
+        tip.style.left = x + 'px';
+        tip.style.top = y + 'px';
+      });
+    });
+  }
+</script>
+
+<style is:global>
+  .dash-page {
+    max-width: 44rem;
+    margin: 0 auto;
+  }
+  .dash-head {
+    margin-bottom: 1.5rem;
+  }
+  .dash-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .dash-title {
+    font-family: var(--serif-display);
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.005em;
+  }
+  .dash-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin: 0 0 0.85rem;
+    line-height: 1.5;
+  }
+  .dash-back {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+  }
+  .dash-back a { color: var(--muted); text-decoration: none; }
+  .dash-back a:hover { color: var(--accent); }
+
+  /* === tabbar === */
+  .tabbar {
+    display: flex;
+    gap: 0.4rem;
+    margin: 1.5rem 0 1.5rem;
+    padding: 0.3rem;
+    background: var(--bg-soft);
+    border-radius: 6px;
+    width: fit-content;
+  }
+  .tabbar button {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 0.55rem 1rem;
+    /* 44px touch-target floor (Apple HIG). Important on mobile where the
+       responsive block below shrinks the horizontal padding. */
+    min-height: 44px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: color 240ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .tabbar button:hover {
+    color: var(--text);
+  }
+  .tabbar button:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .tabbar button.active {
+    background: var(--text);
+    color: var(--bg);
+    transition: background 240ms ease, color 240ms ease;
+  }
+  .tabbar button.active:hover {
+    color: var(--bg);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tabbar button { transition: none; }
+  }
+  .tab-count {
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.7;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+  .tab-lead {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    font-style: italic;
+  }
+
+  /* === Graph tab — SVG viz === */
+  .graph-viz {
+    position: relative;
+    margin: 0 0 1.75rem;
+    padding: 1rem;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  /* Hover tooltip — same family as /example-graph-full.html */
+  .viz-tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #fffdf7;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.7rem 0.85rem;
+    width: min(320px, calc(100vw - 24px));
+    box-sizing: border-box;
+    box-shadow: 0 6px 18px rgba(40, 30, 20, 0.16);
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 120ms ease, transform 120ms ease;
+    z-index: 1000;
+  }
+  .viz-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .viz-tooltip .vt-type {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .viz-tooltip .vt-dot {
+    color: var(--muted);
+    margin: 0 0.4em;
+  }
+  .viz-tooltip .vt-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .viz-tooltip .vt-claim {
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .viz-tooltip .vt-why {
+    color: #4a4238;
+    font-style: italic;
+  }
+  .viz-tooltip .vt-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 0.25rem;
+  }
+  .graph-viz svg {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 728px;
+  }
+  /* .viz-node, .edge, per-type colours, .viz-node-text, .viz-node-chip*
+     all live in global.css now — single source of truth, hand-drawn
+     filter + soft drop-shadow inherited site-wide. Don't redefine here. */
+
+  /* === Issue link CTA on eyes / apply cards === */
+  .card-cta {
+    margin: 0.85rem 0 0;
+    padding-top: 0.85rem;
+    border-top: 1px dashed var(--line);
+    font-family: var(--sans);
+    font-size: 0.85rem;
+  }
+  .issue-link {
+    /* 44px touch target — important since these are primary CTAs. */
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid transparent;
+    transition: border-color 200ms ease;
+  }
+  .issue-link:hover {
+    border-bottom-color: var(--accent);
+  }
+  .issue-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .issue-link { transition: none; }
+  }
+  .issue-link-arrow {
+    font-size: 0.85em;
+    margin-left: 0.15em;
+    opacity: 0.7;
+  }
+
+  /* === Graph tab — node cards === */
+  .dash-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 1.5rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-soft);
+    border-radius: 10px;
+  }
+  /* Base chip — the .essay-body .graph-legend .chip rule in global.css
+     is scoped to essay body only, so dashboards need their own base. */
+  .dash-page .chip {
+    display: inline-block;
+    min-width: 1.8rem;
+    padding: 0.1em 0.45em;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid;
+    border-radius: 3px;
+    font-family: var(--sans);
+    flex-shrink: 0;
+  }
+  .dash-page .chip-ref { background: #ECECEC; border-color: #666666; color: #333; }
+  .dash-page .chip-obs { background: #C8DCF0; border-color: #3A5E7A; color: #1a3854; }
+  .dash-page .chip-ovl { background: #B8E0C2; border-color: #2A6A3A; color: #18472a; }
+  .dash-page .chip-emg { background: #E0C8F0; border-color: #5A3A7A; color: #3e2858; }
+  .dash-page .chip-eqv { background: #F5C890; border-color: #7A4A0E; color: #5a340a; }
+  .dash-counts .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.6rem;
+  }
+  .chip-count {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-left: 0.35rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
+  .graph-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .graph-node {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    scroll-margin-top: 1rem;
+  }
+  .graph-node:target {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .graph-node-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.45rem;
+    flex-wrap: wrap;
+  }
+  .graph-node-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: transparent;
+    padding: 0;
+  }
+  .graph-node-where {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .graph-node-claim {
+    margin: 0 0 0.55rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .graph-node-source,
+  .graph-node-derives {
+    margin: 0.3rem 0 0;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .graph-node-edge-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-right: 0.15rem;
+  }
+  .graph-node-source a,
+  .graph-node-derives a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+  }
+  .graph-node-source a:hover,
+  .graph-node-derives a:hover {
+    text-decoration-color: var(--accent);
+  }
+  .graph-node-derives code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    background: transparent;
+    padding: 0;
+  }
+
+  /* === Eyes tab === */
+  .eyes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .eyes-item {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--accent);
+  }
+  .eyes-item-head {
+    margin: 0 0 0.5rem;
+  }
+  .eyes-item-id code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: transparent;
+  }
+  .eyes-item-id {
+    text-decoration: none;
+  }
+  .eyes-item-id:hover code {
+    color: var(--accent);
+  }
+  .eyes-what {
+    margin: 0 0 0.5rem;
+    line-height: 1.55;
+  }
+  .eyes-why {
+    margin: 0 0 0.5rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.55;
+  }
+  .eyes-ground {
+    margin: 0.6rem 0 0;
+  }
+  .eyes-ground-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-right: 0.25rem;
+  }
+  .eyes-ground ul {
+    margin: 0.3rem 0 0 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .eyes-ground li {
+    color: var(--muted);
+  }
+  .eyes-ground a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+  }
+  .eyes-ground a:hover {
+    text-decoration-color: var(--accent);
+  }
+
+  /* === Actions tab === */
+  .actions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .actions-item {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+  }
+  .actions-item-head {
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    margin: 0 0 0.4rem;
+    flex-wrap: wrap;
+  }
+  .actions-kind {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    color: var(--muted);
+    background: var(--bg);
+  }
+  .actions-kind-etude { color: var(--accent); }
+  .actions-kind-apply { color: var(--text); }
+  .actions-kind-next { color: var(--muted); }
+  .actions-item-label {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    color: var(--text);
+    text-decoration: none;
+  }
+  a.actions-item-label {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 3px;
+  }
+  a.actions-item-label:hover {
+    text-decoration-color: var(--accent);
+  }
+  .actions-item-body {
+    margin: 0;
+    line-height: 1.55;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+
+  @media (max-width: 32rem) {
+    .dash-title { font-size: 1.5rem; }
+    .tabbar { width: 100%; justify-content: space-between; }
+    /* min-height is inherited from the base .tabbar button rule (44px),
+       so even with tighter horizontal padding the tap target holds. */
+    .tabbar button { padding: 0.55rem 0.7rem; font-size: 0.85rem; }
+    .graph-node, .eyes-item, .actions-item { padding: 0.85rem 0.95rem; }
+  }
+</style>

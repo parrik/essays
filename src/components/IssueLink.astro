@@ -1,0 +1,49 @@
+---
+type EyesData = {
+  id: string;
+  what: string;
+  why: string;
+  ground_with?: { label: string; url?: string }[];
+};
+type ApplyData = { label: string; body: string };
+
+interface Props {
+  kind: 'eyes' | 'apply';
+  slug: string;
+  item: EyesData | ApplyData;
+  repoOwner?: string;
+  repoName?: string;
+}
+
+const { kind, slug, item, repoOwner = 'parrik', repoName = 'essays' } = Astro.props;
+
+let title = '';
+let body = '';
+let labels = '';
+let ctaLabel = '';
+
+if (kind === 'eyes') {
+  const e = item as EyesData;
+  title = `Eyes: ${e.id} — needs grounding`;
+  body = `${e.what}\n\n**Why eyes:** ${e.why}`;
+  if (e.ground_with && e.ground_with.length > 0) {
+    body +=
+      '\n\nSuggested sources:\n' +
+      e.ground_with.map((g) => `- ${g.label}${g.url ? ` (${g.url})` : ''}`).join('\n');
+  }
+  body += '\n\n---\n*Please add citations, evidence, or pushback below.*';
+  labels = `eyes,essay:${slug}`;
+  ctaLabel = 'Suggest grounding';
+} else {
+  const a = item as ApplyData;
+  title = `Applied: ${a.label}`;
+  body = `${a.body}\n\n---\n*Please share what happened when you applied this prompt — observations, edge cases, or pushback.*`;
+  labels = `applied,essay:${slug}`;
+  ctaLabel = 'Share what happened';
+}
+
+const url = `https://github.com/${repoOwner}/${repoName}/issues/new?title=${encodeURIComponent(title)}&body=${encodeURIComponent(body)}&labels=${encodeURIComponent(labels)}`;
+---
+<a href={url} class="issue-link" target="_blank" rel="noopener">
+  {ctaLabel} <span class="issue-link-arrow">↗</span>
+</a>

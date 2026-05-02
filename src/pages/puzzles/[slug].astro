@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import MetadataStripe from '../../components/MetadataStripe.astro';
+import EssayTabs from '../../components/EssayTabs.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -13,6 +14,26 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props;
 const { Content } = await render(essay);
+
+// Essays with a graph dashboard built. As more land, add the slug here.
+const slugsWithGraph = new Set([
+  'the-campaign-cascade',
+  'know-thyself',
+  'know-thyself-search',
+  'know-thyself-security',
+  'the-partition-problem',
+]);
+const hasGraph = slugsWithGraph.has(essay.id);
+
+// Per-essay etude track. null = no etudes built yet.
+const etudesBySlug: Record<string, string | null> = {
+  'the-campaign-cascade': '/etudes/campaign-cascade/',
+  'the-partition-problem': '/etudes/restorative/',
+  'know-thyself': '/etudes/know-thyself/',
+  'know-thyself-search': '/etudes/know-thyself/',
+  'know-thyself-security': null,
+};
+const etudesUrl = etudesBySlug[essay.id] ?? null;
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>
   <article class="essay h-entry">
@@ -35,10 +56,12 @@ const { Content } = await render(essay);
       status={essay.data.status}
       confidence={essay.data.confidence}
     />
-    <div class="essay-meta">
-      <a href="/">← home</a>
-      {essay.data.pdfUrl && <a href={essay.data.pdfUrl}>download pdf</a>}
-    </div>
+    <EssayTabs
+      slug={essay.id}
+      activeTab="essay"
+      etudesUrl={etudesUrl}
+      hasGraph={hasGraph}
+    />
     <hr />
     <div class="essay-body e-content">
       <Content />

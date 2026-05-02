@@ -28,11 +28,21 @@ const fullTitle = title === 'parrik' ? 'parrik' : `${title} — parrik`;
     </style>
   </head>
   <body>
+    <!-- SVG filter defs — referenced by .viz-node via filter: url(#hand-drawn).
+         Slight turbulence + displacement gives shapes a hand-drawn wobble
+         without adding a JS dep. Applied site-wide; only the dashboards use it. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <defs>
+        <filter id="hand-drawn" x="-5%" y="-5%" width="110%" height="110%">
+          <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="turb" />
+          <feDisplacementMap in="SourceGraphic" in2="turb" scale="1.6" />
+        </filter>
+      </defs>
+    </svg>
     <div class="reading-progress" aria-hidden="true"></div>
     <header class="site-header">
       <a href="/" class="site-title">parrik</a>
       <nav class="site-nav">
-        <a href="/etudes/">etudes</a>
         <a href="/crossings/">crossings</a>
       </nav>
     </header>
