@@ -193,7 +193,7 @@ const subtitle = 'Pick your path. The wrong one is the cascade.';
   renderScenario();
 </script>
 
-<style>
+<style is:global>
   /* === etude page chrome === */
   .etude-page {
     max-width: 38rem;
@@ -314,6 +314,7 @@ const subtitle = 'Pick your path. The wrong one is the cascade.';
     border: 1px solid var(--line);
     border-radius: 10px;
     padding: 0.85rem 1rem;
+    min-height: 2.75rem;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -349,6 +350,7 @@ const subtitle = 'Pick your path. The wrong one is the cascade.';
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     width: 1.5rem;
     height: 1.5rem;
     border-radius: 50%;

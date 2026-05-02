@@ -910,3 +910,63 @@ hr {
   }
   hr { border-top: 1px solid #ccc; }
 }
+
+/* ── Type cards (the eight node types in know-thyself essay) ───────── */
+.type-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.85rem;
+  margin: 1.5rem 0 2rem;
+}
+.type-card {
+  background: var(--bg-soft);
+  border-radius: 10px;
+  padding: 1.1rem 1.2rem 1.15rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.type-card-head {
+  margin: 0;
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  line-height: 1.2;
+}
+.type-card-name {
+  font-family: var(--sans);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+.type-card-tagline {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--muted);
+}
+.type-card-meaning {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+.type-card-example {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--muted);
+  padding-top: 0.55rem;
+  border-top: 1px solid var(--line);
+}
+@media (max-width: 32rem) {
+  .type-card { padding: 1rem 1rem 1rem; }
+  .type-card-tagline { font-size: 0.95rem; }
+  .type-card-meaning { font-size: 0.96rem; }
+  .type-card-example { font-size: 0.92rem; }
+}

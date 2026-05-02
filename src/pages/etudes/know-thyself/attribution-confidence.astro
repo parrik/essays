@@ -32,7 +32,7 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
 <script is:inline>
   const SCENARIOS = [
     {
-      vignette: "Across six conversations spanning four months, Maya tells the model \"I avoid conflict.\" Different phrasings each time, no specific incidents.",
+      vignette: "Across six conversations spanning four months, Alex tells the model \"I avoid conflict at the Press.\" Different phrasings each time, no specific manuscript or meeting.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "6 derivations (corroborated)", correct: false },
@@ -41,7 +41,7 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Six restatements of the same self-attribution trace to one underlying claim. Repetition compresses; it does not corroborate."
     },
     {
-      vignette: "Two friends and a coworker, none of whom know each other, each independently describe Devon as \"someone who ghosts when uncomfortable.\"",
+      vignette: "Two old Brooklyn friends and a colleague at UChicago Press, none of whom know each other, each independently describe Alex as \"someone who pulls back when the room gets loud.\"",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "3 derivations (corroborated)", correct: true },
@@ -50,16 +50,16 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Three independent observers, no shared source. Each is a separate grounding. That's corroboration."
     },
     {
-      vignette: "Liam restates a fear of failure in three conversations, AND in one of those mentions a specific time he didn't apply for a job because of it.",
+      vignette: "Alex restates a fear of pushing back on the new editorial director in three conversations, AND in one of them mentions a specific manuscript she let stand against her judgment.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (mixed)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific job he didn't apply for — is a second, independent derivation."
+      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific manuscript she let stand — is a second, independent derivation."
     },
     {
-      vignette: "Avery tells five different therapists, over six months, the same story about her mother. None of the therapists has met the mother.",
+      vignette: "Alex tells five different friends, over six months, the same story about her older sister Helen's death at twenty-three. None of the friends knew Helen.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "5 derivations (corroborated)", correct: false },
@@ -68,22 +68,22 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Five listeners is not five sources. The claim still traces to one self-attribution. Multiple audiences do not add grounding."
     },
     {
-      vignette: "A model summarizes Jordan as \"driven by approval\" based on Jordan's own words in four sessions. Jordan's manager separately writes a performance review describing the same pattern.",
+      vignette: "A model summarizes Alex as \"driven by approval\" based on her own words across four sessions. Her editorial director, in a separate year-end review, describes the same pattern.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (self + observer)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "Self-attribution is one derivation. The manager's independent observation is a second. Two, not five."
+      explain: "Self-attribution is one derivation. The editorial director's independent observation is a second. Two, not five."
     },
     {
-      vignette: "Sam mentions in passing that he \"never finishes anything,\" but his GitHub shows 12 completed projects, his LinkedIn shows 3 jobs each held >2 years, and his apartment lease shows he stayed 4 years in one place.",
+      vignette: "Alex mentions in passing that she \"never sticks with anything,\" but her tenure at UChicago Press is eight years, her running log shows six consecutive years before the Chicago move, and Mira has been in continuous schooling under her since kindergarten.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "4 derivations (corroborated)", correct: false },
         { label: "Contradicted (demote)", correct: true }
       ],
-      explain: "The self-attribution is one derivation; the public record is independent counter-evidence on three axes. Net: the claim should be demoted."
+      explain: "The self-attribution is one derivation; the lived record is independent counter-evidence on three axes. Net: the claim should be demoted."
     }
   ];
 
@@ -193,7 +193,7 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
   renderScenario();
 </script>
 
-<style>
+<style is:global>
   /* === etude page chrome === */
   .etude-page {
     max-width: 38rem;

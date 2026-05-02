@@ -93,7 +93,7 @@ const duration = '2 Hours · 7:00 – 9:00';
   </article>
 </Base>
 
-<style>
+<style is:global>
   /* === etude page chrome === */
   .etude-page {
     max-width: 38rem;
@@ -150,8 +150,7 @@ const duration = '2 Hours · 7:00 – 9:00';
     margin: 0 0 0.85rem;
     line-height: 1.65;
   }
-  .etude-section-label,
-  .etude-segment-label {
+  .etude-section-label {
     font-family: var(--sans);
     font-size: var(--label-size);
     letter-spacing: var(--label-tracking);
@@ -161,26 +160,31 @@ const duration = '2 Hours · 7:00 – 9:00';
     margin: 0 0 0.75rem;
   }
   .etude-segment-label {
-    margin: 2.5rem 0 1.25rem;
-    text-align: center;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+    margin: 1.4rem 0 0.25rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--line);
   }
 
   .etude-stage {
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.1rem;
   }
 
-  /* === pose card === */
+  /* === pose / segment cards === */
   .etude-card {
     background: var(--bg-soft);
     border-radius: 12px;
-    padding: 1.75rem 1.75rem 1.5rem;
+    padding: 1.5rem 1.5rem 1.4rem;
   }
   .etude-card-prelude {
-    background: transparent;
-    border: 1px solid var(--line);
-    padding: 1.4rem 1.5rem;
+    padding: 1.25rem 1.5rem 1.2rem;
   }
   .etude-step {
     font-family: var(--sans);
@@ -194,28 +198,29 @@ const duration = '2 Hours · 7:00 – 9:00';
   .etude-card-title {
     font-family: var(--serif-display);
     font-size: 1.5rem;
-    line-height: 1.25;
+    line-height: 1.3;
     margin: 0 0 0.4rem;
     letter-spacing: -0.005em;
     color: var(--text);
   }
   .etude-pose-time {
     font-family: var(--sans);
-    font-size: 0.88rem;
+    font-size: 0.85rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
-    margin: 0 0 1rem;
+    margin: 0 0 0.95rem;
+    letter-spacing: 0.02em;
   }
   .etude-pose-benefits {
     font-size: 0.92rem;
     color: var(--muted);
     margin: 0 0 1rem;
-    line-height: 1.55;
+    line-height: 1.6;
   }
   .etude-pose-quote {
     border-left: 2px solid var(--accent);
-    padding: 0.1rem 0 0.1rem 1rem;
-    margin: 1rem 0 1.1rem;
+    padding-left: 0.95rem;
+    margin: 0.85rem 0 1rem;
     font-family: var(--serif);
     font-style: italic;
     color: var(--text);
@@ -227,29 +232,29 @@ const duration = '2 Hours · 7:00 – 9:00';
     color: var(--text);
   }
 
-  /* === chakra banner === */
+  /* === chakra banner — small-caps label vocabulary === */
   .etude-chakra {
-    font-family: var(--serif);
-    font-style: italic;
-    font-size: 0.98rem;
-    color: var(--text);
-    border-left: 3px solid var(--accent);
-    padding: 0.5rem 0.9rem;
-    margin: 1.5rem 0 0.25rem;
-    background: rgba(184, 115, 51, 0.06);
-    border-radius: 0 6px 6px 0;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 1.4rem 0 0;
+    padding: 0.55rem 0.9rem;
+    background: var(--bg-soft);
+    border-radius: 8px;
     line-height: 1.5;
   }
   .etude-chakra-mark {
-    color: var(--accent);
-    margin-right: 0.35rem;
-    font-style: normal;
+    margin-right: 0.45rem;
+    opacity: 0.75;
   }
 
   /* === coda === */
   .etude-coda {
     margin: 2.5rem 0 0;
-    padding-top: 1.5rem;
+    padding-top: 1.25rem;
     border-top: 1px solid var(--line);
   }
   .etude-coda-label {
@@ -266,33 +271,54 @@ const duration = '2 Hours · 7:00 – 9:00';
     font-style: italic;
     line-height: 1.65;
     margin: 0;
-    font-family: var(--serif);
   }
 
   /* === mobile === */
   @media (max-width: 32rem) {
     .etude-title { font-size: 1.85rem; }
-    .etude-card { padding: 1.25rem 1.15rem 1.1rem; border-radius: 10px; }
-    .etude-card-prelude { padding: 1.1rem 1.15rem; }
-    .etude-card-title { font-size: 1.25rem; }
-    .etude-chakra { font-size: 0.95rem; padding: 0.45rem 0.75rem; }
-    .etude-pose-quote { padding-left: 0.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1.1rem; border-radius: 10px; }
+    .etude-card-prelude { padding: 1rem 1.1rem; }
+    .etude-card-title { font-size: 1.3rem; }
+    .etude-chakra { font-size: 0.78rem; padding: 0.5rem 0.75rem; }
+    .etude-pose-quote { padding-left: 0.8rem; }
   }
 
   /* === print === */
   @media print {
-    .etude-nav { display: none; }
-    .etude-card,
-    .etude-card-prelude {
-      background: transparent;
-      border: 1px solid #ccc;
-      break-inside: avoid;
-      padding: 1rem 1.1rem;
+    .etude-page {
+      max-width: none;
+      color: #000;
     }
+    .etude-nav { display: none; }
+    .etude-stage { gap: 0.6rem; }
+    .etude-card,
+    .etude-card-prelude,
     .etude-chakra {
       background: transparent;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      padding: 0.75rem 0.9rem;
+      page-break-inside: avoid;
       break-inside: avoid;
     }
-    .etude-coda { break-inside: avoid; }
+    .etude-chakra {
+      border: none;
+      border-left: 3px solid #999;
+      border-radius: 0;
+      color: #000;
+    }
+    .etude-segment-label {
+      border-bottom: 1px solid #999;
+      color: #000;
+    }
+    .etude-pose-quote {
+      border-left: 2px solid #999;
+    }
+    .etude-coda {
+      border-top: 1px solid #999;
+      break-inside: avoid;
+    }
+    .etude-title { font-size: 1.6rem; }
+    .etude-card-title { font-size: 1.15rem; }
   }
 </style>

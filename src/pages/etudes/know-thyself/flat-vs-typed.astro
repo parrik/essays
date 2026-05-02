@@ -17,7 +17,7 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
     </header>
 
     <section class="etude-intro">
-      <p>A flat list of facts cannot tell <em>I said this five times</em> from <em>this is grounded by five independent observations</em>. The typed-graph schema — typed nodes plus provenance triples — makes the distinction structurally. Below: the same eight facts about a fictional Sam, fed to both shapes.</p>
+      <p>A flat list of facts cannot tell <em>I said this five times</em> from <em>this is grounded by five independent observations</em>. The typed-graph schema — typed nodes plus provenance triples — makes the distinction structurally. Below: the same eight facts about Alex, fed to both shapes.</p>
     </section>
 
     <details class="etude-data-box">
@@ -26,7 +26,7 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
     </details>
 
     <div class="etude-query-row">
-      <input id="query" type="text" value="What's true about Sam?" aria-label="Query" />
+      <input id="query" type="text" value="What's true about Alex?" aria-label="Query" />
       <button type="button" id="ask" class="etude-ask-btn">Ask</button>
     </div>
 
@@ -65,14 +65,14 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
 
 <script is:inline>
   const SEED = [
-    { id: 1,  text: "Sam mentioned avoiding conflict",       src: "Conv #1, Mar 4",   kind: "self-restate", claim: "avoids-conflict" },
-    { id: 2,  text: "Sam mentioned avoiding conflict",       src: "Conv #5, Mar 18",  kind: "self-restate", claim: "avoids-conflict" },
-    { id: 3,  text: "Sam mentioned avoiding conflict",       src: "Conv #11, Apr 22", kind: "self-restate", claim: "avoids-conflict" },
-    { id: 4,  text: "Sam restated avoiding conflict",        src: "Conv #14, May 7",  kind: "self-restate", claim: "avoids-conflict" },
-    { id: 5,  text: "Sam mentioned avoiding conflict",       src: "Conv #19, May 22", kind: "self-restate", claim: "avoids-conflict" },
-    { id: 6,  text: "Manager review: 'Sam avoids conflict'", src: "Perf review, Apr", kind: "external-obs", claim: "avoids-conflict" },
-    { id: 7,  text: "Sam mentioned thriving on independence",src: "Conv #2, Mar 7",   kind: "self-restate", claim: "thrives-independence" },
-    { id: 8,  text: "Sam shipped a solo 6-month project end-to-end", src: "Verified, Apr 30", kind: "grounded-episode", claim: "thrives-independence" },
+    { id: 1,  text: "Alex mentioned avoiding conflict",       src: "Conv #1, Mar 4",   kind: "self-restate", claim: "avoids-conflict" },
+    { id: 2,  text: "Alex mentioned avoiding conflict",       src: "Conv #5, Mar 18",  kind: "self-restate", claim: "avoids-conflict" },
+    { id: 3,  text: "Alex mentioned avoiding conflict",       src: "Conv #11, Apr 22", kind: "self-restate", claim: "avoids-conflict" },
+    { id: 4,  text: "Alex restated avoiding conflict",        src: "Conv #14, May 7",  kind: "self-restate", claim: "avoids-conflict" },
+    { id: 5,  text: "Alex mentioned avoiding conflict",       src: "Conv #19, May 22", kind: "self-restate", claim: "avoids-conflict" },
+    { id: 6,  text: "Editorial director's review: 'Alex avoids conflict'", src: "Year-end review, Apr", kind: "external-obs", claim: "avoids-conflict" },
+    { id: 7,  text: "Alex mentioned thriving when working solo", src: "Conv #2, Mar 7",   kind: "self-restate", claim: "thrives-independence" },
+    { id: 8,  text: "Alex shepherded a solo 6-month book to print end-to-end", src: "Verified, Apr 30", kind: "grounded-episode", claim: "thrives-independence" },
   ];
 
   let facts = SEED.slice();
@@ -115,8 +115,8 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
     tickBadge(document.getElementById('flat-count'), facts.length);
     tickBadge(document.getElementById('flat-conflict'), cN);
     return `
-      <p><strong>Sam avoids conflict.</strong> <span class="etude-conf ${cC.cls}">${cC.word} confidence — corroborated ${cN} times.</span></p>
-      <p><strong>Sam thrives on independence.</strong> <span class="etude-conf ${cI.cls}">${cI.word} confidence — mentioned ${iN} time${iN===1?'':'s'}.</span></p>
+      <p><strong>Alex avoids conflict.</strong> <span class="etude-conf ${cC.cls}">${cC.word} confidence — corroborated ${cN} times.</span></p>
+      <p><strong>Alex thrives on independence.</strong> <span class="etude-conf ${cI.cls}">${cI.word} confidence — mentioned ${iN} time${iN===1?'':'s'}.</span></p>
       <p class="etude-answer-detail">Repetition compresses into confidence. More mentions → stronger claim.</p>`;
   }
 
@@ -130,7 +130,7 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
     const tag = c.grounded > 0 ? '<span class="etude-tag etude-tag-ok">grounded</span>'
               : c.ext > 0      ? '<span class="etude-tag etude-tag-warn">tentative-supported</span>'
               :                  '<span class="etude-tag etude-tag-low">tentative</span>';
-    return `<li><strong>Sam — '${label}'</strong>: ${bits.join(', ')}. <em>Net: ${d} derivation${d===1?'':'s'}.</em> ${tag}</li>`;
+    return `<li><strong>Alex — '${label}'</strong>: ${bits.join(', ')}. <em>Net: ${d} derivation${d===1?'':'s'}.</em> ${tag}</li>`;
   }
 
   function graphAnswer() {
@@ -165,7 +165,7 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
     const nextId = facts.length + 1;
     facts.push({
       id: nextId,
-      text: "Sam mentioned avoiding conflict",
+      text: "Alex mentioned avoiding conflict",
       src: `Conv #${20 + extraCounter}, added`,
       kind: "self-restate",
       claim: "avoids-conflict",
@@ -197,7 +197,7 @@ const subtitle = 'Same data. Two memories. Watch where the list breaks.';
   ask();
 </script>
 
-<style>
+<style is:global>
   /* === etude page chrome === */
   .etude-page {
     max-width: 44rem;

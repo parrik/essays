@@ -55,19 +55,72 @@ After the mirror problem, Alex wanted a memory that could not do this. Not a mor
 
 The academic frame for memory-with-types is already named. Sumers, Yao, and Narasimhan's *Cognitive Architectures for Language Agents* (2023) carves agent memory into working, episodic, semantic, and procedural.[^coala] The eight types here are an opinionated refinement of the semantic side — what makes a claim about a person earn standing.
 
-**Reference — what is.** Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, fourteen. Older sister Helen, died at twenty-three in 2007. Facts. The floor the rest of the graph stands on.
+<div class="type-cards">
 
-**Observation — what happened.** Each episode gets its own node, dated and bounded. September through November: Alex's first three months in Chicago. Mira came home quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped. One episode, one timestamp, stored as it was — without guessing what it meant. A second observation came in March: the morning of a hard acquisitions meeting, Alex had run beforehand and held her position on a book more clearly than she had in weeks. Two episodes, held separately.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Reference</span>
+    <span class="type-card-tagline">what is</span>
+  </p>
+  <p class="type-card-meaning">Facts that don't change. The floor the rest of the graph stands on.</p>
+  <p class="type-card-example">Forty-one. Senior editor at UChicago Press. Moved from Brooklyn last August. Divorced four years, amicable. Daughter Mira, fourteen. Older sister Helen, died at twenty-three in 2007.</p>
+</div>
 
-**Overlap — the same shape, twice.** First: running stopped, work extended, Mira struggled. Second: running came back, work stabilized, Mira climbed. One shape: *when the running holds, everything else holds.* That is an overlap. The model can defend it. Contrast the *afraid-to-burn-the-relationship* claim — said six times, never grounded in a specific event. The schema refuses to call it a pattern. One claim said six ways is one derivation, not six.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Observation</span>
+    <span class="type-card-tagline">what happened</span>
+  </p>
+  <p class="type-card-meaning">An episode, dated and bounded. Stored as it was, without guessing what it meant.</p>
+  <p class="type-card-example">September through November: Alex's first three months in Chicago. Mira came home quiet about a girl at lunch. The Sunday-morning run Alex had kept for six years quietly stopped. A second observation came in March: the morning of a hard acquisitions meeting, Alex had run beforehand and held her position on a book more clearly than she had in weeks. Two episodes, held separately.</p>
+</div>
 
-**Novel — one derivation, held honestly.** *For Alex, isolation is upstream of routine breakdown.* One episode supports it: she stopped responding to her two friends in Brooklyn, and the running stopped the week after. Flagged tentative: *the order looks like cause, but no one watched it happen — the claim waits for a second, independent stretch.* A novel is the model's honesty that it is guessing.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Overlap</span>
+    <span class="type-card-tagline">the same shape, twice</span>
+  </p>
+  <p class="type-card-meaning">Two observations sharing one structure. The model can defend the pattern. Contrast: one claim said six ways is one derivation, not six.</p>
+  <p class="type-card-example">First: running stopped, work extended, Mira struggled. Second: running came back, work stabilized, Mira climbed. One shape — <em>when the running holds, everything else holds.</em></p>
+</div>
 
-**Emergent — at the intersection.** *Mira's stability in this new city depends on Alex's own routine stability.* Not in the routine overlap alone. Not in the Mira observation alone. It falls out where they cross — Mira's recovery and Alex's running returning land too close in time to be noise. Revise either side, and the claim above them has to be re-checked. The most interesting things live at intersections. So does the quietest drift.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Novel</span>
+    <span class="type-card-tagline">one derivation, held honestly</span>
+  </p>
+  <p class="type-card-meaning">A claim with a single source. The model's honesty that it is guessing — flagged tentative, waiting for a second independent stretch.</p>
+  <p class="type-card-example"><em>For Alex, isolation is upstream of routine breakdown.</em> One episode supports it: she stopped responding to her two friends in Brooklyn, and the running stopped the week after.</p>
+</div>
 
-**Equivalency — the bridge.** *When the running holds, everything else holds* has a name elsewhere. Some researchers call it a keystone habit. Others, listening to the body's own steady signal, call it interoceptive stabilization. The equivalency node points at the outside framework without letting it swallow what Alex actually saw. Pointing is not importing.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Emergent</span>
+    <span class="type-card-tagline">at the intersection</span>
+  </p>
+  <p class="type-card-meaning">A claim that falls out only where two threads cross. Revise either side and the claim above has to be rechecked. The most interesting things live at intersections; so does the quietest drift.</p>
+  <p class="type-card-example"><em>Mira's stability in this new city depends on Alex's own routine stability.</em> Not in the routine overlap alone, not in the Mira observation alone. It falls out where they cross — Mira's recovery and Alex's running returning land too close in time to be noise.</p>
+</div>
 
-**Open — the unanswered, kept first-class.** *Is Chicago a 2–3 year plan, or permanent?* Alex has not decided. Some nights she talks as if permanent, other nights as if temporary. Left alone, the ambiguity would crystallize into a novel — *she has accepted the relocation* — and downstream claims would inherit an unexamined premise. Open is not indecision. It is the refusal to pretend a decision has been made.
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Equivalency</span>
+    <span class="type-card-tagline">the bridge</span>
+  </p>
+  <p class="type-card-meaning">A name your idea has elsewhere in literature. The equivalency node points at the outside framework without letting it swallow what you actually saw. Pointing is not importing.</p>
+  <p class="type-card-example"><em>When the running holds, everything else holds</em> has a name elsewhere. Some researchers call it a keystone habit. Others, listening to the body's own steady signal, call it interoceptive stabilization.</p>
+</div>
+
+<div class="type-card">
+  <p class="type-card-head">
+    <span class="type-card-name">Open</span>
+    <span class="type-card-tagline">the unanswered, kept first-class</span>
+  </p>
+  <p class="type-card-meaning">An ambiguity not yet resolved. Open is not indecision — it is the refusal to pretend a decision has been made. Left alone, an ambiguity crystallizes into a novel and downstream claims inherit an unexamined premise.</p>
+  <p class="type-card-example"><em>Is Chicago a 2–3 year plan, or permanent?</em> Alex has not decided. Some nights she talks as if permanent, other nights as if temporary.</p>
+</div>
+
+</div>
 
 The types are the binding principle: episodic and semantic memory held in distinct stores, not collapsed.[^prior]
 

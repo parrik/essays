@@ -234,7 +234,7 @@ const subtitle = 'Click launch. Watch a campaign multiply itself.';
   });
 </script>
 
-<style>
+<style is:global>
   /* === etude page chrome === */
   .etude-page {
     max-width: 38rem;
@@ -401,7 +401,7 @@ const subtitle = 'Click launch. Watch a campaign multiply itself.';
   .dot {
     width: 14px; height: 14px; border-radius: 50%; background: var(--line);
     transform: scale(0.2); opacity: 0;
-    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease, background 220ms ease;
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease, background 240ms ease, box-shadow 240ms ease;
     transition-delay: calc(var(--i) * 18ms);
   }
   .dot.fanned { transform: scale(1); opacity: 1; }
