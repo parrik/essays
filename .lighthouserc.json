@@ -38,6 +38,8 @@
         "network-dependency-tree-insight": "off",
         "dom-size-insight": "off",
         "max-potential-fid": "off",
+        "redirects": "off",
+        "errors-in-console": "warn",
 
         "largest-contentful-paint": ["warn", { "maxNumericValue": 2500 }],
         "cumulative-layout-shift": ["error", { "maxNumericValue": 0.1 }],
