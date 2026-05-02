@@ -17,7 +17,7 @@ const subtitle = 'Two minutes. Long exhale. Read the essay through your own para
     </header>
 
     <section class="etude-intro">
-      <p>Inhale four. Exhale eight. The exhale is twice the inhale because the vagus nerve listens to that ratio — long exhales signal the parasympathetic branch to come online. Pranayama is the body's interface to the autonomic nervous system. Two minutes is enough to feel it.</p>
+      <p>Inhale four. Exhale eight. The vagus nerve listens to that ratio. Two minutes is enough to feel it.</p>
     </section>
 
     <div class="breath-stage" id="stage">
@@ -41,7 +41,7 @@ const subtitle = 'Two minutes. Long exhale. Read the essay through your own para
     <div id="result" class="result" aria-live="polite"></div>
 
     <footer class="etude-coda">
-      <p>The vagal-tone literature names this directly: long exhales activate the parasympathetic branch via the vagus nerve. Whether you read the rest of the essay or not, you've already received its first claim through your own physiology.</p>
+      <p>Whether you read the essay or not, you've received its first claim through your own physiology.</p>
     </footer>
   </article>
 </Base>
@@ -133,9 +133,9 @@ const subtitle = 'Two minutes. Long exhale. Read the essay through your own para
       startBtn.disabled = false; sampleBtn.disabled = false;
       if (mode === 'full') {
         cyclesEl.textContent = TOTAL_CYCLES; elapsedEl.textContent = '2:00';
-        resultEl.innerHTML = '<p class="result-headline">10 long exhales.</p><p class="result-body">The vagus nerve has been gently keyed for 2 minutes. Notice your shoulders, your jaw, the back of your neck.</p>';
+        resultEl.innerHTML = '<p class="result-headline">10 long exhales.</p><p class="result-body">The vagus has been keyed for 2 minutes. Notice your shoulders, jaw, neck.</p>';
       } else {
-        resultEl.innerHTML = '<p class="result-headline">One cycle.</p><p class="result-body">A small sample. The full two minutes is where the parasympathetic settles in — when you have a moment, come back.</p>';
+        resultEl.innerHTML = '<p class="result-headline">One cycle.</p><p class="result-body">Come back for the full two minutes — that\'s where the parasympathetic settles.</p>';
       }
     }
 

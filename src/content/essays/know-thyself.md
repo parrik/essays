@@ -135,7 +135,7 @@ A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) 
 
 ## What the graph lets her see
 
-Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own record of where the claim came from. The graph is more than a record — it is an instrument.
+Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own record of where the claim came from.
 
 <iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
 
@@ -149,7 +149,7 @@ Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own
 
 **The risk corridor.** Some of the most useful claims are ones she would never generate on purpose. Intersection readings marked *low probability, high consequence* — a Mira crisis that forces a return East, the drinking trajectory crossing a visible line again, a leadership change at the press flipping her way of holding positions from asset to liability. She did not know any of these as a list until the graph rendered them. None is a prediction; each is a corridor to watch. Full set in [Alex's dashboard](/alex-case-study.html).
 
-A flat list has no notion of *intersection*. A typed graph with provenance can tell you things you never said.
+A typed graph with provenance can tell you things you never said.
 
 ## Why the schema outlasts the model
 
@@ -159,15 +159,13 @@ The primitive landed in shipped infrastructure this month. Anthropic's memory to
 
 The edges have a vocabulary too. McCarthy's open-knowledge-graph schema names them: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs.
 
-The model is the interlocutor. **The graph is the memory.**
-
 Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
 ## The thing
 
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
 
-If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is the only question that matters.
+Whether *we* know what they know about us, and whether they know how they know it, is the only question that matters.
 
 ---
 
@@ -175,7 +173,7 @@ If we are going to keep having long conversations with systems that remember us,
 
 ---
 
-*The graph holds. The reader is the next thing. **[Part II — Search was never about humans →](/puzzles/know-thyself-search/)***
+***[Part II — Search was never about humans →](/puzzles/know-thyself-search/)***
 
 [^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
 

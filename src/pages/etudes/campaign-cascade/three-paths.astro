@@ -17,8 +17,8 @@ const subtitle = 'Pick your path. The wrong one is the cascade.';
     </header>
 
     <section class="etude-intro">
-      <p>Every cross-cutting initiative has three valid responses: <strong>centralize</strong> the work, <strong>automate</strong> it end-to-end, or <strong>cut scope</strong> to where the change actually delivers value. Most failures pick the wrong one — and the wrong pick is what spawns the next campaign.</p>
-      <p>Four scenarios. Pick a path for each. Instant feedback.</p>
+      <p>Three valid responses: <strong>centralize</strong>, <strong>automate</strong>, or <strong>cut scope</strong>. Most failures pick the wrong one — that's what spawns the next campaign.</p>
+      <p>Four scenarios. Pick a path.</p>
     </section>
 
     <div class="etude-progress" id="dots" aria-hidden="true"></div>
@@ -47,8 +47,8 @@ const subtitle = 'Pick your path. The wrong one is the cascade.';
       context: 'Hypothetical fleet. No perf change. Security review wants consistent integration across every surface. Test surface is mixed — some services have great coverage, some have none.',
       best: 'A',
       feedback: {
-        A: { verdict: 'right', text: 'Centralize. Security review needs one integration pattern, not 200. A platform team owning the rollout end-to-end keeps the threat model consistent. Tradeoff: slower than a codemod, but the consistency is the point.' },
-        B: { verdict: 'partial', text: 'A codemod can work where test coverage is good — but on services with no coverage, you ship a security change blind. Most teams pick this and pay later. Centralize is the safer call.' },
+        A: { verdict: 'right', text: 'Centralize. Security review needs one integration pattern, not 200. A platform team owning the rollout end-to-end keeps the threat model consistent. Tradeoff: slower than a codemod.' },
+        B: { verdict: 'partial', text: 'Codemod works where coverage is good — but on services with none, you ship a security change blind. Most teams pick this and pay later.' },
         C: { verdict: 'wrong', text: 'You cannot cut scope on auth. Either every service is on the new library or your threat model has a hole. This is the scenario where scope-cutting is genuinely wrong.' }
       }
     },

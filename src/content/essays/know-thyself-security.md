@@ -38,11 +38,11 @@ Both are gates. *Boundary-time and sweep-time are the same posture at different 
 
 Response is the work that begins **after** verification has failed. Rotating a leaked key. Patching a forbidden path. Running comms. Reading logs backward to figure out what came in, what left, and when.
 
-This is **DFIR** — digital forensics and incident response — the discipline that begins after the fire. The leak window gets measured. The compromised laptop gets imaged for evidence. Its metrics live downstream of the breach: how fast we noticed, how fast we contained, how long they were in. Verification's metric is the inverse — *no leaks this quarter* — the dial that is supposed to read zero.
+This is **DFIR** — digital forensics and incident response — the discipline that begins after the fire. Its metrics live downstream of the breach: how fast we noticed, how fast we contained, how long they were in. Verification's metric is the inverse — *no leaks this quarter* — the dial that is supposed to read zero.
 
 NIST has the formal taxonomy: **preventive controls block harm before it lands; detective controls notice it; responsive controls remediate it.**[^nist] Verification covers the first two. Response covers the third. Adjacent disciplines, not the same one.
 
-*The standard caught up with the practice.* In August 2025, NIST shipped SP 800-53 Rev. 5.2.0 — adding control SA-24 ("Develop Cyber-Resiliency Concept of Operations") and SI-02(07) (root-cause analysis of failed software updates), reframing boundary-and-sweep as its own control family rather than a clever pattern.[^nist-resiliency]
+In August 2025, NIST shipped SP 800-53 Rev. 5.2.0 — adding control SA-24 ("Develop Cyber-Resiliency Concept of Operations") and SI-02(07) (root-cause analysis of failed software updates), reframing boundary-and-sweep as its own control family rather than a clever pattern.[^nist-resiliency]
 
 At personal-infrastructure scale, both hats sit on one person. The hat-switch still matters. The trap is to spend all your energy in the second — *"I'll fix it when it breaks"* — and starve the first. *"I'll be careful when I commit."* *"I have backups."* That is planning for the fire department's arrival without writing the fire code.
 

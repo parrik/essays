@@ -22,8 +22,6 @@ Skip that constraint and the work fans out into a cascade. A platform team launc
 
 > Campaign → Stall → Escalate → Directive → New Campaign → …
 
-There are three ways to honor the principle. The pattern that breaks it — putting a human in the loop and leaving them in the dark — is what spawns the cascade.
-
 ## The three paths
 
 *If you need a human in the loop, give them context. If you don't need a human, don't put one there.*
@@ -33,8 +31,6 @@ There are three ways to honor the principle. The pattern that breaks it — putt
 **Own it vertically.** A dedicated team permanently owns the cross-cutting concern with merge authority. They write the PRs, hold the context, and are accountable for completion. *Why it works:* the human in the loop has deep context and authority — no dependency on another team's bandwidth or motivation. *Tradeoff:* requires permanent headcount and org commitment.
 
 **Enable completely.** Don't do the work for other teams. Tell each team the next action to take and give them the knowledge to do it: a migration guide, known gotchas, estimated effort, a clear owner to ask. The team builds the PR themselves. *Why it works:* the human in the loop has full context because they wrote the change. *Tradeoff:* hard to scale; works best with strong team autonomy.
-
-Different changes reward different paths. The hard part isn't naming the three — it's picking the right one when the scenario is in front of you.
 
 ## What the failure costs
 
@@ -48,6 +44,4 @@ The pattern fails in the middle: you do the work for the team (create the PR) bu
 
 ---
 
-**Automate completely. Own it vertically. Or enable completely.**
-
-*Honor the principle — a human in the loop has context-in-hand — and you're out of the cascade.*
+*Honor the principle — every human in the loop has context-in-hand — and you're out of the cascade.*
