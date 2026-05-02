@@ -123,7 +123,7 @@ The academic frame for memory-with-types is already named. Sumers, Yao, and Nara
 
 The types are the binding principle: episodic and semantic memory held in distinct stores, not collapsed.[^prior]
 
-A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and dedupe near-duplicates.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches duplicates the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*.
+A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and orphan pages.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches contradictions the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*.
 
 ## The operating rule
 
@@ -155,7 +155,7 @@ A flat list has no notion of *intersection*. A typed graph with provenance can t
 
 Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is.
 
-The primitive landed in shipped infrastructure this month. Anthropic's Managed Agents memory tool exposes persistence as a mounted filesystem at `/mnt/memory/` — a YAML graph drops in directly, no translation layer.[^managed-memory]
+The primitive landed in shipped infrastructure this month. Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph drops in directly, no translation layer.[^managed-memory]
 
 The edges have a vocabulary too. McCarthy's open-knowledge-graph schema names them: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs.
 
@@ -183,10 +183,10 @@ If we are going to keep having long conversations with systems that remember us,
 
 [^coala]: Sumers, Yao, Narasimhan, [*Cognitive Architectures for Language Agents*](https://arxiv.org/abs/2309.02427) (2023). The taxonomy — working / episodic / semantic / procedural — is the canonical academic framing the eight node types here refine on the semantic side.
 
-[^managed-memory]: Anthropic, [Managed Agents memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Persistent memory exposed as a mounted filesystem at `/mnt/memory/`; a YAML graph fits the primitive without adaptation.
+[^managed-memory]: Anthropic, [memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Client-side persistence exposed as a `/memories` directory the model can `view` / `create` / `str_replace` / `insert` / `delete` / `rename`; a YAML graph fits the primitive without adaptation.
 
 [^mccarthy-edges]: Patrick D. McCarthy, [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph). Edge vocabulary — `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes` — each carrying `(attribution, evidence, derivation)` triples. The eight node types map onto these edges directly.
 
 [^karpathy-wiki]: Andrej Karpathy, *LLM Wiki* (gist, Apr 4 2026). Plain-markdown self-edited memory with a lint loop for duplicates and contradictions; no types, no provenance. The lint catches duplicates the flat list cannot — and still has no slot for the distinction between *said* and *grounded*.
 
-[^memanto]: *Memanto: Typed-Vector Memory for Long-Horizon Agents* (arXiv:2604.22085, Apr 23 2026). Thirteen-category vector memory, no graph; reports 89.8% on LongMemEval and 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall. The benchmarks measure fact retrieval, not corroboration provenance.
+[^memanto]: *Memanto: Typed Semantic Memory with Information-Theoretic Retrieval for Long-Horizon Agents* (arXiv:2604.22085, Apr 23 2026). Thirteen-category vector memory, no graph; reports 89.8% on LongMemEval and 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall. The benchmarks measure fact retrieval, not corroboration provenance.

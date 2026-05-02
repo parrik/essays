@@ -32,7 +32,7 @@ Search has always been one shape: **find relevant nodes by walking edges, ranked
 
 Fifty years of information retrieval, same shape instantiated four times. What changes at each scale is *what's in a node, what an edge means, what the query looks like, and who's at the other end.*
 
-**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has names — TF-IDF (rare words count more) and its successor BM25 (same idea, with length normalization). Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
+**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has names — TF-IDF (rare words count more) and its successor BM25 (same idea, with length normalization). Reader: human. Format: ten ranked links. *Lucene at hundreds of millions of docs is still this shape.*
 
 **Scale 2 — Vector retrieval.** The node is no longer a word; it's an embedding — a point in high-dimensional space where meaning lives as direction. Two points are close if the angle between them is small (cosine distance — the standard similarity metric for embeddings). At scale, the index itself becomes a graph: a small-world layered so a greedy walk from the top hops down to the nearest neighbors in log time. Below ten thousand vectors, brute-force multiplication is faster than the index. Past that, the index earns its keep. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
 
@@ -175,7 +175,7 @@ Swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa.
 
 ## Postscript — DeepSeek V4 (Apr 26 2026)
 
-Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Million-token context via hybrid attention — Compressed Sparse + Heavy Compressed — at **9.5–13.7× less memory** and **10% of the KV cache** of V3.2.
+Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Million-token context via hybrid attention — Compressed Sparse Attention (CSA) + Heavily Compressed Attention (HCA) — at **10% of V3.2's KV cache** for V4-Pro and **7%** for V4-Flash (≈10× and ≈14× less memory respectively).
 
 Four-scales extends one further:
 
@@ -211,7 +211,7 @@ The bet is testable. More to follow.
 
 [^hnsw]: Malkov & Yashunin, [*Hierarchical Navigable Small World graphs*](https://arxiv.org/abs/1603.09320) (2018).
 
-[^scales]: Same shape across scales: inverted index (Lucene, BM25/TF-IDF — terms ↔ documents); vector retrieval (HNSW[^hnsw], Pinecone, FAISS — embeddings as nodes, cosine as edges); typed knowledge graph (claims with `grounds` / `derives_from` / `contradicts` edges)[^triplet]; AI-native search ([Exa](https://exa.ai) — clustered ANN over Matryoshka embeddings, [link-prediction-trained](https://www.latent.space/p/exa), [rejected HNSW for sharding/metadata reasons](https://exa.ai/blog/building-web-scale-vector-db); Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."*). What changes: node spec, edge spec, query format, who's reading. Agents want declarative queries (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`), atomic chunks with provenance, ranking by comprehensiveness/recency/type-correctness — filter first, then rank.
+[^scales]: Same shape across scales: inverted index (Lucene, BM25/TF-IDF — terms ↔ documents); vector retrieval (HNSW[^hnsw], Pinecone, FAISS — embeddings as nodes, cosine as edges); typed knowledge graph (claims with `grounds` / `derives_from` / `contradicts` edges)[^triplet]; AI-native search ([Exa](https://exa.ai) — clustered ANN over Matryoshka embeddings, [link-prediction-trained](https://www.latent.space/p/exa), [rejected HNSW for sharding/metadata reasons](https://exa.ai/blog/building-web-scale-vector-db); Bryk: *"It would kind of be insane if the same search engine that was optimal for humans would also be optimal for this very different creature."*). What changes: node spec, edge spec, query format, who's reading. Agents want declarative queries (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`), atomic chunks with provenance, ranking by comprehensiveness/recency/type-correctness — filter first, then rank.
 
 [^genagents]: Park et al., [*Generative Agents*](https://arxiv.org/abs/2304.03442) (2023).
 
@@ -227,7 +227,7 @@ The bet is testable. More to follow.
 
 [^mcp-lf]: The New Stack, [*Model Context Protocol Roadmap 2026*](https://thenewstack.io/model-context-protocol-roadmap-2026/) — MCP donated to the Linux Foundation, December 2025.
 
-[^turnbull-metadata]: Doug Turnbull, [*Metadata as the third retrieval kind*](https://softwaredoug.com/blog/2026/04/21/metadata-third-retrieval-kind.html) (Apr 21 2026).
+[^turnbull-metadata]: Doug Turnbull, [*Metadata: the 3rd kind of retrieval*](https://softwaredoug.com/blog/2026/04/21/metadata-the-3rd-kind-of-retrieval) (Apr 21 2026).
 
 [^turnbull-agents]: Doug Turnbull, [*Can agents replace the search stack?*](https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html) (Apr 28 2026).
 
