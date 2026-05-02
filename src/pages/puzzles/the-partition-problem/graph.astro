@@ -3,6 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
 import PuzzleViews from '../../../components/PuzzleViews.astro';
+import PuzzleGraphMobileDrawer from '../../../components/PuzzleGraphMobileDrawer.astro';
 import data from '../../../data/essay-graphs/the-partition-problem.json';
 const etudesUrl = '/etudes/restorative/';
 
@@ -23,10 +24,10 @@ const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actio
 const subtitle = "The essay's knowledge, dashboard-shaped — graph, eyes, actions. The graph is the source of truth; the prose follows.";
 
 const typeMeta: Record<NodeType, { letter: string; label: string; chip: string }> = {
-  synthesis: { letter: 'S', label: 'synthesis', chip: 'chip-emg' },
-  citation: { letter: 'C', label: 'citation', chip: 'chip-eqv' },
-  derivation: { letter: 'D', label: 'derivation', chip: 'chip-ovl' },
-  observation: { letter: 'O', label: 'observation', chip: 'chip-obs' },
+  synthesis: { letter: 'S', label: 'synthesis', chip: 'chip-synthesis' },
+  citation: { letter: 'C', label: 'citation', chip: 'chip-citation' },
+  derivation: { letter: 'D', label: 'derivation', chip: 'chip-derivation' },
+  observation: { letter: 'O', label: 'observation', chip: 'chip-observation' },
 };
 
 const counts = nodes.reduce(
@@ -190,6 +191,8 @@ const counts = nodes.reduce(
         ))}
       </div>
     </section>
+
+    <PuzzleGraphMobileDrawer />
   </article>
 </Base>
 
@@ -523,10 +526,13 @@ const counts = nodes.reduce(
     flex-shrink: 0;
   }
   .dash-page .chip-ref { background: #ECECEC; border-color: #666666; color: #333; }
-  .dash-page .chip-obs { background: #C8DCF0; border-color: #3A5E7A; color: #1a3854; }
-  .dash-page .chip-ovl { background: #B8E0C2; border-color: #2A6A3A; color: #18472a; }
-  .dash-page .chip-emg { background: #E0C8F0; border-color: #5A3A7A; color: #3e2858; }
-  .dash-page .chip-eqv { background: #F5C890; border-color: #7A4A0E; color: #5a340a; }
+  /* Essay-graph type chips — colors mirror the SVG node fills/strokes
+     in global.css so synthesis / citation / derivation / observation
+     read the same hue in the graph above and the cards below. */
+  .dash-page .chip-synthesis   { background: #b8e0c2; border-color: #2a6a3a; color: #18472a; }
+  .dash-page .chip-citation    { background: #c8dcf0; border-color: #3a5e7a; color: #1a3854; }
+  .dash-page .chip-derivation  { background: #d9c8e8; border-color: #5e3a7a; color: #3e2858; }
+  .dash-page .chip-observation { background: #f5c8c8; border-color: #7a2a2a; color: #5a1f1f; }
   .dash-counts .chip {
     display: inline-flex;
     align-items: center;
