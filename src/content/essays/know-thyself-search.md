@@ -30,9 +30,7 @@ Then she pastes the whole graph in, as she has all year, and Claude pulls up sho
 
 Search has always been one shape: **find relevant nodes by walking edges, ranked by some distance function.**[^scales] Salton's 1968 *Automatic Information Organization and Retrieval* set it; the vector-space-model paper (Salton, Wong, Yang 1975) named the geometry; PageRank (Brin & Page 1998) added link-graph priors. The human at the SERP was a contingency — ten results because more was too much, first-three ranking because attention had a budget, page summaries because a page was the unit a person could absorb. The reader changed; the graph problem didn't.
 
-Fifty years of information retrieval, same shape instantiated four times. What changes at each scale is *what's in a node, what an edge means, what the query looks like, and who's at the other end.*
-
-**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has names — TF-IDF (rare words count more) and its successor BM25 (same idea, with length normalization). Reader: human. Format: ten ranked links. *Lucene at 700M docs is still this shape.*
+**Scale 1 — Inverted index.** Type two words; ten blue links come back. Underneath: a graph with terms on one side and documents on the other, the edges weighted by how often a term shows up where. The walk is short. Start at the term, follow edges to documents, sort by overlap. Ranking by overlap has names — TF-IDF (rare words count more) and its successor BM25 (same idea, with length normalization). Reader: human. Format: ten ranked links. *Lucene at hundreds of millions of docs is still this shape.*
 
 **Scale 2 — Vector retrieval.** The node is no longer a word; it's an embedding — a point in high-dimensional space where meaning lives as direction. Two points are close if the angle between them is small (cosine distance — the standard similarity metric for embeddings). At scale, the index itself becomes a graph: a small-world layered so a greedy walk from the top hops down to the nearest neighbors in log time. Below ten thousand vectors, brute-force multiplication is faster than the index. Past that, the index earns its keep. Reader: still mostly human, but an LLM is increasingly at the other end. Format: page summaries, with chunks creeping in.
 
@@ -46,13 +44,9 @@ Fifty years of information retrieval, same shape instantiated four times. What c
 
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
-There's a fifth column the four scales reset, less visible than node, edge, query, ranking — *latency*. Each scale inherits a budget from the reader at the other end.
-
-Three requirements fall out of the walk, and they shift when readers shift from human to agent. **Query format** — humans type two words because typing is slow. Agents emit a sentence that *describes the kind of node they want.* **Result format** — humans want ten ranked links. Agents want chunks with provenance attached. **Ranking** — humans get popularity as proxy for correctness. Agents filter first, then rank what's left by comprehensiveness and provenance strength.
-
 *There's a third axis. Not what something looks like, not what it means — what it is.* Turnbull names it: agents query by attribute, and metadata is the retrieval kind that lexical and embedding both miss.[^turnbull-metadata]
 
-The synthesis: same intent rewards different substrate because the reader changed. Bounded context is what makes that change *force* structured memory rather than merely reward it.
+Bounded context turns reward into force.
 
 ## Why bounded context forces structured memory
 
@@ -73,8 +67,6 @@ The race to longer windows — 200K, 1M, 10M — is real progress and a confessi
 
 The labs split. Anthropic ships [MCP](https://www.anthropic.com/news/model-context-protocol) — first reference server is a [knowledge-graph CRUD API](https://github.com/modelcontextprotocol/servers/tree/main/src/memory). OpenAI ships [memory](https://openai.com/index/memory-and-new-controls-for-chatgpt/) — extracted typed claims, not turns. Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) — the maximalist path McCarthy names inefficient. The academic line — memory streams,[^genagents] MemGPT,[^memgpt] HippoRAG,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem)[^amem] — converges: the graph isn't a feature; it's where memory lives.
 
-Both bets are live. Big-context: transformers absorb the graph through scale. MCP/memory-server: graph lives outside the context, model wants typed adjacency at retrieval. The argument above is the technical case for the second.
-
 ## What the publisher ships
 
 The four scales describe the retriever. The retriever is half the system. Each retrieval generation pushed a corresponding *publishing primitive* upstream onto the writer.
@@ -85,8 +77,6 @@ The four scales describe the retriever. The retriever is half the system. Each r
 | 2 — Vector retrieval | embeddings of meaning | clean prose, semantic HTML, no marketing chrome |
 | 3 — Typed knowledge graph | typed claims with provenance | JSON-LD, schema.org, structured citations |
 | 4 — AI-native search | atomic chunks with provenance | `llms.txt`, per-essay `.md`, MCP, `/graph.json` |
-
-The columns aren't separate stacks — they compose. A page that ships Scale 4 inherits the obligations of 1, 2, 3.
 
 TF-IDF needed publishers to write words. PageRank needed publishers to link. Vector retrieval needed publishers to write declaratively — *the page had to look like the answer*, because the embedding was trained on the way documents got cited. Each generation pushed cognitive work *back upstream* — from the search engine to the writer.
 
@@ -103,8 +93,6 @@ The personal-graph framing — bounded-context applied to a self rather than a s
 **Inverted edge-density.** Paper 1 Corollary 3 predicts mature graphs become edge-dense. True for science. False for personal psychology — a forty-year-old's graph is *node-dense with sparse adjacency*. "Right node, then walk *its* neighborhood" beats "connected clique."
 
 **Un-clean action space.** K/A inseparability (Paper 3 Corollary 4) presumes crisp β overlap. Personal action doesn't share one. Schema tolerates K-without-A and A-without-K.
-
-Schema carries over cleanly. Retention logic doesn't.
 
 ## A demo, at the personal scale
 
@@ -147,8 +135,6 @@ Index: 87 nodes · backend=tfidf
   3. 0.171  N01-isolation-is-early-warning  [novel] [tentative]
 ```
 
-Three things to notice.
-
 **A finds the *theme*. B finds the *episode*.** Cosine grabs P01 on word overlap — right frame, wrong answer to *when*. Type filter retrieves dated episodes. Schema doing work pure embeddings cannot.
 
 **C demotes the tentative novel.** Provenance reranking knows the novel is one-derivation and the overlap is two-grounded. *Attribution ≠ confidence as a retrieval property.*
@@ -165,17 +151,11 @@ Same shape across scales, build once:
 - **Surface:** MCP server — `search_graph` / `get_node` / `walk_provenance` / `list_node_stats` over stdio; any MCP client (Claude Code, Claude Desktop, Cursor) queries natively. **Shipped Apr 2026.**
 - **Next bottleneck:** sub-statement chunking. Long observation nodes accumulate dated sub-sections; whole-statement single-vector dilutes new content. Etude queued.
 
-Synthesis across all four scales — inverted index, vector retrieval, typed knowledge graph, AI-native search — is one shape, constants reset. Retrieval assumed a human reader; the reader changed; representation must change at every scale because the shape is fractal.
-
-Two query archetypes, one substrate, asymmetric returns to agency.
-
 Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
-
-Swap typed-claim for web-chunk, `grounds` for `cites`, 87 for a billion — Exa. Swap the agent for a literature-review assistant — different surface, same architecture. Shape doesn't care.
 
 ## Postscript — DeepSeek V4 (Apr 26 2026)
 
-Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Million-token context via hybrid attention — Compressed Sparse + Heavy Compressed — at **9.5–13.7× less memory** and **10% of the KV cache** of V3.2.
+Two days after this essay shipped, DeepSeek released [V4](https://huggingface.co/blog/deepseekv4). Million-token context via hybrid attention — Compressed Sparse Attention (CSA) + Heavily Compressed Attention (HCA) — at **10% of V3.2's KV cache** for V4-Pro and **7%** for V4-Flash (≈10× and ≈14× less memory respectively).
 
 Four-scales extends one further:
 
@@ -183,7 +163,7 @@ Four-scales extends one further:
 |---|---|---|---|---|
 | **LLM working memory** | **tokens / latent codes** | **sparse + hierarchical attention** | **compression + retrieval-as-attention** | **the model itself** |
 
-Graph-traversal-with-ranking internalized one further. The visible feature (long context) is downstream of the memory-architecture move that scales every retrieval system before it. The reader is the model.
+Graph-traversal-with-ranking internalized one further. The reader is the model.
 
 ## Run it
 
@@ -199,7 +179,7 @@ This is the loop the first essay opened and this one closes. Personal-memory and
 
 *Agents help when you know what you're looking for. They don't help when you don't.* Turnbull's Apr 28 2026 post sharpens the limit: agents add value on entity-discovery — finding a thing whose shape is named — and add nothing on information-discovery, because *if it knew what information was correct, it wouldn't need search.*[^turnbull-agents]
 
-The bet is testable. More to follow.
+The bet is testable.
 
 ---
 
@@ -211,7 +191,7 @@ The bet is testable. More to follow.
 
 [^hnsw]: Malkov & Yashunin, [*Hierarchical Navigable Small World graphs*](https://arxiv.org/abs/1603.09320) (2018).
 
-[^scales]: Same shape across scales: inverted index (Lucene, BM25/TF-IDF — terms ↔ documents); vector retrieval (HNSW[^hnsw], Pinecone, FAISS — embeddings as nodes, cosine as edges); typed knowledge graph (claims with `grounds` / `derives_from` / `contradicts` edges)[^triplet]; AI-native search ([Exa](https://exa.ai) — clustered ANN over Matryoshka embeddings, [link-prediction-trained](https://www.latent.space/p/exa), [rejected HNSW for sharding/metadata reasons](https://exa.ai/blog/building-web-scale-vector-db); Bryk: *"It would kind of be insane if the same search engine optimal for humans was also optimal for this very different creature."*). What changes: node spec, edge spec, query format, who's reading. Agents want declarative queries (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`), atomic chunks with provenance, ranking by comprehensiveness/recency/type-correctness — filter first, then rank.
+[^scales]: Same shape across scales: inverted index (Lucene, BM25/TF-IDF — terms ↔ documents); vector retrieval (HNSW[^hnsw], Pinecone, FAISS — embeddings as nodes, cosine as edges); typed knowledge graph (claims with `grounds` / `derives_from` / `contradicts` edges)[^triplet]; AI-native search ([Exa](https://exa.ai) — clustered ANN over Matryoshka embeddings, [link-prediction-trained](https://www.latent.space/p/exa), [rejected HNSW for sharding/metadata reasons](https://exa.ai/blog/building-web-scale-vector-db); Bryk: *"It would kind of be insane if the same search engine that was optimal for humans would also be optimal for this very different creature."*). What changes: node spec, edge spec, query format, who's reading. Agents want declarative queries (`"Here is a great article about LLM evaluation:"` outperforms `"LLM evaluation"`), atomic chunks with provenance, ranking by comprehensiveness/recency/type-correctness — filter first, then rank.
 
 [^genagents]: Park et al., [*Generative Agents*](https://arxiv.org/abs/2304.03442) (2023).
 
@@ -227,7 +207,7 @@ The bet is testable. More to follow.
 
 [^mcp-lf]: The New Stack, [*Model Context Protocol Roadmap 2026*](https://thenewstack.io/model-context-protocol-roadmap-2026/) — MCP donated to the Linux Foundation, December 2025.
 
-[^turnbull-metadata]: Doug Turnbull, [*Metadata as the third retrieval kind*](https://softwaredoug.com/blog/2026/04/21/metadata-third-retrieval-kind.html) (Apr 21 2026).
+[^turnbull-metadata]: Doug Turnbull, [*Metadata: the 3rd kind of retrieval*](https://softwaredoug.com/blog/2026/04/21/metadata-the-3rd-kind-of-retrieval) (Apr 21 2026).
 
 [^turnbull-agents]: Doug Turnbull, [*Can agents replace the search stack?*](https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html) (Apr 28 2026).
 

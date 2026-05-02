@@ -123,7 +123,7 @@ The academic frame for memory-with-types is already named. Sumers, Yao, and Nara
 
 The types are the binding principle: episodic and semantic memory held in distinct stores, not collapsed.[^prior]
 
-A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and dedupe near-duplicates.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches duplicates the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*.
+A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and orphan pages.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches contradictions the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*.
 
 ## The operating rule
 
@@ -135,7 +135,7 @@ A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) 
 
 ## What the graph lets her see
 
-Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own record of where the claim came from. The graph is more than a record — it is an instrument.
+Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own record of where the claim came from.
 
 <iframe src="/example-graph-spine.html" class="graph-embed graph-embed-short" loading="lazy" title="Spine subset of Alex's graph — hover any node"></iframe>
 
@@ -149,17 +149,15 @@ Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own
 
 **The risk corridor.** Some of the most useful claims are ones she would never generate on purpose. Intersection readings marked *low probability, high consequence* — a Mira crisis that forces a return East, the drinking trajectory crossing a visible line again, a leadership change at the press flipping her way of holding positions from asset to liability. She did not know any of these as a list until the graph rendered them. None is a prediction; each is a corridor to watch. Full set in [Alex's dashboard](/alex-case-study.html).
 
-A flat list has no notion of *intersection*. A typed graph with provenance can tell you things you never said.
+A typed graph with provenance can tell you things you never said.
 
 ## Why the schema outlasts the model
 
 Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is.
 
-The primitive landed in shipped infrastructure this month. Anthropic's Managed Agents memory tool exposes persistence as a mounted filesystem at `/mnt/memory/` — a YAML graph drops in directly, no translation layer.[^managed-memory]
+The primitive landed in shipped infrastructure this month. Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph drops in directly, no translation layer.[^managed-memory]
 
 The edges have a vocabulary too. McCarthy's open-knowledge-graph schema names them: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs.
-
-The model is the interlocutor. **The graph is the memory.**
 
 Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
@@ -167,7 +165,7 @@ Which is also the privacy story. The memory is not inside the model. It is in a 
 
 The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
 
-If we are going to keep having long conversations with systems that remember us, the question of whether *we* know what they know about us, and whether they know how they know it, is the only question that matters.
+Whether *we* know what they know about us, and whether they know how they know it, is the only question that matters.
 
 ---
 
@@ -175,7 +173,7 @@ If we are going to keep having long conversations with systems that remember us,
 
 ---
 
-*The graph holds. The reader is the next thing. **[Part II — Search was never about humans →](/puzzles/know-thyself-search/)***
+***[Part II — Search was never about humans →](/puzzles/know-thyself-search/)***
 
 [^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
 
@@ -183,10 +181,10 @@ If we are going to keep having long conversations with systems that remember us,
 
 [^coala]: Sumers, Yao, Narasimhan, [*Cognitive Architectures for Language Agents*](https://arxiv.org/abs/2309.02427) (2023). The taxonomy — working / episodic / semantic / procedural — is the canonical academic framing the eight node types here refine on the semantic side.
 
-[^managed-memory]: Anthropic, [Managed Agents memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Persistent memory exposed as a mounted filesystem at `/mnt/memory/`; a YAML graph fits the primitive without adaptation.
+[^managed-memory]: Anthropic, [memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Client-side persistence exposed as a `/memories` directory the model can `view` / `create` / `str_replace` / `insert` / `delete` / `rename`; a YAML graph fits the primitive without adaptation.
 
 [^mccarthy-edges]: Patrick D. McCarthy, [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph). Edge vocabulary — `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes` — each carrying `(attribution, evidence, derivation)` triples. The eight node types map onto these edges directly.
 
 [^karpathy-wiki]: Andrej Karpathy, *LLM Wiki* (gist, Apr 4 2026). Plain-markdown self-edited memory with a lint loop for duplicates and contradictions; no types, no provenance. The lint catches duplicates the flat list cannot — and still has no slot for the distinction between *said* and *grounded*.
 
-[^memanto]: *Memanto: Typed-Vector Memory for Long-Horizon Agents* (arXiv:2604.22085, Apr 23 2026). Thirteen-category vector memory, no graph; reports 89.8% on LongMemEval and 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall. The benchmarks measure fact retrieval, not corroboration provenance.
+[^memanto]: *Memanto: Typed Semantic Memory with Information-Theoretic Retrieval for Long-Horizon Agents* (arXiv:2604.22085, Apr 23 2026). Thirteen-category vector memory, no graph; reports 89.8% on LongMemEval and 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall. The benchmarks measure fact retrieval, not corroboration provenance.
