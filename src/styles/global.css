@@ -365,10 +365,9 @@ a:hover { text-decoration-color: var(--accent); }
 .essay-meta a:hover { color: var(--accent); }
 
 /* === Knowledge-graph viz polish — applied globally so all 5 essay
-       dashboards inherit the same hand-drawn-feeling base treatment.
-       Single source of truth for .viz-node colours, filters, and
-       .edge styling; embedded dashboard styles must not redefine
-       these. === */
+       dashboards inherit the same clean geometric treatment.
+       Single source of truth for .viz-node colours and .edge styling;
+       embedded dashboard styles must not redefine these. === */
 
 .graph-viz {
   position: relative;
@@ -380,23 +379,18 @@ a:hover { text-decoration-color: var(--accent); }
   overflow: visible;
 }
 
-/* Hand-drawn wobble (via Base.astro filter defs) + soft drop-shadow.
-   The combination — feDisplacementMap turbulence over the path, then
-   layered shadow — gives the cream-paper, slightly-raised, hand-sketched
-   feel that matches /example-graph-full.html. */
+/* Clean geometric shapes with a soft shadow. No turbulence filter —
+   the example-graph reference (/example-graph-full.html) is sharp and
+   inviting, not sketchy. A subtle drop-shadow gives depth without
+   visual noise. */
 .viz-node {
-  filter:
-    url(#hand-drawn)
-    drop-shadow(2px 3px 0 rgba(40, 30, 20, 0.09))
-    drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
-  transition: filter 220ms ease, transform 220ms ease;
+  filter: drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
+  transition: filter 200ms ease, transform 200ms ease;
   transform-box: fill-box;
   transform-origin: center;
 }
-/* Edges get the wobble too — without it, geometric lines into wobbled
-   nodes read as inconsistent. */
 .edge {
-  filter: url(#hand-drawn);
+  /* No filter — clean geometric line into a clean shape. */
 }
 .viz-node-link {
   cursor: pointer;
@@ -404,8 +398,8 @@ a:hover { text-decoration-color: var(--accent); }
 }
 .viz-node-link:hover .viz-node {
   filter:
-    drop-shadow(3px 4px 0 rgba(40, 30, 20, 0.13))
-    drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
+    drop-shadow(0 4px 10px rgba(40, 30, 20, 0.18))
+    drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
   transform: translateY(-1px);
 }
 .viz-node-link:focus-visible {
@@ -482,82 +476,106 @@ a:hover { text-decoration-color: var(--accent); }
   letter-spacing: 0.03em;
 }
 
-/* Edges: slightly off-black, gentle taper. Derives stays dashed,
-   grounds (citation→synthesis) stays solid. */
+/* Edges: light gray with gentle taper, matching the example-graph
+   reference. Derives stays dashed, grounds (citation→synthesis)
+   stays solid. */
 .edge {
-  stroke: rgba(40, 30, 20, 0.32);
-  stroke-width: 1.6;
+  stroke: #bbbbbb;
+  stroke-width: 1;
   fill: none;
 }
 .edge-derives {
   stroke-dasharray: 5 4;
-  stroke: rgba(40, 30, 20, 0.42);
+  stroke: #b8b0a0;
 }
 
-/* Reduced motion — drop the wobble filter and the hover translate.
-   Soft drop-shadow remains so depth still reads. */
 @media (prefers-reduced-motion: reduce) {
-  .viz-node {
-    filter: drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
-    transition: none;
-  }
-  .edge {
-    filter: none;
-  }
-  .viz-node-link:hover .viz-node {
-    filter: drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
-    transform: none;
-  }
+  .viz-node { transition: none; }
+  .viz-node-link:hover .viz-node { transform: none; }
 }
 
 /* === end graph viz polish === */
 
-/* Essay-page tab nav: home / etudes / knowledge graph.
-   Three discrete bordered buttons — no shared container background.
-   Each reads as its own affordance, not a glued-together segment. */
-.essay-tabs {
+/* Puzzle views — single source of truth for the essay/etudes/graph
+   switcher. Lives at the top of every primary surface for a puzzle so
+   the reader can move between the prose, the practice, and the graph
+   without losing context. Text + middot grammar (matches etude-nav)
+   keeps the chrome quiet — it's a reading affordance, not a control
+   panel. The dashboard's inner Graph/Eyes/Actions tabbar is visually
+   distinct (pill-shaped) so the two levels never conflate. */
+.puzzle-views {
   display: flex;
-  gap: 0.5rem;
-  margin: 1rem 0 0;
-  width: fit-content;
-  font-family: system-ui, sans-serif;
-  font-size: 0.82rem;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+  color: var(--muted);
 }
-.essay-tab {
-  /* 44px touch target on mobile. */
+.puzzle-view {
+  /* 44px touch target — important on mobile. */
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  padding: 0.5rem 0.95rem;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: transparent;
   color: var(--muted);
   text-decoration: none;
-  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
+  padding: 0 0.1rem;
+  transition: color 200ms ease;
 }
-.essay-tab:hover {
+.puzzle-view:hover { color: var(--accent); }
+.puzzle-view-active,
+.puzzle-view-active:hover {
   color: var(--text);
-  border-color: var(--text);
-  background: var(--bg-soft);
-}
-
-/* Active state — current surface. Solid fill + light text, matching
-   the dashboard tabbar's active button so the two nav levels read as
-   the same family. The aria-current="page" is set by the component. */
-.essay-tab-active,
-.essay-tab-active:hover {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
+  font-weight: 500;
   cursor: default;
 }
-.essay-tab:focus-visible {
+.puzzle-views-sep {
+  margin: 0 0.5rem;
+  color: var(--line);
+  user-select: none;
+}
+.puzzle-view:focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+.puzzle-views-hint {
+  margin-left: 0.85rem;
+  font-style: italic;
+  color: var(--muted);
+  opacity: 0;
+  transform: translateX(-3px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  pointer-events: none;
+  /* Keep the hint on the same baseline as the labels. */
+  line-height: 1;
+  /* Hide overflow on small viewports rather than wrap. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.puzzle-views-hint.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (max-width: 32rem) {
+  /* On phones, drop the inline hint — tap, don't hover. The native title=""
+     still lights up for assistive tech. */
+  .puzzle-views-hint { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .essay-tab { transition: none; }
+  .puzzle-view,
+  .puzzle-views-hint { transition: none; }
+}
+
+/* Provenance lives at the very end — Apple "About this book" placement.
+   It's metadata, not content; the reader should reach it after the read. */
+.essay-provenance {
+  margin: 3rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
 }
 
 hr {

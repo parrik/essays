@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
 
 const etudes = [
   { name: 'Token Budget', href: '/etudes/know-thyself/token-budget/', desc: 'Slide the graph size; watch the paste break.' },
@@ -12,16 +13,18 @@ const etudes = [
 <Base title="Know Thyself etudes">
   <article class="etude-page">
     <header class="etude-head">
-      <p class="etude-kicker">Etudes · Know Thyself</p>
+      <nav class="etude-nav">
+        <a href="/etudes/">← all etudes</a>
+      </nav>
       <h1 class="etude-title">Know Thyself</h1>
       <p class="etude-relief">Five studies on memory shape, attribution, and retrieval over typed personal graphs.</p>
-      <nav class="etude-nav">
-        <a href="/puzzles/know-thyself/">← essay (Pt I)</a>
-        <span class="etude-nav-sep">·</span>
-        <a href="/puzzles/know-thyself-search/">essay (Pt II)</a>
-        <span class="etude-nav-sep">·</span>
-        <a href="/etudes/">all etudes</a>
-      </nav>
+      <PuzzleViews
+        slug="know-thyself"
+        activeView="etudes"
+        etudesUrl="/etudes/know-thyself/"
+        hasGraph={true}
+      />
+      <p class="etude-sibling-essay">Also for <a href="/puzzles/know-thyself-search/">Search was never about humans</a> (Pt II).</p>
     </header>
 
     <ul class="etude-list">
@@ -65,10 +68,19 @@ const etudes = [
     margin: 0 0 1rem;
     line-height: 1.45;
   }
-  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); margin-bottom: 1.25rem; }
   .etude-nav a { color: var(--muted); text-decoration: none; }
   .etude-nav a:hover { color: var(--accent); }
   .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+  .etude-sibling-essay {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin: 0 0 1.75rem;
+    font-style: italic;
+  }
+  .etude-sibling-essay a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--line); text-underline-offset: 3px; }
+  .etude-sibling-essay a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 
   .etude-list { list-style: none; padding: 0; margin: 0; }
   .etude-list li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); }

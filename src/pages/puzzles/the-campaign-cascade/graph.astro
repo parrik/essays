@@ -2,7 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
-import EssayTabs from '../../../components/EssayTabs.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
 import data from '../../../data/essay-graphs/the-campaign-cascade.json';
 const etudesUrl = '/etudes/campaign-cascade/';
 
@@ -43,7 +43,12 @@ const counts = nodes.reduce(
       <p class="dash-kicker">Knowledge dashboard</p>
       <h1 class="dash-title">{essayTitle}</h1>
       <p class="dash-relief">{subtitle}</p>
-      <EssayTabs slug={slug} activeTab="knowledge-graph" etudesUrl={etudesUrl} hasGraph={true} />
+      <PuzzleViews
+        slug={slug}
+        activeView="graph"
+        etudesUrl={etudesUrl}
+        hasGraph={true}
+      />
     </header>
 
     <nav class="tabbar" role="tablist">
@@ -87,6 +92,7 @@ const counts = nodes.reduce(
           })}
         </svg>
         <div id="viz-tooltip" class="viz-tooltip" aria-hidden="true"></div>
+        <div class="graph-hint" aria-hidden="true">hover over any node</div>
       </div>
 
       <div class="dash-counts">
@@ -294,22 +300,18 @@ const counts = nodes.reduce(
     margin: 0 0 0.85rem;
     line-height: 1.5;
   }
-  .dash-back {
-    font-family: var(--sans);
-    font-size: 0.85rem;
-  }
-  .dash-back a { color: var(--muted); text-decoration: none; }
-  .dash-back a:hover { color: var(--accent); }
 
-  /* === tabbar === */
+  /* === tabbar — iOS UISegmentedControl grammar ===
+     Light cream container; active button is a warm-white tile with a
+     subtle elevation shadow. Quieter than a dark fill, more like Apple
+     Music / Settings segmented controls. */
   .tabbar {
-    display: flex;
-    gap: 0.4rem;
-    margin: 1.5rem 0 1.5rem;
-    padding: 0.3rem;
+    display: inline-flex;
+    gap: 2px;
+    margin: 1.5rem 0;
+    padding: 3px;
     background: var(--bg-soft);
-    border-radius: 6px;
-    width: fit-content;
+    border-radius: 8px;
   }
   .tabbar button {
     appearance: none;
@@ -317,42 +319,44 @@ const counts = nodes.reduce(
     background: transparent;
     border: none;
     font-family: var(--sans);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 500;
     color: var(--muted);
-    padding: 0.55rem 1rem;
-    /* 44px touch-target floor (Apple HIG). Important on mobile where the
-       responsive block below shrinks the horizontal padding. */
+    padding: 0.5rem 1rem;
+    /* 44px touch-target floor (Apple HIG). */
     min-height: 44px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: color 240ms ease;
+    transition: color 200ms ease, background 200ms ease, box-shadow 200ms ease;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
   }
-  .tabbar button:hover {
-    color: var(--text);
-  }
+  .tabbar button:hover { color: var(--text); }
   .tabbar button:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
   .tabbar button.active {
-    background: var(--text);
-    color: var(--bg);
-    transition: background 240ms ease, color 240ms ease;
+    background: #fffdf7;
+    color: var(--text);
+    box-shadow:
+      0 1px 2px rgba(40, 30, 20, 0.06),
+      0 1px 3px rgba(40, 30, 20, 0.08);
+    cursor: default;
   }
-  .tabbar button.active:hover {
-    color: var(--bg);
-  }
+  .tabbar button.active:hover { color: var(--text); }
   @media (prefers-reduced-motion: reduce) {
     .tabbar button { transition: none; }
   }
   .tab-count {
     font-size: 0.75rem;
     font-variant-numeric: tabular-nums;
-    opacity: 0.7;
+    color: var(--muted);
+    font-weight: 400;
+  }
+  .tabbar button.active .tab-count {
+    color: var(--muted);
   }
 
   .tab-panel { display: none; }
@@ -365,14 +369,29 @@ const counts = nodes.reduce(
     font-style: italic;
   }
 
-  /* === Graph tab — SVG viz === */
+  /* === Graph tab — SVG viz ===
+     Warm-white canvas (matches the example-graph reference). High
+     contrast against the cream page bg makes the geometric shapes
+     pop without needing a heavy filter. */
   .graph-viz {
     position: relative;
     margin: 0 0 1.75rem;
-    padding: 1rem;
-    background: var(--bg-soft);
-    border-radius: 12px;
+    padding: 1.25rem 1.25rem 2.25rem;
+    background: #fffdf7;
+    border: 1px solid var(--line);
+    border-radius: 8px;
     overflow: hidden;
+  }
+  .graph-hint {
+    position: absolute;
+    bottom: 0.55rem;
+    right: 0.85rem;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+    opacity: 0.85;
   }
   /* Hover tooltip — same family as /example-graph-full.html */
   .viz-tooltip {

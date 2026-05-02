@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
 
 const etudes = [
   { name: 'Review this PR', href: '/etudes/campaign-cascade/review-this-pr/', desc: '30 seconds in the seat where the cascade lands.' },
@@ -10,14 +11,17 @@ const etudes = [
 <Base title="Campaign Cascade etudes">
   <article class="etude-page">
     <header class="etude-head">
-      <p class="etude-kicker">Etudes · Campaign Cascade</p>
+      <nav class="etude-nav">
+        <a href="/etudes/">← all etudes</a>
+      </nav>
       <h1 class="etude-title">Campaign Cascade</h1>
       <p class="etude-relief">Three studies on cross-cutting work — where the dead zone is, and how to stay out of it.</p>
-      <nav class="etude-nav">
-        <a href="/puzzles/the-campaign-cascade/">← puzzle</a>
-        <span class="etude-nav-sep">·</span>
-        <a href="/etudes/">all etudes</a>
-      </nav>
+      <PuzzleViews
+        slug="the-campaign-cascade"
+        activeView="etudes"
+        etudesUrl="/etudes/campaign-cascade/"
+        hasGraph={true}
+      />
     </header>
 
     <ul class="etude-list">
@@ -61,7 +65,7 @@ const etudes = [
     margin: 0 0 1rem;
     line-height: 1.45;
   }
-  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); margin: 0 0 1.25rem; }
   .etude-nav a { color: var(--muted); text-decoration: none; }
   .etude-nav a:hover { color: var(--accent); }
   .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
