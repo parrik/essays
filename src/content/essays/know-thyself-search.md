@@ -1,7 +1,7 @@
 ---
 title: Search was never about humans
 subtitle: Retrieval over typed personal graphs
-relief: Being known is being legible. Legibility is shape, not exposure.
+relief: Retrieval is shape, sized to the reader. The reader is no longer just human.
 kicker: Method
 tag: essay
 order: 1
