@@ -14,8 +14,14 @@ export async function getStaticPaths() {
 const { essay } = Astro.props;
 const { Content } = await render(essay);
 
-// Essays with a graph page built. As more graphs land, add the slug here.
-const slugsWithGraph = new Set(['the-campaign-cascade']);
+// Essays with a graph dashboard built. As more land, add the slug here.
+const slugsWithGraph = new Set([
+  'the-campaign-cascade',
+  'know-thyself',
+  'know-thyself-search',
+  'know-thyself-security',
+  'the-partition-problem',
+]);
 const hasGraph = slugsWithGraph.has(essay.id);
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>

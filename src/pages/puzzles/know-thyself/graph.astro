@@ -3,8 +3,8 @@ import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
 
-const slug = 'the-campaign-cascade';
-const essayTitle = 'How to run a cross-cutting campaign';
+const slug = 'know-thyself';
+const essayTitle = 'A self was never flat';
 const subtitle = 'The essay\'s knowledge, dashboard-shaped — graph, eyes, actions.';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
@@ -21,47 +21,106 @@ type Node = {
 
 const nodes: Node[] = [
   {
-    id: 'S01-cross-cutting-finish-or-not',
+    id: 'S01-mirror-problem',
     type: 'synthesis',
-    claim: 'Cross-cutting changes finish or they don\'t.',
-    where: 'opening',
-    why: 'Names the binary the essay refuses to soften — there is no "mostly finished" cross-cutting initiative.',
+    claim: 'Flat memory turns repetition into evidence — the model speaks back to the user as a mirror, sycophancy hardened into self-knowledge.',
+    where: 'opening (Alex case)',
+    why: 'Names the failure mode the essay refuses to soften. Six self-diagnoses on a list read as six pieces of evidence; this is the misreading every downstream claim must prevent.',
   },
   {
-    id: 'S02-context-in-hand',
-    type: 'synthesis',
-    claim: 'Every human in the loop has the context they need to act on the change in front of them.',
-    where: 'the principle',
-    why: 'The load-bearing claim. Every downstream pattern in the essay derives from honoring this or breaking it.',
-  },
-  {
-    id: 'D03-cascade-loop',
-    type: 'derivation',
-    claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug.',
-  },
-  {
-    id: 'S04-three-paths',
-    type: 'synthesis',
-    claim: 'Three valid responses — automate, centralize, enable.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship.',
-  },
-  {
-    id: 'D05-dead-zone',
-    type: 'derivation',
-    claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
-    derives_from: ['S02-context-in-hand', 'S04-three-paths'],
-    why: 'The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can\'t evaluate it. None of the three paths, all of the cost.',
-  },
-  {
-    id: 'C01-codemod',
+    id: 'C06-mirror-study',
     type: 'citation',
-    claim: 'Codemod — a program that rewrites source code mechanically.',
-    source: 'facebookarchive/codemod',
-    url: 'https://github.com/facebookarchive/codemod',
-    why: 'Defines the term the automate path uses. Real-world reference makes the path concrete instead of abstract.',
+    claim: 'Condensed user-profile memory produced the largest sycophancy amplification of any personalization feature studied — measured effect, not metaphor.',
+    source: 'MIT & Penn State, Personalization features can make LLMs more agreeable (CHI 2026)',
+    url: 'https://news.mit.edu/2026/personalization-features-can-make-llms-more-agreeable-0218',
+    why: 'Grounds the mirror problem empirically. Without this, the opening is a vivid anecdote; with it, the failure mode is a measured deployment finding.',
+  },
+  {
+    id: 'S02-fix-is-shape',
+    type: 'synthesis',
+    claim: 'The fix is not more memory. The fix is shape.',
+    where: 'turn (after Alex)',
+    why: 'The load-bearing claim. The whole essay derives from this pivot — that adding memory cannot undo the mirror because the bug lives in the structure, not the volume.',
+    derives_from: ['S01-mirror-problem'],
+  },
+  {
+    id: 'C09-karpathy-wiki',
+    type: 'citation',
+    claim: 'LLM Wiki — plain markdown, model self-edits, lint loop catches contradictions and orphans. No types, no provenance.',
+    source: 'Andrej Karpathy, LLM Wiki (gist, Apr 4 2026)',
+    url: 'https://gist.github.com/karpathy',
+    why: 'The neighboring proposal that fixes one drift (contradictions) but not the other (repetition-as-evidence). Cited to position the essay\'s claim against the closest live alternative.',
+  },
+  {
+    id: 'S03-memory-must-have-types',
+    type: 'synthesis',
+    claim: 'Memory must have types — episodic and semantic held in distinct stores, not collapsed into a flat list.',
+    where: 'the shape',
+    why: 'The first concrete consequence of "fix is shape." Without typed slots, the schema cannot tell said apart from grounded; types are the binding principle.',
+    derives_from: ['S02-fix-is-shape'],
+  },
+  {
+    id: 'C04-tulving',
+    type: 'citation',
+    claim: 'Episodic vs semantic memory as separate stores — the binding principle the schema operationalizes.',
+    source: 'Tulving, Episodic and Semantic Memory (1972)',
+    why: 'The originating cognitive-psychology distinction the essay\'s eight types refine. Cited to mark the lineage rather than claim novelty for the type/no-type cut.',
+  },
+  {
+    id: 'C05-coala',
+    type: 'citation',
+    claim: 'Working / episodic / semantic / procedural — the canonical agent-memory taxonomy. The eight node types here are an opinionated refinement of the semantic side.',
+    source: 'Sumers, Yao, Narasimhan, Cognitive Architectures for Language Agents (2023)',
+    url: 'https://arxiv.org/abs/2309.02427',
+    why: 'The contemporary academic frame. Cited to position the eight types as a refinement (not replacement) of CoALA — naming the literature the schema sits inside.',
+  },
+  {
+    id: 'C12-mccarthy-edges',
+    type: 'citation',
+    claim: 'Edge vocabulary — derives_from, evidences, grounds, overlaps_with, generalizes — each carrying an (attribution, evidence, derivation) triple.',
+    source: 'Patrick D. McCarthy, open-knowledge-graph',
+    url: 'https://github.com/patdmc/open-knowledge-graph',
+    why: 'Provides the edge vocabulary the essay\'s nodes plug into. McCarthy supplies the verbs; the eight types are the nouns. Without this citation, attribution≠confidence reads as the author\'s coinage rather than an adoption.',
+  },
+  {
+    id: 'S07-attribution-neq-confidence',
+    type: 'synthesis',
+    claim: 'Attribution ≠ confidence. The operating rule.',
+    where: 'the rule',
+    why: 'The single sentence that does the work. Adopted from McCarthy\'s scientific-knowledge graphs and applied to personal memory — the rule that prevents repetition from masquerading as corroboration.',
+    derives_from: ['S03-memory-must-have-types', 'C12-mccarthy-edges'],
+  },
+  {
+    id: 'S08-repetition-isnt-corroboration',
+    type: 'synthesis',
+    claim: 'Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. A novel cannot quietly become an overlap; it waits for a new, independent observation.',
+    where: 'the rule, applied',
+    why: 'The operational consequence of the rule. This is the discipline the schema enforces structurally — the schema makes repetition-as-evidence impossible by construction.',
+    derives_from: ['S07-attribution-neq-confidence'],
+  },
+  {
+    id: 'C10-memanto',
+    type: 'citation',
+    claim: 'Typed semantic memory with information-theoretic retrieval — thirteen vector categories, no graph; 89.8% on LongMemEval, 87.1% on LoCoMo, beating graph-hybrid baselines on QA recall.',
+    source: 'Memanto (arXiv:2604.22085, Apr 23 2026)',
+    url: 'https://arxiv.org/abs/2604.22085',
+    why: 'The strongest neighboring proposal — types-without-edges wins fact-retrieval benchmarks. Cited honestly: the essay\'s claim is that benchmarks measure recall, not whether one derivation got mistaken for six.',
+  },
+  {
+    id: 'C11-anthropic-memory',
+    type: 'citation',
+    claim: 'Client-side persistence exposed as a /memories directory the model can view / create / str_replace / insert / delete / rename.',
+    source: 'Anthropic memory tool (Apr 8 2026)',
+    url: 'https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool',
+    why: 'The shipped infrastructure that makes the schema deployable today. Without this, the YAML-graph claim is theoretical; with it, the primitive is already in the field.',
+  },
+  {
+    id: 'S13-graph-is-the-memory',
+    type: 'synthesis',
+    claim: 'The graph IS the memory. A YAML file the user owns; models read it and pick up the thread; when a model retires, the graph stays.',
+    where: 'the punchline',
+    why: 'The architectural claim the whole essay points at. The schema outlasts any model because the memory is not in the model — it is a file the user keeps. Privacy, portability, and provenance fall out of this one shape.',
+    derives_from: ['C12-mccarthy-edges', 'C11-anthropic-memory'],
   },
 ];
 
@@ -74,23 +133,42 @@ type EyesItem = {
 
 const eyes: EyesItem[] = [
   {
-    id: 'D03-cascade-loop',
-    what: 'The cascade loop (Campaign → Stall → Escalate → Directive → New) is the author\'s observation. No external citation naming this exact failure mode.',
-    why: 'The pattern is plausible from first-hand engineering experience, but external corroboration would strengthen the claim. Adjacent literature exists.',
+    id: 'S03-memory-must-have-types',
+    what: 'The eight node types (Reference / Observation / Overlap / Novel / Emergent / Equivalency / Practice / Open) are the author\'s opinionated refinement of CoALA\'s four. The specific cuts — especially Novel, Emergent, Open — are author-original.',
+    why: 'CoALA grounds working/episodic/semantic/procedural. The further partition of the semantic side is the essay\'s contribution, not yet validated externally. Empirical work showing these specific cuts reduce one-derivation-as-six errors would harden the case.',
     ground_with: [
-      { label: 'Brooks\'s law (Mythical Man-Month, 1975)', url: 'https://en.wikipedia.org/wiki/Brooks%27s_law' },
-      { label: 'Conway\'s law on org structure → system structure', url: 'https://en.wikipedia.org/wiki/Conway%27s_law' },
+      { label: 'CoALA — working/episodic/semantic/procedural', url: 'https://arxiv.org/abs/2309.02427' },
+      { label: 'Park et al., Generative Agents (UIST 2023) — observation vs reflection separation' },
+      { label: 'A targeted user study on typed-vs-flat memory and sycophancy outcomes' },
     ],
   },
   {
-    id: 'S04-three-paths',
-    what: 'The three-paths taxonomy (automate / centralize / enable) is original framing. No cited prior taxonomy.',
-    why: 'Useful as the author\'s synthesis. If a published org-design taxonomy already names a similar trichotomy, citing it would let the essay sit alongside that frame instead of re-naming it.',
+    id: 'S08-repetition-isnt-corroboration',
+    what: 'The Mira/Alex case is illustrative, not empirical. No user study cited testing whether graph-shaped memory reduces sycophancy at the user-experience level — only the CHI 2026 paper showing flat memory amplifies it.',
+    why: 'The negative result (flat memory amplifies sycophancy) is grounded. The positive result (typed-and-edged memory reduces it) is asserted by construction, not measured. The essay would land harder with a paired study.',
+    ground_with: [
+      { label: 'CHI 2026 mirror study (the negative case, already cited)', url: 'https://news.mit.edu/2026/personalization-features-can-make-llms-more-agreeable-0218' },
+      { label: 'A within-subjects study comparing flat vs typed memory on sycophancy metrics' },
+    ],
   },
   {
-    id: 'D05-dead-zone',
-    what: '"Dead zone" is the author\'s naming. No empirical data on how often this specific failure mode occurs in real orgs.',
-    why: 'The naming is sharp; the prevalence claim is implicit. An open question: what fraction of stalled cross-cutting initiatives sit in the dead zone vs. fail elsewhere?',
+    id: 'S13-graph-is-the-memory',
+    what: 'The architectural claim ("graph IS the memory") rests on two recent shipped/proposed pieces (Anthropic memory tool, McCarthy edge vocabulary). It is a synthesis claim, not yet stress-tested at scale.',
+    why: 'The composition is sharp but new. Any production deployment story — even a single user running the YAML graph against a real model over months — would move this from elegant proposal to demonstrated architecture.',
+    ground_with: [
+      { label: 'Anthropic memory tool docs', url: 'https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool' },
+      { label: 'Stateful vs stateless agent architecture surveys' },
+      { label: 'A longitudinal case study of one user running know-thyself for ≥6 months' },
+    ],
+  },
+  {
+    id: 'C10-memanto',
+    what: 'Memanto\'s benchmark wins (89.8% LongMemEval, 87.1% LoCoMo) are dispatched in one sentence: "the benchmark measures recall." That move needs more weight.',
+    why: 'A reader sympathetic to vector-only memory will not be convinced by a one-line dismissal. An eyes-item that names the specific benchmark task (multi-hop fact retrieval) and contrasts it with the corroboration-provenance task the essay cares about would close the gap.',
+    ground_with: [
+      { label: 'LongMemEval task definition', url: 'https://arxiv.org/abs/2410.10813' },
+      { label: 'LoCoMo benchmark', url: 'https://arxiv.org/abs/2402.17753' },
+    ],
   },
 ];
 
@@ -104,37 +182,48 @@ type ActionItem = {
 const actions: ActionItem[] = [
   {
     kind: 'etude',
-    label: 'Cascade simulator',
-    body: 'Press launch. Watch four campaigns spawn. The original migration creeps. Demonstrates D03.',
-    href: '/etudes/campaign-cascade/cascade-simulator/',
+    label: 'Six restatements',
+    body: 'One claim, said six ways. Watch the flat list count it as six. Watch the typed graph count it as one. Drills S08.',
+    href: '/etudes/know-thyself/six-restatements/',
   },
   {
     kind: 'etude',
-    label: 'Review this PR',
-    body: '30 seconds in the seat where the cascade lands. Demonstrates D05.',
-    href: '/etudes/campaign-cascade/review-this-pr/',
+    label: 'Attribution vs confidence',
+    body: 'Sort five claims about Alex by attribution count and by independent-derivation count. The two columns disagree. Drills S07.',
+    href: '/etudes/know-thyself/attribution-confidence/',
   },
   {
     kind: 'etude',
-    label: 'Three paths',
-    body: 'Pick a path for four scenarios. Drills S04.',
-    href: '/etudes/campaign-cascade/three-paths/',
+    label: 'Flat vs typed',
+    body: 'Same set of conversations, two memories. The flat memory reads back a confident self-diagnosis; the typed graph reads back a tentative novel. Demonstrates S02 and S13.',
+    href: '/etudes/know-thyself/flat-vs-typed/',
   },
   {
     kind: 'apply',
-    label: 'Audit your initiatives',
-    body: 'For each cross-cutting initiative your org is running, name which of the three paths it\'s on. Anything you can\'t cleanly assign is in the dead zone.',
+    label: 'Audit your last LLM conversation',
+    body: 'If memory was on, what claims about you did the model state confidently? For each: how many independent episodes ground it, and how many times did you simply restate it? The two counts should not be conflated.',
   },
   {
     kind: 'apply',
-    label: 'Find your dead zone',
-    body: 'Which migrations have you done the work for (PRs created) but not finished (other teams holding merge)? That\'s the dead zone. Pull the human out of the place they cannot add value.',
+    label: 'Find your spine',
+    body: 'Of the things you believe about yourself, which three or four observations are load-bearing — referenced by the most downstream claims? Miscoding one of those cascades. Knowing which is which is the work.',
+  },
+  {
+    kind: 'apply',
+    label: 'Name your novels',
+    body: 'Pick three things you have been quietly believing about yourself. For each, write the single episode it derives from. If you cannot find a second independent episode, the claim is a Novel, not an Overlap. Mark it tentative.',
+  },
+  {
+    kind: 'next',
+    label: 'Part II — Search was never about humans',
+    body: 'The same schema turned around: when you search, what does the system know about how it knows? Retrieval as the second half of the memory question.',
+    href: '/puzzles/know-thyself-search/',
   },
   {
     kind: 'next',
     label: 'Same shape, different domain',
-    body: 'The know-thyself series argues the same principle — substrate must match the reader — at a different scale (personal memory in LLM conversations).',
-    href: '/puzzles/know-thyself/',
+    body: 'How to run a cross-cutting campaign — the same structural argument (substrate must match the reader) at org scale instead of memory scale.',
+    href: '/puzzles/the-campaign-cascade/',
   },
 ];
 
@@ -155,12 +244,24 @@ const counts = nodes.reduce(
 
 type NodePos = { cx: number; cy: number; r: number; labelY: number; labelText: string };
 const positions: Record<string, NodePos> = {
-  'S01-cross-cutting-finish-or-not': { cx: 100, cy: 80,  r: 26, labelY: 125, labelText: 'S01' },
-  'S02-context-in-hand':              { cx: 300, cy: 80,  r: 32, labelY: 130, labelText: 'S02 · principle' },
-  'S04-three-paths':                  { cx: 500, cy: 80,  r: 26, labelY: 125, labelText: 'S04' },
-  'D03-cascade-loop':                 { cx: 175, cy: 200, r: 26, labelY: 245, labelText: 'D03' },
-  'D05-dead-zone':                    { cx: 425, cy: 200, r: 26, labelY: 245, labelText: 'D05' },
-  'C01-codemod':                      { cx: 300, cy: 310, r: 22, labelY: 350, labelText: 'C01' },
+  // Spine — center
+  'S13-graph-is-the-memory':         { cx: 350, cy: 240, r: 34, labelY: 295, labelText: 'S13 · spine' },
+
+  // Synthesis pentagon — radius ~140 around center
+  'S01-mirror-problem':               { cx: 350, cy: 100, r: 26, labelY: 65,  labelText: 'S01' },
+  'S02-fix-is-shape':                 { cx: 483, cy: 196, r: 28, labelY: 158, labelText: 'S02' },
+  'S03-memory-must-have-types':       { cx: 432, cy: 354, r: 26, labelY: 395, labelText: 'S03' },
+  'S07-attribution-neq-confidence':   { cx: 268, cy: 354, r: 26, labelY: 395, labelText: 'S07' },
+  'S08-repetition-isnt-corroboration':{ cx: 217, cy: 196, r: 26, labelY: 158, labelText: 'S08' },
+
+  // Citations — outer ring, near the synthesis they ground
+  'C06-mirror-study':                 { cx: 350, cy: 30,  r: 20, labelY: 70,  labelText: 'C06' },
+  'C09-karpathy-wiki':                { cx: 605, cy: 130, r: 20, labelY: 168, labelText: 'C09' },
+  'C04-tulving':                      { cx: 620, cy: 270, r: 20, labelY: 308, labelText: 'C04' },
+  'C05-coala':                        { cx: 555, cy: 415, r: 20, labelY: 453, labelText: 'C05' },
+  'C10-memanto':                      { cx: 145, cy: 415, r: 20, labelY: 453, labelText: 'C10' },
+  'C12-mccarthy-edges':               { cx: 80,  cy: 270, r: 20, labelY: 308, labelText: 'C12' },
+  'C11-anthropic-memory':             { cx: 95,  cy: 130, r: 20, labelY: 168, labelText: 'C11' },
 };
 ---
 <Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
@@ -181,15 +282,38 @@ const positions: Record<string, NodePos> = {
     </nav>
 
     <section id="tab-graph" class="tab-panel active" role="tabpanel">
-      <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
+      <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. The spine — <em>graph IS the memory</em> — sits at center; everything orbits it. Click any node to jump to its card.</p>
 
       <div class="graph-viz">
-        <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
+        <svg viewBox="0 0 700 480" role="img" aria-label="Knowledge graph — know thyself">
           {/* edges first so nodes paint over them */}
-          <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
+
+          {/* S01 → S02 (fix is shape derives from mirror problem) */}
+          <line x1="350" y1="100" x2="483" y2="196" class="edge edge-derives" />
+          {/* S02 → S03 (types derive from fix is shape) */}
+          <line x1="483" y1="196" x2="432" y2="354" class="edge edge-derives" />
+          {/* S03 → S07 (attribution≠confidence derives from types) */}
+          <line x1="432" y1="354" x2="268" y2="354" class="edge edge-derives" />
+          {/* C12 → S07 (McCarthy grounds attribution≠confidence) */}
+          <line x1="80"  y1="270" x2="268" y2="354" class="edge edge-derives" />
+          {/* S07 → S08 (repetition isn't corroboration derives from attribution≠confidence) */}
+          <line x1="268" y1="354" x2="217" y2="196" class="edge edge-derives" />
+          {/* C12 → S13 (McCarthy grounds graph-is-the-memory) */}
+          <line x1="80"  y1="270" x2="350" y2="240" class="edge edge-derives" />
+          {/* C11 → S13 (Anthropic memory tool grounds graph-is-the-memory) */}
+          <line x1="95"  y1="130" x2="350" y2="240" class="edge edge-derives" />
+
+          {/* citation grounds (solid) — edge to nearest synthesis */}
+          {/* C06 → S01 */}
+          <line x1="350" y1="30"  x2="350" y2="100" class="edge" />
+          {/* C09 → S02 */}
+          <line x1="605" y1="130" x2="483" y2="196" class="edge" />
+          {/* C04 → S03 */}
+          <line x1="620" y1="270" x2="432" y2="354" class="edge" />
+          {/* C05 → S03 */}
+          <line x1="555" y1="415" x2="432" y2="354" class="edge" />
+          {/* C10 → S07 */}
+          <line x1="145" y1="415" x2="268" y2="354" class="edge" />
 
           {nodes.map((n) => {
             const p = positions[n.id];
@@ -200,7 +324,7 @@ const positions: Record<string, NodePos> = {
                 cx={p.cx}
                 cy={p.cy}
                 r={p.r}
-                isSpine={n.id === 'S02-context-in-hand'}
+                isSpine={n.id === 'S13-graph-is-the-memory'}
                 id={n.id}
                 claim={n.claim}
                 why={n.why}
@@ -554,7 +678,7 @@ const positions: Record<string, NodePos> = {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 380px;
+    max-height: 480px;
   }
   .edge {
     stroke: var(--line);

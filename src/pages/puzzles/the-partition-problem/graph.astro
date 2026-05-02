@@ -3,8 +3,8 @@ import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
 
-const slug = 'the-campaign-cascade';
-const essayTitle = 'How to run a cross-cutting campaign';
+const slug = 'the-partition-problem';
+const essayTitle = 'The Partition Problem';
 const subtitle = 'The essay\'s knowledge, dashboard-shaped — graph, eyes, actions.';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
@@ -21,47 +21,95 @@ type Node = {
 
 const nodes: Node[] = [
   {
-    id: 'S01-cross-cutting-finish-or-not',
+    id: 'S01-cancer-cell-lost-context',
     type: 'synthesis',
-    claim: 'Cross-cutting changes finish or they don\'t.',
+    claim: 'A cancer cell is not a broken cell — it has lost context.',
     where: 'opening',
-    why: 'Names the binary the essay refuses to soften — there is no "mostly finished" cross-cutting initiative.',
+    why: 'The spine. Reframes cancer from machinery-failure to signal-failure: the cell still functions, but inside a model of the world that is no longer true.',
   },
   {
-    id: 'S02-context-in-hand',
-    type: 'synthesis',
-    claim: 'Every human in the loop has the context they need to act on the change in front of them.',
-    where: 'the principle',
-    why: 'The load-bearing claim. Every downstream pattern in the essay derives from honoring this or breaking it.',
-  },
-  {
-    id: 'D03-cascade-loop',
-    type: 'derivation',
-    claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug.',
-  },
-  {
-    id: 'S04-three-paths',
-    type: 'synthesis',
-    claim: 'Three valid responses — automate, centralize, enable.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship.',
-  },
-  {
-    id: 'D05-dead-zone',
-    type: 'derivation',
-    claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
-    derives_from: ['S02-context-in-hand', 'S04-three-paths'],
-    why: 'The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can\'t evaluate it. None of the three paths, all of the cost.',
-  },
-  {
-    id: 'C01-codemod',
+    id: 'C01-hanahan-weinberg',
     type: 'citation',
-    claim: 'Codemod — a program that rewrites source code mechanically.',
-    source: 'facebookarchive/codemod',
-    url: 'https://github.com/facebookarchive/codemod',
-    why: 'Defines the term the automate path uses. Real-world reference makes the path concrete instead of abstract.',
+    claim: 'Hallmarks of Cancer (2011) + New Dimensions (2022) — cancer as acquired capabilities that escape tissue signaling and microenvironmental constraint.',
+    where: 'footnote [^1]',
+    source: 'Hanahan & Weinberg, Cell 2011; Cancer Discovery 2022',
+    url: 'https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9',
+    why: 'Grounds the spine in the canonical cancer-biology frame. The 2011 update foregrounds tumor-promoting inflammation and microenvironment — the bridge the essay builds on.',
+  },
+  {
+    id: 'C02-sonnenschein-soto',
+    type: 'citation',
+    claim: 'Tissue Organization Field Theory — cancer as tissue-level disorder of intercellular constraint.',
+    where: 'footnote [^1]',
+    source: 'Sonnenschein & Soto',
+    why: 'The minority-position citation that takes the context-loss frame furthest. Pairs with Hanahan-Weinberg to triangulate the spine claim from two independent literatures.',
+  },
+  {
+    id: 'C03-mccarthy-okg',
+    type: 'citation',
+    claim: 'Open-knowledge-graph — bounded-context framework. Paper 11 (The Ratchet) and Paper 5 (Genome as Projection).',
+    where: 'footnote [^1]',
+    source: 'Patrick D. McCarthy',
+    url: 'https://github.com/patdmc/open-knowledge-graph',
+    why: 'The theoretical scaffolding the essay leans on — cancer and evolution as opposing failures of the same bounded-context mechanism.',
+  },
+  {
+    id: 'D01-fascia-partitions',
+    type: 'derivation',
+    claim: 'Fascia partitions — the body partitions itself when signal is associated with danger.',
+    where: 'fascia section',
+    derives_from: ['S01-cancer-cell-lost-context', 'C04-schleip-stecco'],
+    why: 'The somatic instantiation of the spine. What context-loss looks like in connective tissue: dehydration, adhesion, regions stop participating, force routes around them.',
+  },
+  {
+    id: 'C04-schleip-stecco',
+    type: 'citation',
+    claim: 'Fascia hydration and hyaluronan-driven interlayer glide; densification compromises the system.',
+    where: 'footnote [^schleip]',
+    source: 'Schleip et al. (2012, 2015); Stecco et al. (2011)',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/21964857/',
+    why: 'Grounds the fascia mechanism. The hyaluronan / glide / densification chain is solid in the bodywork literature; the essay borrows it cleanly.',
+  },
+  {
+    id: 'D02-restorative-reopens-channel',
+    type: 'derivation',
+    claim: 'Restorative yoga reopens the channel — long supported holds let the matrix re-hydrate, adhesions soften, the partitioned region rejoins surrounding signal.',
+    where: 'fascia section',
+    derives_from: ['D01-fascia-partitions'],
+    why: 'The intervention claim at the fascia layer. Mechanism-level (re-hydration, adhesion-softening), not outcome-level (cure).',
+  },
+  {
+    id: 'D03-vagus-listening-line',
+    type: 'derivation',
+    claim: 'The vagus is the body\'s listening line — long exhale signals safety; HRV measures its flexibility.',
+    where: 'long exhale section',
+    derives_from: ['S01-cancer-cell-lost-context', 'C05-porges'],
+    why: 'The nervous-system instantiation of the spine. Locked vagus reads alarm; flexible vagus reads context. Same partition dynamic, different tissue.',
+  },
+  {
+    id: 'C05-porges',
+    type: 'citation',
+    claim: 'Polyvagal theory — vagal tone, supported postures, long exhales, inflammation-vagal-tone correlation. Phylogenetic claims contested by Grossman/Taylor; clinical readouts robust.',
+    where: 'footnote [^porges]',
+    source: 'Porges 2011; Grossman & Taylor 2007',
+    why: 'Honest citation. Theory is contested at the phylogenetic layer; the load-bearing readouts (HRV, exhale, vagal-tone-inflammation) replicate independently.',
+  },
+  {
+    id: 'C06-williams-hrv',
+    type: 'citation',
+    claim: 'HRV–inflammation meta-analysis — vagally-mediated HRV inversely tracks circulating inflammatory markers via the cholinergic anti-inflammatory pathway.',
+    where: 'footnote [^hrv]',
+    source: 'Williams et al., Brain, Behavior, and Immunity (2019)',
+    url: 'https://pubmed.ncbi.nlm.nih.gov/30872091/',
+    why: 'The bridge citation. Provides the HRV-to-inflammation half of the synthesis; the inflammation-to-cancer-permissive half comes from Hanahan-Weinberg. Neither paper makes the full bridge.',
+  },
+  {
+    id: 'S02-cell-that-lost-the-signal',
+    type: 'synthesis',
+    claim: 'A cancer cell is a cell that has lost the signal that says: you are held.',
+    where: 'closer',
+    derives_from: ['S01-cancer-cell-lost-context', 'D01-fascia-partitions', 'D03-vagus-listening-line', 'C06-williams-hrv'],
+    why: 'The full synthesis. Connects hallmarks-of-cancer to the nervous-system / fascia frame — same partition dynamic, three tissues. Not a cure claim; a frame claim.',
   },
 ];
 
@@ -74,23 +122,34 @@ type EyesItem = {
 
 const eyes: EyesItem[] = [
   {
-    id: 'D03-cascade-loop',
-    what: 'The cascade loop (Campaign → Stall → Escalate → Directive → New) is the author\'s observation. No external citation naming this exact failure mode.',
-    why: 'The pattern is plausible from first-hand engineering experience, but external corroboration would strengthen the claim. Adjacent literature exists.',
+    id: 'C06-williams-hrv',
+    what: 'The HRV → inflammation → cancer-permissive bridge is the author\'s synthesis across three literatures, not a cited consensus. The footnote names this explicitly; flagging here for transparency.',
+    why: 'Williams 2019 covers HRV-to-inflammation; Hanahan-Weinberg names tumor-promoting inflammation as enabling characteristic. No single paper closes the loop. Worth empirical follow-up.',
     ground_with: [
-      { label: 'Brooks\'s law (Mythical Man-Month, 1975)', url: 'https://en.wikipedia.org/wiki/Brooks%27s_law' },
-      { label: 'Conway\'s law on org structure → system structure', url: 'https://en.wikipedia.org/wiki/Conway%27s_law' },
+      { label: 'Williams et al. 2019 — HRV-inflammation meta-analysis', url: 'https://pubmed.ncbi.nlm.nih.gov/30872091/' },
+      { label: 'Hanahan & Weinberg 2011 — tumor-promoting inflammation as enabling characteristic', url: 'https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9' },
     ],
   },
   {
-    id: 'S04-three-paths',
-    what: 'The three-paths taxonomy (automate / centralize / enable) is original framing. No cited prior taxonomy.',
-    why: 'Useful as the author\'s synthesis. If a published org-design taxonomy already names a similar trichotomy, citing it would let the essay sit alongside that frame instead of re-naming it.',
+    id: 'D02-restorative-reopens-channel',
+    what: '"Restorative yoga cannot cure cancer" is the disclaimer. The positive claim — reopening the partition channel — is mechanism-level, not outcome-level.',
+    why: 'Mechanism plausibility (matrix re-hydration, adhesion softening) draws on mechanical-loading studies, not restorative-yoga trials. Some oncology supportive-care trials of yoga exist; worth citing if findable.',
+    ground_with: [
+      { label: 'Yoga in oncology supportive care — supportive-care trials', url: 'https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871291/' },
+    ],
   },
   {
-    id: 'D05-dead-zone',
-    what: '"Dead zone" is the author\'s naming. No empirical data on how often this specific failure mode occurs in real orgs.',
-    why: 'The naming is sharp; the prevalence claim is implicit. An open question: what fraction of stalled cross-cutting initiatives sit in the dead zone vs. fail elsewhere?',
+    id: 'S02-cell-that-lost-the-signal',
+    what: 'The bridge from "cell-autonomous capabilities" (Hanahan-Weinberg) to "cell that lost the signal you are held" is poetic synthesis, not a direct mapping in the source.',
+    why: 'The frame is load-bearing for the essay. The 2011 + 2022 hallmarks updates do foreground microenvironment and inflammation, which makes the bridge defensible — but the affective register ("held") is the author\'s addition, not the literature\'s.',
+  },
+  {
+    id: 'D01-fascia-partitions',
+    what: 'The fascia mechanism (hydration, glide, densification) is solid for mechanical-loading contexts. The bridge from "long supported holds" to "matrix re-hydrates" is mechanism-plausible but not directly observed in restorative-yoga studies.',
+    why: 'Schleip + Stecco grounds the tissue mechanics; the specific intervention pathway (long supported holds → ANS-mediated viscosity change → re-hydration) is inferred from Schleip Part 2 (ANS-mediated viscosity changes), not directly trialed.',
+    ground_with: [
+      { label: 'Schleip "Fascial plasticity Part 2" — ANS-mediated viscosity', url: 'https://www.fasciaresearch.de/' },
+    ],
   },
 ];
 
@@ -104,36 +163,42 @@ type ActionItem = {
 const actions: ActionItem[] = [
   {
     kind: 'etude',
-    label: 'Cascade simulator',
-    body: 'Press launch. Watch four campaigns spawn. The original migration creeps. Demonstrates D03.',
-    href: '/etudes/campaign-cascade/cascade-simulator/',
+    label: 'Long Exhale',
+    body: '4-in / 8-out for two minutes. Drills D03 — the vagus reading safety from breath shape.',
+    href: '/etudes/restorative/long-exhale/',
   },
   {
     kind: 'etude',
-    label: 'Review this PR',
-    body: '30 seconds in the seat where the cascade lands. Demonstrates D05.',
-    href: '/etudes/campaign-cascade/review-this-pr/',
+    label: 'Tending the Ember',
+    body: 'Full restorative routine. Long supported holds at the fascial layer. Drills D01 + D02.',
+    href: '/etudes/restorative/tending-the-ember/',
   },
   {
     kind: 'etude',
-    label: 'Three paths',
-    body: 'Pick a path for four scenarios. Drills S04.',
-    href: '/etudes/campaign-cascade/three-paths/',
+    label: 'Coming Home',
+    body: 'Full restorative routine. Re-establishes the broadcast across nervous system and fascia.',
+    href: '/etudes/restorative/coming-home/',
+  },
+  {
+    kind: 'etude',
+    label: 'The Open Sky',
+    body: 'Full restorative routine. Sustained witnessed stillness — the closer\'s "you are held" at body scale.',
+    href: '/etudes/restorative/the-open-sky/',
   },
   {
     kind: 'apply',
-    label: 'Audit your initiatives',
-    body: 'For each cross-cutting initiative your org is running, name which of the three paths it\'s on. Anything you can\'t cleanly assign is in the dead zone.',
+    label: 'Find a partitioned region',
+    body: 'Locate one fascial region in your body that has stopped participating — chronic shoulder, hip, ribcage. Spend 90 seconds in supported child\'s pose with breath at 4:8 ratio. Notice the local re-hydration cue.',
   },
   {
     kind: 'apply',
-    label: 'Find your dead zone',
-    body: 'Which migrations have you done the work for (PRs created) but not finished (other teams holding merge)? That\'s the dead zone. Pull the human out of the place they cannot add value.',
+    label: 'Map sympathetic dominance',
+    body: 'Walk through your day: where does sympathetic dominance climb? Where could you stack a 2-minute long-exhale break? The vagus listens to whatever cadence you teach it.',
   },
   {
     kind: 'next',
-    label: 'Same shape, different domain',
-    body: 'The know-thyself series argues the same principle — substrate must match the reader — at a different scale (personal memory in LLM conversations).',
+    label: 'Same partition pattern, different scale',
+    body: 'Know-thyself Part I argues the same shape at memory scale — flat memory partitions claims from their evidence the way braced fascia partitions tissue from signal.',
     href: '/puzzles/know-thyself/',
   },
 ];
@@ -155,12 +220,22 @@ const counts = nodes.reduce(
 
 type NodePos = { cx: number; cy: number; r: number; labelY: number; labelText: string };
 const positions: Record<string, NodePos> = {
-  'S01-cross-cutting-finish-or-not': { cx: 100, cy: 80,  r: 26, labelY: 125, labelText: 'S01' },
-  'S02-context-in-hand':              { cx: 300, cy: 80,  r: 32, labelY: 130, labelText: 'S02 · principle' },
-  'S04-three-paths':                  { cx: 500, cy: 80,  r: 26, labelY: 125, labelText: 'S04' },
-  'D03-cascade-loop':                 { cx: 175, cy: 200, r: 26, labelY: 245, labelText: 'D03' },
-  'D05-dead-zone':                    { cx: 425, cy: 200, r: 26, labelY: 245, labelText: 'D05' },
-  'C01-codemod':                      { cx: 300, cy: 310, r: 22, labelY: 350, labelText: 'C01' },
+  // spine — center top
+  'S01-cancer-cell-lost-context':   { cx: 340, cy: 100, r: 34, labelY: 152, labelText: 'S01 · spine' },
+  // citations clustered near spine
+  'C01-hanahan-weinberg':           { cx: 220, cy: 50,  r: 20, labelY: 22,  labelText: 'C01' },
+  'C02-sonnenschein-soto':          { cx: 460, cy: 50,  r: 20, labelY: 22,  labelText: 'C02' },
+  'C03-mccarthy-okg':               { cx: 600, cy: 100, r: 20, labelY: 142, labelText: 'C03' },
+  // fascia branch (left subtree)
+  'D01-fascia-partitions':          { cx: 180, cy: 230, r: 26, labelY: 275, labelText: 'D01' },
+  'C04-schleip-stecco':             { cx: 60,  cy: 230, r: 20, labelY: 272, labelText: 'C04' },
+  'D02-restorative-reopens-channel':{ cx: 180, cy: 360, r: 24, labelY: 403, labelText: 'D02' },
+  // vagus branch (right subtree)
+  'D03-vagus-listening-line':       { cx: 500, cy: 230, r: 26, labelY: 275, labelText: 'D03' },
+  'C05-porges':                     { cx: 620, cy: 230, r: 20, labelY: 272, labelText: 'C05' },
+  'C06-williams-hrv':               { cx: 620, cy: 320, r: 20, labelY: 362, labelText: 'C06' },
+  // synthesis closer — bottom center
+  'S02-cell-that-lost-the-signal':  { cx: 340, cy: 420, r: 30, labelY: 470, labelText: 'S02 · closer' },
 };
 ---
 <Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
@@ -184,12 +259,25 @@ const positions: Record<string, NodePos> = {
       <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
 
       <div class="graph-viz">
-        <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
+        <svg viewBox="0 0 680 480" role="img" aria-label="Knowledge graph — the partition problem">
           {/* edges first so nodes paint over them */}
-          <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
+          {/* spine grounded by citations */}
+          <line x1="220" y1="50"  x2="340" y2="100" class="edge edge-derives" />
+          <line x1="460" y1="50"  x2="340" y2="100" class="edge edge-derives" />
+          <line x1="600" y1="100" x2="340" y2="100" class="edge edge-derives" />
+          {/* fascia branch derives from spine + Schleip */}
+          <line x1="180" y1="230" x2="340" y2="100" class="edge edge-derives" />
+          <line x1="180" y1="230" x2="60"  y2="230" class="edge edge-derives" />
+          {/* restorative reopens derives from fascia partitions */}
+          <line x1="180" y1="360" x2="180" y2="230" class="edge edge-derives" />
+          {/* vagus branch derives from spine + Porges */}
+          <line x1="500" y1="230" x2="340" y2="100" class="edge edge-derives" />
+          <line x1="500" y1="230" x2="620" y2="230" class="edge edge-derives" />
+          {/* closer derives from spine + fascia branch + vagus branch + Williams */}
+          <line x1="340" y1="420" x2="340" y2="100" class="edge edge-derives" />
+          <line x1="340" y1="420" x2="180" y2="230" class="edge edge-derives" />
+          <line x1="340" y1="420" x2="500" y2="230" class="edge edge-derives" />
+          <line x1="340" y1="420" x2="620" y2="320" class="edge edge-derives" />
 
           {nodes.map((n) => {
             const p = positions[n.id];
@@ -200,7 +288,7 @@ const positions: Record<string, NodePos> = {
                 cx={p.cx}
                 cy={p.cy}
                 r={p.r}
-                isSpine={n.id === 'S02-context-in-hand'}
+                isSpine={n.id === 'S01-cancer-cell-lost-context'}
                 id={n.id}
                 claim={n.claim}
                 why={n.why}
@@ -554,7 +642,7 @@ const positions: Record<string, NodePos> = {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 380px;
+    max-height: 480px;
   }
   .edge {
     stroke: var(--line);

@@ -1,0 +1,93 @@
+---
+type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
+
+interface Props {
+  type: NodeType;
+  cx: number;
+  cy: number;
+  r: number;
+  isSpine?: boolean;
+  id: string;
+  claim: string;
+  why?: string;
+  where?: string;
+  label: string;
+  letter: string;
+  typeLabel: string;
+  labelY?: number;
+}
+
+const {
+  type,
+  cx,
+  cy,
+  r,
+  isSpine = false,
+  id,
+  claim,
+  why = '',
+  where = '',
+  label,
+  letter,
+  typeLabel,
+  labelY,
+} = Astro.props;
+
+const computedLabelY = labelY ?? cy + r + 18;
+
+const hexPoints = [
+  [cx - r, cy],
+  [cx - r * 0.5, cy - r * 0.866],
+  [cx + r * 0.5, cy - r * 0.866],
+  [cx + r, cy],
+  [cx + r * 0.5, cy + r * 0.866],
+  [cx - r * 0.5, cy + r * 0.866],
+]
+  .map(([x, y]) => `${x},${y}`)
+  .join(' ');
+
+const diamondPoints = [
+  [cx, cy - r],
+  [cx + r, cy],
+  [cx, cy + r],
+  [cx - r, cy],
+]
+  .map(([x, y]) => `${x},${y}`)
+  .join(' ');
+
+const spineClass = isSpine ? ' viz-node-spine' : '';
+const baseClass = `viz-node viz-node-${type}${spineClass}`;
+
+const rectX = cx - r * 1.2;
+const rectY = cy - r * 0.65;
+const rectW = r * 2.4;
+const rectH = r * 1.3;
+const rectRx = 8;
+
+const ellipseRx = r * 1.18;
+const ellipseRy = r * 0.78;
+---
+<a
+  href={`#${id}`}
+  class="viz-node-link"
+  data-id={id}
+  data-claim={claim}
+  data-why={why}
+  data-type={typeLabel}
+  data-where={where}
+>
+  {type === 'synthesis' && (
+    <ellipse cx={cx} cy={cy} rx={ellipseRx} ry={ellipseRy} class={baseClass} />
+  )}
+  {type === 'citation' && (
+    <rect x={rectX} y={rectY} width={rectW} height={rectH} rx={rectRx} ry={rectRx} class={baseClass} />
+  )}
+  {type === 'derivation' && (
+    <polygon points={diamondPoints} class={baseClass} />
+  )}
+  {type === 'observation' && (
+    <polygon points={hexPoints} class={baseClass} />
+  )}
+  <text x={cx} y={cy + 5} class="viz-node-letter">{letter}</text>
+  <text x={cx} y={computedLabelY} class="viz-node-id">{label}</text>
+</a>

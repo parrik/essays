@@ -3,8 +3,8 @@ import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
 
-const slug = 'the-campaign-cascade';
-const essayTitle = 'How to run a cross-cutting campaign';
+const slug = 'know-thyself-security';
+const essayTitle = 'Security was never about response';
 const subtitle = 'The essay\'s knowledge, dashboard-shaped — graph, eyes, actions.';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
@@ -21,47 +21,97 @@ type Node = {
 
 const nodes: Node[] = [
   {
-    id: 'S01-cross-cutting-finish-or-not',
+    id: 'S01-fire-department-no-fire-code',
     type: 'synthesis',
-    claim: 'Cross-cutting changes finish or they don\'t.',
-    where: 'opening',
-    why: 'Names the binary the essay refuses to soften — there is no "mostly finished" cross-cutting initiative.',
+    claim: 'A security team that responds well is a fire department with no fire code.',
+    where: 'opening hook',
+    why: 'The hook frames the entire essay\'s move — confusing response with security is how a person ends up with great forensics and chronic leaks.',
   },
   {
-    id: 'S02-context-in-hand',
+    id: 'S02-continuous-verification',
     type: 'synthesis',
-    claim: 'Every human in the loop has the context they need to act on the change in front of them.',
-    where: 'the principle',
-    why: 'The load-bearing claim. Every downstream pattern in the essay derives from honoring this or breaking it.',
+    claim: 'Security is continuous verification.',
+    where: 'spine',
+    why: 'The load-bearing claim. Every downstream synthesis in the essay either derives from this or carves out its boundary. Marked as the spine.',
   },
   {
-    id: 'D03-cascade-loop',
+    id: 'S03-two-timescales',
+    type: 'synthesis',
+    claim: 'Verification runs at two timescales: boundary-time gates fire on action, sweep-time gates fire on cadence.',
+    where: 'what\'s in security',
+    derives_from: ['S02-continuous-verification', 'C01-saltzer-schroeder', 'C02-anderson'],
+    why: 'Splits the spine into the two cadences the essay names. Boundary-time is the familiar pre-commit-hook shape; sweep-time is the cron-and-probe shape. The split is what lets the next synthesis collapse them.',
+  },
+  {
+    id: 'S04-same-posture-different-cadence',
+    type: 'synthesis',
+    claim: 'Both are gates. Boundary-time and sweep-time are the same posture at different cadences — sweeps are gates too.',
+    where: 'what\'s in security · the synthesis',
+    derives_from: ['S03-two-timescales', 'C03-brooker'],
+    why: 'The essay\'s named contribution. The industry treats sweeps as monitoring or response-adjacent; the essay collapses them into the gate posture. AWS\'s runtime validation of execution traces is the builder-voice instance of the same move.',
+  },
+  {
+    id: 'S05-response-different-discipline',
+    type: 'synthesis',
+    claim: 'Response is what fires when verification fails — a different discipline.',
+    where: 'what\'s not',
+    derives_from: ['S02-continuous-verification', 'C04-nist'],
+    why: 'Carves the boundary the essay refuses to soften. Verification covers preventive + detective; response covers responsive. Adjacent disciplines, not the same one — and conflating them starves the first.',
+  },
+  {
+    id: 'D06-engineer-not-gate',
     type: 'derivation',
-    claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug.',
+    claim: 'The thing that gets tired isn\'t the gate; it\'s the engineer holding it.',
+    where: 'shift-left fatigue',
+    derives_from: ['S04-same-posture-different-cadence', 'C06-shortridge'],
+    why: 'The shift-left-fatigue debate reframed: a machine gate firing on every commit doesn\'t burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate.',
   },
   {
-    id: 'S04-three-paths',
-    type: 'synthesis',
-    claim: 'Three valid responses — automate, centralize, enable.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship.',
-  },
-  {
-    id: 'D05-dead-zone',
-    type: 'derivation',
-    claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
-    derives_from: ['S02-context-in-hand', 'S04-three-paths'],
-    why: 'The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can\'t evaluate it. None of the three paths, all of the cost.',
-  },
-  {
-    id: 'C01-codemod',
+    id: 'C01-saltzer-schroeder',
     type: 'citation',
-    claim: 'Codemod — a program that rewrites source code mechanically.',
-    source: 'facebookarchive/codemod',
-    url: 'https://github.com/facebookarchive/codemod',
-    why: 'Defines the term the automate path uses. Real-world reference makes the path concrete instead of abstract.',
+    claim: 'Saltzer & Schroeder 1975 — complete mediation: every access to every object must be checked; a partial gate is not a gate.',
+    source: 'Saltzer & Schroeder, "The Protection of Information in Computer Systems," 1975',
+    url: 'https://csrc.nist.gov/CSRC/media/Publications/sp/800-53/rev-5/final/documents/sp800-53r5-fpd.pdf',
+    why: 'The fifty-year-old principle Alex\'s gate violated. Names complete mediation as the property — every path checked — that the essay\'s sweep extension is designed to honor.',
+  },
+  {
+    id: 'C02-anderson',
+    type: 'citation',
+    claim: 'Anderson 1972 — reference monitor: invoked on every reference, tamper-proof, small enough to audit.',
+    source: 'James P. Anderson, Computer Security Technology Planning Study (USAF ESD-TR-73-51, 1972)',
+    why: 'The abstraction every gate in the essay instantiates — pre-commit hook, admission webhook, CEL policy. Anchors the essay\'s gates in the original spec, not in current tooling fashion.',
+  },
+  {
+    id: 'C03-brooker',
+    type: 'citation',
+    claim: 'Brooker & Desai 2025 — AWS pairs formal methods with runtime validation of execution traces in production.',
+    source: 'Brooker & Desai, Systems Correctness Practices at AWS, ACM Queue, Feb 2025',
+    url: 'https://queue.acm.org/detail.cfm?id=3712057',
+    why: 'Builder-voice corroboration that verification keeps firing against live traces — not just at the boundary. Direct adjacent vocabulary for the "same posture, different cadence" synthesis.',
+  },
+  {
+    id: 'C04-nist',
+    type: 'citation',
+    claim: 'NIST SP 800-53 — formalizes the preventive / detective / responsive control split.',
+    source: 'NIST SP 800-53 Rev. 5',
+    url: 'https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final',
+    why: 'The standards-body taxonomy that lets the essay say verification covers two of the three columns and response covers the third. Grounds the verification-vs-response carve-out in formal language.',
+  },
+  {
+    id: 'C05-earlywatch',
+    type: 'citation',
+    claim: 'EarlyWatch (Brendan Burns) — Kubernetes validating admission webhook that denies unsafe operations at the API boundary against live cluster state.',
+    source: 'github.com/brendandburns/early-watch',
+    url: 'https://github.com/brendandburns/early-watch',
+    why: 'Modern instance of the gate-against-live-state posture the essay extends. EarlyWatch is the worked example; Saltzer-Schroeder is the original; the essay\'s sweep extension generalizes the move into personal infrastructure.',
+  },
+  {
+    id: 'C06-shortridge',
+    type: 'citation',
+    claim: 'Shortridge — humans-as-gates is the thing to push back against; the security-team-as-blocker, the change-advisory-board veto.',
+    source: 'Kelly Shortridge, "Cybersecurity Isn\'t Special" / "Control vs. Resilience"',
+    url: 'https://kellyshortridge.com/blog/posts/cybersecurity-isnt-special/',
+    why: 'Productive tension, not contradiction. The essay\'s gates are machines against live state, not humans against tickets. Citing Shortridge lets the essay defend gates without smuggling in the gatekeeping she\'s arguing against.',
   },
 ];
 
@@ -74,23 +124,27 @@ type EyesItem = {
 
 const eyes: EyesItem[] = [
   {
-    id: 'D03-cascade-loop',
-    what: 'The cascade loop (Campaign → Stall → Escalate → Directive → New) is the author\'s observation. No external citation naming this exact failure mode.',
-    why: 'The pattern is plausible from first-hand engineering experience, but external corroboration would strengthen the claim. Adjacent literature exists.',
+    id: 'S04-same-posture-different-cadence',
+    what: '"Sweeps are gates too" is the author\'s named synthesis. The industry has adjacent vocabulary (policy-as-code, drift detection) but no clean prior naming of the same posture at two cadences.',
+    why: 'The synthesis is sharp and useful, but external corroboration — a published taxonomy or operational pattern that already collapses boundary checks and cadence checks into one posture — would let the essay sit alongside it instead of asserting the move solo.',
     ground_with: [
-      { label: 'Brooks\'s law (Mythical Man-Month, 1975)', url: 'https://en.wikipedia.org/wiki/Brooks%27s_law' },
-      { label: 'Conway\'s law on org structure → system structure', url: 'https://en.wikipedia.org/wiki/Conway%27s_law' },
+      { label: 'Google SRE Book — policy as code, drift detection', url: 'https://sre.google/sre-book/table-of-contents/' },
+      { label: 'Open Policy Agent / Gatekeeper — declarative policy across boundary and audit', url: 'https://open-policy-agent.github.io/gatekeeper/website/docs/' },
     ],
   },
   {
-    id: 'S04-three-paths',
-    what: 'The three-paths taxonomy (automate / centralize / enable) is original framing. No cited prior taxonomy.',
-    why: 'Useful as the author\'s synthesis. If a published org-design taxonomy already names a similar trichotomy, citing it would let the essay sit alongside that frame instead of re-naming it.',
+    id: 'S01-fire-department-no-fire-code',
+    what: 'The Alex narrative scenes (two-week silent gate, pattern mismatch with the edit directory) are pedagogical illustrations, not empirical case studies.',
+    why: 'No real-world data on how often this exact "two-week silent gate" failure mode occurs vs. obvious-fail modes. The hook lands rhetorically; the prevalence claim is implicit. Open question: of personal-infra security failures, what fraction look like Alex\'s coverage gap vs. a missing gate entirely?',
   },
   {
-    id: 'D05-dead-zone',
-    what: '"Dead zone" is the author\'s naming. No empirical data on how often this specific failure mode occurs in real orgs.',
-    why: 'The naming is sharp; the prevalence claim is implicit. An open question: what fraction of stalled cross-cutting initiatives sit in the dead zone vs. fail elsewhere?',
+    id: 'D06-engineer-not-gate',
+    what: '"The engineer holding the gate" framing is the author\'s reframe of shift-left fatigue. The reframe is plausible but the quantitative ground is thin.',
+    why: 'The trade press articles cited (Help Net Security, Dark Reading) are themselves observational. Stronger grounding would come from quantitative studies on developer-tooling friction and review-queue load.',
+    ground_with: [
+      { label: 'DORA / Accelerate State of DevOps reports', url: 'https://dora.dev/research/' },
+      { label: 'Stack Overflow Developer Survey — tooling friction sections', url: 'https://survey.stackoverflow.co/' },
+    ],
   },
 ];
 
@@ -104,37 +158,36 @@ type ActionItem = {
 const actions: ActionItem[] = [
   {
     kind: 'etude',
-    label: 'Cascade simulator',
-    body: 'Press launch. Watch four campaigns spawn. The original migration creeps. Demonstrates D03.',
-    href: '/etudes/campaign-cascade/cascade-simulator/',
-  },
-  {
-    kind: 'etude',
-    label: 'Review this PR',
-    body: '30 seconds in the seat where the cascade lands. Demonstrates D05.',
-    href: '/etudes/campaign-cascade/review-this-pr/',
-  },
-  {
-    kind: 'etude',
-    label: 'Three paths',
-    body: 'Pick a path for four scenarios. Drills S04.',
-    href: '/etudes/campaign-cascade/three-paths/',
+    label: 'No etudes built yet',
+    body: 'Opportunity for a "design a gate" interactive — pick a public surface (blog, repo, bucket), write the deny-by-default check, then add the sweep that catches what the gate misses. Drills S04 in the seat.',
   },
   {
     kind: 'apply',
-    label: 'Audit your initiatives',
-    body: 'For each cross-cutting initiative your org is running, name which of the three paths it\'s on. Anything you can\'t cleanly assign is in the dead zone.',
+    label: 'Audit your personal infra',
+    body: 'What gates do you have? Are any silently failing because the path patterns don\'t match where you actually edit? Run each gate by hand against a known-bad input — if it exits silent, you have Alex\'s coverage gap.',
   },
   {
     kind: 'apply',
-    label: 'Find your dead zone',
-    body: 'Which migrations have you done the work for (PRs created) but not finished (other teams holding merge)? That\'s the dead zone. Pull the human out of the place they cannot add value.',
+    label: 'Name the gate AND the sweep',
+    body: 'For each surface you ship to (blog, repo, public bucket, deploy target), name the gate AND the sweep. If only one, you have a gap. Boundary-time without sweep-time means coverage drift goes unnoticed; sweep-time without boundary-time means every commit is a roll of the dice.',
   },
   {
     kind: 'next',
-    label: 'Same shape, different domain',
-    body: 'The know-thyself series argues the same principle — substrate must match the reader — at a different scale (personal memory in LLM conversations).',
+    label: 'Part I — A self was never flat',
+    body: 'The first essay in the know-thyself series. Sets up the personal-graph posture this essay\'s gates protect.',
     href: '/puzzles/know-thyself/',
+  },
+  {
+    kind: 'next',
+    label: 'Part II — Search was never about humans',
+    body: 'The middle essay. Search over the graph; this essay\'s gates run on the same substrate.',
+    href: '/puzzles/know-thyself-search/',
+  },
+  {
+    kind: 'next',
+    label: 'How to run a cross-cutting campaign',
+    body: 'Same shape, different domain — context-in-hand for the human in the loop, applied to org-scale change.',
+    href: '/puzzles/the-campaign-cascade/',
   },
 ];
 
@@ -155,12 +208,27 @@ const counts = nodes.reduce(
 
 type NodePos = { cx: number; cy: number; r: number; labelY: number; labelText: string };
 const positions: Record<string, NodePos> = {
-  'S01-cross-cutting-finish-or-not': { cx: 100, cy: 80,  r: 26, labelY: 125, labelText: 'S01' },
-  'S02-context-in-hand':              { cx: 300, cy: 80,  r: 32, labelY: 130, labelText: 'S02 · principle' },
-  'S04-three-paths':                  { cx: 500, cy: 80,  r: 26, labelY: 125, labelText: 'S04' },
-  'D03-cascade-loop':                 { cx: 175, cy: 200, r: 26, labelY: 245, labelText: 'D03' },
-  'D05-dead-zone':                    { cx: 425, cy: 200, r: 26, labelY: 245, labelText: 'D05' },
-  'C01-codemod':                      { cx: 300, cy: 310, r: 22, labelY: 350, labelText: 'C01' },
+  // hook top-left, entry point
+  'S01-fire-department-no-fire-code':   { cx: 90,  cy: 70,  r: 26, labelY: 115, labelText: 'S01 · hook' },
+  // two-timescales above spine
+  'S03-two-timescales':                 { cx: 350, cy: 90,  r: 28, labelY: 138, labelText: 'S03' },
+  // citations near two-timescales
+  'C01-saltzer-schroeder':              { cx: 230, cy: 50,  r: 16, labelY: 30,  labelText: 'C01' },
+  'C02-anderson':                       { cx: 470, cy: 50,  r: 16, labelY: 30,  labelText: 'C02' },
+  'C03-brooker':                        { cx: 540, cy: 130, r: 16, labelY: 165, labelText: 'C03' },
+  // spine in center
+  'S02-continuous-verification':        { cx: 350, cy: 220, r: 34, labelY: 274, labelText: 'S02 · spine' },
+  // synthesis to the right of spine
+  'S04-same-posture-different-cadence': { cx: 540, cy: 240, r: 28, labelY: 288, labelText: 'S04' },
+  // response to the left of spine
+  'S05-response-different-discipline':  { cx: 160, cy: 240, r: 26, labelY: 288, labelText: 'S05' },
+  // NIST near response
+  'C04-nist':                           { cx: 70,  cy: 310, r: 16, labelY: 345, labelText: 'C04' },
+  // EarlyWatch + Shortridge near synthesis
+  'C05-earlywatch':                     { cx: 615, cy: 320, r: 16, labelY: 355, labelText: 'C05' },
+  'C06-shortridge':                     { cx: 470, cy: 380, r: 16, labelY: 415, labelText: 'C06' },
+  // engineer-not-gate at bottom-right, the punchline
+  'D06-engineer-not-gate':              { cx: 350, cy: 400, r: 26, labelY: 445, labelText: 'D06' },
 };
 ---
 <Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
@@ -184,12 +252,25 @@ const positions: Record<string, NodePos> = {
       <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
 
       <div class="graph-viz">
-        <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
+        <svg viewBox="0 0 700 460" role="img" aria-label="Knowledge graph — security was never about response">
           {/* edges first so nodes paint over them */}
-          <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
+          {/* spine ← citations via two-timescales */}
+          <line x1="230" y1="50"  x2="350" y2="90"  class="edge edge-derives" />
+          <line x1="470" y1="50"  x2="350" y2="90"  class="edge edge-derives" />
+          <line x1="350" y1="90"  x2="350" y2="220" class="edge edge-derives" />
+          {/* two-timescales → synthesis (S04), with brooker */}
+          <line x1="350" y1="90"  x2="540" y2="240" class="edge edge-derives" />
+          <line x1="540" y1="130" x2="540" y2="240" class="edge edge-derives" />
+          {/* spine → S04, S05 */}
+          <line x1="350" y1="220" x2="540" y2="240" class="edge edge-derives" />
+          <line x1="350" y1="220" x2="160" y2="240" class="edge edge-derives" />
+          {/* NIST → response */}
+          <line x1="70"  y1="310" x2="160" y2="240" class="edge edge-derives" />
+          {/* synthesis → engineer-not-gate, with shortridge */}
+          <line x1="540" y1="240" x2="350" y2="400" class="edge edge-derives" />
+          <line x1="470" y1="380" x2="350" y2="400" class="edge edge-derives" />
+          {/* earlywatch hangs near synthesis as worked-example */}
+          <line x1="615" y1="320" x2="540" y2="240" class="edge edge-derives" />
 
           {nodes.map((n) => {
             const p = positions[n.id];
@@ -200,7 +281,7 @@ const positions: Record<string, NodePos> = {
                 cx={p.cx}
                 cy={p.cy}
                 r={p.r}
-                isSpine={n.id === 'S02-context-in-hand'}
+                isSpine={n.id === 'S02-continuous-verification'}
                 id={n.id}
                 claim={n.claim}
                 why={n.why}
@@ -554,7 +635,7 @@ const positions: Record<string, NodePos> = {
     display: block;
     width: 100%;
     height: auto;
-    max-height: 380px;
+    max-height: 460px;
   }
   .edge {
     stroke: var(--line);
