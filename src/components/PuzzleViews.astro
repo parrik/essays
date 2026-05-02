@@ -1,0 +1,74 @@
+---
+type ActiveView = 'essay' | 'etudes' | 'graph';
+
+interface Props {
+  slug: string;
+  activeView: ActiveView;
+  etudesUrl?: string | null;
+  hasGraph?: boolean;
+}
+
+const { slug, activeView, etudesUrl = null, hasGraph = false } = Astro.props;
+
+const cls = (view: ActiveView) =>
+  `puzzle-view${activeView === view ? ' puzzle-view-active' : ''}`;
+
+const hint = {
+  essay: 'Read the prose.',
+  etudes: 'Play — short interactive studies of the claim.',
+  graph: 'See the essay’s claims, typed and connected.',
+};
+---
+<nav class="puzzle-views" aria-label="Puzzle views">
+  {activeView === 'essay' ? (
+    <span class={cls('essay')} aria-current="page" data-hint={hint.essay}>essay</span>
+  ) : (
+    <a href={`/puzzles/${slug}/`} class={cls('essay')} title={hint.essay} data-hint={hint.essay}>essay</a>
+  )}
+
+  {etudesUrl && (
+    <>
+      <span class="puzzle-views-sep" aria-hidden="true">·</span>
+      {activeView === 'etudes' ? (
+        <span class={cls('etudes')} aria-current="page" data-hint={hint.etudes}>etudes</span>
+      ) : (
+        <a href={etudesUrl} class={cls('etudes')} title={hint.etudes} data-hint={hint.etudes}>etudes</a>
+      )}
+    </>
+  )}
+
+  {hasGraph && (
+    <>
+      <span class="puzzle-views-sep" aria-hidden="true">·</span>
+      {activeView === 'graph' ? (
+        <span class={cls('graph')} aria-current="page" data-hint={hint.graph}>graph</span>
+      ) : (
+        <a href={`/puzzles/${slug}/graph/`} class={cls('graph')} title={hint.graph} data-hint={hint.graph}>graph</a>
+      )}
+    </>
+  )}
+
+  <span class="puzzle-views-hint" aria-hidden="true"></span>
+</nav>
+
+<script is:inline>
+  // Show the hovered tab's hint inline, beside the switcher.
+  // No JS dependency — just a small interaction layer matched to native title="" so
+  // keyboard / screen-reader users get the tooltip via the OS, mouse users get it inline.
+  document.querySelectorAll('.puzzle-views').forEach((nav) => {
+    const hint = nav.querySelector('.puzzle-views-hint');
+    if (!hint) return;
+    nav.querySelectorAll('[data-hint]').forEach((el) => {
+      el.addEventListener('mouseenter', () => {
+        hint.textContent = el.getAttribute('data-hint') || '';
+        hint.classList.add('visible');
+      });
+      el.addEventListener('focus', () => {
+        hint.textContent = el.getAttribute('data-hint') || '';
+        hint.classList.add('visible');
+      });
+      el.addEventListener('mouseleave', () => hint.classList.remove('visible'));
+      el.addEventListener('blur', () => hint.classList.remove('visible'));
+    });
+  });
+</script>

@@ -1,5 +1,6 @@
 ---
 import Base from '../../../layouts/Base.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
 const title = 'Restorative routines';
 const subtitle = 'Pick a routine based on how you woke up.';
 
@@ -33,14 +34,17 @@ const routines = [
 <Base title={title} description={subtitle}>
   <article class="etude-page">
     <header class="etude-head">
-      <p class="etude-kicker">Etudes · Restorative</p>
+      <nav class="etude-nav">
+        <a href="/etudes/">← all etudes</a>
+      </nav>
       <h1 class="etude-title">{title}</h1>
       <p class="etude-relief">{subtitle}</p>
-      <nav class="etude-nav">
-        <a href="/puzzles/the-partition-problem/">← puzzle</a>
-        <span class="etude-nav-sep">·</span>
-        <a href="/etudes/">all etudes</a>
-      </nav>
+      <PuzzleViews
+        slug="the-partition-problem"
+        activeView="etudes"
+        etudesUrl="/etudes/restorative/"
+        hasGraph={true}
+      />
     </header>
 
     <section class="etude-intro">
@@ -100,6 +104,7 @@ const routines = [
     font-family: var(--sans);
     font-size: 0.85rem;
     color: var(--muted);
+    margin: 0 0 1.25rem;
   }
   .etude-nav a { color: var(--muted); text-decoration: none; }
   .etude-nav a:hover { color: var(--accent); }

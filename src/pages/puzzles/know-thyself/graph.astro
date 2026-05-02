@@ -2,7 +2,7 @@
 import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
-import EssayTabs from '../../../components/EssayTabs.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
 import data from '../../../data/essay-graphs/know-thyself.json';
 const etudesUrl = '/etudes/know-thyself/';
 
@@ -43,7 +43,12 @@ const counts = nodes.reduce(
       <p class="dash-kicker">Knowledge dashboard</p>
       <h1 class="dash-title">{essayTitle}</h1>
       <p class="dash-relief">{subtitle}</p>
-      <EssayTabs slug={slug} activeTab="knowledge-graph" etudesUrl={etudesUrl} hasGraph={true} />
+      <PuzzleViews
+        slug={slug}
+        activeView="graph"
+        etudesUrl={etudesUrl}
+        hasGraph={true}
+      />
     </header>
 
     <nav class="tabbar" role="tablist">
@@ -294,12 +299,6 @@ const counts = nodes.reduce(
     margin: 0 0 0.85rem;
     line-height: 1.5;
   }
-  .dash-back {
-    font-family: var(--sans);
-    font-size: 0.85rem;
-  }
-  .dash-back a { color: var(--muted); text-decoration: none; }
-  .dash-back a:hover { color: var(--accent); }
 
   /* === tabbar === */
   .tabbar {

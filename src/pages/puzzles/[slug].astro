@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import MetadataStripe from '../../components/MetadataStripe.astro';
-import EssayTabs from '../../components/EssayTabs.astro';
+import PuzzleViews from '../../components/PuzzleViews.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -46,26 +46,25 @@ const etudesUrl = etudesBySlug[essay.id] ?? null;
         {essay.data.relief && <em class="essay-sub-relief">{essay.data.relief}</em>}
       </p>
     )}
-    {/* Top-of-essay etudes picker removed by author preference: inline
-        embeds in each section carry the engagement; no need for a top list.
-        Schema + per-essay frontmatter retained for future use (e.g. an
-        etudes index page). */}
-    <MetadataStripe
-      publishedAt={essay.data.publishedAt}
-      updatedAt={essay.data.updatedAt}
-      status={essay.data.status}
-      confidence={essay.data.confidence}
-    />
-    <EssayTabs
+    <PuzzleViews
       slug={essay.id}
-      activeTab="essay"
+      activeView="essay"
       etudesUrl={etudesUrl}
       hasGraph={hasGraph}
     />
-    <hr />
     <div class="essay-body e-content">
       <Content />
     </div>
+
+    <footer class="essay-provenance">
+      <MetadataStripe
+        publishedAt={essay.data.publishedAt}
+        updatedAt={essay.data.updatedAt}
+        status={essay.data.status}
+        confidence={essay.data.confidence}
+      />
+    </footer>
+
     <a class="u-url" href={`/puzzles/${essay.id}/`} hidden>{essay.data.title}</a>
     <span class="p-author h-card" hidden>parrik</span>
   </article>
