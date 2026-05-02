@@ -3,7 +3,16 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: 'https://parrik.com',
   redirects: {
-    '/essays/memory-was-never-about-storage/': '/essays/security-was-never-about-response/',
+    // Old /essays/ prefix → new /puzzles/ prefix.
+    '/essays/know-thyself/': '/puzzles/know-thyself/',
+    '/essays/know-thyself-search/': '/puzzles/know-thyself-search/',
+    '/essays/security-was-never-about-response/': '/puzzles/security-was-never-about-response/',
+    '/essays/the-campaign-cascade/': '/puzzles/the-campaign-cascade/',
+    '/essays/the-partition-problem/': '/puzzles/the-partition-problem/',
+    // Memory essay was retired; old URL still bounces to the next sibling in the series.
+    '/essays/memory-was-never-about-storage/': '/puzzles/security-was-never-about-response/',
+    '/puzzles/memory-was-never-about-storage/': '/puzzles/security-was-never-about-response/',
+    // Earlier section rename.
     '/side-channels/': '/crossings/',
   },
   markdown: {

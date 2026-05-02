@@ -52,7 +52,7 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
           return (
             <li>
               <div class="essay-row">
-                <a href={`/essays/${essay.id}/`} class="essay-link">
+                <a href={`/puzzles/${essay.id}/`} class="essay-link">
                   <span class="essay-title">{essay.data.title}</span>
                 </a>
               </div>
@@ -78,7 +78,7 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
                 if (!muted) {
                   return (
                     <li>
-                      <a href={`/essays/${p.id}/`} class="series-part">
+                      <a href={`/puzzles/${p.id}/`} class="series-part">
                         <span class="part-num">Part {ROMAN[i]}</span>
                         <span class="part-body">
                           <span class="part-name">
@@ -99,10 +99,10 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
                         <span class="part-name">{p.data.title}</span>
                         {desc ? (
                           <span class="part-description">
-                            {desc}{' '}<a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
+                            {desc}{' '}<a href={`/puzzles/${p.id}/`} class="read-draft">read draft →</a>
                           </span>
                         ) : (
-                          <a href={`/essays/${p.id}/`} class="read-draft">read draft →</a>
+                          <a href={`/puzzles/${p.id}/`} class="read-draft">read draft →</a>
                         )}
                       </span>
                     </div>

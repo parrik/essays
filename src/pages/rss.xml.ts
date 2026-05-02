@@ -16,7 +16,7 @@ export async function GET(context: any) {
       title: e.data.title,
       description: e.data.description ?? e.data.subtitle ?? '',
       pubDate: e.data.updatedAt ?? e.data.publishedAt ?? new Date(),
-      link: `/essays/${e.id}/`,
+      link: `/puzzles/${e.id}/`,
     })),
   });
 }
