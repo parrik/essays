@@ -512,35 +512,34 @@ a:hover { text-decoration-color: var(--accent); }
 
 /* === end graph viz polish === */
 
-/* Essay-page tab nav: home / etudes / knowledge graph */
+/* Essay-page tab nav: home / etudes / knowledge graph.
+   Three discrete bordered buttons — no shared container background.
+   Each reads as its own affordance, not a glued-together segment. */
 .essay-tabs {
   display: flex;
-  gap: 0.4rem;
+  gap: 0.5rem;
   margin: 1rem 0 0;
-  padding: 0.3rem;
-  background: var(--bg-soft);
-  border-radius: 6px;
   width: fit-content;
   font-family: system-ui, sans-serif;
   font-size: 0.82rem;
 }
 .essay-tab {
-  /* Min-height keeps the touch target ≥ 44px on small viewports
-     where the chips would otherwise shrink under that floor. */
+  /* 44px touch target on mobile. */
   min-height: 44px;
   display: inline-flex;
   align-items: center;
-  padding: 0.4rem 0.95rem;
+  padding: 0.5rem 0.95rem;
+  border: 1px solid var(--line);
   border-radius: 4px;
+  background: transparent;
   color: var(--muted);
   text-decoration: none;
-  transition: color 200ms ease;
+  transition: color 200ms ease, border-color 200ms ease, background 200ms ease;
 }
-/* Quiet hover — colour shift only, no background flip. The active /
-   selected fill is reserved for the corresponding dashboard tabbar
-   button; on the essay-tab nav, hover stays restrained. */
 .essay-tab:hover {
   color: var(--text);
+  border-color: var(--text);
+  background: var(--bg-soft);
 }
 .essay-tab:focus-visible {
   outline: 2px solid var(--accent);
