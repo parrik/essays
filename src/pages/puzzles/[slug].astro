@@ -23,6 +23,16 @@ const slugsWithGraph = new Set([
   'the-partition-problem',
 ]);
 const hasGraph = slugsWithGraph.has(essay.id);
+
+// Per-essay etude track. null = no etudes built yet.
+const etudesBySlug: Record<string, string | null> = {
+  'the-campaign-cascade': '/etudes/campaign-cascade/',
+  'the-partition-problem': '/etudes/restorative/',
+  'know-thyself': '/etudes/know-thyself/',
+  'know-thyself-search': '/etudes/know-thyself/',
+  'know-thyself-security': null,
+};
+const etudesUrl = etudesBySlug[essay.id] ?? null;
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>
   <article class="essay h-entry">
@@ -45,10 +55,11 @@ const hasGraph = slugsWithGraph.has(essay.id);
       status={essay.data.status}
       confidence={essay.data.confidence}
     />
-    <div class="essay-meta">
-      <a href="/">← home</a>
-      {hasGraph && <a href={`/puzzles/${essay.id}/graph/`}>knowledge dashboard</a>}
-    </div>
+    <nav class="essay-tabs" aria-label="Essay nav">
+      <a href="/" class="essay-tab">← home</a>
+      {etudesUrl && <a href={etudesUrl} class="essay-tab">etudes</a>}
+      {hasGraph && <a href={`/puzzles/${essay.id}/graph/`} class="essay-tab">knowledge graph</a>}
+    </nav>
     <hr />
     <div class="essay-body e-content">
       <Content />

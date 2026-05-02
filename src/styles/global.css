@@ -364,6 +364,98 @@ a:hover { text-decoration-color: var(--accent); }
 
 .essay-meta a:hover { color: var(--accent); }
 
+/* === Knowledge-graph viz polish — applied globally so all 5 essay
+       dashboards inherit the same hand-drawn-feeling base treatment. === */
+
+.graph-viz {
+  position: relative;
+}
+.graph-viz svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Soft drop-shadow + slight stroke thickening on every node. The
+   layered shadow (offset block + blur) gives the cream-paper, slightly-
+   raised feel that matches /example-graph-full.html. */
+.viz-node {
+  filter:
+    drop-shadow(2px 3px 0 rgba(40, 30, 20, 0.09))
+    drop-shadow(0 1px 2px rgba(40, 30, 20, 0.10));
+  transition: filter 220ms ease, transform 220ms ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.viz-node-link {
+  cursor: pointer;
+  text-decoration: none;
+}
+.viz-node-link:hover .viz-node {
+  filter:
+    drop-shadow(3px 4px 0 rgba(40, 30, 20, 0.13))
+    drop-shadow(0 2px 4px rgba(40, 30, 20, 0.14));
+  transform: translateY(-1px);
+}
+
+/* Letter inside the shape — bigger and bolder than the per-file rule
+   used to ship; the geometry now leads, the letter labels it. */
+.viz-node-letter {
+  fill: rgba(255, 253, 247, 0.96);
+  font-family: var(--sans, system-ui, sans-serif);
+  font-size: 17px;
+  font-weight: 700;
+  text-anchor: middle;
+  pointer-events: none;
+  letter-spacing: 0.02em;
+}
+.viz-node-id {
+  fill: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+/* Edges: slightly off-black, gentle taper. Derives stays dashed,
+   grounds (citation→synthesis) stays solid. */
+.edge {
+  stroke: rgba(40, 30, 20, 0.32);
+  stroke-width: 1.6;
+  fill: none;
+}
+.edge-derives {
+  stroke-dasharray: 5 4;
+  stroke: rgba(40, 30, 20, 0.42);
+}
+
+/* === end graph viz polish === */
+
+/* Essay-page tab nav: home / etudes / knowledge graph */
+.essay-tabs {
+  display: flex;
+  gap: 0.4rem;
+  margin: 1rem 0 0;
+  padding: 0.3rem;
+  background: var(--bg-soft);
+  border-radius: 999px;
+  width: fit-content;
+  font-family: system-ui, sans-serif;
+  font-size: 0.82rem;
+}
+.essay-tab {
+  padding: 0.4rem 0.95rem;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: background 200ms ease, color 200ms ease;
+}
+.essay-tab:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+
 hr {
   border: none;
   border-top: 1px solid var(--line);
