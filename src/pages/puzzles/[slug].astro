@@ -13,6 +13,10 @@ export async function getStaticPaths() {
 
 const { essay } = Astro.props;
 const { Content } = await render(essay);
+
+// Essays with a graph page built. As more graphs land, add the slug here.
+const slugsWithGraph = new Set(['the-campaign-cascade']);
+const hasGraph = slugsWithGraph.has(essay.id);
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>
   <article class="essay h-entry">
@@ -37,6 +41,7 @@ const { Content } = await render(essay);
     />
     <div class="essay-meta">
       <a href="/">← home</a>
+      {hasGraph && <a href={`/puzzles/${essay.id}/graph/`}>knowledge graph</a>}
       {essay.data.pdfUrl && <a href={essay.data.pdfUrl}>download pdf</a>}
     </div>
     <hr />

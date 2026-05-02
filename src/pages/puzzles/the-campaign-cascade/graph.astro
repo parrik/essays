@@ -1,0 +1,289 @@
+---
+import Base from '../../../layouts/Base.astro';
+
+const slug = 'the-campaign-cascade';
+const essayTitle = 'How to run a cross-cutting campaign';
+const subtitle = 'The essay\'s knowledge, graph-shaped — typed claims with provenance.';
+
+type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
+type Node = {
+  id: string;
+  type: NodeType;
+  claim: string;
+  where?: string;
+  source?: string;
+  url?: string;
+  derives_from?: string[];
+};
+
+const nodes: Node[] = [
+  {
+    id: 'S01-cross-cutting-finish-or-not',
+    type: 'synthesis',
+    claim: 'Cross-cutting changes finish or they don\'t.',
+    where: 'opening',
+  },
+  {
+    id: 'S02-context-in-hand',
+    type: 'synthesis',
+    claim: 'Every human in the loop has the context they need to act on the change in front of them.',
+    where: 'the principle',
+  },
+  {
+    id: 'S03-cascade-loop',
+    type: 'derivation',
+    claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
+    derives_from: ['S02-context-in-hand'],
+  },
+  {
+    id: 'S04-three-paths',
+    type: 'synthesis',
+    claim: 'Three valid responses — automate, centralize, enable.',
+    derives_from: ['S02-context-in-hand'],
+  },
+  {
+    id: 'S05-dead-zone',
+    type: 'derivation',
+    claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
+    derives_from: ['S02-context-in-hand', 'S04-three-paths'],
+  },
+  {
+    id: 'C01-codemod',
+    type: 'citation',
+    claim: 'Codemod — a program that rewrites source code mechanically.',
+    source: 'facebookarchive/codemod',
+    url: 'https://github.com/facebookarchive/codemod',
+  },
+];
+
+const typeMeta: Record<NodeType, { letter: string; label: string; chip: string }> = {
+  synthesis: { letter: 'S', label: 'synthesis', chip: 'chip-emg' },
+  citation: { letter: 'C', label: 'citation', chip: 'chip-eqv' },
+  derivation: { letter: 'D', label: 'derivation', chip: 'chip-ovl' },
+  observation: { letter: 'O', label: 'observation', chip: 'chip-obs' },
+};
+
+const counts = nodes.reduce(
+  (acc, n) => {
+    acc[n.type] = (acc[n.type] || 0) + 1;
+    return acc;
+  },
+  {} as Record<NodeType, number>,
+);
+---
+<Base title={`Knowledge graph — ${essayTitle}`} description={subtitle}>
+  <article class="graph-page">
+    <header class="graph-head">
+      <p class="graph-kicker">Knowledge graph</p>
+      <h1 class="graph-title">{essayTitle}</h1>
+      <p class="graph-relief">{subtitle}</p>
+      <nav class="graph-nav">
+        <a href={`/puzzles/${slug}/`}>← essay</a>
+      </nav>
+    </header>
+
+    <section class="graph-counts">
+      {(Object.keys(counts) as NodeType[]).map((t) => (
+        <span class={`chip ${typeMeta[t].chip}`}>
+          {typeMeta[t].letter}
+          <span class="chip-count"> {counts[t]}</span>
+        </span>
+      ))}
+    </section>
+
+    <section class="graph-nodes">
+      {nodes.map((n) => (
+        <article class={`graph-node graph-node-${n.type}`} id={n.id}>
+          <p class="graph-node-head">
+            <span class={`chip ${typeMeta[n.type].chip}`}>{typeMeta[n.type].letter}</span>
+            <code class="graph-node-id">{n.id}</code>
+            {n.where && <span class="graph-node-where">· {n.where}</span>}
+          </p>
+          <p class="graph-node-claim">{n.claim}</p>
+          {n.source && (
+            <p class="graph-node-source">
+              <span class="graph-node-edge-label">grounds:</span>{' '}
+              {n.url ? (
+                <a href={n.url} rel="noopener">{n.source}</a>
+              ) : (
+                <span>{n.source}</span>
+              )}
+            </p>
+          )}
+          {n.derives_from && n.derives_from.length > 0 && (
+            <p class="graph-node-derives">
+              <span class="graph-node-edge-label">derives_from:</span>{' '}
+              {n.derives_from.map((d, i) => (
+                <>
+                  {i > 0 && ', '}
+                  <a href={`#${d}`}><code>{d}</code></a>
+                </>
+              ))}
+            </p>
+          )}
+        </article>
+      ))}
+    </section>
+
+    <footer class="graph-coda">
+      <p>The essay's claims, typed. Every <strong>S</strong>ynthesis node is the author's contribution; every <strong>C</strong>itation grounds in a named source; every <strong>D</strong>erivation follows from prior nodes. Same shape as the personal-graph schema, applied at essay scale.</p>
+    </footer>
+  </article>
+</Base>
+
+<style is:global>
+  .graph-page {
+    max-width: 42rem;
+    margin: 0 auto;
+  }
+
+  .graph-head {
+    margin-bottom: 1.75rem;
+  }
+  .graph-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .graph-title {
+    font-family: var(--serif-display);
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.005em;
+  }
+  .graph-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin: 0 0 0.85rem;
+    line-height: 1.5;
+  }
+  .graph-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+  }
+  .graph-nav a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .graph-nav a:hover { color: var(--accent); }
+
+  .graph-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0 0 2rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-soft);
+    border-radius: 10px;
+  }
+  .graph-counts .chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.2rem 0.55rem;
+  }
+  .chip-count {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-left: 0.35rem;
+    font-weight: 500;
+  }
+
+  .graph-nodes {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .graph-node {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    scroll-margin-top: 1rem;
+  }
+  .graph-node:target {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .graph-node-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.45rem;
+    flex-wrap: wrap;
+  }
+  .graph-node-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--muted);
+    background: transparent;
+    padding: 0;
+  }
+  .graph-node-where {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .graph-node-claim {
+    margin: 0 0 0.55rem;
+    line-height: 1.55;
+    color: var(--text);
+  }
+  .graph-node-source,
+  .graph-node-derives {
+    margin: 0.3rem 0 0;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .graph-node-edge-label {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+    margin-right: 0.15rem;
+  }
+  .graph-node-source a,
+  .graph-node-derives a {
+    color: var(--text);
+    text-decoration: underline;
+    text-decoration-color: var(--line);
+    text-underline-offset: 2px;
+  }
+  .graph-node-source a:hover,
+  .graph-node-derives a:hover {
+    text-decoration-color: var(--accent);
+  }
+  .graph-node-derives code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+    background: transparent;
+    padding: 0;
+  }
+
+  .graph-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .graph-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    font-size: 0.92rem;
+    margin: 0;
+  }
+
+  @media (max-width: 32rem) {
+    .graph-title { font-size: 1.5rem; }
+    .graph-node { padding: 0.85rem 0.95rem; }
+  }
+</style>
+</Base>
