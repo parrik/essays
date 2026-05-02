@@ -2,141 +2,23 @@
 import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
-
-const slug = 'the-campaign-cascade';
-const essayTitle = 'How to run a cross-cutting campaign';
-const subtitle = 'The essay\'s knowledge, dashboard-shaped — graph, eyes, actions.';
+import data from '../../../data/essay-graphs/the-campaign-cascade.json';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
-type Node = {
-  id: string;
-  type: NodeType;
-  claim: string;
-  where?: string;
-  source?: string;
-  url?: string;
-  derives_from?: string[];
-  why?: string;
+
+const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actions } = data as {
+  slug: string;
+  essayTitle: string;
+  spineId: string;
+  viewBox: { width: number; height: number };
+  nodes: { id: string; type: NodeType; claim: string; where?: string; source?: string; url?: string; derives_from?: string[]; why?: string }[];
+  positions: Record<string, { cx: number; cy: number; r: number; labelY: number; labelText: string }>;
+  edges: { from: string; to: string; kind?: string }[];
+  eyes: { id: string; what: string; why: string; ground_with?: { label: string; url?: string }[] }[];
+  actions: { kind: 'etude' | 'apply' | 'next'; label: string; body: string; href?: string }[];
 };
 
-const nodes: Node[] = [
-  {
-    id: 'S01-cross-cutting-finish-or-not',
-    type: 'synthesis',
-    claim: 'Cross-cutting changes finish or they don\'t.',
-    where: 'opening',
-    why: 'Names the binary the essay refuses to soften — there is no "mostly finished" cross-cutting initiative.',
-  },
-  {
-    id: 'S02-context-in-hand',
-    type: 'synthesis',
-    claim: 'Every human in the loop has the context they need to act on the change in front of them.',
-    where: 'the principle',
-    why: 'The load-bearing claim. Every downstream pattern in the essay derives from honoring this or breaking it.',
-  },
-  {
-    id: 'D03-cascade-loop',
-    type: 'derivation',
-    claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug.',
-  },
-  {
-    id: 'S04-three-paths',
-    type: 'synthesis',
-    claim: 'Three valid responses — automate, centralize, enable.',
-    derives_from: ['S02-context-in-hand'],
-    why: 'The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship.',
-  },
-  {
-    id: 'D05-dead-zone',
-    type: 'derivation',
-    claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
-    derives_from: ['S02-context-in-hand', 'S04-three-paths'],
-    why: 'The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can\'t evaluate it. None of the three paths, all of the cost.',
-  },
-  {
-    id: 'C01-codemod',
-    type: 'citation',
-    claim: 'Codemod — a program that rewrites source code mechanically.',
-    source: 'facebookarchive/codemod',
-    url: 'https://github.com/facebookarchive/codemod',
-    why: 'Defines the term the automate path uses. Real-world reference makes the path concrete instead of abstract.',
-  },
-];
-
-type EyesItem = {
-  id: string;
-  what: string;
-  why: string;
-  ground_with?: { label: string; url?: string }[];
-};
-
-const eyes: EyesItem[] = [
-  {
-    id: 'D03-cascade-loop',
-    what: 'The cascade loop (Campaign → Stall → Escalate → Directive → New) is the author\'s observation. No external citation naming this exact failure mode.',
-    why: 'The pattern is plausible from first-hand engineering experience, but external corroboration would strengthen the claim. Adjacent literature exists.',
-    ground_with: [
-      { label: 'Brooks\'s law (Mythical Man-Month, 1975)', url: 'https://en.wikipedia.org/wiki/Brooks%27s_law' },
-      { label: 'Conway\'s law on org structure → system structure', url: 'https://en.wikipedia.org/wiki/Conway%27s_law' },
-    ],
-  },
-  {
-    id: 'S04-three-paths',
-    what: 'The three-paths taxonomy (automate / centralize / enable) is original framing. No cited prior taxonomy.',
-    why: 'Useful as the author\'s synthesis. If a published org-design taxonomy already names a similar trichotomy, citing it would let the essay sit alongside that frame instead of re-naming it.',
-  },
-  {
-    id: 'D05-dead-zone',
-    what: '"Dead zone" is the author\'s naming. No empirical data on how often this specific failure mode occurs in real orgs.',
-    why: 'The naming is sharp; the prevalence claim is implicit. An open question: what fraction of stalled cross-cutting initiatives sit in the dead zone vs. fail elsewhere?',
-  },
-];
-
-type ActionItem = {
-  label: string;
-  body: string;
-  href?: string;
-  kind: 'etude' | 'apply' | 'next';
-};
-
-const actions: ActionItem[] = [
-  {
-    kind: 'etude',
-    label: 'Cascade simulator',
-    body: 'Press launch. Watch four campaigns spawn. The original migration creeps. Demonstrates D03.',
-    href: '/etudes/campaign-cascade/cascade-simulator/',
-  },
-  {
-    kind: 'etude',
-    label: 'Review this PR',
-    body: '30 seconds in the seat where the cascade lands. Demonstrates D05.',
-    href: '/etudes/campaign-cascade/review-this-pr/',
-  },
-  {
-    kind: 'etude',
-    label: 'Three paths',
-    body: 'Pick a path for four scenarios. Drills S04.',
-    href: '/etudes/campaign-cascade/three-paths/',
-  },
-  {
-    kind: 'apply',
-    label: 'Audit your initiatives',
-    body: 'For each cross-cutting initiative your org is running, name which of the three paths it\'s on. Anything you can\'t cleanly assign is in the dead zone.',
-  },
-  {
-    kind: 'apply',
-    label: 'Find your dead zone',
-    body: 'Which migrations have you done the work for (PRs created) but not finished (other teams holding merge)? That\'s the dead zone. Pull the human out of the place they cannot add value.',
-  },
-  {
-    kind: 'next',
-    label: 'Same shape, different domain',
-    body: 'The know-thyself series argues the same principle — substrate must match the reader — at a different scale (personal memory in LLM conversations).',
-    href: '/puzzles/know-thyself/',
-  },
-];
+const subtitle = "The essay's knowledge, dashboard-shaped — graph, eyes, actions. The graph is the source of truth; the prose follows.";
 
 const typeMeta: Record<NodeType, { letter: string; label: string; chip: string }> = {
   synthesis: { letter: 'S', label: 'synthesis', chip: 'chip-emg' },
@@ -152,16 +34,6 @@ const counts = nodes.reduce(
   },
   {} as Record<NodeType, number>,
 );
-
-type NodePos = { cx: number; cy: number; r: number; labelY: number; labelText: string };
-const positions: Record<string, NodePos> = {
-  'S01-cross-cutting-finish-or-not': { cx: 100, cy: 80,  r: 26, labelY: 125, labelText: 'S01' },
-  'S02-context-in-hand':              { cx: 300, cy: 80,  r: 32, labelY: 130, labelText: 'S02 · principle' },
-  'S04-three-paths':                  { cx: 500, cy: 80,  r: 26, labelY: 125, labelText: 'S04' },
-  'D03-cascade-loop':                 { cx: 175, cy: 200, r: 26, labelY: 245, labelText: 'D03' },
-  'D05-dead-zone':                    { cx: 425, cy: 200, r: 26, labelY: 245, labelText: 'D05' },
-  'C01-codemod':                      { cx: 300, cy: 310, r: 22, labelY: 350, labelText: 'C01' },
-};
 ---
 <Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
   <article class="dash-page">
@@ -184,12 +56,13 @@ const positions: Record<string, NodePos> = {
       <p class="tab-lead">The essay's claims, typed and connected. <strong>S</strong>ynthesis is the author's contribution. <strong>C</strong>itation grounds in a named source. <strong>D</strong>erivation follows from prior nodes. Click any node to jump to its card.</p>
 
       <div class="graph-viz">
-        <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
-          {/* edges first so nodes paint over them */}
-          <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
+        <svg viewBox={`0 0 ${viewBox.width} ${viewBox.height}`} role="img" aria-label={`Knowledge graph — ${essayTitle}`}>
+          {edges.map((edge) => {
+            const from = positions[edge.from];
+            const to = positions[edge.to];
+            if (!from || !to) return null;
+            return <line x1={from.cx} y1={from.cy} x2={to.cx} y2={to.cy} class={`edge edge-${edge.kind || 'derives'}`} />;
+          })}
 
           {nodes.map((n) => {
             const p = positions[n.id];
@@ -200,7 +73,7 @@ const positions: Record<string, NodePos> = {
                 cx={p.cx}
                 cy={p.cy}
                 r={p.r}
-                isSpine={n.id === 'S02-context-in-hand'}
+                isSpine={n.id === spineId}
                 id={n.id}
                 claim={n.claim}
                 why={n.why}
