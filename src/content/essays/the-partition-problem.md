@@ -2,7 +2,8 @@
 title: The Isolation Problem
 subtitle: Restorative Yoga and the Biology of Belonging
 tag: essay
-order: 1
+track: side-channels
+order: 2
 description: A cancer cell is not a broken cell. It has lost context.
 pdfUrl: /the-biology-of-belonging.pdf
 publishedAt: 2026-04-21

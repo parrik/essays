@@ -693,6 +693,25 @@ The labs split. Anthropic ships [MCP](https://www.anthropic.com/news/model-conte
 
 Both bets are live. Big-context: transformers absorb the graph through scale. MCP/memory-server: graph lives outside the context, model wants typed adjacency at retrieval. The argument above is the technical case for the second.
 
+## What the publisher ships
+
+The four scales describe the retriever. The retriever is half the system. Each retrieval generation pushed a corresponding *publishing primitive* upstream onto the writer.
+
+| Retrieval scale | Reader needs | Publisher ships |
+|---|---|---|
+| 1 — Inverted index | terms in documents | HTML with on-page text |
+| 2 — Vector retrieval | embeddings of meaning | clean prose, semantic HTML, no marketing chrome |
+| 3 — Typed knowledge graph | typed claims with provenance | JSON-LD, schema.org, structured citations |
+| 4 — AI-native search | atomic chunks with provenance | `llms.txt`, per-essay `.md`, MCP, `/graph.json` |
+
+The columns aren't separate stacks — they compose. A page that ships Scale 4 inherits the obligations of 1, 2, 3.
+
+TF-IDF needed publishers to write words. PageRank needed publishers to link. Vector retrieval needed publishers to write declaratively — *the page had to look like the answer*, because the embedding was trained on the way documents got cited. Each generation pushed cognitive work *back upstream* — from the search engine to the writer.
+
+Agent-native search continues the trend, harder. Where Scale 2 wanted prose-shaped-like-an-answer, Scale 4 wants the answer *typed*: claim, evidence, provenance, neighbors, valid-when. **The smallest unit of publishing has changed from "a page with words" to "a node in a typed graph."**[^llmstxt][^llms-full]
+
+Publishers who ship the primitive corresponding to the current retrieval generation get walked by agents. Publishers who don't — most of the web in 2026 — get summarized into oblivion by a derivative agent that scraped them once and now serves a stale paraphrase. The choice is no longer *whether to be indexed.* It's *whether to be the source* or *the source-of-the-source.*
+
 ## What this essay extends
 
 The personal-graph framing — bounded-context applied to a self rather than a science — is what this essay puts down. McCarthy's necessity arguments run through selection-under-competition: science prunes by what wins under evidence. Personal-memory graphs aren't under that pressure. No competitor's posterior, no replication, no external ground truth, fuzzy temporal validity. Three rewrites:
@@ -1043,7 +1062,7 @@ The bet is testable. More to follow.
 
 ---
 
-*Same shape, smaller scale — applied to a self. **[Part III — Memory was never about storage →](/essays/memory-was-never-about-storage/)***
+*Same shape, smaller scale — applied to a self. **[Part III — Security was never about response →](/essays/security-was-never-about-response/)***
 
 [^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004); [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013); [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on the scientific case.
 
@@ -1070,3 +1089,7 @@ The bet is testable. More to follow.
 [^turnbull-metadata]: Doug Turnbull, [*Metadata as the third retrieval kind*](https://softwaredoug.com/blog/2026/04/21/metadata-third-retrieval-kind.html) (Apr 21 2026).
 
 [^turnbull-agents]: Doug Turnbull, [*Can agents replace the search stack?*](https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html) (Apr 28 2026).
+
+[^llmstxt]: [llmstxt.org](https://llmstxt.org/) — H1 + blockquote + H2-link-list spec for an agent-readable site index. Cursor, Continue, Aider, and several RAG frameworks grep for it in 2026; no major model provider commits to reading it as first-class input as of mid-2026, but adoption is climbing — [SE Ranking 2026 survey](https://www.aeo.press/ai/the-state-of-llms-txt-in-2026) reports ~10% of 300k domains shipping it.
+
+[^llms-full]: [Anthropic docs ships `/llms-full.txt`](https://docs.claude.com/llms-full.txt) — the entire documentation site concatenated as one Markdown file, for one-paste loading into a model context. [Vercel](https://vercel.com/docs/llms-full.txt), [Mintlify](https://www.mintlify.com/blog/what-is-llms-txt), and most major dev-tool docs converged on this primitive in 2026. The "give me the whole thing" surface for the agent reader.

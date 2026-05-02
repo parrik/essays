@@ -22,6 +22,9 @@ const essays = defineCollection({
     description: z.string().optional(),
     pdfUrl: z.string().optional(),
     order: z.number().optional(),
+    // If set, this essay belongs to a sibling track (e.g. "out-of-band")
+    // and is excluded from the main homepage; surfaces on its own index.
+    track: z.string().optional(),
     // If set, this essay is a continuation of another (e.g. Part II) and
     // gets hidden from the top-level homepage list. Linked from the parent
     // essay instead. Value is the parent essay's id/slug.

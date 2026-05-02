@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('essays');
+const tracked = all
+  .filter(e => e.data.track === 'side-channels' && !e.data.parent)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+
+const countEtudes = (essay) => essay.data.etudes?.length ?? 0;
+---
+<Base title="side-channels">
+  <section class="intro">
+    <h1>side-channels</h1>
+    <p>Same shape, different substrate. The body, biology, the cross-domain reach.</p>
+  </section>
+  <section class="essays">
+    <ul>
+      {tracked.map(essay => (
+        <li>
+          <div class="essay-row">
+            <a href={`/essays/${essay.id}/`} class="essay-link">
+              <span class="essay-title">{essay.data.title}</span>
+              {countEtudes(essay) > 0 && <span class="play-hint" aria-label={`${countEtudes(essay)} playable inline`}>▶ play</span>}
+            </a>
+          </div>
+          {(essay.data.relief || essay.data.subtitle) && <p class="essay-subtitle">{essay.data.relief ?? essay.data.subtitle}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .play-hint {
+    margin-left: 0.5rem;
+    display: inline-block;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-weight: 500;
+    vertical-align: middle;
+    opacity: 0.7;
+    transition: color 140ms, opacity 140ms;
+  }
+  .essay-link:hover .play-hint {
+    color: var(--accent);
+    opacity: 1;
+  }
+</style>
