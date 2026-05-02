@@ -114,6 +114,11 @@ jobs:
             if [[ "$f" =~ $skip_re ]]; then
               continue
             fi
+            # Skip Astro-generated redirect pages — they're tiny meta-refresh
+            # stubs by design and intentionally don't reference _astro CSS.
+            if grep -q '<meta http-equiv="refresh"' "$f"; then
+              continue
+            fi
             css=$(grep -oE 'href="/_astro/[^"]+\.css"' "$f" | head -1 | sed 's/href="//;s/"$//')
             if [ -z "$css" ]; then
               echo "::error file=$f::No _astro CSS link found in $f"
