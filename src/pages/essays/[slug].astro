@@ -18,8 +18,13 @@ const { Content } = await render(essay);
   <article class="essay h-entry">
     {essay.data.kicker && <p class="essay-kicker">{essay.data.kicker}</p>}
     <h1 class="p-name">{essay.data.title}</h1>
-    {essay.data.subtitle && <p class="essay-sub p-summary">{essay.data.subtitle}</p>}
-    {essay.data.relief && <p class="essay-relief"><em>{essay.data.relief}</em></p>}
+    {(essay.data.subtitle || essay.data.relief) && (
+      <p class="essay-sub p-summary">
+        {essay.data.subtitle}
+        {essay.data.subtitle && essay.data.relief && <span class="essay-sub-sep"> · </span>}
+        {essay.data.relief && <em class="essay-sub-relief">{essay.data.relief}</em>}
+      </p>
+    )}
     {/* Top-of-essay etudes picker removed by author preference: inline
         embeds in each section carry the engagement; no need for a top list.
         Schema + per-essay frontmatter retained for future use (e.g. an
