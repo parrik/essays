@@ -1,0 +1,43 @@
+---
+type ActiveTab = 'essay' | 'etudes' | 'knowledge-graph';
+
+interface Props {
+  slug: string;
+  activeTab: ActiveTab;
+  /** Etudes track URL for this essay; null if no etudes built. */
+  etudesUrl?: string | null;
+  /** Whether a knowledge dashboard exists for this essay. */
+  hasGraph?: boolean;
+}
+
+const { slug, activeTab, etudesUrl = null, hasGraph = false } = Astro.props;
+
+const essayHref = `/puzzles/${slug}/`;
+const graphHref = `/puzzles/${slug}/graph/`;
+
+const tabClass = (tab: ActiveTab) =>
+  `essay-tab${activeTab === tab ? ' essay-tab-active' : ''}`;
+---
+<nav class="essay-tabs" aria-label="Essay nav">
+  {activeTab === 'essay' ? (
+    <span class={tabClass('essay')} aria-current="page">essay</span>
+  ) : (
+    <a href={essayHref} class={tabClass('essay')}>essay</a>
+  )}
+
+  {etudesUrl ? (
+    activeTab === 'etudes' ? (
+      <span class={tabClass('etudes')} aria-current="page">etudes</span>
+    ) : (
+      <a href={etudesUrl} class={tabClass('etudes')}>etudes</a>
+    )
+  ) : null}
+
+  {hasGraph ? (
+    activeTab === 'knowledge-graph' ? (
+      <span class={tabClass('knowledge-graph')} aria-current="page">knowledge graph</span>
+    ) : (
+      <a href={graphHref} class={tabClass('knowledge-graph')}>knowledge graph</a>
+    )
+  ) : null}
+</nav>

@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import MetadataStripe from '../../components/MetadataStripe.astro';
+import EssayTabs from '../../components/EssayTabs.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -55,11 +56,12 @@ const etudesUrl = etudesBySlug[essay.id] ?? null;
       status={essay.data.status}
       confidence={essay.data.confidence}
     />
-    <nav class="essay-tabs" aria-label="Essay nav">
-      <a href="/" class="essay-tab">← home</a>
-      {etudesUrl && <a href={etudesUrl} class="essay-tab">etudes</a>}
-      {hasGraph && <a href={`/puzzles/${essay.id}/graph/`} class="essay-tab">knowledge graph</a>}
-    </nav>
+    <EssayTabs
+      slug={essay.id}
+      activeTab="essay"
+      etudesUrl={etudesUrl}
+      hasGraph={hasGraph}
+    />
     <hr />
     <div class="essay-body e-content">
       <Content />

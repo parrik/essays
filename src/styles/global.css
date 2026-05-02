@@ -541,6 +541,17 @@ a:hover { text-decoration-color: var(--accent); }
   border-color: var(--text);
   background: var(--bg-soft);
 }
+
+/* Active state — current surface. Solid fill + light text, matching
+   the dashboard tabbar's active button so the two nav levels read as
+   the same family. The aria-current="page" is set by the component. */
+.essay-tab-active,
+.essay-tab-active:hover {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+  cursor: default;
+}
 .essay-tab:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
