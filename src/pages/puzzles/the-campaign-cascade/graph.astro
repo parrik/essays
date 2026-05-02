@@ -14,6 +14,7 @@ type Node = {
   source?: string;
   url?: string;
   derives_from?: string[];
+  why?: string;
 };
 
 const nodes: Node[] = [
@@ -22,30 +23,35 @@ const nodes: Node[] = [
     type: 'synthesis',
     claim: 'Cross-cutting changes finish or they don\'t.',
     where: 'opening',
+    why: 'Names the binary the essay refuses to soften — there is no "mostly finished" cross-cutting initiative.',
   },
   {
     id: 'S02-context-in-hand',
     type: 'synthesis',
     claim: 'Every human in the loop has the context they need to act on the change in front of them.',
     where: 'the principle',
+    why: 'The load-bearing claim. Every downstream pattern in the essay derives from honoring this or breaking it.',
   },
   {
     id: 'D03-cascade-loop',
     type: 'derivation',
     claim: 'Skipping the constraint produces Campaign → Stall → Escalate → Directive → New Campaign.',
     derives_from: ['S02-context-in-hand'],
+    why: 'The visible failure mode — what an outside observer sees when the principle is broken at scale. Each new campaign is rational; the multiplication is the bug.',
   },
   {
     id: 'S04-three-paths',
     type: 'synthesis',
     claim: 'Three valid responses — automate, centralize, enable.',
     derives_from: ['S02-context-in-hand'],
+    why: 'The action menu. Each path satisfies the principle differently — automate removes the human, centralize gives them context-by-ownership, enable gives them context-by-authorship.',
   },
   {
     id: 'D05-dead-zone',
     type: 'derivation',
     claim: 'The pattern fails in the middle — work done for the team, stop short of merge. Human-in-loop without context.',
     derives_from: ['S02-context-in-hand', 'S04-three-paths'],
+    why: 'The most common failure pattern in real orgs: a platform team writes the PR, hands it to service owners for review, and the owners can\'t evaluate it. None of the three paths, all of the cost.',
   },
   {
     id: 'C01-codemod',
@@ -53,6 +59,7 @@ const nodes: Node[] = [
     claim: 'Codemod — a program that rewrites source code mechanically.',
     source: 'facebookarchive/codemod',
     url: 'https://github.com/facebookarchive/codemod',
+    why: 'Defines the term the automate path uses. Real-world reference makes the path concrete instead of abstract.',
   },
 ];
 
@@ -143,6 +150,16 @@ const counts = nodes.reduce(
   },
   {} as Record<NodeType, number>,
 );
+
+type NodePos = { cx: number; cy: number; r: number; labelY: number; labelText: string };
+const positions: Record<string, NodePos> = {
+  'S01-cross-cutting-finish-or-not': { cx: 100, cy: 80,  r: 26, labelY: 125, labelText: 'S01' },
+  'S02-context-in-hand':              { cx: 300, cy: 80,  r: 32, labelY: 130, labelText: 'S02 · principle' },
+  'S04-three-paths':                  { cx: 500, cy: 80,  r: 26, labelY: 125, labelText: 'S04' },
+  'D03-cascade-loop':                 { cx: 175, cy: 200, r: 26, labelY: 245, labelText: 'D03' },
+  'D05-dead-zone':                    { cx: 425, cy: 200, r: 26, labelY: 245, labelText: 'D05' },
+  'C01-codemod':                      { cx: 300, cy: 310, r: 22, labelY: 350, labelText: 'C01' },
+};
 ---
 <Base title={`Knowledge dashboard — ${essayTitle}`} description={subtitle}>
   <article class="dash-page">
@@ -167,47 +184,38 @@ const counts = nodes.reduce(
       <div class="graph-viz">
         <svg viewBox="0 0 600 380" role="img" aria-label="Knowledge graph — campaign cascade">
           {/* edges first so nodes paint over them */}
-          {/* S04 → S02 */}
           <line x1="500" y1="80" x2="300" y2="80" class="edge edge-derives" />
-          {/* D03 → S02 */}
           <line x1="175" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          {/* D05 → S02 */}
           <line x1="425" y1="200" x2="300" y2="80" class="edge edge-derives" />
-          {/* D05 → S04 */}
           <line x1="425" y1="200" x2="500" y2="80" class="edge edge-derives" />
 
-          {/* nodes */}
-          <a href="#S01-cross-cutting-finish-or-not" class="viz-node-link">
-            <circle cx="100" cy="80" r="26" class="viz-node viz-node-synthesis" />
-            <text x="100" y="85" class="viz-node-letter">S</text>
-            <text x="100" y="125" class="viz-node-id">S01</text>
-          </a>
-          <a href="#S02-context-in-hand" class="viz-node-link">
-            <circle cx="300" cy="80" r="32" class="viz-node viz-node-synthesis viz-node-spine" />
-            <text x="300" y="85" class="viz-node-letter">S</text>
-            <text x="300" y="130" class="viz-node-id">S02 · principle</text>
-          </a>
-          <a href="#S04-three-paths" class="viz-node-link">
-            <circle cx="500" cy="80" r="26" class="viz-node viz-node-synthesis" />
-            <text x="500" y="85" class="viz-node-letter">S</text>
-            <text x="500" y="125" class="viz-node-id">S04</text>
-          </a>
-          <a href="#D03-cascade-loop" class="viz-node-link">
-            <circle cx="175" cy="200" r="26" class="viz-node viz-node-derivation" />
-            <text x="175" y="205" class="viz-node-letter">D</text>
-            <text x="175" y="245" class="viz-node-id">D03</text>
-          </a>
-          <a href="#D05-dead-zone" class="viz-node-link">
-            <circle cx="425" cy="200" r="26" class="viz-node viz-node-derivation" />
-            <text x="425" y="205" class="viz-node-letter">D</text>
-            <text x="425" y="245" class="viz-node-id">D05</text>
-          </a>
-          <a href="#C01-codemod" class="viz-node-link">
-            <circle cx="300" cy="310" r="22" class="viz-node viz-node-citation" />
-            <text x="300" y="315" class="viz-node-letter">C</text>
-            <text x="300" y="350" class="viz-node-id">C01</text>
-          </a>
+          {nodes.map((n) => {
+            const p = positions[n.id];
+            if (!p) return null;
+            const isSpine = n.id === 'S02-context-in-hand';
+            return (
+              <a
+                href={`#${n.id}`}
+                class="viz-node-link"
+                data-id={n.id}
+                data-claim={n.claim}
+                data-why={n.why || ''}
+                data-type={typeMeta[n.type].label}
+                data-where={n.where || ''}
+              >
+                <circle
+                  cx={p.cx}
+                  cy={p.cy}
+                  r={p.r}
+                  class={`viz-node viz-node-${n.type}${isSpine ? ' viz-node-spine' : ''}`}
+                />
+                <text x={p.cx} y={p.cy + 5} class="viz-node-letter">{typeMeta[n.type].letter}</text>
+                <text x={p.cx} y={p.labelY} class="viz-node-id">{p.labelText}</text>
+              </a>
+            );
+          })}
         </svg>
+        <div id="viz-tooltip" class="viz-tooltip" aria-hidden="true"></div>
       </div>
 
       <div class="dash-counts">
@@ -329,6 +337,50 @@ const counts = nodes.reduce(
       if (graphBtn && !graphBtn.classList.contains('active')) graphBtn.click();
     });
   });
+
+  // Hover tooltip on graph nodes — pattern from /example-graph-full.html
+  const tip = document.getElementById('viz-tooltip');
+  if (tip) {
+    const escape = (s) => String(s || '').replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+    }[c]));
+
+    document.querySelectorAll('.viz-node-link').forEach((a) => {
+      a.addEventListener('mouseenter', () => {
+        const id = a.getAttribute('data-id');
+        const claim = a.getAttribute('data-claim');
+        const why = a.getAttribute('data-why');
+        const type = a.getAttribute('data-type');
+        const where = a.getAttribute('data-where');
+        let html = '<div class="vt-type">' + escape(type);
+        if (where) html += '<span class="vt-dot">·</span>' + escape(where);
+        html += '</div>';
+        html += '<div class="vt-id"><code>' + escape(id) + '</code></div>';
+        html += '<div class="vt-claim">' + escape(claim) + '</div>';
+        if (why) html += '<div class="vt-why"><span class="vt-label">Why this node:</span> ' + escape(why) + '</div>';
+        tip.innerHTML = html;
+        tip.classList.add('visible');
+      });
+      a.addEventListener('mouseleave', () => tip.classList.remove('visible'));
+      a.addEventListener('mousemove', (e) => {
+        const pad = 12;
+        const margin = 6;
+        const w = tip.offsetWidth || 280;
+        const h = tip.offsetHeight || 100;
+        const vw = window.innerWidth;
+        const vh = window.innerHeight;
+        let x = e.clientX + pad;
+        if (x + w > vw - margin) x = e.clientX - w - pad;
+        if (x < margin) x = margin;
+        if (x + w > vw - margin) x = vw - w - margin;
+        let y = e.clientY + pad;
+        if (y + h > vh - margin) y = e.clientY - h - pad;
+        if (y < margin) y = margin;
+        tip.style.left = x + 'px';
+        tip.style.top = y + 'px';
+      });
+    });
+  }
 </script>
 
 <style is:global>
@@ -425,11 +477,72 @@ const counts = nodes.reduce(
 
   /* === Graph tab — SVG viz === */
   .graph-viz {
+    position: relative;
     margin: 0 0 1.75rem;
     padding: 1rem;
     background: var(--bg-soft);
     border-radius: 12px;
     overflow: hidden;
+  }
+  /* Hover tooltip — same family as /example-graph-full.html */
+  .viz-tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: #fffdf7;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.7rem 0.85rem;
+    width: min(320px, calc(100vw - 24px));
+    box-sizing: border-box;
+    box-shadow: 0 6px 18px rgba(40, 30, 20, 0.16);
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text);
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 120ms ease, transform 120ms ease;
+    z-index: 1000;
+  }
+  .viz-tooltip.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .viz-tooltip .vt-type {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .viz-tooltip .vt-dot {
+    color: var(--muted);
+    margin: 0 0.4em;
+  }
+  .viz-tooltip .vt-id {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+  }
+  .viz-tooltip .vt-claim {
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+  .viz-tooltip .vt-why {
+    color: #4a4238;
+    font-style: italic;
+  }
+  .viz-tooltip .vt-label {
+    font-family: var(--sans);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-style: normal;
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 0.25rem;
   }
   .graph-viz svg {
     display: block;
