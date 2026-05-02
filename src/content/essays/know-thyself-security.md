@@ -7,7 +7,6 @@ tag: essay
 order: 2
 parent: know-thyself
 publishedAt: 2026-04-30
-status: tending
 description: Gates fire on action; sweeps fire on cadence. Both are inside security. Response — what fires when verification fails — is a different discipline.
 ---
 

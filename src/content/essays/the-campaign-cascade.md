@@ -8,7 +8,6 @@ order: 1
 description: How to ship a cross-cutting change without spawning the cascade.
 pdfUrl: /campaign-cascade.pdf
 publishedAt: 2026-04-21
-status: tending
 etudes:
   - label: Review this PR
     url: /etudes/campaign-cascade/review-this-pr/
