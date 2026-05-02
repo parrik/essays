@@ -3,7 +3,7 @@ import Base from '../../../layouts/Base.astro';
 import GraphNode from '../../../components/GraphNode.astro';
 import IssueLink from '../../../components/IssueLink.astro';
 import PuzzleViews from '../../../components/PuzzleViews.astro';
-import PuzzleGraphMobileDrawer from '../../../components/PuzzleGraphMobileDrawer.astro';
+import PuzzleGraphNodeDrawer from '../../../components/PuzzleGraphNodeDrawer.astro';
 import data from '../../../data/essay-graphs/the-partition-problem.json';
 const etudesUrl = '/etudes/restorative/';
 
@@ -192,7 +192,7 @@ const counts = nodes.reduce(
       </div>
     </section>
 
-    <PuzzleGraphMobileDrawer />
+    <PuzzleGraphNodeDrawer />
   </article>
 </Base>
 

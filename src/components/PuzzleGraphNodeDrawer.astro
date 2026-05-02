@@ -1,18 +1,20 @@
 ---
 /*
-  Mobile node drawer for essay-graph pages.
+  Node detail drawer for essay-graph pages.
 
-  On touch devices (no hover capability), tapping a graph SVG node opens
-  this bottom-sheet drawer instead of jumping the page to the node card
-  below. Desktop hover-tooltip behavior is preserved — the script only
-  binds when `matchMedia('(hover: none)')` matches.
+  Slides in from the right when any `.viz-node-link` is clicked, on
+  desktop AND mobile. Replaces the previous behavior where clicking a
+  node jumped the page to the matching card section below — that jump
+  was disorienting because it scrolled away from the graph the reader
+  was looking at.
 
-  Drop into any page that renders `.viz-node-link` anchors.
+  Desktop hover-tooltip behavior is left untouched (registered in each
+  page's own script block).
 */
 ---
 <aside id="viz-drawer" class="viz-drawer" aria-hidden="true">
   <div class="viz-drawer-backdrop" data-drawer-close></div>
-  <div class="viz-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="viz-drawer-title">
+  <div class="viz-drawer-panel" role="dialog" aria-modal="false" aria-labelledby="viz-drawer-title">
     <header class="viz-drawer-head">
       <p class="viz-drawer-type" id="viz-drawer-type"></p>
       <button type="button" class="viz-drawer-close" data-drawer-close aria-label="Close">×</button>
@@ -26,9 +28,8 @@
 
 <script is:inline>
   (function () {
-    const noHover = typeof matchMedia === 'function' && matchMedia('(hover: none)').matches;
     const drawer = document.getElementById('viz-drawer');
-    if (!noHover || !drawer) return;
+    if (!drawer) return;
 
     const dType = document.getElementById('viz-drawer-type');
     const dId = document.getElementById('viz-drawer-id');
@@ -53,13 +54,12 @@
       }
       dJump.setAttribute('href', '#' + id);
       drawer.setAttribute('aria-hidden', 'false');
-      document.body.style.overflow = 'hidden';
     };
     const close = () => {
       drawer.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
     };
 
+    // Click any node in the SVG → open the drawer (do NOT jump to anchor).
     document.querySelectorAll('.viz-node-link').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
@@ -69,7 +69,7 @@
     drawer.querySelectorAll('[data-drawer-close]').forEach((el) => {
       el.addEventListener('click', close);
     });
-    // Jump-to-card closes the drawer; default href anchor jump still fires.
+    // Jump-to-card from inside the drawer: close, then let the anchor jump.
     dJump.addEventListener('click', close);
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') close();
@@ -82,34 +82,45 @@
     position: fixed;
     inset: 0;
     z-index: 1000;
-    display: none;
+    pointer-events: none;
   }
   .viz-drawer[aria-hidden="false"] {
-    display: block;
+    pointer-events: auto;
   }
+  /* Backdrop: hidden on desktop (drawer is non-modal — keep clicking
+     other nodes to swap content). Shown on small screens where the
+     panel covers most of the viewport and a tap-outside dismiss is
+     more useful than visible graph behind. */
   .viz-drawer-backdrop {
     position: absolute;
     inset: 0;
     background: rgba(40, 30, 20, 0.4);
     opacity: 0;
     transition: opacity 200ms ease;
+    pointer-events: none;
   }
-  .viz-drawer[aria-hidden="false"] .viz-drawer-backdrop { opacity: 1; }
+  @media (max-width: 32rem) {
+    .viz-drawer[aria-hidden="false"] .viz-drawer-backdrop {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
   .viz-drawer-panel {
     position: absolute;
-    left: 0;
+    top: 0;
     right: 0;
     bottom: 0;
-    max-height: 85vh;
+    width: min(420px, 100%);
     overflow-y: auto;
     background: #fffdf7;
-    border-radius: 16px 16px 0 0;
-    padding: 1rem 1.15rem 1.5rem;
-    box-shadow: 0 -8px 24px rgba(40, 30, 20, 0.16);
-    transform: translateY(100%);
-    transition: transform 220ms cubic-bezier(0.32, 0.72, 0, 1);
+    border-left: 1px solid var(--line);
+    padding: 1.25rem 1.35rem 1.5rem;
+    box-shadow: -8px 0 24px rgba(40, 30, 20, 0.12);
+    transform: translateX(100%);
+    transition: transform 240ms cubic-bezier(0.32, 0.72, 0, 1);
+    box-sizing: border-box;
   }
-  .viz-drawer[aria-hidden="false"] .viz-drawer-panel { transform: translateY(0); }
+  .viz-drawer[aria-hidden="false"] .viz-drawer-panel { transform: translateX(0); }
   .viz-drawer-head {
     display: flex;
     justify-content: space-between;
