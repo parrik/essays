@@ -1,0 +1,200 @@
+{
+  "slug": "the-partition-problem",
+  "essayTitle": "The Partition Problem",
+  "spineId": "S01-cancer-cell-lost-context",
+  "viewBox": { "width": 680, "height": 480 },
+  "nodes": [
+    {
+      "id": "S01-cancer-cell-lost-context",
+      "type": "synthesis",
+      "claim": "A cancer cell is not a broken cell — it has lost context.",
+      "where": "opening",
+      "why": "The spine. Reframes cancer from machinery-failure to signal-failure: the cell still functions, but inside a model of the world that is no longer true."
+    },
+    {
+      "id": "C01-hanahan-weinberg",
+      "type": "citation",
+      "claim": "Hallmarks of Cancer (2011) + New Dimensions (2022) — cancer as acquired capabilities that escape tissue signaling and microenvironmental constraint.",
+      "where": "footnote [^1]",
+      "source": "Hanahan & Weinberg, Cell 2011; Cancer Discovery 2022",
+      "url": "https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9",
+      "why": "Grounds the spine in the canonical cancer-biology frame. The 2011 update foregrounds tumor-promoting inflammation and microenvironment — the bridge the essay builds on."
+    },
+    {
+      "id": "C02-sonnenschein-soto",
+      "type": "citation",
+      "claim": "Tissue Organization Field Theory — cancer as tissue-level disorder of intercellular constraint.",
+      "where": "footnote [^1]",
+      "source": "Sonnenschein & Soto",
+      "why": "The minority-position citation that takes the context-loss frame furthest. Pairs with Hanahan-Weinberg to triangulate the spine claim from two independent literatures."
+    },
+    {
+      "id": "C03-mccarthy-okg",
+      "type": "citation",
+      "claim": "Open-knowledge-graph — bounded-context framework. Paper 11 (The Ratchet) and Paper 5 (Genome as Projection).",
+      "where": "footnote [^1]",
+      "source": "Patrick D. McCarthy",
+      "url": "https://github.com/patdmc/open-knowledge-graph",
+      "why": "The theoretical scaffolding the essay leans on — cancer and evolution as opposing failures of the same bounded-context mechanism."
+    },
+    {
+      "id": "D01-fascia-partitions",
+      "type": "derivation",
+      "claim": "Fascia partitions — the body partitions itself when signal is associated with danger.",
+      "where": "fascia section",
+      "derives_from": ["S01-cancer-cell-lost-context", "C04-schleip-stecco"],
+      "why": "The somatic instantiation of the spine. What context-loss looks like in connective tissue: dehydration, adhesion, regions stop participating, force routes around them."
+    },
+    {
+      "id": "C04-schleip-stecco",
+      "type": "citation",
+      "claim": "Fascia hydration and hyaluronan-driven interlayer glide; densification compromises the system.",
+      "where": "footnote [^schleip]",
+      "source": "Schleip et al. (2012, 2015); Stecco et al. (2011)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21964857/",
+      "why": "Grounds the fascia mechanism. The hyaluronan / glide / densification chain is solid in the bodywork literature; the essay borrows it cleanly."
+    },
+    {
+      "id": "D02-restorative-reopens-channel",
+      "type": "derivation",
+      "claim": "Restorative yoga reopens the channel — long supported holds let the matrix re-hydrate, adhesions soften, the partitioned region rejoins surrounding signal.",
+      "where": "fascia section",
+      "derives_from": ["D01-fascia-partitions"],
+      "why": "The intervention claim at the fascia layer. Mechanism-level (re-hydration, adhesion-softening), not outcome-level (cure)."
+    },
+    {
+      "id": "D03-vagus-listening-line",
+      "type": "derivation",
+      "claim": "The vagus is the body's listening line — long exhale signals safety; HRV measures its flexibility.",
+      "where": "long exhale section",
+      "derives_from": ["S01-cancer-cell-lost-context", "C05-porges"],
+      "why": "The nervous-system instantiation of the spine. Locked vagus reads alarm; flexible vagus reads context. Same partition dynamic, different tissue."
+    },
+    {
+      "id": "C05-porges",
+      "type": "citation",
+      "claim": "Polyvagal theory — vagal tone, supported postures, long exhales, inflammation-vagal-tone correlation. Phylogenetic claims contested by Grossman/Taylor; clinical readouts robust.",
+      "where": "footnote [^porges]",
+      "source": "Porges 2011; Grossman & Taylor 2007",
+      "why": "Honest citation. Theory is contested at the phylogenetic layer; the load-bearing readouts (HRV, exhale, vagal-tone-inflammation) replicate independently."
+    },
+    {
+      "id": "C06-williams-hrv",
+      "type": "citation",
+      "claim": "HRV–inflammation meta-analysis — vagally-mediated HRV inversely tracks circulating inflammatory markers via the cholinergic anti-inflammatory pathway.",
+      "where": "footnote [^hrv]",
+      "source": "Williams et al., Brain, Behavior, and Immunity (2019)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30872091/",
+      "why": "The bridge citation. Provides the HRV-to-inflammation half of the synthesis; the inflammation-to-cancer-permissive half comes from Hanahan-Weinberg. Neither paper makes the full bridge."
+    },
+    {
+      "id": "S02-cell-that-lost-the-signal",
+      "type": "synthesis",
+      "claim": "A cancer cell is a cell that has lost the signal that says: you are held.",
+      "where": "closer",
+      "derives_from": ["S01-cancer-cell-lost-context", "D01-fascia-partitions", "D03-vagus-listening-line", "C06-williams-hrv"],
+      "why": "The full synthesis. Connects hallmarks-of-cancer to the nervous-system / fascia frame — same partition dynamic, three tissues. Not a cure claim; a frame claim."
+    }
+  ],
+  "positions": {
+    "S01-cancer-cell-lost-context":    { "cx": 340, "cy": 100, "r": 34, "labelY": 152, "labelText": "S01 · spine" },
+    "C01-hanahan-weinberg":            { "cx": 220, "cy": 50,  "r": 20, "labelY": 22,  "labelText": "C01" },
+    "C02-sonnenschein-soto":           { "cx": 460, "cy": 50,  "r": 20, "labelY": 22,  "labelText": "C02" },
+    "C03-mccarthy-okg":                { "cx": 600, "cy": 100, "r": 20, "labelY": 142, "labelText": "C03" },
+    "D01-fascia-partitions":           { "cx": 180, "cy": 230, "r": 26, "labelY": 275, "labelText": "D01" },
+    "C04-schleip-stecco":              { "cx": 60,  "cy": 230, "r": 20, "labelY": 272, "labelText": "C04" },
+    "D02-restorative-reopens-channel": { "cx": 180, "cy": 360, "r": 24, "labelY": 403, "labelText": "D02" },
+    "D03-vagus-listening-line":        { "cx": 500, "cy": 230, "r": 26, "labelY": 275, "labelText": "D03" },
+    "C05-porges":                      { "cx": 620, "cy": 230, "r": 20, "labelY": 272, "labelText": "C05" },
+    "C06-williams-hrv":                { "cx": 620, "cy": 320, "r": 20, "labelY": 362, "labelText": "C06" },
+    "S02-cell-that-lost-the-signal":   { "cx": 340, "cy": 420, "r": 30, "labelY": 470, "labelText": "S02 · closer" }
+  },
+  "edges": [
+    { "from": "C01-hanahan-weinberg",            "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "C02-sonnenschein-soto",           "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "C03-mccarthy-okg",                "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "D01-fascia-partitions",           "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "D01-fascia-partitions",           "to": "C04-schleip-stecco",            "kind": "derives" },
+    { "from": "D02-restorative-reopens-channel", "to": "D01-fascia-partitions",         "kind": "derives" },
+    { "from": "D03-vagus-listening-line",        "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "D03-vagus-listening-line",        "to": "C05-porges",                    "kind": "derives" },
+    { "from": "S02-cell-that-lost-the-signal",   "to": "S01-cancer-cell-lost-context", "kind": "derives" },
+    { "from": "S02-cell-that-lost-the-signal",   "to": "D01-fascia-partitions",         "kind": "derives" },
+    { "from": "S02-cell-that-lost-the-signal",   "to": "D03-vagus-listening-line",      "kind": "derives" },
+    { "from": "S02-cell-that-lost-the-signal",   "to": "C06-williams-hrv",              "kind": "derives" }
+  ],
+  "eyes": [
+    {
+      "id": "C06-williams-hrv",
+      "what": "The HRV → inflammation → cancer-permissive bridge is the author's synthesis across three literatures, not a cited consensus. The footnote names this explicitly; flagging here for transparency.",
+      "why": "Williams 2019 covers HRV-to-inflammation; Hanahan-Weinberg names tumor-promoting inflammation as enabling characteristic. No single paper closes the loop. Worth empirical follow-up.",
+      "ground_with": [
+        { "label": "Williams et al. 2019 — HRV-inflammation meta-analysis", "url": "https://pubmed.ncbi.nlm.nih.gov/30872091/" },
+        { "label": "Hanahan & Weinberg 2011 — tumor-promoting inflammation as enabling characteristic", "url": "https://www.cell.com/cell/fulltext/S0092-8674(11)00127-9" }
+      ]
+    },
+    {
+      "id": "D02-restorative-reopens-channel",
+      "what": "\"Restorative yoga cannot cure cancer\" is the disclaimer. The positive claim — reopening the partition channel — is mechanism-level, not outcome-level.",
+      "why": "Mechanism plausibility (matrix re-hydration, adhesion softening) draws on mechanical-loading studies, not restorative-yoga trials. Some oncology supportive-care trials of yoga exist; worth citing if findable.",
+      "ground_with": [
+        { "label": "Yoga in oncology supportive care — supportive-care trials", "url": "https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5871291/" }
+      ]
+    },
+    {
+      "id": "S02-cell-that-lost-the-signal",
+      "what": "The bridge from \"cell-autonomous capabilities\" (Hanahan-Weinberg) to \"cell that lost the signal you are held\" is poetic synthesis, not a direct mapping in the source.",
+      "why": "The frame is load-bearing for the essay. The 2011 + 2022 hallmarks updates do foreground microenvironment and inflammation, which makes the bridge defensible — but the affective register (\"held\") is the author's addition, not the literature's."
+    },
+    {
+      "id": "D01-fascia-partitions",
+      "what": "The fascia mechanism (hydration, glide, densification) is solid for mechanical-loading contexts. The bridge from \"long supported holds\" to \"matrix re-hydrates\" is mechanism-plausible but not directly observed in restorative-yoga studies.",
+      "why": "Schleip + Stecco grounds the tissue mechanics; the specific intervention pathway (long supported holds → ANS-mediated viscosity change → re-hydration) is inferred from Schleip Part 2 (ANS-mediated viscosity changes), not directly trialed.",
+      "ground_with": [
+        { "label": "Schleip \"Fascial plasticity Part 2\" — ANS-mediated viscosity", "url": "https://www.fasciaresearch.de/" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "kind": "etude",
+      "label": "Long Exhale",
+      "body": "4-in / 8-out for two minutes. Drills D03 — the vagus reading safety from breath shape.",
+      "href": "/etudes/restorative/long-exhale/"
+    },
+    {
+      "kind": "etude",
+      "label": "Tending the Ember",
+      "body": "Full restorative routine. Long supported holds at the fascial layer. Drills D01 + D02.",
+      "href": "/etudes/restorative/tending-the-ember/"
+    },
+    {
+      "kind": "etude",
+      "label": "Coming Home",
+      "body": "Full restorative routine. Re-establishes the broadcast across nervous system and fascia.",
+      "href": "/etudes/restorative/coming-home/"
+    },
+    {
+      "kind": "etude",
+      "label": "The Open Sky",
+      "body": "Full restorative routine. Sustained witnessed stillness — the closer's \"you are held\" at body scale.",
+      "href": "/etudes/restorative/the-open-sky/"
+    },
+    {
+      "kind": "apply",
+      "label": "Find a partitioned region",
+      "body": "Locate one fascial region in your body that has stopped participating — chronic shoulder, hip, ribcage. Spend 90 seconds in supported child's pose with breath at 4:8 ratio. Notice the local re-hydration cue."
+    },
+    {
+      "kind": "apply",
+      "label": "Map sympathetic dominance",
+      "body": "Walk through your day: where does sympathetic dominance climb? Where could you stack a 2-minute long-exhale break? The vagus listens to whatever cadence you teach it."
+    },
+    {
+      "kind": "next",
+      "label": "Same partition pattern, different scale",
+      "body": "Know-thyself Part I argues the same shape at memory scale — flat memory partitions claims from their evidence the way braced fascia partitions tissue from signal.",
+      "href": "/puzzles/know-thyself/"
+    }
+  ]
+}

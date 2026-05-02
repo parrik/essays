@@ -1,0 +1,263 @@
+{
+  "slug": "know-thyself-search",
+  "essayTitle": "Search was never about humans",
+  "spineId": "S01-search-one-shape",
+  "viewBox": { "width": 720, "height": 520 },
+  "nodes": [
+    {
+      "id": "S01-search-one-shape",
+      "type": "synthesis",
+      "claim": "Search has always been one shape: graph-traversal-with-ranking — find relevant nodes by walking edges, ranked by some distance function.",
+      "where": "the spine",
+      "why": "The load-bearing claim. Every scale below is the same shape with constants reset — node spec, edge spec, query format, reader."
+    },
+    {
+      "id": "C01-salton-1968",
+      "type": "citation",
+      "claim": "Salton 1968, Automatic Information Organization and Retrieval — set the original shape; vector-space-model named the geometry (Salton, Wong, Yang 1975).",
+      "source": "Salton, Automatic Information Organization and Retrieval (1968)",
+      "why": "Grounds the spine in the field's founding text. The shape did not start with the web; it started with text retrieval at IBM."
+    },
+    {
+      "id": "C02-pagerank-1998",
+      "type": "citation",
+      "claim": "Brin & Page 1998, PageRank — added link-graph priors to the ranking function.",
+      "source": "Brin & Page, The Anatomy of a Large-Scale Hypertextual Web Search Engine (1998)",
+      "url": "http://infolab.stanford.edu/~backrub/google.html",
+      "why": "The second canonical citation in the spine's genealogy. Showed ranking by what other nodes point at — an early move toward provenance-aware retrieval."
+    },
+    {
+      "id": "S02-scale-1-inverted-index",
+      "type": "synthesis",
+      "claim": "Scale 1 — Inverted index (Lucene, BM25/TF-IDF). Terms ↔ documents, weighted by frequency. Reader: human. Format: ten ranked links.",
+      "where": "four scales · §2",
+      "derives_from": ["S01-search-one-shape"],
+      "why": "The first instance of the spine. Two-word query, short walk, ranking by overlap. Still alive at Lucene scale because the shape is correct — only the constants are old."
+    },
+    {
+      "id": "S03-scale-2-vector-retrieval",
+      "type": "synthesis",
+      "claim": "Scale 2 — Vector retrieval. Embeddings as nodes; cosine as edge; HNSW as the index that becomes a graph itself. Reader: human or LLM.",
+      "where": "four scales · §2",
+      "derives_from": ["S01-search-one-shape"],
+      "why": "The node specification flips from word to embedding. Same walk; same ranking; new geometry. The index itself is a small-world graph — the spine recurses."
+    },
+    {
+      "id": "C03-hnsw-2018",
+      "type": "citation",
+      "claim": "Malkov & Yashunin 2018 — Hierarchical Navigable Small World graphs. The index that makes vector lookup log-time at scale.",
+      "source": "Malkov & Yashunin, Hierarchical Navigable Small World graphs (2018)",
+      "url": "https://arxiv.org/abs/1603.09320",
+      "why": "Names the data structure that makes Scale 2 work past ten thousand vectors. Below that, brute-force matmul wins — a load-bearing scale-dependence the essay returns to."
+    },
+    {
+      "id": "S04-scale-3-typed-graph",
+      "type": "synthesis",
+      "claim": "Scale 3 — Typed knowledge graph. Nodes are claims, not documents; edges are labelled (grounds, derives_from, contradicts). Reader: a self or its agent.",
+      "where": "four scales · §2",
+      "derives_from": ["S01-search-one-shape"],
+      "why": "The labels stop being decoration and start doing retrieval work — distinguishing said-five-times from independently-grounded-twice. Where attribution-≠-confidence enters the index."
+    },
+    {
+      "id": "S05-scale-4-ai-native",
+      "type": "synthesis",
+      "claim": "Scale 4 — AI-native search. Query is a declarative sentence shaped like the answer; results are atomic chunks with provenance. Reader: an agent.",
+      "where": "four scales · §2",
+      "derives_from": ["S01-search-one-shape"],
+      "why": "The reader changes again. Filter first, then rank. Comprehensiveness, recency, type-correctness, provenance-strength replace popularity. The retriever spawns retrievers."
+    },
+    {
+      "id": "S06-bounded-context-forces-graph",
+      "type": "synthesis",
+      "claim": "Bounded context forces structured memory. When |K| exceeds C_n, lossless compression hits Shannon's floor; factoring into typed nodes is the only operation that scales.",
+      "where": "the necessity argument · §3",
+      "derives_from": ["S01-search-one-shape"],
+      "why": "The load-bearing turn. Promotes the four scales from \"convenient pattern\" to \"the only architecture that survives a finite reader.\" The essay's pivot from descriptive to deductive."
+    },
+    {
+      "id": "C04-bounded-context-stack",
+      "type": "citation",
+      "claim": "Miller 1956 / Cowan 2001 / Simon / Shannon / Codd — working memory bounded; institutions bounded; lossless compression bounded; factoring is the space-creating operation that doesn't lose information.",
+      "source": "Miller, Cowan, Simon, Shannon, Codd — the bounded-context stack",
+      "why": "Five separate canonical results stacked into one necessity argument. The depth of the stack is what makes \"filling the graph, not the context window\" deductive rather than a preference."
+    },
+    {
+      "id": "C05-mccarthy-okg-theorem-4",
+      "type": "citation",
+      "claim": "McCarthy, open-knowledge-graph — Theorem 4: growing C_n directly does not solve retrieval; the efficient path is filling the graph, not the context window.",
+      "source": "McCarthy, open-knowledge-graph",
+      "url": "https://github.com/patdmc/open-knowledge-graph",
+      "why": "The formal proof for the scientific case the essay extends. Theorem 4 is the line the maximalist context-window race is denying — not failing, denying."
+    },
+    {
+      "id": "S07-two-query-archetypes",
+      "type": "synthesis",
+      "claim": "Two query archetypes — humans type two words, agents emit declarative sentences shaped like the answer.",
+      "where": "four scales · §2",
+      "derives_from": ["S02-scale-1-inverted-index", "S05-scale-4-ai-native"],
+      "why": "The reader-shape collapse. Same retrieval problem; opposite query format; the bridge that explains why search APIs built for humans break for agents and vice versa."
+    },
+    {
+      "id": "D01-same-shape-across-scales",
+      "type": "derivation",
+      "claim": "The four scales reset constants, not shape. Node spec, edge spec, query format, reader change; graph-traversal-with-ranking does not.",
+      "where": "§2 close",
+      "derives_from": ["S02-scale-1-inverted-index", "S03-scale-2-vector-retrieval", "S04-scale-3-typed-graph", "S05-scale-4-ai-native"],
+      "why": "The cross-scale claim — the essay's synthesis. Once the four scales are listed, the invariant pops out as a derivation, not a posit."
+    },
+    {
+      "id": "S08-deepseek-v4-postscript",
+      "type": "synthesis",
+      "claim": "Postscript — DeepSeek V4. Hybrid sparse + heavily-compressed attention at 7–10% of V3.2 KV cache: graph-traversal-with-ranking internalized one further. The reader is the model.",
+      "where": "postscript · Apr 26 2026",
+      "derives_from": ["S05-scale-4-ai-native", "S06-bounded-context-forces-graph"],
+      "why": "The shape recurses inside the model. Tokens become nodes; sparse attention becomes a walk; compression becomes ranking. McCarthy's \"fill the graph\" applied to weights."
+    },
+    {
+      "id": "C06-turnbull-metadata",
+      "type": "citation",
+      "claim": "Turnbull, Metadata: the 3rd kind of retrieval (Apr 21 2026) — agents query by attribute; metadata is the retrieval kind lexical and embedding both miss.",
+      "source": "Turnbull, Metadata: the 3rd kind of retrieval",
+      "url": "https://softwaredoug.com/blog/2026/04/21/metadata-the-3rd-kind-of-retrieval",
+      "why": "External corroboration for the third axis at Scale 4 — what something is, not just what it looks like or means. Names a retrieval kind the four-scales taxonomy depends on."
+    },
+    {
+      "id": "C07-turnbull-agents",
+      "type": "citation",
+      "claim": "Turnbull, Can agents replace the search stack? (Apr 28 2026) — agents add value on entity-discovery; add nothing on information-discovery, because if they knew what was correct they would not need search.",
+      "source": "Turnbull, Can agents replace the search stack?",
+      "url": "https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html",
+      "why": "The closing limit. Sharpens what the agent reader can and cannot do — and so what the publisher must still ship as ground truth."
+    }
+  ],
+  "positions": {
+    "S01-search-one-shape":             { "cx": 360, "cy": 260, "r": 34, "labelY": 312, "labelText": "S01 · spine" },
+    "S02-scale-1-inverted-index":       { "cx": 260, "cy": 170, "r": 28, "labelY": 215, "labelText": "S02 · scale 1" },
+    "S03-scale-2-vector-retrieval":     { "cx": 460, "cy": 170, "r": 28, "labelY": 215, "labelText": "S03 · scale 2" },
+    "S04-scale-3-typed-graph":          { "cx": 460, "cy": 350, "r": 28, "labelY": 395, "labelText": "S04 · scale 3" },
+    "S05-scale-4-ai-native":            { "cx": 260, "cy": 350, "r": 28, "labelY": 395, "labelText": "S05 · scale 4" },
+    "S06-bounded-context-forces-graph": { "cx": 360, "cy": 460, "r": 30, "labelY": 506, "labelText": "S06 · necessity" },
+    "S07-two-query-archetypes":         { "cx": 130, "cy": 260, "r": 24, "labelY": 300, "labelText": "S07 · two queries" },
+    "S08-deepseek-v4-postscript":       { "cx": 615, "cy": 445, "r": 24, "labelY": 488, "labelText": "S08 · postscript" },
+    "D01-same-shape-across-scales":     { "cx": 595, "cy": 260, "r": 26, "labelY": 304, "labelText": "D01 · invariant" },
+    "C01-salton-1968":                  { "cx": 195, "cy": 80,  "r": 20, "labelY": 118, "labelText": "C01 · Salton" },
+    "C02-pagerank-1998":                { "cx": 360, "cy": 60,  "r": 20, "labelY": 98,  "labelText": "C02 · PageRank" },
+    "C03-hnsw-2018":                    { "cx": 580, "cy": 90,  "r": 20, "labelY": 128, "labelText": "C03 · HNSW" },
+    "C04-bounded-context-stack":        { "cx": 200, "cy": 460, "r": 22, "labelY": 500, "labelText": "C04 · stack" },
+    "C05-mccarthy-okg-theorem-4":       { "cx": 480, "cy": 470, "r": 22, "labelY": 510, "labelText": "C05 · McCarthy" },
+    "C06-turnbull-metadata":            { "cx": 130, "cy": 400, "r": 20, "labelY": 438, "labelText": "C06 · Turnbull-1" },
+    "C07-turnbull-agents":              { "cx": 660, "cy": 360, "r": 20, "labelY": 398, "labelText": "C07 · Turnbull-2" }
+  },
+  "edges": [
+    { "from": "S02-scale-1-inverted-index",       "to": "S01-search-one-shape",             "kind": "derives" },
+    { "from": "S03-scale-2-vector-retrieval",     "to": "S01-search-one-shape",             "kind": "derives" },
+    { "from": "S04-scale-3-typed-graph",          "to": "S01-search-one-shape",             "kind": "derives" },
+    { "from": "S05-scale-4-ai-native",            "to": "S01-search-one-shape",             "kind": "derives" },
+    { "from": "S06-bounded-context-forces-graph", "to": "S01-search-one-shape",             "kind": "derives" },
+    { "from": "S07-two-query-archetypes",         "to": "S02-scale-1-inverted-index",       "kind": "derives" },
+    { "from": "S07-two-query-archetypes",         "to": "S05-scale-4-ai-native",            "kind": "derives" },
+    { "from": "D01-same-shape-across-scales",     "to": "S03-scale-2-vector-retrieval",     "kind": "derives" },
+    { "from": "D01-same-shape-across-scales",     "to": "S04-scale-3-typed-graph",          "kind": "derives" },
+    { "from": "D01-same-shape-across-scales",     "to": "S02-scale-1-inverted-index",       "kind": "derives" },
+    { "from": "D01-same-shape-across-scales",     "to": "S05-scale-4-ai-native",            "kind": "derives" },
+    { "from": "S08-deepseek-v4-postscript",       "to": "S05-scale-4-ai-native",            "kind": "derives" },
+    { "from": "S08-deepseek-v4-postscript",       "to": "S06-bounded-context-forces-graph", "kind": "derives" },
+    { "from": "C01-salton-1968",                  "to": "S01-search-one-shape",             "kind": "grounds" },
+    { "from": "C02-pagerank-1998",                "to": "S01-search-one-shape",             "kind": "grounds" },
+    { "from": "C03-hnsw-2018",                    "to": "S03-scale-2-vector-retrieval",     "kind": "grounds" },
+    { "from": "C04-bounded-context-stack",        "to": "S06-bounded-context-forces-graph", "kind": "grounds" },
+    { "from": "C05-mccarthy-okg-theorem-4",       "to": "S06-bounded-context-forces-graph", "kind": "grounds" },
+    { "from": "C06-turnbull-metadata",            "to": "S05-scale-4-ai-native",            "kind": "grounds" },
+    { "from": "C07-turnbull-agents",              "to": "S08-deepseek-v4-postscript",       "kind": "grounds" }
+  ],
+  "eyes": [
+    {
+      "id": "D01-same-shape-across-scales",
+      "what": "The cross-scale \"same shape, four times\" claim is the author's synthesis. No external source names this exact invariance — graph-traversal-with-ranking across inverted index, vector retrieval, typed graph, and AI-native search.",
+      "why": "Adjacent literature names the pieces (Bryk on Scale 4, Lù et al. on agent web, McCarthy on Scale 3) but stops short of the cross-scale invariant. The synthesis is plausible from first-hand engineering, but external corroboration would let it sit alongside named prior work.",
+      "ground_with": [
+        { "label": "Bryk, Why Google Search Sucks for AI", "url": "https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/" },
+        { "label": "Lù et al., Build the Web for Agents", "url": "https://arxiv.org/abs/2506.10953" },
+        { "label": "Scale-invariance / fractal data structures in DB & IR literature" }
+      ]
+    },
+    {
+      "id": "C05-mccarthy-okg-theorem-4",
+      "what": "\"Fill the graph, not the context window\" is the central technical wager. McCarthy proves it for the scientific case; the essay extends it to personal-memory and agent-retrieval without the same selection pressure.",
+      "why": "The wager hinges on long-context degradation as |K| grows. Empirical needle-in-haystack and lost-in-the-middle results corroborate the direction, but the exact crossover where graph retrieval beats raw context for a typed-personal-graph at the scale this essay names has not been benchmarked.",
+      "ground_with": [
+        { "label": "Liu et al., Lost in the Middle (long-context degradation)", "url": "https://arxiv.org/abs/2307.03172" },
+        { "label": "Anthropic, Claude needle-in-haystack benchmarks", "url": "https://www.anthropic.com/news/claude-2-1-prompting" },
+        { "label": "McCarthy, open-knowledge-graph — Theorem 4 (scientific case)", "url": "https://github.com/patdmc/open-knowledge-graph" }
+      ]
+    },
+    {
+      "id": "S04-scale-3-typed-graph",
+      "what": "The personal-graph rewrites of McCarthy — `valid_at` / confidence-decay, inverted edge-density, K-without-A — are extrapolations. McCarthy proves necessity arguments under selection-under-competition; personal-memory has none of those pressures.",
+      "why": "The personal case has not been empirically tested at scale. A forty-year-old's graph being node-dense with sparse adjacency is a plausible introspective claim, not a measured property of n personal graphs.",
+      "ground_with": [
+        { "label": "Episodic vs semantic memory literature (Tulving 1972)" },
+        { "label": "Aging and autobiographical memory empirical results" }
+      ]
+    },
+    {
+      "id": "S08-deepseek-v4-postscript",
+      "what": "The DeepSeek V4 postscript bridges hardware-level memory architecture (KV cache, sparse attention) to retrieval-as-attention as one further scale of graph-traversal-with-ranking. The bridge is suggestive, not benchmarked.",
+      "why": "The 7–10% KV-cache figure is real; the framing of compressed attention as \"graph-traversal-with-ranking internalized\" is the author's. A direct benchmark — DeepSeek V4 long-context retrieval vs typed-graph retrieval at equivalent token counts — would let the postscript pay its own bill.",
+      "ground_with": [
+        { "label": "DeepSeek V4 release notes", "url": "https://huggingface.co/blog/deepseekv4" },
+        { "label": "Compressed Sparse Attention (CSA) papers" }
+      ]
+    },
+    {
+      "id": "S07-two-query-archetypes",
+      "what": "\"Humans type two words, agents emit declarative sentences\" is the author's framing, well-aligned with Exa's training data on link-anchor citations but not yet a published taxonomy.",
+      "why": "The query-format split is the load-bearing reason agent search and human search diverge — but the claim would be stronger with measured query-length distributions across human SERPs vs agent tool-call corpora.",
+      "ground_with": [
+        { "label": "Exa training corpus / link-prediction objective", "url": "https://www.latent.space/p/exa" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "kind": "etude",
+      "label": "Two queries",
+      "body": "Type a human two-word query, then an agent declarative sentence; watch the retriever rank differently. Drills S07.",
+      "href": "/etudes/know-thyself/two-queries/"
+    },
+    {
+      "kind": "etude",
+      "label": "Token budget",
+      "body": "Slide the graph size; watch the paste break. The reader is bounded; the corpus is not. Drills S06.",
+      "href": "/etudes/know-thyself/token-budget/"
+    },
+    {
+      "kind": "apply",
+      "label": "Walk a domain through the four scales",
+      "body": "Pick a domain you know — your codebase, your docs, your notes. Walk it through Scales 1–4. What's indexed today, what's vectorized, what's typed, what's agent-readable? What's missing?"
+    },
+    {
+      "kind": "apply",
+      "label": "Find your bounded reader",
+      "body": "For one corpus you maintain (a wiki, a project, a journal), name the reader and their token budget. If the corpus exceeds it, name the factoring move that would let retrieval scale without degrading."
+    },
+    {
+      "kind": "apply",
+      "label": "Run the demo",
+      "body": "Clone know-thyself-search, embed the example graph, run the three retrieval modes side by side. The cosine baseline finds the theme; the type filter finds the episode; the provenance rerank demotes the tentative.",
+      "href": "https://github.com/parrik/know-thyself-search"
+    },
+    {
+      "kind": "next",
+      "label": "Part I — Know thyself",
+      "body": "The opening of the loop. Why a typed personal-knowledge graph is the architecture, before retrieval enters.",
+      "href": "/puzzles/know-thyself/"
+    },
+    {
+      "kind": "next",
+      "label": "Part III — Security was never about response",
+      "body": "Same shape, third surface. Security as gates at boundaries — the same deny-by-default, type-first pattern applied to a different domain.",
+      "href": "/puzzles/know-thyself-security/"
+    }
+  ]
+}

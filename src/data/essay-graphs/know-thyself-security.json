@@ -1,0 +1,188 @@
+{
+  "slug": "know-thyself-security",
+  "essayTitle": "Security was never about response",
+  "spineId": "S02-continuous-verification",
+  "viewBox": { "width": 700, "height": 460 },
+  "nodes": [
+    {
+      "id": "S01-fire-department-no-fire-code",
+      "type": "synthesis",
+      "claim": "A security team that responds well is a fire department with no fire code.",
+      "where": "opening hook",
+      "why": "The hook frames the entire essay's move — confusing response with security is how a person ends up with great forensics and chronic leaks."
+    },
+    {
+      "id": "S02-continuous-verification",
+      "type": "synthesis",
+      "claim": "Security is continuous verification.",
+      "where": "spine",
+      "why": "The load-bearing claim. Every downstream synthesis in the essay either derives from this or carves out its boundary. Marked as the spine."
+    },
+    {
+      "id": "S03-two-timescales",
+      "type": "synthesis",
+      "claim": "Verification runs at two timescales: boundary-time gates fire on action, sweep-time gates fire on cadence.",
+      "where": "what's in security",
+      "derives_from": ["S02-continuous-verification", "C01-saltzer-schroeder", "C02-anderson"],
+      "why": "Splits the spine into the two cadences the essay names. Boundary-time is the familiar pre-commit-hook shape; sweep-time is the cron-and-probe shape. The split is what lets the next synthesis collapse them."
+    },
+    {
+      "id": "S04-same-posture-different-cadence",
+      "type": "synthesis",
+      "claim": "Both are gates. Boundary-time and sweep-time are the same posture at different cadences — sweeps are gates too.",
+      "where": "what's in security · the synthesis",
+      "derives_from": ["S03-two-timescales", "C03-brooker"],
+      "why": "The essay's named contribution. The industry treats sweeps as monitoring or response-adjacent; the essay collapses them into the gate posture. AWS's runtime validation of execution traces is the builder-voice instance of the same move."
+    },
+    {
+      "id": "S05-response-different-discipline",
+      "type": "synthesis",
+      "claim": "Response is what fires when verification fails — a different discipline.",
+      "where": "what's not",
+      "derives_from": ["S02-continuous-verification", "C04-nist"],
+      "why": "Carves the boundary the essay refuses to soften. Verification covers preventive + detective; response covers responsive. Adjacent disciplines, not the same one — and conflating them starves the first."
+    },
+    {
+      "id": "D06-engineer-not-gate",
+      "type": "derivation",
+      "claim": "The thing that gets tired isn't the gate; it's the engineer holding it.",
+      "where": "shift-left fatigue",
+      "derives_from": ["S04-same-posture-different-cadence", "C06-shortridge"],
+      "why": "The shift-left-fatigue debate reframed: a machine gate firing on every commit doesn't burn out; an engineer triaging every commit does. The point of the gate is that the human stops being the gate."
+    },
+    {
+      "id": "C01-saltzer-schroeder",
+      "type": "citation",
+      "claim": "Saltzer & Schroeder 1975 — complete mediation: every access to every object must be checked; a partial gate is not a gate.",
+      "source": "Saltzer & Schroeder, \"The Protection of Information in Computer Systems,\" 1975",
+      "url": "https://csrc.nist.gov/CSRC/media/Publications/sp/800-53/rev-5/final/documents/sp800-53r5-fpd.pdf",
+      "why": "The fifty-year-old principle Alex's gate violated. Names complete mediation as the property — every path checked — that the essay's sweep extension is designed to honor."
+    },
+    {
+      "id": "C02-anderson",
+      "type": "citation",
+      "claim": "Anderson 1972 — reference monitor: invoked on every reference, tamper-proof, small enough to audit.",
+      "source": "James P. Anderson, Computer Security Technology Planning Study (USAF ESD-TR-73-51, 1972)",
+      "why": "The abstraction every gate in the essay instantiates — pre-commit hook, admission webhook, CEL policy. Anchors the essay's gates in the original spec, not in current tooling fashion."
+    },
+    {
+      "id": "C03-brooker",
+      "type": "citation",
+      "claim": "Brooker & Desai 2025 — AWS pairs formal methods with runtime validation of execution traces in production.",
+      "source": "Brooker & Desai, Systems Correctness Practices at AWS, ACM Queue, Feb 2025",
+      "url": "https://queue.acm.org/detail.cfm?id=3712057",
+      "why": "Builder-voice corroboration that verification keeps firing against live traces — not just at the boundary. Direct adjacent vocabulary for the \"same posture, different cadence\" synthesis."
+    },
+    {
+      "id": "C04-nist",
+      "type": "citation",
+      "claim": "NIST SP 800-53 — formalizes the preventive / detective / responsive control split.",
+      "source": "NIST SP 800-53 Rev. 5",
+      "url": "https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final",
+      "why": "The standards-body taxonomy that lets the essay say verification covers two of the three columns and response covers the third. Grounds the verification-vs-response carve-out in formal language."
+    },
+    {
+      "id": "C05-earlywatch",
+      "type": "citation",
+      "claim": "EarlyWatch (Brendan Burns) — Kubernetes validating admission webhook that denies unsafe operations at the API boundary against live cluster state.",
+      "source": "github.com/brendandburns/early-watch",
+      "url": "https://github.com/brendandburns/early-watch",
+      "why": "Modern instance of the gate-against-live-state posture the essay extends. EarlyWatch is the worked example; Saltzer-Schroeder is the original; the essay's sweep extension generalizes the move into personal infrastructure."
+    },
+    {
+      "id": "C06-shortridge",
+      "type": "citation",
+      "claim": "Shortridge — humans-as-gates is the thing to push back against; the security-team-as-blocker, the change-advisory-board veto.",
+      "source": "Kelly Shortridge, \"Cybersecurity Isn't Special\" / \"Control vs. Resilience\"",
+      "url": "https://kellyshortridge.com/blog/posts/cybersecurity-isnt-special/",
+      "why": "Productive tension, not contradiction. The essay's gates are machines against live state, not humans against tickets. Citing Shortridge lets the essay defend gates without smuggling in the gatekeeping she's arguing against."
+    }
+  ],
+  "positions": {
+    "S01-fire-department-no-fire-code":   { "cx": 90,  "cy": 70,  "r": 26, "labelY": 115, "labelText": "S01 · hook" },
+    "S03-two-timescales":                 { "cx": 350, "cy": 90,  "r": 28, "labelY": 138, "labelText": "S03" },
+    "C01-saltzer-schroeder":              { "cx": 230, "cy": 50,  "r": 16, "labelY": 30,  "labelText": "C01" },
+    "C02-anderson":                       { "cx": 470, "cy": 50,  "r": 16, "labelY": 30,  "labelText": "C02" },
+    "C03-brooker":                        { "cx": 540, "cy": 130, "r": 16, "labelY": 165, "labelText": "C03" },
+    "S02-continuous-verification":        { "cx": 350, "cy": 220, "r": 34, "labelY": 274, "labelText": "S02 · spine" },
+    "S04-same-posture-different-cadence": { "cx": 540, "cy": 240, "r": 28, "labelY": 288, "labelText": "S04" },
+    "S05-response-different-discipline":  { "cx": 160, "cy": 240, "r": 26, "labelY": 288, "labelText": "S05" },
+    "C04-nist":                           { "cx": 70,  "cy": 310, "r": 16, "labelY": 345, "labelText": "C04" },
+    "C05-earlywatch":                     { "cx": 615, "cy": 320, "r": 16, "labelY": 355, "labelText": "C05" },
+    "C06-shortridge":                     { "cx": 470, "cy": 380, "r": 16, "labelY": 415, "labelText": "C06" },
+    "D06-engineer-not-gate":              { "cx": 350, "cy": 400, "r": 26, "labelY": 445, "labelText": "D06" }
+  },
+  "edges": [
+    { "from": "C01-saltzer-schroeder", "to": "S03-two-timescales", "kind": "derives" },
+    { "from": "C02-anderson", "to": "S03-two-timescales", "kind": "derives" },
+    { "from": "S03-two-timescales", "to": "S02-continuous-verification", "kind": "derives" },
+    { "from": "S03-two-timescales", "to": "S04-same-posture-different-cadence", "kind": "derives" },
+    { "from": "C03-brooker", "to": "S04-same-posture-different-cadence", "kind": "derives" },
+    { "from": "S02-continuous-verification", "to": "S04-same-posture-different-cadence", "kind": "derives" },
+    { "from": "S02-continuous-verification", "to": "S05-response-different-discipline", "kind": "derives" },
+    { "from": "C04-nist", "to": "S05-response-different-discipline", "kind": "derives" },
+    { "from": "S04-same-posture-different-cadence", "to": "D06-engineer-not-gate", "kind": "derives" },
+    { "from": "C06-shortridge", "to": "D06-engineer-not-gate", "kind": "derives" },
+    { "from": "C05-earlywatch", "to": "S04-same-posture-different-cadence", "kind": "derives" }
+  ],
+  "eyes": [
+    {
+      "id": "S04-same-posture-different-cadence",
+      "what": "\"Sweeps are gates too\" is the author's named synthesis. The industry has adjacent vocabulary (policy-as-code, drift detection) but no clean prior naming of the same posture at two cadences.",
+      "why": "The synthesis is sharp and useful, but external corroboration — a published taxonomy or operational pattern that already collapses boundary checks and cadence checks into one posture — would let the essay sit alongside it instead of asserting the move solo.",
+      "ground_with": [
+        { "label": "Google SRE Book — policy as code, drift detection", "url": "https://sre.google/sre-book/table-of-contents/" },
+        { "label": "Open Policy Agent / Gatekeeper — declarative policy across boundary and audit", "url": "https://open-policy-agent.github.io/gatekeeper/website/docs/" }
+      ]
+    },
+    {
+      "id": "S01-fire-department-no-fire-code",
+      "what": "The Alex narrative scenes (two-week silent gate, pattern mismatch with the edit directory) are pedagogical illustrations, not empirical case studies.",
+      "why": "No real-world data on how often this exact \"two-week silent gate\" failure mode occurs vs. obvious-fail modes. The hook lands rhetorically; the prevalence claim is implicit. Open question: of personal-infra security failures, what fraction look like Alex's coverage gap vs. a missing gate entirely?"
+    },
+    {
+      "id": "D06-engineer-not-gate",
+      "what": "\"The engineer holding the gate\" framing is the author's reframe of shift-left fatigue. The reframe is plausible but the quantitative ground is thin.",
+      "why": "The trade press articles cited (Help Net Security, Dark Reading) are themselves observational. Stronger grounding would come from quantitative studies on developer-tooling friction and review-queue load.",
+      "ground_with": [
+        { "label": "DORA / Accelerate State of DevOps reports", "url": "https://dora.dev/research/" },
+        { "label": "Stack Overflow Developer Survey — tooling friction sections", "url": "https://survey.stackoverflow.co/" }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "kind": "etude",
+      "label": "No etudes built yet",
+      "body": "Opportunity for a \"design a gate\" interactive — pick a public surface (blog, repo, bucket), write the deny-by-default check, then add the sweep that catches what the gate misses. Drills S04 in the seat."
+    },
+    {
+      "kind": "apply",
+      "label": "Audit your personal infra",
+      "body": "What gates do you have? Are any silently failing because the path patterns don't match where you actually edit? Run each gate by hand against a known-bad input — if it exits silent, you have Alex's coverage gap."
+    },
+    {
+      "kind": "apply",
+      "label": "Name the gate AND the sweep",
+      "body": "For each surface you ship to (blog, repo, public bucket, deploy target), name the gate AND the sweep. If only one, you have a gap. Boundary-time without sweep-time means coverage drift goes unnoticed; sweep-time without boundary-time means every commit is a roll of the dice."
+    },
+    {
+      "kind": "next",
+      "label": "Part I — A self was never flat",
+      "body": "The first essay in the know-thyself series. Sets up the personal-graph posture this essay's gates protect.",
+      "href": "/puzzles/know-thyself/"
+    },
+    {
+      "kind": "next",
+      "label": "Part II — Search was never about humans",
+      "body": "The middle essay. Search over the graph; this essay's gates run on the same substrate.",
+      "href": "/puzzles/know-thyself-search/"
+    },
+    {
+      "kind": "next",
+      "label": "How to run a cross-cutting campaign",
+      "body": "Same shape, different domain — context-in-hand for the human in the loop, applied to org-scale change.",
+      "href": "/puzzles/the-campaign-cascade/"
+    }
+  ]
+}
