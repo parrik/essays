@@ -1,25 +1,170 @@
 ---
 import Base from '../../../layouts/Base.astro';
+const title = 'Restorative routines';
+const subtitle = 'Pick a routine based on how you woke up.';
+
+const routines = [
+  {
+    mood: 'When the breath is short',
+    name: 'Long Exhale',
+    href: '/etudes/restorative/long-exhale/',
+    desc: '4-in / 8-out for two minutes; the parasympathetic comes online.',
+  },
+  {
+    mood: 'When you feel anxious, scattered, or unsafe in your body',
+    name: 'Coming Home',
+    href: '/etudes/restorative/coming-home/',
+    desc: 'Two-hour routine for days you need to settle back into the body.',
+  },
+  {
+    mood: 'When you feel low-energy, depleted, or quietly heavy',
+    name: 'Tending the Ember',
+    href: '/etudes/restorative/tending-the-ember/',
+    desc: 'Two-hour routine for days the fire is low and needs feeding gently.',
+  },
+  {
+    mood: 'When you want to unbind, expand, and meet what is larger than you',
+    name: 'The Open Sky',
+    href: '/etudes/restorative/the-open-sky/',
+    desc: 'Two-hour routine for days the body is ready to open outward.',
+  },
+];
 ---
-<Base title="Restorative etudes" description="Three restorative yoga routines, ground-up and timed for a 2-hour session.">
-  <div class="etude-index">
-    <p class="essay-kicker">Etudes · Restorative</p>
-    <h1>Restorative routines</h1>
-    <p class="lede">Three two-hour sequences. Pick one by what you woke up with.</p>
+<Base title={title} description={subtitle}>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etudes · Restorative</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/puzzles/the-partition-problem/">← essay</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/etudes/">all etudes</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>Four routines, sorted by the state you arrived in. The first is two minutes; the other three are two-hour sequences. Read the mood label, pick the one that names what you woke up with, and start there.</p>
+    </section>
+
     <ul class="etude-list">
-      <li><a href="/etudes/restorative/coming-home/"><strong>Coming Home</strong> — for days you feel anxious, scattered, or unsafe in your body.</a></li>
-      <li><a href="/etudes/restorative/tending-the-ember/"><strong>Tending the Ember</strong> — for days you feel low-energy, depleted, or quietly heavy.</a></li>
-      <li><a href="/etudes/restorative/the-open-sky/"><strong>The Open Sky</strong> — for days you want to unbind, expand, and meet what's larger than you.</a></li>
+      {routines.map(r => (
+        <li>
+          <p class="etude-step">{r.mood}</p>
+          <a href={r.href} class="etude-link">
+            <span class="etude-name">{r.name}</span>
+            <span class="etude-sep"> &mdash; </span>
+            <span class="etude-desc">{r.desc}</span>
+          </a>
+        </li>
+      ))}
     </ul>
-    <p class="essay-meta"><a href="/">← home</a></p>
-  </div>
+  </article>
 </Base>
-<style>
-  .etude-index { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude-index h1 { font-family: 'Georgia', serif; font-size: 2.25rem; margin: 0.5rem 0 0.5rem; }
-  .lede { color: var(--ink-muted, #555); font-style: italic; margin: 0 0 1.5rem; }
-  .etude-list { list-style: none; padding: 0; }
-  .etude-list li { margin: 0.85rem 0; line-height: 1.5; }
-  .etude-list a { text-decoration: none; }
-  .etude-list a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 2rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* === routine list === */
+  .etude-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .etude-list li {
+    margin: 0;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .etude-list li:last-child {
+    border-bottom: none;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.4rem;
+  }
+  .etude-link {
+    display: block;
+    text-decoration: none;
+    color: var(--text);
+    line-height: 1.5;
+    transition: color 180ms ease;
+  }
+  .etude-name {
+    font-weight: 600;
+  }
+  .etude-link:hover .etude-name {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+  .etude-sep {
+    color: var(--muted);
+  }
+  .etude-desc {
+    color: var(--muted);
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-sep { display: none; }
+    .etude-desc {
+      display: block;
+      font-size: 0.92rem;
+      margin-top: 0.15rem;
+    }
+  }
 </style>

@@ -4,37 +4,45 @@ const title = 'Two Queries';
 const subtitle = 'Same intent, two query formats. Watch the ranking diverge.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · Know Thyself, Part II</p>
-    <h1>Same intent. Two queries. Watch the ranking change.</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/know-thyself-search/">← back to essay</a>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Know Thyself, Part II</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/know-thyself/">← know thyself etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/know-thyself-search/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>A human types <em>"LLM evaluation"</em> into a search box. An agent sends a long declarative query — a sentence describing the shape of the answer it wants. Same intent. Different query format. Different optimal index.</p>
+    </section>
+
+    <div class="etude-card">
+      <p class="etude-step">Type two queries</p>
+      <div class="queries">
+        <label class="qcol">
+          <span class="qlabel">Human-style keyword query</span>
+          <input id="q-human" type="text" placeholder="LLM evaluation" />
+        </label>
+        <label class="qcol">
+          <span class="qlabel">Agent-style declarative query</span>
+          <input id="q-agent" type="text" placeholder="Here is a great article about evaluating LLM outputs against benchmark suites:" />
+        </label>
+      </div>
+
+      <div class="run">
+        <button type="button" id="run-search" class="etude-next">Search both</button>
+      </div>
+
+      <div id="results" class="results" aria-live="polite"></div>
     </div>
-    <hr />
 
-    <p>A human types <em>"LLM evaluation"</em> into a search box. An agent sends a long declarative query — a sentence describing the shape of the answer it wants. Same intent. Different query format. Different optimal index.</p>
-
-    <div class="queries">
-      <label class="qcol">
-        <span class="qlabel">Human-style keyword query</span>
-        <input id="q-human" type="text" placeholder="LLM evaluation" />
-      </label>
-      <label class="qcol">
-        <span class="qlabel">Agent-style declarative query</span>
-        <input id="q-agent" type="text" placeholder="Here is a great article about evaluating LLM outputs against benchmark suites:" />
-      </label>
-    </div>
-
-    <div class="run">
-      <button type="button" id="run-search">Search both</button>
-    </div>
-
-    <div id="results" class="results" aria-live="polite"></div>
-
-    <hr />
-
-    <p>Bryk's three axes: query complexity, result volume, ranking semantics. Humans want ten links. Agents want every match. Type like a human, then like an agent — same intent, different optimal index. The substrate underneath has to know which kind of reader is at the other end.</p>
+    <footer class="etude-coda">
+      <p>Bryk's three axes: query complexity, result volume, ranking semantics. Humans want ten links. Agents want every match. Type like a human, then like an agent — same intent, different optimal index. The substrate underneath has to know which kind of reader is at the other end.</p>
+    </footer>
   </article>
 </Base>
 
@@ -150,50 +158,147 @@ const subtitle = 'Same intent, two query formats. Watch the ranking diverge.';
   });
 </script>
 
-<style>
-  .etude { max-width: 52rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 1.85rem; margin: 0.5rem 0 0.5rem; line-height: 1.2; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
 
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* === interactive surface === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+
+  /* === query inputs === */
   .queries {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0.9rem;
-    margin: 1.25rem 0 0.75rem;
+    margin: 0 0 1rem;
   }
-  .qcol { display: flex; flex-direction: column; gap: 0.35rem; }
-  .qlabel { font-size: 0.85rem; color: var(--muted); }
+  .qcol { display: flex; flex-direction: column; gap: 0.4rem; }
+  .qlabel {
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--muted);
+    font-weight: 500;
+  }
   .queries input {
     font-family: inherit;
     font-size: 0.95rem;
-    padding: 0.55rem 0.7rem;
-    border: 1px solid rgba(0,0,0,0.18);
-    border-radius: 3px;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--line);
+    border-radius: 9px;
     background: var(--bg);
-    color: var(--ink);
+    color: var(--text);
+    transition: border-color 180ms ease, box-shadow 180ms ease;
+    -webkit-appearance: none;
+    appearance: none;
+    box-shadow: none;
   }
-  .queries input:focus { outline: none; border-color: var(--accent); }
+  .queries input::placeholder { color: var(--muted); opacity: 0.7; }
+  .queries input:hover { border-color: var(--muted); }
+  .queries input:focus {
+    outline: none;
+    border-color: var(--accent);
+    border-width: 2px;
+    padding: calc(0.7rem - 1px) calc(0.9rem - 1px);
+  }
 
-  .run { margin: 0.5rem 0 1.25rem; }
-  #run-search {
-    font-family: inherit;
-    font-size: 0.95rem;
-    padding: 0.55rem 1rem;
-    border: 1px solid var(--accent);
-    background: var(--bg);
-    color: var(--ink);
-    border-radius: 3px;
+  .run { margin: 0 0 1rem; }
+
+  /* === run button (uses etude-next chrome) === */
+  .etude-next {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 999px;
     cursor: pointer;
-    transition: background 100ms;
+    transition: background 180ms ease, transform 120ms ease;
   }
-  #run-search:hover { background: rgba(138, 52, 32, 0.08); }
+  .etude-next:hover { background: var(--accent); }
+  .etude-next:active { transform: scale(0.97); }
+  .etude-next:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-next::after { content: ' →'; }
 
-  .results { margin: 1rem 0; min-height: 2rem; }
+  /* === results === */
+  .results { margin: 0.5rem 0 0; min-height: 0; }
+  .results:not(:empty) {
+    margin-top: 1.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line);
+  }
   .results-grid {
     position: relative;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2.25rem;
+    gap: 1.5rem;
   }
   .shift-svg {
     position: absolute;
@@ -203,12 +308,13 @@ const subtitle = 'Same intent, two query formats. Watch the ranking diverge.';
   }
   .col { position: relative; z-index: 1; }
   .col h3 {
-    font-size: 0.85rem;
-    font-family: 'Georgia', serif;
+    font-family: var(--serif);
     font-style: italic;
+    font-size: 0.85rem;
     color: var(--muted);
     margin: 0 0 0.6rem;
     font-weight: normal;
+    line-height: 1.4;
   }
   .col ol {
     list-style: none;
@@ -218,8 +324,9 @@ const subtitle = 'Same intent, two query formats. Watch the ranking diverge.';
   .col li {
     padding: 0.55rem 0.7rem;
     margin: 0.35rem 0;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 3px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
     line-height: 1.4;
     opacity: 0;
     transform: translateY(4px);
@@ -230,30 +337,61 @@ const subtitle = 'Same intent, two query formats. Watch the ranking diverge.';
   @keyframes slidein {
     to { opacity: 1; transform: translateY(0); }
   }
-  .col .rk { font-variant-numeric: tabular-nums; color: var(--muted); margin-right: 0.4rem; font-size: 0.9rem; }
-  .col .ttl { font-weight: 500; }
-  .col .snip { color: var(--muted); font-size: 0.85rem; margin-top: 0.2rem; line-height: 1.45; }
+  .col .rk {
+    font-family: var(--sans);
+    font-variant-numeric: tabular-nums;
+    color: var(--muted);
+    margin-right: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .col .ttl { font-weight: 600; color: var(--text); font-size: 0.92rem; }
+  .col .snip {
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-top: 0.25rem;
+    line-height: 1.5;
+  }
 
   .badge {
     display: inline-block;
     margin-left: 0.4rem;
-    font-size: 0.8rem;
-    padding: 0.05rem 0.35rem;
-    border-radius: 2px;
-    font-weight: 600;
+    font-size: 0.75rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
   }
-  .badge.up { color: #1a6b3a; background: rgba(26,107,58,0.12); }
-  .badge.down { color: #8a3420; background: rgba(138,52,32,0.12); }
+  .badge.up { color: #2d7a3e; background: rgba(45,122,62,0.1); }
+  .badge.down { color: var(--accent); background: rgba(138,52,32,0.1); }
 
   .legend {
     margin-top: 1rem;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
     color: var(--muted);
-    line-height: 1.5;
+    line-height: 1.55;
+    font-family: var(--sans);
   }
 
-  @media (max-width: 640px) {
-    .queries, .results-grid { grid-template-columns: 1fr; }
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .queries { grid-template-columns: 1fr; gap: 0.7rem; }
+    .results-grid { grid-template-columns: 1fr; gap: 1.25rem; }
     .shift-svg { display: none; }
   }
 </style>

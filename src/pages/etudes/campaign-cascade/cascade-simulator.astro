@@ -4,43 +4,56 @@ const title = 'Cascade Simulator';
 const subtitle = 'Click launch. Watch a campaign multiply itself.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · The Campaign Cascade</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/the-campaign-cascade/">← back to essay</a>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Campaign Cascade</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/campaign-cascade/">← campaign cascade etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/the-campaign-cascade/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>The claim from <em>The Loop</em>: a cross-cutting initiative — a mass-PR migration, say — does not stall quietly. It multiplies. The original campaign stalls. Escalation triggers a new campaign. That one stalls too. The new campaign is rational. So is the next. None of them complete the original work.</p>
+      <p>Press launch. Watch four campaigns spawn in sequence. Each is rational. Each is the right idea. The original migration creeps forward at a glacial pace.</p>
+    </section>
+
+    <div class="etude-stage">
+      <div class="etude-card">
+        <p class="etude-step">Simulator</p>
+        <div class="controls">
+          <button type="button" id="launch" class="etude-next launch-btn">Launch campaign</button>
+          <button type="button" id="reset" class="etude-ghost reset-btn" disabled>Reset</button>
+        </div>
+
+        <div class="stage" id="stage">
+          <div class="campaigns" id="campaigns"></div>
+        </div>
+
+        <div class="stats" id="stats">
+          <div class="stat"><span class="stat-label">Campaigns launched</span><span class="stat-value" id="stat-campaigns">0</span></div>
+          <div class="stat"><span class="stat-label">PRs created</span><span class="stat-value" id="stat-prs">0</span></div>
+          <div class="stat"><span class="stat-label">PRs merged</span><span class="stat-value" id="stat-merged">0</span></div>
+          <div class="stat"><span class="stat-label">Original migration completion</span><span class="stat-value" id="stat-completion">0%</span></div>
+          <div class="stat"><span class="stat-label">Wall time</span><span class="stat-value" id="stat-time">0 weeks</span></div>
+          <div class="stat"><span class="stat-label">Effort</span><span class="stat-value" id="stat-effort">0 person-weeks</span></div>
+        </div>
+
+        <div id="banner" class="banner" aria-live="polite"></div>
+      </div>
     </div>
-    <hr />
 
-    <p>The claim from <em>The Loop</em>: a cross-cutting initiative — a mass-PR migration, say — does not stall quietly. It multiplies. The original campaign stalls. Escalation triggers a new campaign. That one stalls too. The new campaign is rational. So is the next. None of them complete the original work.</p>
+    <section class="etude-failure">
+      <h2 class="etude-failure-title">The failure mode</h2>
+      <p>This is the failure mode. Each campaign is rational — escalation, tracking, dashboarding, decommissioning are all the right idea. The system can still fail because the right ideas multiply faster than they finish. The dead zone is where you can identify every part of the cascade and still can't stop it.</p>
+    </section>
 
-    <p>Press launch. Watch four campaigns spawn in sequence. Each is rational. Each is the right idea. The original migration creeps forward at a glacial pace.</p>
-
-    <div class="controls">
-      <button type="button" id="launch" class="launch-btn">Launch campaign</button>
-      <button type="button" id="reset" class="reset-btn" disabled>Reset</button>
-    </div>
-
-    <div class="stage" id="stage">
-      <div class="campaigns" id="campaigns"></div>
-    </div>
-
-    <div class="stats" id="stats">
-      <div class="stat"><span class="stat-label">Campaigns launched</span><span class="stat-value" id="stat-campaigns">0</span></div>
-      <div class="stat"><span class="stat-label">PRs created</span><span class="stat-value" id="stat-prs">0</span></div>
-      <div class="stat"><span class="stat-label">PRs merged</span><span class="stat-value" id="stat-merged">0</span></div>
-      <div class="stat"><span class="stat-label">Original migration completion</span><span class="stat-value" id="stat-completion">0%</span></div>
-      <div class="stat"><span class="stat-label">Wall time</span><span class="stat-value" id="stat-time">0 weeks</span></div>
-      <div class="stat"><span class="stat-label">Effort</span><span class="stat-value" id="stat-effort">0 person-weeks</span></div>
-    </div>
-
-    <div id="banner" class="banner" aria-live="polite"></div>
-
-    <hr />
-
-    <h2>The failure mode</h2>
-    <p>This is the failure mode. Each campaign is rational — escalation, tracking, dashboarding, decommissioning are all the right idea. The system can still fail because the right ideas multiply faster than they finish. The dead zone is where you can identify every part of the cascade and still can't stop it.</p>
+    <footer class="etude-coda">
+      <p>Welcome to the cascade.</p>
+    </footer>
   </article>
 </Base>
 
@@ -221,66 +234,268 @@ const subtitle = 'Click launch. Watch a campaign multiply itself.';
   });
 </script>
 
-<style>
-  .etude { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
-  .controls { display: flex; gap: 0.6rem; flex-wrap: wrap; margin: 1.25rem 0 0.5rem; }
-  .launch-btn, .reset-btn {
-    font-family: inherit; font-size: 0.95rem; padding: 0.6rem 1rem;
-    border: 1px solid var(--accent); background: var(--bg); color: var(--ink);
-    border-radius: 3px; cursor: pointer; transition: background 100ms, transform 80ms;
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
   }
-  .launch-btn { background: var(--accent); color: #fff; }
-  .launch-btn:hover:not(:disabled) { transform: translateY(-1px); }
-  .reset-btn:hover:not(:disabled) { background: rgba(138, 52, 32, 0.08); }
-  .launch-btn:disabled, .reset-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-  .stage { margin: 1.25rem 0 0.5rem; min-height: 4rem; }
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  .etude-stage {
+    min-height: 22rem;
+  }
+
+  /* === card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+
+  /* === controls === */
+  .controls {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin: 0 0 1.25rem;
+  }
+
+  /* primary button (launch) — uses etude-next pattern */
+  .etude-next {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 180ms ease, transform 120ms ease, opacity 180ms ease;
+    min-height: 44px;
+  }
+  .etude-next:hover:not(:disabled) {
+    background: var(--accent);
+  }
+  .etude-next:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .etude-next:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-next:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .launch-btn::after { content: ' →'; }
+
+  /* secondary button (reset) — outlined */
+  .etude-ghost {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--text);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, transform 120ms ease, opacity 180ms ease;
+    min-height: 44px;
+  }
+  .etude-ghost:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .etude-ghost:active:not(:disabled) {
+    transform: scale(0.97);
+  }
+  .etude-ghost:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-ghost:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* === simulation stage === */
+  .stage { margin: 0 0 0.5rem; min-height: 4rem; }
   .campaigns { display: flex; flex-direction: column; gap: 1rem; }
   .campaign {
     opacity: 0; transform: translateY(8px);
     transition: opacity 280ms ease, transform 280ms ease;
-    padding: 0.85rem 1rem 1rem; border: 1px solid rgba(0,0,0,0.08);
-    border-radius: 4px; background: rgba(0,0,0,0.015);
+    padding: 0.85rem 1rem 1rem;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg);
   }
   .campaign.visible { opacity: 1; transform: translateY(0); }
   .campaign-box {
-    font-weight: 600; font-size: 0.95rem; margin-bottom: 0.6rem; color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 600; font-size: 0.92rem; margin-bottom: 0.6rem; color: var(--text);
     border-left: 3px solid var(--accent); padding-left: 0.6rem;
+    line-height: 1.4;
   }
   .dot-grid { display: grid; grid-template-columns: repeat(15, 1fr); gap: 6px; padding: 0.4rem 0; }
   .dot {
-    width: 14px; height: 14px; border-radius: 50%; background: #c9c9c9;
+    width: 14px; height: 14px; border-radius: 50%; background: var(--line);
     transform: scale(0.2); opacity: 0;
-    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease, background 220ms ease;
+    transition: transform 420ms cubic-bezier(0.34, 1.56, 0.64, 1), opacity 280ms ease, background 240ms ease, box-shadow 240ms ease;
     transition-delay: calc(var(--i) * 18ms);
   }
   .dot.fanned { transform: scale(1); opacity: 1; }
   .dot.settled.green { background: #3f9650; box-shadow: 0 0 0 2px rgba(63,150,80,0.18); }
   .dot.settled.yellow { background: #d6a52b; box-shadow: 0 0 0 2px rgba(214,165,43,0.18); }
   .dot.settled.red { background: #b8413a; box-shadow: 0 0 0 2px rgba(184,65,58,0.18); }
-  .campaign-summary { margin-top: 0.5rem; display: flex; gap: 0.4rem; flex-wrap: wrap; min-height: 1.4rem; font-size: 0.82rem; }
-  .chip { padding: 0.1rem 0.5rem; border-radius: 10px; font-variant-numeric: tabular-nums; }
+  .campaign-summary {
+    margin-top: 0.6rem; display: flex; gap: 0.4rem; flex-wrap: wrap;
+    min-height: 1.4rem; font-family: var(--sans); font-size: 0.78rem;
+  }
+  .chip {
+    padding: 0.15rem 0.55rem; border-radius: 999px;
+    font-variant-numeric: tabular-nums; font-weight: 600;
+  }
   .chip-green { background: rgba(63,150,80,0.14); color: #2c6b39; }
   .chip-yellow { background: rgba(214,165,43,0.18); color: #8a6710; }
   .chip-red { background: rgba(184,65,58,0.14); color: #842c27; }
+
+  /* === stats === */
   .stats {
-    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1rem;
-    margin: 1.25rem 0; padding: 0.9rem 1rem;
-    border: 1px solid rgba(0,0,0,0.08); border-radius: 4px; background: rgba(0,0,0,0.02);
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem 1.25rem;
+    margin: 1.25rem 0 0; padding: 1rem 1.1rem;
+    border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
   }
-  .stat { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.92rem; gap: 0.5rem; }
-  .stat-label { color: var(--muted); }
-  .stat-value { font-family: 'Menlo', monospace; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
-  .banner { margin: 1rem 0; min-height: 1rem; opacity: 0; transform: translateY(6px); transition: opacity 380ms ease, transform 380ms ease; }
+  .stat {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 0.9rem; gap: 0.5rem;
+  }
+  .stat-label { color: var(--muted); font-family: var(--sans); }
+  .stat-value {
+    font-family: 'Menlo', monospace; font-variant-numeric: tabular-nums;
+    font-weight: 600; color: var(--text);
+  }
+
+  /* === banner === */
+  .banner {
+    margin: 1.1rem 0 0; min-height: 0;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 380ms ease, transform 380ms ease;
+  }
   .banner.banner-shown {
     opacity: 1; transform: translateY(0);
-    padding: 1rem 1.15rem; border-left: 3px solid var(--accent);
-    background: rgba(138, 52, 32, 0.06); border-radius: 2px; font-size: 1rem; line-height: 1.55;
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(138, 52, 32, 0.06);
+    border-radius: 6px;
+    font-size: 0.98rem; line-height: 1.55;
+    color: var(--text);
   }
   .banner em { color: var(--accent); font-style: italic; }
-  @media (max-width: 30rem) {
-    .stats { grid-template-columns: 1fr; }
+
+  /* === failure-mode section === */
+  .etude-failure {
+    margin: 2.5rem 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-failure-title {
+    font-family: var(--serif-display);
+    font-size: 1.35rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .etude-failure p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .controls { gap: 0.5rem; }
+    .etude-next, .etude-ghost { width: 100%; }
+    .stats { grid-template-columns: 1fr; padding: 0.85rem 1rem; }
     .dot-grid { grid-template-columns: repeat(10, 1fr); }
+    .etude-failure-title { font-size: 1.2rem; }
   }
 </style>
+</content>
+</invoke>

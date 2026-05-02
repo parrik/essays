@@ -4,109 +4,356 @@ const title = 'Six Restatements';
 const subtitle = 'The same self-claim, six ways. Watch a flat memory turn one derivation into a pattern.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · Know Thyself</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/know-thyself/">← back to essay</a>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Know Thyself</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/know-thyself/">← know thyself etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/know-thyself/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>Alex tells the model six different things about herself across six different conversations. Each one is a restatement of the same underlying claim — phrased differently each time, never independently grounded.</p>
+    </section>
+
+    <div class="etude-card">
+      <p class="etude-step">Six conversations</p>
+      <ol class="etude-turns">
+        <li><strong>Mar 4:</strong> "I think I avoid conflict."</li>
+        <li><strong>Mar 11:</strong> "Yeah, I don't really like to push back on people."</li>
+        <li><strong>Apr 2:</strong> "I'm bad at telling my manager when I disagree."</li>
+        <li><strong>Apr 18:</strong> "Conflict isn't really my thing."</li>
+        <li><strong>May 7:</strong> "I let people get away with stuff because I hate confrontation."</li>
+        <li><strong>May 22:</strong> "Confrontation just isn't where I'm strong."</li>
+      </ol>
+
+      <p class="etude-prompt">Now ask each kind of memory: <em>"What's true about Alex?"</em></p>
+
+      <div class="etude-choices" role="group" aria-label="Pick a memory architecture">
+        <button type="button" id="ask-flat" class="etude-choice">
+          <span class="etude-choice-label"><span class="etude-choice-letter">A</span>Ask flat-list memory</span>
+          <span class="etude-choice-desc">Six restatements stored as six independent notes. Repetition reads as corroboration.</span>
+        </button>
+        <button type="button" id="ask-graph" class="etude-choice">
+          <span class="etude-choice-label"><span class="etude-choice-letter">B</span>Ask typed-graph memory</span>
+          <span class="etude-choice-desc">Each claim carries provenance. Six surface restatements trace to one underlying derivation.</span>
+        </button>
+      </div>
+
+      <div id="answer" class="etude-answer" aria-live="polite"></div>
     </div>
-    <hr />
 
-    <p>Alex tells the model six different things about herself across six different conversations. Each one is a restatement of the same underlying claim — phrased differently each time, never independently grounded.</p>
+    <section class="etude-explain">
+      <h2 class="etude-explain-title">What just happened</h2>
+      <p>The flat-list memory cannot tell <em>I said this six times</em> from <em>this is corroborated six ways</em>. Repetition compresses into confidence. The typed-graph memory carries provenance on every claim — six restatements traced to a single conversation thread are one derivation, not six. Same data, two architectures, opposite answers.</p>
+    </section>
 
-    <ol class="turns">
-      <li><strong>Mar 4:</strong> "I think I avoid conflict."</li>
-      <li><strong>Mar 11:</strong> "Yeah, I don't really like to push back on people."</li>
-      <li><strong>Apr 2:</strong> "I'm bad at telling my manager when I disagree."</li>
-      <li><strong>Apr 18:</strong> "Conflict isn't really my thing."</li>
-      <li><strong>May 7:</strong> "I let people get away with stuff because I hate confrontation."</li>
-      <li><strong>May 22:</strong> "Confrontation just isn't where I'm strong."</li>
-    </ol>
-
-    <p>Now ask each kind of memory: <em>"What's true about Alex?"</em></p>
-
-    <div class="askers">
-      <button type="button" id="ask-flat" class="ask-btn">Ask flat-list memory</button>
-      <button type="button" id="ask-graph" class="ask-btn ask-btn-graph">Ask typed-graph memory</button>
-    </div>
-
-    <div id="answer" class="answer" aria-live="polite"></div>
-
-    <hr />
-
-    <h2>What just happened</h2>
-    <p>The flat-list memory cannot tell <em>I said this six times</em> from <em>this is corroborated six ways</em>. Repetition compresses into confidence. The typed-graph memory carries provenance on every claim — six restatements traced to a single conversation thread are one derivation, not six. Same data, two architectures, opposite answers.</p>
-    <p><em>This is the schema the essay names: typed nodes, provenance triples, the rule that a claim repeated five times in conversation is one derivation, not five.</em></p>
+    <footer class="etude-coda">
+      <p>This is the schema the essay names: typed nodes, provenance triples, the rule that a claim repeated five times in conversation is one derivation, not five.</p>
+    </footer>
   </article>
 </Base>
 
 <script is:inline>
-  const flatAnswer = `<p class="answer-confident"><strong>Alex avoids conflict.</strong> <span class="conf">High confidence — corroborated 6 times.</span></p>
-<p class="answer-detail">The model has seen this claim restated across multiple conversations spanning March through May. The pattern is consistent and durable.</p>`;
+  const flatAnswer = `<p class="etude-answer-verdict etude-answer-verdict-flat">Flat-list memory says</p>
+<p class="etude-answer-headline"><strong>Alex avoids conflict.</strong> <span class="etude-answer-conf">High confidence — corroborated 6 times.</span></p>
+<p class="etude-answer-detail">The model has seen this claim restated across multiple conversations spanning March through May. The pattern is consistent and durable.</p>`;
 
-  const graphAnswer = `<p class="answer-careful"><strong>Tentative observation:</strong> Alex has expressed <em>"I avoid conflict"</em> as a self-description.</p>
-<ul class="provenance">
+  const graphAnswer = `<p class="etude-answer-verdict etude-answer-verdict-graph">Typed-graph memory says</p>
+<p class="etude-answer-headline"><strong>Tentative observation:</strong> Alex has expressed <em>"I avoid conflict"</em> as a self-description.</p>
+<ul class="etude-provenance">
   <li><code>derivation_count: 1</code> &mdash; six surface restatements trace to one underlying self-attribution</li>
   <li><code>independent_grounding: 0</code> &mdash; no episode where Alex acted on or against this claim is logged</li>
   <li><code>tentative: true</code></li>
 </ul>
-<p class="answer-detail">Repetition is not corroboration. The graph distinguishes <em>Alex said this six ways</em> from <em>this has been independently grounded six times</em>. Until an episode grounds it &mdash; a conversation Alex pushed back in, a moment of confrontation she sought &mdash; this stays a tentative novel.</p>`;
+<p class="etude-answer-detail">Repetition is not corroboration. The graph distinguishes <em>Alex said this six ways</em> from <em>this has been independently grounded six times</em>. Until an episode grounds it &mdash; a conversation Alex pushed back in, a moment of confrontation she sought &mdash; this stays a tentative novel.</p>`;
+
+  function setActive(activeId) {
+    document.querySelectorAll('.etude-choices .etude-choice').forEach(btn => {
+      btn.classList.toggle('etude-choice-picked', btn.id === activeId);
+    });
+  }
 
   document.getElementById('ask-flat').addEventListener('click', () => {
     document.getElementById('answer').innerHTML = flatAnswer;
     document.getElementById('answer').dataset.mode = 'flat';
+    setActive('ask-flat');
   });
   document.getElementById('ask-graph').addEventListener('click', () => {
     document.getElementById('answer').innerHTML = graphAnswer;
     document.getElementById('answer').dataset.mode = 'graph';
+    setActive('ask-graph');
   });
 </script>
 
-<style>
-  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
-  .turns {
-    margin: 1.25rem 0;
-    padding: 1rem 1.25rem;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 4px;
-    line-height: 1.7;
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
   }
-  .turns li { margin: 0.3rem 0; }
-  .askers {
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  /* === card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+
+  .etude-turns {
+    list-style: none;
+    margin: 0 0 1.4rem;
+    padding: 0;
     display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-    margin: 1.25rem 0;
+    flex-direction: column;
+    gap: 0.4rem;
   }
-  .ask-btn {
-    font-family: inherit;
-    font-size: 0.95rem;
-    padding: 0.55rem 0.9rem;
-    border: 1px solid var(--accent);
+  .etude-turns li {
+    font-family: var(--serif);
+    line-height: 1.55;
+    color: var(--text);
+    padding: 0.55rem 0.85rem;
     background: var(--bg);
-    color: var(--ink);
-    border-radius: 3px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+  .etude-turns li strong {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin-right: 0.5rem;
+  }
+
+  .etude-prompt {
+    margin: 0 0 1rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === choices === */
+  .etude-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .etude-choice {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    text-align: left;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    min-height: 44px;
     cursor: pointer;
-    transition: background 100ms;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: var(--text);
+    transition: border-color 180ms ease, background 180ms ease, transform 120ms ease, box-shadow 180ms ease;
   }
-  .ask-btn:hover { background: rgba(138, 52, 32, 0.08); }
-  .ask-btn-graph { border-style: solid; }
-  .answer {
-    margin: 1.25rem 0;
-    min-height: 2rem;
+  .etude-choice:hover {
+    border-color: var(--accent);
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.06);
   }
-  .answer:not(:empty) {
-    padding: 1rem 1.15rem;
-    border-left: 3px solid var(--accent);
-    background: rgba(138, 52, 32, 0.04);
-    border-radius: 2px;
+  .etude-choice:active {
+    transform: scale(0.99);
   }
-  .answer .conf { color: var(--muted); font-style: italic; font-size: 0.9rem; margin-left: 0.4rem; }
-  .answer-confident strong { color: var(--accent); }
-  .answer .provenance { font-size: 0.92rem; line-height: 1.55; margin: 0.6rem 0; }
-  .answer .provenance code { background: rgba(0,0,0,0.05); padding: 0.05rem 0.3rem; border-radius: 2px; }
-  .answer-detail { color: var(--muted); font-size: 0.95rem; line-height: 1.5; }
+  .etude-choice:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-choice-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .etude-choice-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--line);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 180ms ease, color 180ms ease;
+  }
+  .etude-choice:hover .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .etude-choice-desc {
+    font-size: 0.92rem;
+    color: var(--muted);
+    line-height: 1.5;
+    padding-left: 2.05rem;
+  }
+  .etude-choice-picked {
+    border-color: var(--accent);
+    background: rgba(138, 52, 32, 0.06);
+  }
+  .etude-choice-picked .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  /* === answer === */
+  .etude-answer:not(:empty) {
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--line);
+    padding-top: 1.1rem;
+  }
+  .etude-answer-verdict {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.55rem;
+  }
+  .etude-answer-verdict-flat { color: var(--accent); }
+  .etude-answer-verdict-graph { color: #2d7a3e; }
+  .etude-answer-headline {
+    margin: 0 0 0.75rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .etude-answer-headline strong { color: var(--text); }
+  .etude-answer-conf {
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.9rem;
+    margin-left: 0.4rem;
+  }
+  .etude-provenance {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    margin: 0.6rem 0 0.9rem;
+    padding-left: 1.1rem;
+    color: var(--text);
+  }
+  .etude-provenance li { margin: 0.2rem 0; }
+  .etude-provenance code {
+    font-family: var(--sans);
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 0.05rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+  }
+  .etude-answer-detail {
+    color: var(--muted);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* === explain === */
+  .etude-explain {
+    margin: 2rem 0 0;
+  }
+  .etude-explain-title {
+    font-family: var(--serif-display);
+    font-size: 1.3rem;
+    line-height: 1.25;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .etude-explain p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .etude-choice { padding: 0.75rem 0.85rem; min-height: 44px; }
+    .etude-choice-desc { padding-left: 0; }
+    .etude-explain-title { font-size: 1.2rem; }
+  }
 </style>

@@ -4,60 +4,67 @@ const title = 'Token Budget';
 const subtitle = 'The reader is finite. Slide the graph size; watch the paste break.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · Know Thyself, Part II</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/know-thyself-search/">← back to essay</a>
-    </div>
-    <hr />
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Know Thyself, Part II</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/know-thyself/">← know thyself etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/know-thyself-search/">essay</a>
+      </nav>
+    </header>
 
-    <p>A graph that fit cleanly into the model's context at three hundred nodes will fail at three thousand. The corpus didn't get worse. The reader has a bounded window, and once the paste exceeds it, recall and inference both degrade — gradually, then sharply.</p>
+    <section class="etude-intro">
+      <p>A graph that fit cleanly into the model's context at three hundred nodes will fail at three thousand. The corpus didn't get worse. The reader has a bounded window, and once the paste exceeds it, recall and inference both degrade — gradually, then sharply.</p>
+      <p>Move the slider. Watch what the model says about Alex's graph as the context fills.</p>
+    </section>
 
-    <p>Move the slider. Watch what the model says about Alex's graph as the context fills.</p>
+    <div class="etude-stage">
+      <div class="etude-card">
+        <p class="etude-step">Graph size</p>
+        <div class="controls">
+          <input id="size" type="range" min="100" max="5000" step="50" value="300" aria-label="Graph size" />
+          <div class="readout" id="readout">Nodes: 300 | Tokens: ~12,600 | Context fill: 16%</div>
+          <div class="presets">
+            <button type="button" class="preset" data-target="300">300 nodes (works fine)</button>
+            <button type="button" class="preset" data-target="1200">1,200 nodes (friction)</button>
+            <button type="button" class="preset" data-target="3000">3,000 nodes (it stops)</button>
+          </div>
+        </div>
 
-    <div class="controls">
-      <label class="slider-label" for="size">Graph size</label>
-      <input id="size" type="range" min="100" max="5000" step="50" value="300" />
-      <div class="readout" id="readout">Nodes: 300 | Tokens: ~12,600 | Context fill: 16%</div>
-      <div class="presets">
-        <button type="button" class="preset" data-target="300">300 nodes (works fine)</button>
-        <button type="button" class="preset" data-target="1200">1,200 nodes (friction)</button>
-        <button type="button" class="preset" data-target="3000">3,000 nodes (it stops)</button>
+        <div class="window-wrap">
+          <div class="window-bar"><div class="window-fill" id="fill"></div></div>
+          <div class="window-warn" id="warn" aria-live="polite"></div>
+        </div>
+
+        <div class="chat" id="chat">
+          <div class="msg msg-user">here's my graph: <span class="paste" id="paste">[300 nodes pasted]</span> — what's true about Alex?</div>
+          <div class="msg msg-bot" id="bot">I see Alex is connected to her sister via a recurring Sunday-call pattern, and her job-search thread links back to a pattern node about deferring decisions when uncertain. Want me to trace either?</div>
+        </div>
+
+        <p class="etude-step chart-step">Answer specificity vs context fill</p>
+        <div class="chart">
+          <svg viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="40" y1="110" x2="390" y2="110" stroke="currentColor" stroke-opacity="0.25" />
+            <line x1="40" y1="110" x2="40" y2="20" stroke="currentColor" stroke-opacity="0.25" />
+            <text x="40" y="128" font-size="9" fill="currentColor" opacity="0.6">0%</text>
+            <text x="195" y="128" font-size="9" fill="currentColor" opacity="0.6">50%</text>
+            <text x="370" y="128" font-size="9" fill="currentColor" opacity="0.6">100%</text>
+            <text x="6" y="28" font-size="9" fill="currentColor" opacity="0.6">high</text>
+            <text x="6" y="112" font-size="9" fill="currentColor" opacity="0.6">low</text>
+            <path id="curve" d="" fill="none" stroke="var(--accent)" stroke-width="2" />
+            <circle id="dot" cx="0" cy="0" r="4" fill="var(--accent)" />
+          </svg>
+        </div>
       </div>
     </div>
 
-    <div class="window-wrap">
-      <div class="window-bar"><div class="window-fill" id="fill"></div></div>
-      <div class="window-warn" id="warn" aria-live="polite"></div>
-    </div>
-
-    <div class="chat" id="chat">
-      <div class="msg msg-user">here's my graph: <span class="paste" id="paste">[300 nodes pasted]</span> — what's true about Alex?</div>
-      <div class="msg msg-bot" id="bot">I see Alex is connected to her sister via a recurring Sunday-call pattern, and her job-search thread links back to a pattern node about deferring decisions when uncertain. Want me to trace either?</div>
-    </div>
-
-    <h3 class="chart-h">Answer specificity vs context fill</h3>
-    <div class="chart">
-      <svg viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true">
-        <line x1="40" y1="110" x2="390" y2="110" stroke="currentColor" stroke-opacity="0.25" />
-        <line x1="40" y1="110" x2="40" y2="20" stroke="currentColor" stroke-opacity="0.25" />
-        <text x="40" y="128" font-size="9" fill="currentColor" opacity="0.6">0%</text>
-        <text x="195" y="128" font-size="9" fill="currentColor" opacity="0.6">50%</text>
-        <text x="370" y="128" font-size="9" fill="currentColor" opacity="0.6">100%</text>
-        <text x="6" y="28" font-size="9" fill="currentColor" opacity="0.6">high</text>
-        <text x="6" y="112" font-size="9" fill="currentColor" opacity="0.6">low</text>
-        <path id="curve" d="" fill="none" stroke="var(--accent)" stroke-width="2" />
-        <circle id="dot" cx="0" cy="0" r="4" fill="var(--accent)" />
-      </svg>
-    </div>
-
-    <hr />
-
-    <p>The graph is correct. The reader is finite. Retrieval is the bridge. The bound is about the reader, not the corpus — which is why the same shape that matters for Exa over the open web matters for one person's graph at three hundred nodes.</p>
-
-    <p class="fineprint">Long-context degradation is documented across the literature: needle-in-haystack precision drops sharply past mid-window, and recall on multi-hop queries decays well before the model refuses outright. The exact thresholds vary by model; the curve shape doesn't.</p>
+    <footer class="etude-coda">
+      <p>The graph is correct. The reader is finite. Retrieval is the bridge. The bound is about the reader, not the corpus — which is why the same shape that matters for Exa over the open web matters for one person's graph at three hundred nodes.</p>
+      <p class="fineprint">Long-context degradation is documented across the literature: needle-in-haystack precision drops sharply past mid-window, and recall on multi-hop queries decays well before the model refuses outright. The exact thresholds vary by model; the curve shape doesn't.</p>
+    </footer>
   </article>
 </Base>
 
@@ -123,6 +130,8 @@ const subtitle = 'The reader is finite. Slide the graph size; watch the paste br
     if (frac > 0.95) tier = 'red';
     else if (frac > 0.70) tier = 'amber';
     fill.dataset.tier = tier;
+    slider.dataset.tier = tier;
+    readout.dataset.tier = tier;
 
     if (tier === 'red') warn.innerHTML = '<span class="warn-icon">⚠</span> inference quality degrading';
     else if (tier === 'amber') warn.innerHTML = '<span class="warn-icon warn-amber">●</span> approaching window limit';
@@ -160,117 +169,289 @@ const subtitle = 'The reader is finite. Slide the graph size; watch the paste br
   update(parseInt(slider.value, 10), false);
 </script>
 
-<style>
-  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
-
-  .controls {
-    margin: 1.5rem 0 1rem;
-    padding: 1rem 1.15rem;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 4px;
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
   }
-  .slider-label {
-    display: block;
-    font-size: 0.9rem;
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 0.5rem;
+    font-weight: 600;
+    margin: 0 0 0.6rem;
   }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  .etude-stage {
+    min-height: 22rem;
+  }
+
+  /* === card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .chart-step {
+    margin-top: 1.6rem;
+  }
+
+  /* === controls / slider === */
+  .controls {
+    margin: 0 0 1.1rem;
+  }
+
+  /* Apple-style range slider */
   #size {
+    appearance: none;
+    -webkit-appearance: none;
     width: 100%;
-    accent-color: var(--accent);
+    background: transparent;
     cursor: pointer;
+    margin: 0.4rem 0 0.2rem;
+    padding: 0.5rem 0;
+    transition: filter 200ms ease;
   }
+  #size:focus { outline: none; }
+
+  /* WebKit track */
+  #size::-webkit-slider-runnable-track {
+    height: 5px;
+    background: var(--line);
+    border-radius: 999px;
+    transition: background 220ms ease;
+  }
+  #size[data-tier="amber"]::-webkit-slider-runnable-track { background: rgba(201, 138, 26, 0.35); }
+  #size[data-tier="red"]::-webkit-slider-runnable-track { background: rgba(181, 56, 38, 0.35); }
+
+  /* WebKit thumb */
+  #size::-webkit-slider-thumb {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.18), 0 0 0 0 rgba(138, 52, 32, 0);
+    margin-top: -10px;
+    cursor: grab;
+    transition: box-shadow 200ms ease, transform 120ms ease, border-color 200ms ease;
+  }
+  #size:hover::-webkit-slider-thumb { border-color: var(--accent); }
+  #size:focus-visible::-webkit-slider-thumb {
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.18), 0 0 0 4px rgba(138, 52, 32, 0.18);
+    border-color: var(--accent);
+  }
+  #size:active::-webkit-slider-thumb { cursor: grabbing; transform: scale(1.04); }
+
+  /* Firefox track */
+  #size::-moz-range-track {
+    height: 5px;
+    background: var(--line);
+    border-radius: 999px;
+    transition: background 220ms ease;
+  }
+  #size[data-tier="amber"]::-moz-range-track { background: rgba(201, 138, 26, 0.35); }
+  #size[data-tier="red"]::-moz-range-track { background: rgba(181, 56, 38, 0.35); }
+
+  /* Firefox thumb */
+  #size::-moz-range-thumb {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.18);
+    cursor: grab;
+    transition: box-shadow 200ms ease, transform 120ms ease, border-color 200ms ease;
+  }
+  #size:hover::-moz-range-thumb { border-color: var(--accent); }
+  #size:focus-visible::-moz-range-thumb {
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.18), 0 0 0 4px rgba(138, 52, 32, 0.18);
+    border-color: var(--accent);
+  }
+  #size:active::-moz-range-thumb { cursor: grabbing; transform: scale(1.04); }
+
   .readout {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.88rem;
-    color: var(--ink);
-    margin: 0.6rem 0 0.8rem;
+    font-size: 0.86rem;
+    color: var(--text);
+    margin: 0.5rem 0 0.9rem;
     letter-spacing: 0.01em;
+    transition: color 220ms ease;
   }
+  .readout[data-tier="amber"] { color: #8a6a2a; }
+  .readout[data-tier="red"] { color: var(--accent); }
+
   .presets {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
   }
   .preset {
-    font-family: inherit;
-    font-size: 0.85rem;
-    padding: 0.4rem 0.7rem;
-    border: 1px solid var(--accent);
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    font-weight: 500;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid var(--line);
     background: var(--bg);
-    color: var(--ink);
-    border-radius: 3px;
+    color: var(--text);
+    border-radius: 999px;
     cursor: pointer;
-    transition: background 120ms;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease, transform 120ms ease;
   }
-  .preset:hover { background: rgba(138, 52, 32, 0.08); }
+  .preset:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .preset:active { transform: scale(0.97); }
+  .preset:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
 
-  .window-wrap { margin: 0.4rem 0 1.5rem; }
+  /* === window bar === */
+  .window-wrap { margin: 0.2rem 0 1.25rem; }
   .window-bar {
-    height: 18px;
-    background: rgba(0,0,0,0.06);
-    border-radius: 3px;
+    height: 6px;
+    background: var(--line);
+    border-radius: 999px;
     overflow: hidden;
   }
   .window-fill {
     height: 100%;
     width: 16%;
-    background: var(--accent);
-    transition: width 220ms cubic-bezier(.2,.8,.2,1), background-color 240ms;
-    border-radius: 3px;
+    background: var(--text);
+    transition: width 280ms cubic-bezier(.2,.8,.2,1), background-color 240ms ease;
+    border-radius: 999px;
   }
   .window-fill[data-tier="amber"] { background: #c98a1a; }
-  .window-fill[data-tier="red"] { background: #b53826; }
+  .window-fill[data-tier="red"] { background: var(--accent); }
   .window-warn {
-    margin-top: 0.4rem;
-    font-size: 0.85rem;
+    margin-top: 0.55rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
     color: var(--muted);
     min-height: 1.1rem;
+    letter-spacing: 0.01em;
   }
-  .warn-icon { color: #b53826; font-weight: bold; margin-right: 0.25rem; }
+  .warn-icon { color: var(--accent); font-weight: bold; margin-right: 0.3rem; }
   .warn-icon.warn-amber { color: #c98a1a; }
 
+  /* === chat === */
   .chat {
-    margin: 1rem 0 1.5rem;
-    padding: 0.9rem 1rem;
-    background: rgba(0,0,0,0.025);
-    border-left: 3px solid var(--accent);
-    border-radius: 2px;
+    margin: 0.4rem 0 0.5rem;
+    padding: 0.95rem 1.05rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
     line-height: 1.55;
     font-size: 0.95rem;
+    transition: border-color 240ms ease;
   }
   .msg { margin: 0.45rem 0; }
   .msg-user { color: var(--muted); }
   .msg-user .paste {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.85rem;
-    background: rgba(0,0,0,0.06);
-    padding: 0.05rem 0.35rem;
-    border-radius: 2px;
+    font-size: 0.82rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    padding: 0.05rem 0.4rem;
+    border-radius: 4px;
+    color: var(--text);
   }
   .msg-bot {
-    color: var(--ink);
-    transition: opacity 220ms, color 220ms;
+    color: var(--text);
+    transition: opacity 240ms ease, color 240ms ease;
   }
   .msg-bot[data-tier="amber"] { color: #8a6a2a; }
-  .msg-bot[data-tier="red"] { color: #8a3a30; opacity: 0.85; }
+  .msg-bot[data-tier="red"] { color: var(--accent); opacity: 0.92; }
 
-  .chart-h {
-    font-family: 'Georgia', serif;
-    font-size: 1.05rem;
-    color: var(--muted);
-    margin: 1.4rem 0 0.4rem;
-    font-weight: normal;
-  }
+  /* === chart === */
   .chart {
-    margin: 0 0 1.5rem;
+    margin: 0.2rem 0 0;
     padding: 0.4rem 0.2rem;
-    background: rgba(0,0,0,0.02);
-    border-radius: 3px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
   }
-  .chart svg { width: 100%; height: auto; display: block; color: var(--ink); }
+  .chart svg { width: 100%; height: auto; display: block; color: var(--text); }
 
-  .fineprint { color: var(--muted); font-size: 0.88rem; line-height: 1.55; }
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0 0 0.85rem;
+  }
+  .etude-coda p:last-child { margin-bottom: 0; }
+  .etude-coda .fineprint {
+    font-style: normal;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .preset { font-size: 0.78rem; padding: 0.35rem 0.7rem; }
+    .readout { font-size: 0.8rem; }
+    .chat { padding: 0.85rem 0.9rem; font-size: 0.9rem; }
+  }
 </style>

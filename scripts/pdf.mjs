@@ -29,7 +29,7 @@ if (args[0] === '--path') {
     console.error('Usage: node scripts/pdf.mjs <slug>');
     process.exit(1);
   }
-  url = `http://localhost:4321/essays/${slug}/`;
+  url = `http://localhost:4321/puzzles/${slug}/`;
   outputPath = resolve(__dirname, `../public/${slug}.pdf`);
 }
 

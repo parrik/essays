@@ -4,43 +4,50 @@ const title = 'Review this PR.';
 const subtitle = '30 seconds. Approve, decline, or skip. No context, no test plan.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · The Campaign Cascade</p>
-    <h1>{title}</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/the-campaign-cascade/">← back to essay</a>
-    </div>
-    <hr />
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Campaign Cascade</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/campaign-cascade/">← campaign cascade etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/the-campaign-cascade/">essay</a>
+      </nav>
+    </header>
 
-    <p>You just got tagged on a pull request. You don't own this repo. You don't know the author. There's no test plan. The clock is running.</p>
+    <section class="etude-intro">
+      <p>You just got tagged on a pull request. You don't own this repo. You don't know the author. There's no test plan. The clock is running.</p>
+    </section>
 
-    <div class="pr-shell" id="pr-shell">
-      <div class="pr-head">
-        <div class="pr-title">
-          <span class="pr-state">Open</span>
-          <span class="pr-name">Refactor MetricsRollup to use streaming aggregation</span>
+    <div class="etude-stage">
+      <div class="etude-card pr-shell" id="pr-shell">
+        <p class="etude-step">Pull request</p>
+        <div class="pr-head">
+          <div class="pr-title">
+            <span class="pr-state">Open</span>
+            <span class="pr-name">Refactor MetricsRollup to use streaming aggregation</span>
+          </div>
+          <div class="pr-meta">
+            <span><strong>@kchen23</strong> <span class="muted">(you don't know them)</span></span>
+            <span class="dot">·</span>
+            <span><code>platform/metrics-pipeline</code> <span class="muted">(you don't own this)</span></span>
+            <span class="dot">·</span>
+            <span class="muted">14 files changed</span>
+            <span class="dot">·</span>
+            <span class="add">+312</span>
+            <span class="del">−218</span>
+          </div>
         </div>
-        <div class="pr-meta">
-          <span><strong>@kchen23</strong> <span class="muted">(you don't know them)</span></span>
-          <span class="dot">·</span>
-          <span><code>platform/metrics-pipeline</code> <span class="muted">(you don't own this)</span></span>
-          <span class="dot">·</span>
-          <span class="muted">14 files changed</span>
-          <span class="dot">·</span>
-          <span class="add">+312</span>
-          <span class="del">−218</span>
+
+        <div class="pr-desc">
+          <p class="desc-label">Description</p>
+          <p class="desc-body muted">automated migration step from RFC-094</p>
         </div>
-      </div>
 
-      <div class="pr-desc">
-        <p class="desc-label">Description</p>
-        <p class="desc-body muted">automated migration step from RFC-094</p>
-      </div>
-
-      <div class="pr-diff">
-        <div class="diff-file">internal/rollup/aggregator.go</div>
-        <pre><code><span class="ctx"> func (a *Aggregator) Flush(ctx context.Context) error {</span>
+        <div class="pr-diff">
+          <div class="diff-file">internal/rollup/aggregator.go</div>
+          <pre><code><span class="ctx"> func (a *Aggregator) Flush(ctx context.Context) error {</span>
 <span class="ctx">     batch := a.buf.Drain()</span>
 <span class="del-line">-    if err := a.sink.Write(ctx, batch); err != nil {</span>
 <span class="del-line">-        return fmt.Errorf("flush: %w", err)</span>
@@ -54,43 +61,44 @@ const subtitle = '30 seconds. Approve, decline, or skip. No context, no test pla
 <span class="del-line">-    return a.buf.Size() &gt;= a.cfg.BatchSize</span>
 <span class="add-line">+    return a.buf.Size() &gt;= 4096</span>
 <span class="ctx"> }</span></code></pre>
+        </div>
+
+        <div class="pr-actions">
+          <div class="timer-row">
+            <span class="timer-label">time remaining</span>
+            <span class="timer" id="timer">30</span>
+            <span class="timer-label">s</span>
+          </div>
+          <div class="btns">
+            <button type="button" id="btn-approve" class="pr-btn pr-btn-approve">Approve</button>
+            <button type="button" id="btn-changes" class="pr-btn pr-btn-changes">Request changes</button>
+            <button type="button" id="btn-skip" class="pr-btn pr-btn-skip">Skip / not my repo</button>
+          </div>
+        </div>
       </div>
 
-      <div class="pr-actions">
-        <div class="timer-row">
-          <span class="timer-label">time remaining:</span>
-          <span class="timer" id="timer">30</span>
-          <span class="timer-label">s</span>
-        </div>
-        <div class="btns">
-          <button type="button" id="btn-approve" class="pr-btn pr-btn-approve">Approve</button>
-          <button type="button" id="btn-changes" class="pr-btn pr-btn-changes">Request changes</button>
-          <button type="button" id="btn-skip" class="pr-btn pr-btn-skip">Skip / not my repo</button>
-        </div>
+      <div id="outcome" class="etude-feedback" aria-live="polite"></div>
+
+      <div id="reveal" class="etude-card etude-card-reveal" hidden>
+        <p class="etude-step">The trap</p>
+        <h2 class="etude-card-title">There was no good answer.</h2>
+        <p class="reveal-body">That's the anti-pattern: a human in the loop without context-in-hand has three exits, all of them bad. The fix is not "review more carefully." The fix is to remove the human from the loop where they cannot add value, and put them where they can.</p>
+        <button type="button" id="btn-replay" class="etude-next">Try again</button>
       </div>
     </div>
 
-    <div id="outcome" class="outcome" aria-live="polite"></div>
-
-    <div id="reveal" class="reveal" hidden>
-      <hr />
-      <h2>There was no good answer.</h2>
-      <p>That's the anti-pattern: a human in the loop without context-in-hand has three exits, all of them bad. The fix is not "review more carefully." The fix is to remove the human from the loop where they cannot add value, and put them where they can.</p>
-      <button type="button" id="btn-replay" class="replay-btn">Try again</button>
-    </div>
-
-    <hr />
-
-    <p>Most large orgs ship migrations this way: hundreds of PRs to repos no one owns, sent to reviewers without context. Each individual review is reasonable. The system still fails because the unit of work is wrong. Pull the human out of the place they can't add value.</p>
+    <footer class="etude-coda">
+      <p>Most large orgs ship migrations this way: hundreds of PRs to repos no one owns, sent to reviewers without context. Each individual review is reasonable. The system still fails because the unit of work is wrong. Pull the human out of the place they can't add value.</p>
+    </footer>
   </article>
 </Base>
 
 <script is:inline>
   const outcomes = {
-    approve: `<p class="out-line"><strong>You approved.</strong></p><p>The PR merges. The build breaks at 3am because the swallowed error masks a config bug. You are now on-call. Welcome to the anti-pattern.</p>`,
-    changes: `<p class="out-line"><strong>You requested changes.</strong></p><p>@kchen23 doesn't reply for 4 days because the migration isn't their priority. You ping them. They respond <em>"this was generated by RFC-094, not sure who owns it."</em> Welcome to the cascade.</p>`,
-    skip: `<p class="out-line"><strong>You skipped.</strong></p><p>RFC-094 escalates: <em>"Why hasn't this PR been reviewed?"</em> A new campaign launches: <em>"Track unreviewed migration PRs at PMR."</em> Welcome to the cascade.</p>`,
-    timeout: `<p class="out-line"><strong>Timer ran out — defaulted to skip.</strong></p><p>RFC-094 escalates: <em>"Why hasn't this PR been reviewed?"</em> A new campaign launches: <em>"Track unreviewed migration PRs at PMR."</em> Welcome to the cascade.</p>`
+    approve: { label: 'You approved', verdict: 'wrong', text: `The PR merges. The build breaks at 3am because the swallowed error masks a config bug. You are now on-call. Welcome to the anti-pattern.` },
+    changes: { label: 'You requested changes', verdict: 'wrong', text: `@kchen23 doesn't reply for 4 days because the migration isn't their priority. You ping them. They respond <em>"this was generated by RFC-094, not sure who owns it."</em> Welcome to the cascade.` },
+    skip: { label: 'You skipped', verdict: 'wrong', text: `RFC-094 escalates: <em>"Why hasn't this PR been reviewed?"</em> A new campaign launches: <em>"Track unreviewed migration PRs at PMR."</em> Welcome to the cascade.` },
+    timeout: { label: 'Timer ran out — defaulted to skip', verdict: 'wrong', text: `RFC-094 escalates: <em>"Why hasn't this PR been reviewed?"</em> A new campaign launches: <em>"Track unreviewed migration PRs at PMR."</em> Welcome to the cascade.` }
   };
 
   let timerId = null;
@@ -122,7 +130,13 @@ const subtitle = '30 seconds. Approve, decline, or skip. No context, no test pla
     resolved = true;
     if (timerId) clearInterval(timerId);
     shellEl.classList.add('pr-shell-locked');
-    outcomeEl.innerHTML = outcomes[kind];
+    const o = outcomes[kind];
+    outcomeEl.innerHTML = `
+      <div class="etude-verdict etude-verdict-${o.verdict}">
+        <p class="etude-verdict-label">${o.label}</p>
+        <p class="etude-verdict-text">${o.text}</p>
+      </div>
+    `;
     outcomeEl.dataset.kind = kind;
     revealEl.hidden = false;
     outcomeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -151,118 +165,344 @@ const subtitle = '30 seconds. Approve, decline, or skip. No context, no test pla
   shellEl.addEventListener('focusin', startTimer, { once: true });
 </script>
 
-<style>
-  .etude { max-width: 42rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
+  }
+  .etude-head {
+    margin-bottom: 2rem;
+  }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
 
+  .etude-intro {
+    margin: 0 0 1.5rem;
+  }
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
+  }
+
+  .etude-stage {
+    min-height: 22rem;
+  }
+
+  /* === card surface === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+  .etude-card-title {
+    font-family: var(--serif-display);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+
+  /* === PR shell (inside etude-card) === */
   .pr-shell {
-    margin: 1.5rem 0;
-    border: 1px solid rgba(0,0,0,0.15);
-    border-radius: 6px;
-    background: var(--bg);
-    overflow: hidden;
-    transition: opacity 200ms;
+    transition: opacity 240ms ease;
   }
   .pr-shell-locked { opacity: 0.55; pointer-events: none; }
 
   .pr-head {
-    padding: 0.9rem 1rem 0.75rem;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    background: rgba(0,0,0,0.02);
+    padding: 0 0 0.85rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0.9rem;
   }
   .pr-title { display: flex; align-items: center; gap: 0.55rem; flex-wrap: wrap; }
   .pr-state {
-    font-size: 0.75rem;
-    background: #1a7f37;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    background: #2d7a3e;
     color: white;
-    padding: 0.15rem 0.55rem;
+    padding: 0.18rem 0.6rem;
     border-radius: 999px;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
+    font-weight: 700;
   }
-  .pr-name { font-weight: 600; font-size: 1.05rem; }
+  .pr-name {
+    font-family: var(--serif-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: var(--text);
+    letter-spacing: -0.005em;
+  }
   .pr-meta {
-    margin-top: 0.4rem;
-    font-size: 0.85rem;
+    margin-top: 0.55rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
     color: var(--muted);
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
     align-items: center;
+    line-height: 1.4;
   }
-  .pr-meta code { background: rgba(0,0,0,0.05); padding: 0.05rem 0.3rem; border-radius: 2px; font-size: 0.85rem; }
+  .pr-meta code {
+    background: var(--bg);
+    padding: 0.08rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    border: 1px solid var(--line);
+  }
   .pr-meta .muted { color: var(--muted); font-style: italic; }
   .pr-meta .dot { opacity: 0.5; }
-  .pr-meta .add { color: #1a7f37; font-weight: 600; }
-  .pr-meta .del { color: #cf222e; font-weight: 600; }
+  .pr-meta .add { color: #2d7a3e; font-weight: 600; }
+  .pr-meta .del { color: var(--accent); font-weight: 600; }
 
-  .pr-desc { padding: 0.85rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.08); }
-  .desc-label { margin: 0 0 0.3rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
-  .desc-body { margin: 0; font-size: 0.95rem; }
-
-  .pr-diff { border-bottom: 1px solid rgba(0,0,0,0.08); }
-  .diff-file {
-    padding: 0.5rem 1rem;
-    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    font-size: 0.82rem;
+  .pr-desc {
+    padding: 0 0 0.9rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 0.9rem;
+  }
+  .desc-label {
+    margin: 0 0 0.35rem;
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    text-transform: uppercase;
+    letter-spacing: var(--label-tracking);
     color: var(--muted);
-    background: rgba(0,0,0,0.025);
-    border-bottom: 1px solid rgba(0,0,0,0.06);
+    font-weight: 600;
+  }
+  .desc-body { margin: 0; font-size: 0.95rem; color: var(--text); }
+  .desc-body.muted { color: var(--muted); font-style: italic; }
+
+  .pr-diff {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--bg);
+    margin-bottom: 1.1rem;
+  }
+  .diff-file {
+    padding: 0.5rem 0.85rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.8rem;
+    color: var(--muted);
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--line);
   }
   .pr-diff pre {
     margin: 0;
-    padding: 0.6rem 0;
+    padding: 0.5rem 0;
     font-family: ui-monospace, 'SF Mono', Menlo, monospace;
-    font-size: 0.82rem;
-    line-height: 1.55;
+    font-size: 0.8rem;
+    line-height: 1.6;
     overflow-x: auto;
-    background: rgba(0,0,0,0.015);
+    background: var(--bg);
   }
   .pr-diff code { display: block; }
-  .pr-diff .ctx { display: block; padding: 0 1rem; color: var(--ink); }
-  .pr-diff .add-line { display: block; padding: 0 1rem; background: rgba(26,127,55,0.10); color: #0f5223; }
-  .pr-diff .del-line { display: block; padding: 0 1rem; background: rgba(207,34,46,0.10); color: #82071e; }
+  .pr-diff .ctx { display: block; padding: 0 0.85rem; color: var(--text); }
+  .pr-diff .add-line { display: block; padding: 0 0.85rem; background: rgba(45, 122, 62, 0.08); color: #1a5a2e; }
+  .pr-diff .del-line { display: block; padding: 0 0.85rem; background: rgba(138, 52, 32, 0.08); color: var(--accent); }
 
-  .pr-actions { padding: 0.85rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.7rem; }
-  .timer-row { display: flex; align-items: baseline; gap: 0.35rem; font-size: 0.85rem; color: var(--muted); }
-  .timer { font-family: ui-monospace, 'SF Mono', Menlo, monospace; font-size: 1.05rem; color: var(--ink); font-weight: 600; }
-  .timer-hot { color: #cf222e; animation: pulse 0.8s infinite alternate; }
+  .pr-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+  .timer-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .timer {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 1.1rem;
+    color: var(--text);
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .timer-hot { color: var(--accent); animation: pulse 0.8s infinite alternate; }
   @keyframes pulse { from { opacity: 1; } to { opacity: 0.55; } }
 
-  .btns { display: flex; flex-wrap: wrap; gap: 0.55rem; }
+  .btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+  }
   .pr-btn {
-    font-family: inherit; font-size: 0.92rem;
-    padding: 0.55rem 0.9rem; border-radius: 4px; cursor: pointer;
-    border: 1px solid; transition: transform 80ms, background 100ms;
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.7rem 1.05rem;
+    border-radius: 999px;
+    cursor: pointer;
+    border: 1px solid;
+    min-height: 44px;
+    transition: background 180ms ease, border-color 180ms ease, transform 120ms ease, box-shadow 180ms ease;
   }
-  .pr-btn:hover { transform: translateY(-1px); }
-  .pr-btn-approve { border-color: #1a7f37; color: #0f5223; background: rgba(26,127,55,0.08); }
-  .pr-btn-approve:hover { background: rgba(26,127,55,0.18); }
-  .pr-btn-changes { border-color: #cf222e; color: #82071e; background: rgba(207,34,46,0.06); }
-  .pr-btn-changes:hover { background: rgba(207,34,46,0.14); }
-  .pr-btn-skip { border-color: rgba(0,0,0,0.25); color: var(--ink); background: var(--bg); }
-  .pr-btn-skip:hover { background: rgba(0,0,0,0.05); }
-
-  .outcome { margin: 1.25rem 0; }
-  .outcome:not(:empty) {
-    padding: 1rem 1.15rem;
-    border-left: 3px solid var(--accent);
+  .pr-btn:hover:not(:disabled) {
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.08);
+  }
+  .pr-btn:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+  .pr-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .pr-btn-approve {
+    border-color: #2d7a3e;
+    color: #1a5a2e;
+    background: rgba(45, 122, 62, 0.06);
+  }
+  .pr-btn-approve:hover:not(:disabled) { background: rgba(45, 122, 62, 0.14); }
+  .pr-btn-changes {
+    border-color: var(--accent);
+    color: var(--accent);
     background: rgba(138, 52, 32, 0.05);
-    border-radius: 2px;
-    line-height: 1.55;
   }
-  .out-line { margin: 0 0 0.4rem; }
-  .outcome p:last-child { margin-bottom: 0; }
+  .pr-btn-changes:hover:not(:disabled) { background: rgba(138, 52, 32, 0.12); }
+  .pr-btn-skip {
+    border-color: var(--line);
+    color: var(--text);
+    background: var(--bg);
+  }
+  .pr-btn-skip:hover:not(:disabled) { background: var(--bg-soft); border-color: var(--muted); }
 
-  .reveal { margin: 1.25rem 0; }
-  .reveal h2 { font-family: 'Georgia', serif; font-size: 1.35rem; margin: 0.5rem 0; }
-  .replay-btn {
-    font-family: inherit; font-size: 0.95rem;
-    padding: 0.55rem 0.95rem;
-    border: 1px solid var(--accent); background: var(--bg); color: var(--ink);
-    border-radius: 3px; cursor: pointer; margin-top: 0.5rem;
+  /* === verdict / outcome === */
+  .etude-feedback:not(:empty) {
+    margin-top: 1.25rem;
   }
-  .replay-btn:hover { background: rgba(138, 52, 32, 0.08); }
+  .etude-verdict {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--accent);
+  }
+  .etude-verdict-label {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.55rem;
+  }
+  .etude-verdict-right .etude-verdict-label { color: #2d7a3e; }
+  .etude-verdict-partial .etude-verdict-label { color: #b87333; }
+  .etude-verdict-wrong .etude-verdict-label { color: var(--accent); }
+  .etude-verdict-text {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === reveal card === */
+  .etude-card-reveal {
+    margin-top: 1.25rem;
+  }
+  .reveal-body {
+    margin: 0 0 1.25rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === next button === */
+  .etude-next {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 999px;
+    cursor: pointer;
+    min-height: 44px;
+    transition: background 180ms ease, transform 120ms ease;
+  }
+  .etude-next:hover { background: var(--accent); }
+  .etude-next:active { transform: scale(0.97); }
+  .etude-next:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-next::after { content: ' →'; }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .etude-card-title { font-size: 1.3rem; }
+    .pr-name { font-size: 1rem; }
+    .pr-btn { padding: 0.7rem 0.9rem; font-size: 0.88rem; }
+    .btns { gap: 0.5rem; }
+    .etude-verdict { padding: 1rem 1.15rem; }
+  }
 </style>
-</Base>
+

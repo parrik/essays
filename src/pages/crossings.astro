@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const all = await getCollection('essays');
+const tracked = all
+  .filter(e => e.data.track === 'crossings' && !e.data.parent)
+  .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+---
+<Base title="crossings">
+  <section class="intro">
+    <h1>crossings</h1>
+    <p>Same shape, different substrate. The body, biology, the cross-domain reach.</p>
+  </section>
+  <section class="essays">
+    <ul>
+      {tracked.map(essay => (
+        <li>
+          <div class="essay-row">
+            <a href={`/puzzles/${essay.id}/`} class="essay-link">
+              <span class="essay-title">{essay.data.title}</span>
+            </a>
+          </div>
+          {(essay.data.relief || essay.data.subtitle) && <p class="essay-subtitle">{essay.data.relief ?? essay.data.subtitle}</p>}
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+

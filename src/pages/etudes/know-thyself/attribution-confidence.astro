@@ -4,38 +4,35 @@ const title = 'Attribution ≠ Confidence';
 const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yourself.';
 ---
 <Base title={title} description={subtitle}>
-  <article class="etude">
-    <p class="essay-kicker">Etude · Know Thyself</p>
-    <h1>Attribution ≠ Confidence — drill the rule.</h1>
-    <p class="essay-sub">{subtitle}</p>
-    <div class="essay-meta">
-      <a href="/essays/know-thyself/">← back to essay</a>
-    </div>
-    <hr />
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Know Thyself</p>
+      <h1 class="etude-title">Attribution ≠ Confidence — drill the rule.</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/know-thyself/">← know thyself etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/know-thyself/">essay</a>
+      </nav>
+    </header>
 
-    <p>A claim a person has restated five times in conversation is <strong>one</strong> derivation. A claim grounded by five independent episodes is <strong>five</strong> derivations. Real confidence accumulates from independent grounding, not from repetition. Below: six scenarios. Pick the count.</p>
+    <section class="etude-intro">
+      <p>A claim a person has restated five times in conversation is <strong>one</strong> derivation. A claim grounded by five independent episodes is <strong>five</strong> derivations. Real confidence accumulates from independent grounding, not from repetition. Below: six scenarios. Pick the count.</p>
+    </section>
 
-    <div class="progress" id="progress" aria-label="Progress">
-      <span class="dot active" data-i="0"></span>
-      <span class="dot" data-i="1"></span>
-      <span class="dot" data-i="2"></span>
-      <span class="dot" data-i="3"></span>
-      <span class="dot" data-i="4"></span>
-      <span class="dot" data-i="5"></span>
-    </div>
+    <div class="etude-progress" id="dots" aria-hidden="true"></div>
+    <div id="stage" class="etude-stage" aria-live="polite"></div>
 
-    <div id="stage" class="stage" aria-live="polite"></div>
-
-    <hr />
-
-    <p>The schema doesn't make confidence easier. It makes it slower. Real confidence accumulates from independent grounding — and the only way to count is to walk the provenance.</p>
+    <footer class="etude-coda">
+      <p>The schema doesn't make confidence easier. It makes it slower. Real confidence accumulates from independent grounding — and the only way to count is to walk the provenance.</p>
+    </footer>
   </article>
 </Base>
 
 <script is:inline>
   const SCENARIOS = [
     {
-      vignette: "Across six conversations spanning four months, Maya tells the model \"I avoid conflict.\" Different phrasings each time, no specific incidents.",
+      vignette: "Across six conversations spanning four months, Alex tells the model \"I avoid conflict at the Press.\" Different phrasings each time, no specific manuscript or meeting.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "6 derivations (corroborated)", correct: false },
@@ -44,7 +41,7 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Six restatements of the same self-attribution trace to one underlying claim. Repetition compresses; it does not corroborate."
     },
     {
-      vignette: "Two friends and a coworker, none of whom know each other, each independently describe Devon as \"someone who ghosts when uncomfortable.\"",
+      vignette: "Two old Brooklyn friends and a colleague at UChicago Press, none of whom know each other, each independently describe Alex as \"someone who pulls back when the room gets loud.\"",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "3 derivations (corroborated)", correct: true },
@@ -53,16 +50,16 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Three independent observers, no shared source. Each is a separate grounding. That's corroboration."
     },
     {
-      vignette: "Liam restates a fear of failure in three conversations, AND in one of those mentions a specific time he didn't apply for a job because of it.",
+      vignette: "Alex restates a fear of pushing back on the new editorial director in three conversations, AND in one of them mentions a specific manuscript she let stand against her judgment.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (mixed)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific job he didn't apply for — is a second, independent derivation."
+      explain: "The three restatements collapse to one self-attribution. The grounded episode — a specific manuscript she let stand — is a second, independent derivation."
     },
     {
-      vignette: "Avery tells five different therapists, over six months, the same story about her mother. None of the therapists has met the mother.",
+      vignette: "Alex tells five different friends, over six months, the same story about her older sister Helen's death at twenty-three. None of the friends knew Helen.",
       choices: [
         { label: "1 derivation (repetition)", correct: true },
         { label: "5 derivations (corroborated)", correct: false },
@@ -71,56 +68,61 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       explain: "Five listeners is not five sources. The claim still traces to one self-attribution. Multiple audiences do not add grounding."
     },
     {
-      vignette: "A model summarizes Jordan as \"driven by approval\" based on Jordan's own words in four sessions. Jordan's manager separately writes a performance review describing the same pattern.",
+      vignette: "A model summarizes Alex as \"driven by approval\" based on her own words across four sessions. Her editorial director, in a separate year-end review, describes the same pattern.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "2 derivations (self + observer)", correct: true },
         { label: "Contradicted (demote)", correct: false }
       ],
-      explain: "Self-attribution is one derivation. The manager's independent observation is a second. Two, not five."
+      explain: "Self-attribution is one derivation. The editorial director's independent observation is a second. Two, not five."
     },
     {
-      vignette: "Sam mentions in passing that he \"never finishes anything,\" but his GitHub shows 12 completed projects, his LinkedIn shows 3 jobs each held >2 years, and his apartment lease shows he stayed 4 years in one place.",
+      vignette: "Alex mentions in passing that she \"never sticks with anything,\" but her tenure at UChicago Press is eight years, her running log shows six consecutive years before the Chicago move, and Mira has been in continuous schooling under her since kindergarten.",
       choices: [
         { label: "1 derivation (repetition)", correct: false },
         { label: "4 derivations (corroborated)", correct: false },
         { label: "Contradicted (demote)", correct: true }
       ],
-      explain: "The self-attribution is one derivation; the public record is independent counter-evidence on three axes. Net: the claim should be demoted."
+      explain: "The self-attribution is one derivation; the lived record is independent counter-evidence on three axes. Net: the claim should be demoted."
     }
   ];
+
+  const stage = document.getElementById('stage');
+  const dotsEl = document.getElementById('dots');
 
   let i = 0;
   let score = 0;
   let answered = false;
 
-  const stage = document.getElementById('stage');
-  const dots = document.querySelectorAll('.progress .dot');
-
-  function updateDots() {
-    dots.forEach((d, idx) => {
-      d.classList.toggle('active', idx === i);
-      d.classList.toggle('done', idx < i);
-    });
+  function renderDots() {
+    const total = SCENARIOS.length;
+    const current = i >= total ? total : i;
+    dotsEl.innerHTML = SCENARIOS.map((_, idx) => {
+      const cls = idx < current ? 'etude-dot etude-dot-done' : idx === current ? 'etude-dot etude-dot-current' : 'etude-dot';
+      return `<span class="${cls}" aria-label="step ${idx + 1} of ${total}"></span>`;
+    }).join('');
   }
 
   function renderScenario() {
     answered = false;
-    updateDots();
+    renderDots();
     const s = SCENARIOS[i];
-    const html = `
-      <div class="scenario">
-        <p class="scenario-num">Scenario ${i + 1} of 6</p>
-        <p class="vignette">${s.vignette}</p>
-        <div class="choices">
-          ${s.choices.map((c, idx) => `<button type="button" class="choice-btn" data-idx="${idx}">${c.label}</button>`).join('')}
+    const letters = ['A', 'B', 'C'];
+    stage.innerHTML = `
+      <div class="etude-card">
+        <p class="etude-step">Scenario ${i + 1} of ${SCENARIOS.length}</p>
+        <p class="etude-card-context">${s.vignette}</p>
+        <div class="etude-choices" role="group" aria-label="Pick the count">
+          ${s.choices.map((c, idx) => `
+            <button type="button" class="etude-choice" data-idx="${idx}">
+              <span class="etude-choice-label"><span class="etude-choice-letter">${letters[idx]}</span>${c.label}</span>
+            </button>
+          `).join('')}
         </div>
-        <div class="feedback" id="feedback"></div>
-        <div class="advance" id="advance"></div>
+        <div class="etude-feedback" id="feedback"></div>
       </div>
     `;
-    stage.innerHTML = html;
-    stage.querySelectorAll('.choice-btn').forEach(btn => {
+    stage.querySelectorAll('.etude-choice').forEach(btn => {
       btn.addEventListener('click', () => handlePick(parseInt(btn.dataset.idx, 10), btn));
     });
   }
@@ -133,20 +135,24 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
     const correct = choice.correct;
     if (correct) score += 1;
 
-    stage.querySelectorAll('.choice-btn').forEach(b => {
+    stage.querySelectorAll('.etude-choice').forEach(b => {
       b.disabled = true;
       const bIdx = parseInt(b.dataset.idx, 10);
-      if (s.choices[bIdx].correct) b.classList.add('is-correct');
-      if (b === btn && !correct) b.classList.add('is-wrong');
+      if (s.choices[bIdx].correct) b.classList.add('etude-choice-correct');
+      if (b === btn) b.classList.add('etude-choice-picked');
     });
 
-    const fb = document.getElementById('feedback');
-    fb.className = 'feedback ' + (correct ? 'fb-correct' : 'fb-wrong');
-    fb.innerHTML = `<strong>${correct ? 'Correct.' : 'Not quite.'}</strong> ${s.explain}`;
-
-    const adv = document.getElementById('advance');
+    const fbEl = document.getElementById('feedback');
+    const verdict = correct ? 'right' : 'wrong';
+    const verdictLabel = correct ? 'Correct.' : 'Not quite.';
     const last = i === SCENARIOS.length - 1;
-    adv.innerHTML = `<button type="button" id="next-btn" class="next-btn">${last ? 'See score →' : 'Next →'}</button>`;
+    fbEl.innerHTML = `
+      <div class="etude-verdict etude-verdict-${verdict}">
+        <p class="etude-verdict-label">${verdictLabel}</p>
+        <p class="etude-verdict-text">${s.explain}</p>
+        <button type="button" class="etude-next" id="next-btn">${last ? 'See score' : 'Next scenario'}</button>
+      </div>
+    `;
     document.getElementById('next-btn').addEventListener('click', advance);
   }
 
@@ -156,12 +162,12 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
       renderScenario();
     } else {
       i = SCENARIOS.length;
-      updateDots();
       renderScore();
     }
   }
 
   function renderScore() {
+    renderDots();
     const pct = Math.round((score / SCENARIOS.length) * 100);
     let blurb;
     if (score === 6) blurb = "Clean sweep. You have the rule.";
@@ -170,10 +176,12 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
     else blurb = "Run it again. Repetition is seductive; the rule is the antidote.";
 
     stage.innerHTML = `
-      <div class="score">
-        <div class="badge"><span class="big">${score} / 6</span><span class="pct">${pct}%</span></div>
-        <p class="blurb">${blurb}</p>
-        <button type="button" id="again-btn" class="next-btn">Run it again</button>
+      <div class="etude-card etude-card-score">
+        <p class="etude-step">Done</p>
+        <p class="etude-score-headline"><span class="etude-score-fraction">${score}<span class="etude-score-divider">/</span>${SCENARIOS.length}</span> right</p>
+        <p class="etude-score-mix">${pct}%</p>
+        <p class="etude-score-detail">${blurb}</p>
+        <button type="button" class="etude-next" id="again-btn">Run it again</button>
       </div>
     `;
     document.getElementById('again-btn').addEventListener('click', () => {
@@ -185,88 +193,311 @@ const subtitle = 'Six scenarios. Tell repetition from corroboration. Score yours
   renderScenario();
 </script>
 
-<style>
-  .etude { max-width: 38rem; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
-  .etude h1 { font-family: 'Georgia', serif; font-size: 2rem; margin: 0.5rem 0 0.5rem; }
-  .essay-sub { font-style: italic; color: var(--muted); margin: 0 0 1rem; }
-  .progress { display: flex; gap: 0.45rem; margin: 1.25rem 0 0.75rem; }
-  .progress .dot {
-    width: 0.6rem; height: 0.6rem; border-radius: 50%;
-    background: rgba(0,0,0,0.12);
-    transition: background 150ms ease, transform 150ms ease;
+<style is:global>
+  /* === etude page chrome === */
+  .etude-page {
+    max-width: 38rem;
+    margin: 0 auto;
+    padding: 0;
   }
-  .progress .dot.done { background: var(--accent); }
-  .progress .dot.active { background: var(--accent); transform: scale(1.35); }
-  .stage { margin: 0.5rem 0 1.25rem; min-height: 14rem; }
-  .scenario {
-    padding: 1rem 1.15rem;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 4px;
-    border-left: 3px solid var(--accent);
-    animation: slidein 180ms ease;
+  .etude-head {
+    margin-bottom: 2rem;
   }
-  @keyframes slidein {
-    from { opacity: 0; transform: translateY(4px); }
-    to { opacity: 1; transform: translateY(0); }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
   }
-  .scenario-num {
-    font-size: 0.8rem; color: var(--muted);
-    text-transform: uppercase; letter-spacing: 0.06em;
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
     margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
   }
-  .vignette { font-size: 1.02rem; line-height: 1.55; margin: 0 0 1rem; }
-  .choices { display: flex; flex-direction: column; gap: 0.5rem; margin: 0.75rem 0; }
-  .choice-btn {
-    font-family: inherit; font-size: 0.95rem;
-    padding: 0.6rem 0.9rem;
-    border: 1px solid var(--accent);
-    background: var(--bg); color: var(--ink);
-    border-radius: 3px; cursor: pointer; text-align: left;
-    transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
   }
-  .choice-btn:hover:not(:disabled) { background: rgba(138, 52, 32, 0.08); transform: translateX(2px); }
-  .choice-btn:disabled { cursor: default; opacity: 0.7; }
-  .choice-btn.is-correct {
-    background: rgba(72, 140, 96, 0.18);
-    border-color: rgb(72, 140, 96); opacity: 1;
-    animation: flash-good 360ms ease;
+  .etude-nav {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    color: var(--muted);
   }
-  .choice-btn.is-wrong {
-    background: rgba(180, 60, 60, 0.18);
-    border-color: rgb(180, 60, 60); opacity: 1;
-    animation: flash-bad 360ms ease;
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro {
+    margin: 0 0 1.5rem;
   }
-  @keyframes flash-good { 0% { background: rgba(72, 140, 96, 0.55); } 100% { background: rgba(72, 140, 96, 0.18); } }
-  @keyframes flash-bad { 0% { background: rgba(180, 60, 60, 0.45); } 100% { background: rgba(180, 60, 60, 0.18); } }
-  .feedback { margin: 0.85rem 0 0; font-size: 0.95rem; line-height: 1.5; }
-  .feedback:not(:empty) { padding: 0.65rem 0.85rem; border-radius: 3px; animation: slidein 180ms ease; }
-  .fb-correct { background: rgba(72, 140, 96, 0.10); border-left: 2px solid rgb(72, 140, 96); }
-  .fb-wrong { background: rgba(180, 60, 60, 0.10); border-left: 2px solid rgb(180, 60, 60); }
-  .advance { margin-top: 0.85rem; min-height: 2.4rem; }
-  .next-btn {
-    font-family: inherit; font-size: 0.95rem;
-    padding: 0.55rem 1rem;
-    border: 1px solid var(--accent);
-    background: var(--accent); color: var(--bg);
-    border-radius: 3px; cursor: pointer;
-    transition: opacity 120ms ease, transform 120ms ease;
+  .etude-intro p {
+    margin: 0 0 0.85rem;
+    line-height: 1.6;
   }
-  .next-btn:hover { opacity: 0.88; transform: translateX(2px); }
-  .score {
-    text-align: center; padding: 1.5rem 1rem 1.25rem;
-    background: var(--bg-soft, rgba(0,0,0,0.03));
-    border-radius: 4px; border-left: 3px solid var(--accent);
-    animation: slidein 200ms ease;
+
+  /* === progress === */
+  .etude-progress {
+    display: flex;
+    gap: 0.5rem;
+    margin: 2rem 0 1.25rem;
+    justify-content: center;
   }
-  .badge {
-    display: inline-flex; flex-direction: column; align-items: center;
-    padding: 0.85rem 1.4rem;
-    background: var(--bg); border: 2px solid var(--accent);
-    border-radius: 6px; margin-bottom: 0.85rem;
-    animation: pop 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  .etude-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--line);
+    transition: background 240ms ease, transform 240ms ease, box-shadow 240ms ease;
   }
-  @keyframes pop { 0% { transform: scale(0.6); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
-  .badge .big { font-family: 'Georgia', serif; font-size: 2.1rem; color: var(--accent); line-height: 1; }
-  .badge .pct { font-size: 0.85rem; color: var(--muted); margin-top: 0.25rem; letter-spacing: 0.05em; }
-  .blurb { font-style: italic; color: var(--muted); margin: 0.5rem 0 1rem; }
+  .etude-dot-done {
+    background: var(--accent);
+  }
+  .etude-dot-current {
+    background: var(--accent);
+    transform: scale(1.4);
+  }
+
+  .etude-stage {
+    min-height: 22rem;
+  }
+
+  /* === scenario card === */
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-card-title {
+    font-family: var(--serif-display);
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.005em;
+    color: var(--text);
+  }
+  .etude-card-context {
+    margin: 0 0 1.4rem;
+    line-height: 1.6;
+    color: var(--text);
+    font-size: 1.05rem;
+  }
+
+  /* === choices === */
+  .etude-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .etude-choice {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: inherit;
+    text-align: left;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    min-height: 2.75rem;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    color: var(--text);
+    transition: border-color 180ms ease, background 180ms ease, transform 120ms ease, box-shadow 180ms ease;
+  }
+  .etude-choice:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--bg);
+    box-shadow: 0 1px 3px rgba(43, 37, 32, 0.06);
+  }
+  .etude-choice:active:not(:disabled) {
+    transform: scale(0.99);
+  }
+  .etude-choice:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-choice:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+  .etude-choice-label {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text);
+  }
+  .etude-choice-letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    background: var(--line);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    transition: background 180ms ease, color 180ms ease;
+    flex-shrink: 0;
+  }
+  .etude-choice:hover:not(:disabled) .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .etude-choice-picked {
+    opacity: 1;
+    border-color: var(--accent);
+    background: rgba(138, 52, 32, 0.06);
+  }
+  .etude-choice-picked .etude-choice-letter {
+    background: var(--accent);
+    color: var(--bg);
+  }
+  .etude-choice-correct {
+    opacity: 1;
+    border-color: #2d7a3e;
+    background: rgba(45, 122, 62, 0.05);
+  }
+  .etude-choice-correct .etude-choice-letter {
+    background: #2d7a3e;
+    color: white;
+  }
+  .etude-choice-picked.etude-choice-correct {
+    background: rgba(45, 122, 62, 0.1);
+  }
+
+  /* === verdict === */
+  .etude-feedback:not(:empty) {
+    margin-top: 1.25rem;
+  }
+  .etude-verdict {
+    border-top: 1px solid var(--line);
+    padding-top: 1.1rem;
+  }
+  .etude-verdict-label {
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin: 0 0 0.55rem;
+  }
+  .etude-verdict-right .etude-verdict-label { color: #2d7a3e; }
+  .etude-verdict-partial .etude-verdict-label { color: #b87333; }
+  .etude-verdict-wrong .etude-verdict-label { color: var(--accent); }
+  .etude-verdict-text {
+    margin: 0 0 1.25rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  /* === next button === */
+  .etude-next {
+    appearance: none;
+    -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem;
+    min-height: 2.75rem;
+    border: none;
+    background: var(--text);
+    color: var(--bg);
+    border-radius: 999px;
+    cursor: pointer;
+    transition: background 180ms ease, transform 120ms ease;
+  }
+  .etude-next:hover {
+    background: var(--accent);
+  }
+  .etude-next:active {
+    transform: scale(0.97);
+  }
+  .etude-next:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+  .etude-next::after {
+    content: ' →';
+  }
+
+  /* === score === */
+  .etude-card-score {
+    text-align: left;
+  }
+  .etude-score-headline {
+    font-family: var(--serif-display);
+    font-size: 2rem;
+    line-height: 1.1;
+    margin: 0 0 0.85rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-score-fraction {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .etude-score-divider {
+    color: var(--muted);
+    font-weight: 400;
+    margin: 0 0.05em;
+  }
+  .etude-score-mix {
+    margin: 0 0 1rem;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-family: var(--sans);
+    letter-spacing: 0.04em;
+  }
+  .etude-score-detail {
+    margin: 0 0 1.5rem;
+    line-height: 1.6;
+    color: var(--text);
+    font-style: italic;
+  }
+
+  /* === coda === */
+  .etude-coda {
+    margin: 2.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .etude-coda p {
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .etude-card-title { font-size: 1.3rem; }
+    .etude-card-context { font-size: 1rem; }
+    .etude-choice { padding: 0.75rem 0.85rem; }
+  }
 </style>
