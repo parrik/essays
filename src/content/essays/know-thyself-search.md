@@ -204,7 +204,7 @@ The bet is testable. More to follow.
 
 ---
 
-*Same shape, smaller scale — applied to a self. **[Part III — Security was never about response →](/puzzles/security-was-never-about-response/)***
+*Same shape, smaller scale — applied to a self. **[Part III — Security was never about response →](/puzzles/know-thyself-security/)***
 
 [^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004); [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013); [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on the scientific case.
 
