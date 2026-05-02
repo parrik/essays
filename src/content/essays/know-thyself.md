@@ -2,7 +2,7 @@
 title: A self was never flat
 seriesName: Know Thyself
 subtitle: A schema for personal memory in LLM conversations
-relief: Not what you said six times. What you did, dated and bounded.
+relief: You are not what you said six times. You are what you did, dated and bounded.
 kicker: Method
 tag: essay
 order: 0
