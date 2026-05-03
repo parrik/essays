@@ -33,7 +33,7 @@ Skip that constraint and the work fans out into a cascade. A platform team launc
 
 ## What the failure costs
 
-Sit in that seat for thirty seconds. An engineer staring at a PR they can't read, written by someone they don't know, in a repo they don't own.
+Sit in that seat for thirty seconds. An engineer staring at a PR they can't read, written by someone they don't know, in a repo they own but don't have context for.
 
 ## The dead zone
 
