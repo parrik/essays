@@ -316,5 +316,17 @@
       "body": "Same shape, different domain — context-in-hand for the human in the loop, applied to org-scale change.",
       "href": "/puzzles/the-campaign-cascade/"
     }
-  ]
+  ],
+  "rubric": {
+    "composite": "strong",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "mid",
+      "synthesis": "strong",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "Saltzer–Schroeder + Anderson + Brooker + NIST + Burns + Shortridge — every citation does argument work, none decorative. The synthesis claim is small and honestly attributed: \"the extension this essay puts down is that sweeps are gates too.\" Named, narrow, true.",
+    "soft": "Alex's \"personal site\" scaffold is thin compared to Part I, where Alex's life IS the argument. The audit register and the personal register don't fuse here. The complaint is structural, not graph-completeness. Repair: thicken Alex into a real practitioner case, or remove her entirely — the argument stands without the scaffold."
+  }
 }

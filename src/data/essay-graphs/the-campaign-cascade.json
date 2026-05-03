@@ -180,5 +180,17 @@
       "body": "The know-thyself series argues the same principle — substrate must match the reader — at a different scale (personal memory in LLM conversations).",
       "href": "/puzzles/know-thyself/"
     }
-  ]
+  ],
+  "rubric": {
+    "composite": "weak-mid",
+    "scores": {
+      "grounded": "weak",
+      "tentatives": "weak",
+      "synthesis": "weak",
+      "provenance": "weak",
+      "voice": "strong"
+    },
+    "note": "Voice is the sharpest of the five essays. Graph-discipline is naked.",
+    "soft": "no citations. No acknowledgment of prior art — Google's large-scale-changes paper, Wright et al on ClangMR, monorepo-migration practice. The \"three paths\" present as exhaustive without marking the taxonomy as opinionated. By the schema the Know-Thyself series argues for, this essay should either present as opinion (no citations needed) or as analysis (citations required). Currently it presents as analysis with no citations."
+  }
 }
