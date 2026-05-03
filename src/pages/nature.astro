@@ -4,10 +4,10 @@ import { getCollection } from 'astro:content';
 
 const all = await getCollection('essays');
 const tracked = all
-  .filter(e => e.data.track === 'crossings' && !e.data.parent)
+  .filter(e => e.data.track === 'nature' && !e.data.parent)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 ---
-<Base title="crossings">
+<Base title="nature">
   <section class="intro">
     <p class="byline">Cross-domain essays. Same shape, different substrate.</p>
   </section>
