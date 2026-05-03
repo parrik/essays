@@ -208,6 +208,17 @@ const counts = nodes.reduce(
     <section id="tab-rubric" class="tab-panel" role="tabpanel">
       <p class="tab-lead">An audit of this essay against the same schema it argues for. Five dimensions: <strong>grounded</strong> (load-bearing claims cite real evidence), <strong>tentatives</strong> (speculative claims marked tentative), <strong>synthesis</strong> (credit lands honestly), <strong>provenance</strong> (the reader can verify), <strong>voice</strong> (claim leads, no hedging). Composite is the read across them.</p>
 
+      <aside class="rubric-caveat">
+        <p><strong>A high score on this rubric does not mean the essay isn't AI slop.</strong> The rubric measures the visible <em>grammar</em> of rigor — citations, marked tentatives, named synthesis attribution. AI is fluent at all of these. What the rubric cannot see: whether the load-bearing claims actually carry weight.</p>
+        <p class="rubric-caveat-sub">What actually catches slop:</p>
+        <ul class="rubric-caveat-list">
+          <li><strong>Specific mechanism.</strong> Slop says <em>"memory is bounded."</em> Real says <em>"TF-IDF on a bipartite term-document matrix is precomputed lookup, not graph-traversal."</em> The second one needed thinking.</li>
+          <li><strong>Steel-manning.</strong> Real papers fight their best opponent. Slop just says <em>"limitations include…"</em></li>
+          <li><strong>One thing the author didn't expect.</strong> Real research has a moment where the prediction broke. Slop is written from the answer backward — never has it.</li>
+        </ul>
+        <p class="rubric-caveat-honest">The rubric helps writers be disciplined. It doesn't catch slop. <strong>Calling it slop-defense is itself a tiny version of the slop it claims to fight — over-promising on form.</strong></p>
+      </aside>
+
       <article class={`rubric-card rubric-${rubric.composite}`}>
         <header class="rubric-head">
           <span class="rubric-label">composite</span>
@@ -791,6 +802,60 @@ const counts = nodes.reduce(
   .rubric-card.rubric-mid { border-left-color: #d99a4a; }
   .rubric-card.rubric-weak-mid { border-left-color: #c4763e; }
   .rubric-card.rubric-weak { border-left-color: #b85050; }
+
+  .rubric-caveat {
+    margin: -0.6rem 0 1.5rem;
+    padding: 1rem 1.15rem 1.1rem;
+    background: rgba(217, 154, 74, 0.06);
+    border-left: 2px solid rgba(217, 154, 74, 0.45);
+    border-radius: 4px;
+  }
+  .rubric-caveat p {
+    margin: 0 0 0.7rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .rubric-caveat p:last-child { margin-bottom: 0; }
+  .rubric-caveat strong {
+    color: #8a5a1a;
+    font-weight: 600;
+  }
+  .rubric-caveat em {
+    font-style: italic;
+    color: var(--text);
+  }
+  .rubric-caveat-sub {
+    margin-top: 0.4rem !important;
+    font-family: var(--sans);
+    font-size: var(--label-size) !important;
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: #8a5a1a !important;
+    font-weight: 600;
+  }
+  .rubric-caveat-list {
+    margin: 0 0 0.7rem;
+    padding-left: 1.2rem;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .rubric-caveat-list li {
+    margin: 0.4rem 0;
+  }
+  .rubric-caveat-list li strong {
+    color: var(--text);
+  }
+  .rubric-caveat-honest {
+    margin-top: 0.7rem !important;
+    padding-top: 0.7rem;
+    border-top: 1px dashed rgba(217, 154, 74, 0.35);
+    font-style: italic;
+  }
+  .rubric-caveat-honest strong {
+    font-style: normal;
+  }
 
   .rubric-head {
     display: flex;
