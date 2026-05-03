@@ -9,7 +9,7 @@ const etudesUrl = '/etudes/campaign-cascade/';
 
 type NodeType = 'synthesis' | 'citation' | 'derivation' | 'observation';
 
-const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actions } = data as {
+const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actions, rubric } = data as {
   slug: string;
   essayTitle: string;
   spineId: string;
@@ -19,6 +19,18 @@ const { slug, essayTitle, spineId, viewBox, nodes, positions, edges, eyes, actio
   edges: { from: string; to: string; kind?: string }[];
   eyes: { id: string; what: string; why: string; ground_with?: { label: string; url?: string }[] }[];
   actions: { kind: 'etude' | 'apply' | 'next'; label: string; body: string; href?: string }[];
+  rubric: {
+    composite: 'strong' | 'mid' | 'mid-weak' | 'weak-mid' | 'weak';
+    scores: {
+      grounded: 'strong' | 'mid' | 'weak';
+      tentatives: 'strong' | 'mid' | 'weak';
+      synthesis: 'strong' | 'mid' | 'mid-weak' | 'weak-mid' | 'weak';
+      provenance: 'strong' | 'mid' | 'weak';
+      voice: 'strong' | 'mid' | 'weak';
+    };
+    note: string;
+    soft?: string;
+  };
 };
 
 const subtitle = "The essay's knowledge, dashboard-shaped — graph, eyes, actions. The graph is the source of truth; the prose follows.";
@@ -56,6 +68,7 @@ const counts = nodes.reduce(
       <button type="button" data-tab="graph" class="active" role="tab" aria-selected="true">Graph</button>
       <button type="button" data-tab="eyes" role="tab" aria-selected="false">Eyes <span class="tab-count">{eyes.length}</span></button>
       <button type="button" data-tab="actions" role="tab" aria-selected="false">Actions <span class="tab-count">{actions.length}</span></button>
+      <button type="button" data-tab="rubric" role="tab" aria-selected="false">Rubric</button>
     </nav>
 
     <section id="tab-graph" class="tab-panel active" role="tabpanel">
@@ -192,6 +205,35 @@ const counts = nodes.reduce(
       </div>
     </section>
 
+    <section id="tab-rubric" class="tab-panel" role="tabpanel">
+      <p class="tab-lead">An audit of this essay against the same schema it argues for. Five dimensions: <strong>grounded</strong> (load-bearing claims cite real evidence), <strong>tentatives</strong> (speculative claims marked tentative), <strong>synthesis</strong> (credit lands honestly), <strong>provenance</strong> (the reader can verify), <strong>voice</strong> (claim leads, no hedging). Composite is the read across them.</p>
+
+      <article class={`rubric-card rubric-${rubric.composite}`}>
+        <header class="rubric-head">
+          <span class="rubric-label">composite</span>
+          <span class={`rubric-composite rubric-composite-${rubric.composite}`}>{rubric.composite.replace('-', ' / ').toUpperCase()}</span>
+        </header>
+
+        <div class="rubric-scores">
+          {(['grounded', 'tentatives', 'synthesis', 'provenance', 'voice'] as const).map((dim) => (
+            <div class={`rubric-score rubric-score-${rubric.scores[dim]}`}>
+              <span class="rubric-dim">{dim}</span>
+              <span class="rubric-val">{rubric.scores[dim]}</span>
+            </div>
+          ))}
+        </div>
+
+        <p class="rubric-note">{rubric.note}</p>
+
+        {rubric.soft && (
+          <div class="rubric-soft">
+            <p class="rubric-soft-label">Soft spot · repair</p>
+            <p class="rubric-soft-body">{rubric.soft}</p>
+          </div>
+        )}
+      </article>
+    </section>
+
     <PuzzleGraphNodeDrawer />
   </article>
 </Base>
@@ -211,7 +253,7 @@ const counts = nodes.reduce(
     });
   });
 
-  // Deep-link via hash: #tab-eyes / #tab-actions / #tab-graph
+  // Deep-link via hash: #tab-eyes / #tab-actions / #tab-rubric / #tab-graph
   const hash = window.location.hash.replace('#', '');
   if (hash.startsWith('tab-')) {
     const name = hash.slice(4);
@@ -737,12 +779,111 @@ const counts = nodes.reduce(
     font-size: 0.95rem;
   }
 
+  /* === Rubric tab — schema applied to the essay itself === */
+  .rubric-card {
+    background: var(--bg-soft);
+    border-radius: 10px;
+    padding: 1.25rem 1.35rem;
+    border-left: 3px solid var(--accent);
+  }
+  .rubric-card.rubric-strong { border-left-color: #6db38a; }
+  .rubric-card.rubric-mid { border-left-color: #d99a4a; }
+  .rubric-card.rubric-weak-mid { border-left-color: #c4763e; }
+  .rubric-card.rubric-weak { border-left-color: #b85050; }
+
+  .rubric-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.85rem;
+    margin: 0 0 1rem;
+    flex-wrap: wrap;
+  }
+  .rubric-label {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  .rubric-composite {
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    border-radius: 5px;
+    white-space: nowrap;
+  }
+  .rubric-composite-strong { background: rgba(109, 179, 138, 0.16); color: #2f6b48; }
+  .rubric-composite-mid { background: rgba(217, 154, 74, 0.18); color: #8a5a1a; }
+  .rubric-composite-weak-mid { background: rgba(196, 118, 62, 0.18); color: #8a3a1a; }
+  .rubric-composite-mid-weak { background: rgba(196, 118, 62, 0.18); color: #8a3a1a; }
+  .rubric-composite-weak { background: rgba(184, 80, 80, 0.18); color: #8a2424; }
+
+  .rubric-scores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin: 0 0 1.1rem;
+  }
+  .rubric-score {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    background: var(--bg);
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.78rem;
+  }
+  .rubric-score .rubric-dim { color: var(--muted); }
+  .rubric-score .rubric-val { font-weight: 600; }
+  .rubric-score-strong .rubric-val { color: #2f6b48; }
+  .rubric-score-mid .rubric-val { color: #8a5a1a; }
+  .rubric-score-weak-mid .rubric-val,
+  .rubric-score-mid-weak .rubric-val { color: #8a3a1a; }
+  .rubric-score-weak .rubric-val { color: #8a2424; }
+
+  .rubric-note {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text);
+    font-size: 0.96rem;
+  }
+
+  .rubric-soft {
+    margin-top: 1.1rem;
+    padding: 0.9rem 1rem;
+    background: rgba(217, 154, 74, 0.08);
+    border-left: 2px solid rgba(217, 154, 74, 0.45);
+    border-radius: 4px;
+  }
+  .rubric-soft-label {
+    margin: 0 0 0.4rem;
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: #8a5a1a;
+    font-weight: 600;
+  }
+  .rubric-soft-body {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--text);
+    font-size: 0.92rem;
+    white-space: pre-wrap;
+  }
+
   @media (max-width: 32rem) {
     .dash-title { font-size: 1.5rem; }
     .tabbar { width: 100%; justify-content: space-between; }
     /* min-height is inherited from the base .tabbar button rule (44px),
        so even with tighter horizontal padding the tap target holds. */
     .tabbar button { padding: 0.55rem 0.7rem; font-size: 0.85rem; }
-    .graph-node, .eyes-item, .actions-item { padding: 0.85rem 0.95rem; }
+    .graph-node, .eyes-item, .actions-item, .rubric-card { padding: 0.85rem 0.95rem; }
   }
 </style>

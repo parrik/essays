@@ -327,5 +327,17 @@
       "body": "Know-thyself Part I argues the same shape at memory scale — flat memory partitions claims from their evidence the way braced fascia partitions tissue from signal.",
       "href": "/puzzles/know-thyself/"
     }
-  ]
+  ],
+  "rubric": {
+    "composite": "strong",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "strong",
+      "synthesis": "strong",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "The HRV–inflammation–cancer-permissive bridge is named explicitly as the author's synthesis across three literatures. Hanahan & Weinberg, Sonnenschein & Soto, McCarthy, Schleip, Stecco, Porges, Williams et al — every citation does load-bearing argument work. Porges is cited with its phylogenetic challenges, not whitewashed. The fascia–cancer \"partition dynamic\" bridge is handled as analogy, not isomorphism — the language signals the move.",
+    "soft": ""
+  }
 }

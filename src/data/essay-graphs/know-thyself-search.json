@@ -472,5 +472,17 @@
       "body": "Same shape, third surface. Security as gates at boundaries — the same deny-by-default, type-first pattern applied to a different domain.",
       "href": "/puzzles/know-thyself-security/"
     }
-  ]
+  ],
+  "rubric": {
+    "composite": "mid",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "mid",
+      "synthesis": "mid-weak",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "Citation density is high; argument density is not always behind it. Three failures by audit-knife standards.",
+    "soft": "1. \"Four scales of the same shape\" sells as structural isomorphism. It is metaphorical. Scale 1 (TF-IDF on a bipartite term-doc matrix) is precomputed lookup, not graph-traversal in the same sense as Scale 2/3. The essay treats metaphor as structural. Synthesis overclaim.\n\n2. The three rewrites of McCarthy for personal scale (valid_at, inverted edge-density, K-without-A) are derived from one graph. By the essay's own schema they should be tentative-marked novels until cross-confirmed. They are presented as confirmed.\n\n3. The four-claims stack (Miller, Cowan, Simon, Shannon, Codd) is partially decorative. Codd's relational model = \"graph construction\" is a metaphorical leap doing register-work, not load-bearing argument-work.\n\nRepair: mark the personal-graph rewrites as tentative; soften \"same shape across scales\" to \"same shape across the graph-walking scales (2–4)\"; cut the decorative citations."
+  }
 }

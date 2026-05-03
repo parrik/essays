@@ -375,5 +375,17 @@
       "body": "How to run a cross-cutting campaign — the same structural argument (substrate must match the reader) at org scale instead of memory scale.",
       "href": "/puzzles/the-campaign-cascade/"
     }
-  ]
+  ],
+  "rubric": {
+    "composite": "strong",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "strong",
+      "synthesis": "strong",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "Tight on every dimension. MIT/Penn State CHI 2026 sycophancy study, CoALA, Karpathy's LLM Wiki, Memanto, McCarthy's edge vocabulary, Tulving, Anthropic memory tool, Park et al — citations are real and load-bearing. The Novel type is itself the embodiment of marking-tentative; the schema enacts its own discipline.",
+    "soft": "the opening claim — \"a model's memory is a list — bullets, facts\" — generalizes from ChatGPT-style memory to all LLM memory. False of Memanto, Mem0, Graphiti, A-Mem. The argument doesn't need the generalization. Specify \"ChatGPT's persistent memory\" and the precision rises without losing the move."
+  }
 }
