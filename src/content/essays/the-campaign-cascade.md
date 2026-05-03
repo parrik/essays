@@ -31,10 +31,6 @@ Skip that constraint and the work fans out into a cascade. A platform team launc
 
 **Enable completely.** Don't do the work for other teams. Tell each team the next action to take and give them the knowledge to do it: a migration guide, known gotchas, estimated effort, a clear owner to ask. The team builds the PR themselves. *Why it works:* the human in the loop has full context because they wrote the change. *Tradeoff:* hard to scale; works best with strong team autonomy.
 
-## What the failure costs
-
-Sit in that seat for thirty seconds. An engineer staring at a PR they can't read, written by someone they don't know, in a repo they own but don't have context for.
-
 ## The dead zone
 
 The pattern fails in the middle: you do the work for the team (create the PR) but stop short of finishing it (require them to merge).
