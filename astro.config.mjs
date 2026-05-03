@@ -14,8 +14,9 @@ export default defineConfig({
     // Memory essay was retired; old URL still bounces to the next sibling in the series.
     '/essays/memory-was-never-about-storage/': '/puzzles/know-thyself-security/',
     '/puzzles/memory-was-never-about-storage/': '/puzzles/know-thyself-security/',
-    // Earlier section rename.
-    '/side-channels/': '/crossings/',
+    // Earlier section renames.
+    '/side-channels/': '/nature/',
+    '/crossings/': '/nature/',
   },
   markdown: {
     // Light syntax theme so code blocks sit on the cream palette,

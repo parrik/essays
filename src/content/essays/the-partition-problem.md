@@ -2,7 +2,7 @@
 title: The Partition Problem
 subtitle: Restorative Yoga and the Biology of Belonging
 tag: essay
-track: crossings
+track: nature
 order: 2
 description: A cancer cell is not a broken cell. It has lost context.
 publishedAt: 2026-04-21
