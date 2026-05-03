@@ -96,6 +96,15 @@ main {
   opacity: 0.7;
 }
 
+.footer-byline {
+  margin: 0 0 1rem;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-style: italic;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
 h1 {
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: 500;
@@ -282,26 +291,13 @@ a:hover { text-decoration-color: var(--accent); }
 .series-part:hover .part-name { color: var(--accent); }
 
 /* Muted parts (II onward in a series). Topics in motion — show title
-   + description but not clickable as a whole. A small "read draft →"
-   link gives readers an explicit opt-in path.
-
-   Opacity is applied to the dim-bearing children (not the parent) so
-   the read-draft affordance can stay fully legible. */
+   + description but not clickable. Drafts are visible-but-quiet
+   acknowledgments that more is coming, with no opt-in path. */
 .series-part-muted { cursor: default; }
 .series-part-muted .part-num,
 .series-part-muted .part-name,
 .series-part-muted .part-description { opacity: 0.5; }
 .series-part-muted .part-name { font-weight: 400; }
-
-.read-draft {
-  font-size: 0.72rem;
-  font-style: italic;
-  color: var(--muted);
-  text-decoration: none;
-  white-space: nowrap;
-  transition: color 140ms;
-}
-.read-draft:hover { color: var(--accent); }
 
 /* Per-row right-side meta — "a series · tending" / "evergreen". */
 .essay-row {

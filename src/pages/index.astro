@@ -31,9 +31,7 @@ for (const arr of childrenByParent.values()) {
 const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 ---
 <Base title="parrik">
-  <section class="intro">
-    <p class="byline">Love is the willingness to stay with something until it starts to show its patterns.</p>
-  </section>
+  <p slot="footer-extra" class="footer-byline">Love is the willingness to stay with something until it starts to show its patterns.</p>
   <section class="essays">
     <h2>puzzle-shape problems</h2>
     <ul>
@@ -95,13 +93,7 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
                       <span class="part-num">Part {ROMAN[i]}</span>
                       <span class="part-body">
                         <span class="part-name">{p.data.title}</span>
-                        {desc ? (
-                          <span class="part-description">
-                            {desc}{' '}<a href={`/puzzles/${p.id}/`} class="read-draft">read draft →</a>
-                          </span>
-                        ) : (
-                          <a href={`/puzzles/${p.id}/`} class="read-draft">read draft →</a>
-                        )}
+                        {desc && <span class="part-description">{desc}</span>}
                       </span>
                     </div>
                   </li>
