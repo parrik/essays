@@ -112,6 +112,15 @@ The academic frame for memory-with-types is already named. Sumers, Yao, Narasimh
 
 <div class="type-card">
   <p class="type-card-head">
+    <span class="type-card-name">Practice</span>
+    <span class="type-card-tagline">a rule the graph earned</span>
+  </p>
+  <p class="type-card-meaning">An operating rule derived from a descriptive node, not pulled from the air. A practice without a pattern beneath it belongs in goals or actions, not here. The trace from <em>this is the shape</em> to <em>therefore this is the rule</em> is what keeps the rule honest.</p>
+  <p class="type-card-example"><em>Sunday 8–10am is protected for the running group. No work events, no family scheduling.</em> The rule lands only after the running pattern is clear and the intersection node makes the stakes legible — protecting the routine is not self-indulgence, it is operational infrastructure for everyone downstream of Alex.</p>
+</div>
+
+<div class="type-card">
+  <p class="type-card-head">
     <span class="type-card-name">Open</span>
     <span class="type-card-tagline">the unanswered, kept first-class</span>
   </p>
@@ -151,13 +160,15 @@ Nine months in, Alex's graph has shape. A few dozen nodes, each carrying its own
 
 A typed graph with provenance can tell you things you never said.
 
-## Why the schema outlasts the model
+## What outlasts the model
 
-Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is.
+Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is. The primitive landed in shipped infrastructure this month: Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph lives there as a file; graph operations are text-edits against the YAML.[^managed-memory]
 
-The primitive landed in shipped infrastructure this month. Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph lives there as a file; graph operations are text-edits against the YAML.[^managed-memory]
+But the schema's structural work is dissolving into model capability. Hand a current frontier model a year of raw journal text and it will identify the entities, attribute claims to their sources, weight confidence by how each source is framed, surface provenance chains on demand. The typing the graph was doing is now an inference-time operation. Per-node, Alex's hand-curated graph is more reliable than what a model would synthesize from her notes alone — because she chose what landed there. But the *capability* of producing typed-with-provenance structure from messy text is no longer scarce.
 
-The edges have a vocabulary too. McCarthy's open-knowledge-graph schema names them: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs.
+Which means the durable thing is not the schema. It is the discipline of refusing to let the model write the graph. The rule that a novel waits for a second observation. The willingness to leave *open* questions open. The provenance chain Alex can stand behind in front of another human. Models will do the typing; what they cannot do, and should not be allowed to do, is decide what counts as Alex's own claim about Alex. The schema is the trace of the practice, not the product.
+
+The vocabulary is what travels. McCarthy's open-knowledge-graph schema names the edges: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The legend's solid and dotted lines are two of those — `grounds` and `derives_from`. The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs. Shared vocabulary is what lets two people compare disciplines.
 
 Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
