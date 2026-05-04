@@ -28,6 +28,7 @@ const essays = defineCollection({
     // gets hidden from the top-level homepage list. Linked from the parent
     // essay instead. Value is the parent essay's id/slug.
     parent: z.string().optional(),
+    draft: z.boolean().optional(),
     // Freshness metadata — enables "last tended" signals without chrome.
     publishedAt: z.coerce.date().optional(),
     updatedAt: z.coerce.date().optional(),

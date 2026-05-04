@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const all = await getCollection('essays');
+const all = (await getCollection('essays')).filter(e => !e.data.draft);
 const tracked = all
   .filter(e => e.data.track === 'nature' && !e.data.parent)
   .sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
