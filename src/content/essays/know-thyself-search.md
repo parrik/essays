@@ -185,7 +185,7 @@ The bet is testable.
 
 *Same shape, smaller scale — applied to a self. **[Part III — Security was never about response →](/puzzles/know-thyself-security/)***
 
-[^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2004); [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013); [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on the scientific case.
+[^triplet]: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2014); [PROV-O](https://www.w3.org/TR/prov-overview/) (W3C, 2013); [Anthropic's Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations); [McCarthy's open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on the scientific case.
 
 [^bounded]: [Miller 1956](https://psychclassics.yorku.ca/Miller/); [Cowan 2001](https://doi.org/10.1017/S0140525X01003922); [Simon's bounded rationality](https://www.jstor.org/stable/1884852); [Shannon's source coding theorem](https://people.math.harvard.edu/~ctm/home/text/others/shannon/entropy/entropy.pdf); [Codd's relational model](https://dl.acm.org/doi/10.1145/362384.362685).
 
@@ -203,11 +203,11 @@ The bet is testable.
 
 [^pinecone]: Pinecone, [*HNSW*](https://www.pinecone.io/learn/series/faiss/hnsw/) — when graph indexes earn their keep over linear scan.
 
-[^exa-ships]: Exa, [*Exa Deep*](https://exa.ai/blog/exa-deep) and [*exa-code*](https://exa.ai/blog/exa-code) (2026); MarkTechPost, [*Exa AI Introduces Exa Instant*](https://www.marktechpost.com/2026/02/13/exa-ai-introduces-exa-instant-) (Feb 2026).
+[^exa-ships]: Exa, [*Exa Deep*](https://exa.ai/blog/exa-deep) and [*exa-code*](https://exa.ai/blog/exa-code) (2026); MarkTechPost, [*Exa AI Introduces Exa Instant*](https://www.marktechpost.com/2026/02/13/exa-ai-introduces-exa-instant-a-sub-200ms-neural-search-engine-designed-to-eliminate-bottlenecks-for-real-time-agentic-workflows/) (Feb 2026).
 
 [^mcp-lf]: The New Stack, [*Model Context Protocol Roadmap 2026*](https://thenewstack.io/model-context-protocol-roadmap-2026/) — MCP donated to the Linux Foundation, December 2025.
 
-[^turnbull-metadata]: Doug Turnbull, [*Metadata: the 3rd kind of retrieval*](https://softwaredoug.com/blog/2026/04/21/metadata-the-3rd-kind-of-retrieval) (Apr 21 2026).
+[^turnbull-metadata]: Doug Turnbull, [*Metadata: the 3rd kind of retrieval*](https://softwaredoug.com/blog/2026/04/21/metadata-the-3rd-kind-of-retrieval.html) (Apr 21 2026).
 
 [^turnbull-agents]: Doug Turnbull, [*Can agents replace the search stack?*](https://softwaredoug.com/blog/2026/04/28/search-apis-replaced-by-agents.html) (Apr 28 2026).
 
