@@ -5,15 +5,16 @@ export default defineConfig({
   redirects: {
     // Old /essays/ prefix → new /puzzles/ prefix.
     '/essays/know-thyself/': '/puzzles/know-thyself/',
-    '/essays/know-thyself-search/': '/puzzles/know-thyself-search/',
     '/essays/the-campaign-cascade/': '/puzzles/the-campaign-cascade/',
     '/essays/the-partition-problem/': '/puzzles/the-partition-problem/',
-    // Pt III renamed to follow the series-slug pattern.
-    '/essays/security-was-never-about-response/': '/puzzles/know-thyself-security/',
-    '/puzzles/security-was-never-about-response/': '/puzzles/know-thyself-security/',
-    // Memory essay was retired; old URL still bounces to the next sibling in the series.
-    '/essays/memory-was-never-about-storage/': '/puzzles/know-thyself-security/',
-    '/puzzles/memory-was-never-about-storage/': '/puzzles/know-thyself-security/',
+    // Parts II and III are drafts — bounce old URLs to Part I rather than 404.
+    '/essays/know-thyself-search/': '/puzzles/know-thyself/',
+    '/puzzles/know-thyself-search/': '/puzzles/know-thyself/',
+    '/essays/security-was-never-about-response/': '/puzzles/know-thyself/',
+    '/puzzles/security-was-never-about-response/': '/puzzles/know-thyself/',
+    '/puzzles/know-thyself-security/': '/puzzles/know-thyself/',
+    '/essays/memory-was-never-about-storage/': '/puzzles/know-thyself/',
+    '/puzzles/memory-was-never-about-storage/': '/puzzles/know-thyself/',
     // Earlier section renames.
     '/side-channels/': '/nature/',
     '/crossings/': '/nature/',

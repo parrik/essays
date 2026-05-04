@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const all = await getCollection('essays');
+const all = (await getCollection('essays')).filter(e => !e.data.draft);
 
 // Every essay is a work-in-progress at some stage of development —
 // seedling / tending / evergreen are stages of the same artifact, not

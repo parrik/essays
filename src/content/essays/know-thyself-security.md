@@ -6,6 +6,7 @@ kicker: Method
 tag: essay
 order: 2
 parent: know-thyself
+draft: true
 publishedAt: 2026-04-30
 description: Gates fire on action; sweeps fire on cadence. Both are inside security. Response — what fires when verification fails — is a different discipline.
 ---
