@@ -35,7 +35,7 @@ Skip that constraint and the work fans out into a cascade. A platform team launc
 
 The pattern fails in the middle: you do the work for the team (create the PR) but stop short of finishing it (require them to merge).
 
-**No automation. No vertical ownership. No enablement.** A human in the loop with no context. Campaigns stall here. The cascade starts here.
+**No automation. No vertical ownership. No enablement.** A human in the loop with no incentive to acquire the context. Campaigns stall here. The cascade starts here.
 
 ---
 
