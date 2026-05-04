@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { getCollection } from 'astro:content';
 
-const all = (await getCollection('essays')).filter(e => !e.data.draft);
+const all = await getCollection('essays');
 
 // Every essay is a work-in-progress at some stage of development —
 // seedling / tending / evergreen are stages of the same artifact, not
@@ -11,7 +11,12 @@ const all = (await getCollection('essays')).filter(e => !e.data.draft);
 // the reader can see *Planted ... · seedling* or *... · tending* and
 // know what they are reading. The homepage's job is to show the
 // structure of the body of work.
-const topLevel = all.filter(e => !e.data.parent && !e.data.track);
+//
+// Drafts: filtered out of top-level entries, kept as children. A draft
+// shouldn't appear as a standalone homepage card, but a draft Part II/III
+// of a series the reader can already see is coming should still render
+// muted under its parent.
+const topLevel = all.filter(e => !e.data.parent && !e.data.track && !e.data.draft);
 topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
 
 // Build a parent-id → ordered children map. Children include all
