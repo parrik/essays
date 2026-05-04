@@ -36,11 +36,11 @@ Search has always been one shape: **find relevant nodes by walking edges, ranked
 
 **Scale 3 — Typed knowledge graph.** A node is no longer a document. It's a *claim*. Edges are no longer "links to" — they're labelled. *Grounds.* *Derives from.* *Evidences.* *Contradicts.* The labels do retrieval work. They let the walk distinguish *I said this five times* from *independently grounded twice.* The query stops being a string and becomes a predicate — a structured request for a kind of node. Reader: a self, or an agent on behalf of one. Format: node plus provenance plus neighborhood.
 
-**Scale 4 — AI-native search.** The agent doesn't type. It describes. The query is a sentence shaped like the answer — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on the way documents *get cited.* Filtering separates from ranking and runs first; the index throws out the wrong types before scoring the rest. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
+**Scale 4 — AI-native search.** The agent doesn't type. It describes. The query is a sentence shaped like the answer — *"Here is a great article about LLM evaluation:"* outperforms *"LLM evaluation"* because the embedding was trained on the way documents *get linked.* Filtering separates from ranking and runs first; the index throws out the wrong types before scoring the rest. Ranking shifts from popularity to comprehensiveness, recency, type-correctness, provenance-strength. Reader: an agent with a token budget. Format: atomic chunks with provenance — `{title, url, score, publishedDate, author, text, highlights[]}` — every field stitches into the answer.
 
 *The retriever now spawns retrievers.* Exa's Feb–Mar 2026 ships make the shift legible: Exa Instant returns neural results in under 200ms — fast enough to sit inside a tool-call loop — while Exa Deep fans out parallel sub-agents per query, and exa-code maintains a code-example index aimed at hallucination-rate reduction.[^exa-ships]
 
-*Search is no longer a URL. It's a tool a model calls.* In December 2025, Anthropic donated the Model Context Protocol — MCP, the open standard that lets a model invoke external tools and data sources — to the Linux Foundation; the substrate beneath agent retrieval is now governed as shared infrastructure, not a vendor API.[^mcp-lf]
+*Search is no longer a URL. It's a tool a model calls.* In December 2025, Anthropic donated the Model Context Protocol — MCP, the open standard that lets a model invoke external tools and data sources — to the Agentic AI Foundation, a directed fund under the Linux Foundation co-founded with OpenAI and Block; the substrate beneath agent retrieval is now governed as shared infrastructure, not a vendor API.[^mcp-lf]
 
 All four *find relevant nodes by walking edges.* What changes is node spec, edge spec, query format, who's at the other end.
 
@@ -65,7 +65,7 @@ Three substrates share the constraint: biological working memory, institutional 
 
 The race to longer windows — 200K, 1M, 10M — is real progress and a confession the substrate hasn't been chosen. Self-attention's O(n²) is the cost of no stored structure. A graph stores dependencies once, walks them many times. The limit isn't tokens; it's untyped flatness.
 
-The labs split. Anthropic ships [MCP](https://www.anthropic.com/news/model-context-protocol) — first reference server is a [knowledge-graph CRUD API](https://github.com/modelcontextprotocol/servers/tree/main/src/memory). OpenAI ships [memory](https://openai.com/index/memory-and-new-controls-for-chatgpt/) — extracted typed claims, not turns. Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) — the maximalist path McCarthy names inefficient. The academic line — memory streams,[^genagents] MemGPT,[^memgpt] HippoRAG,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem)[^amem] — converges: the graph isn't a feature; it's where memory lives.
+The labs split. Anthropic ships [MCP](https://www.anthropic.com/news/model-context-protocol) — its canonical memory reference server is a [knowledge-graph CRUD API](https://github.com/modelcontextprotocol/servers/tree/main/src/memory). OpenAI ships [memory](https://openai.com/index/memory-and-new-controls-for-chatgpt/) — extracted facts and per-conversation summaries injected into context, not raw turns. Google ships [million-token contexts](https://blog.google/technology/ai/google-gemini-next-generation-model-february-2024/) — the maximalist path McCarthy names inefficient. The academic line — memory streams,[^genagents] MemGPT,[^memgpt] HippoRAG,[^hipporag] [A-Mem](https://github.com/agiresearch/A-mem)[^amem] — converges: the graph isn't a feature; it's where memory lives.
 
 ## What the publisher ships
 
@@ -78,7 +78,7 @@ The four scales describe the retriever. The retriever is half the system. Each r
 | 3 — Typed knowledge graph | typed claims with provenance | JSON-LD, schema.org, structured citations |
 | 4 — AI-native search | atomic chunks with provenance | `llms.txt`, per-essay `.md`, MCP, `/graph.json` |
 
-TF-IDF needed publishers to write words. PageRank needed publishers to link. Vector retrieval needed publishers to write declaratively — *the page had to look like the answer*, because the embedding was trained on the way documents got cited. Each generation pushed cognitive work *back upstream* — from the search engine to the writer.
+TF-IDF needed publishers to write words. PageRank needed publishers to link. Vector retrieval needed publishers to write declaratively — *the page had to look like the answer*, because the embedding was trained on the way documents got linked. Each generation pushed cognitive work *back upstream* — from the search engine to the writer.
 
 Agent-native search continues the trend, harder. Where Scale 2 wanted prose-shaped-like-an-answer, Scale 4 wants the answer *typed*: claim, evidence, provenance, neighbors, valid-when. **The smallest unit of publishing has changed from "a page with words" to "a node in a typed graph."**[^llmstxt][^llms-full]
 
@@ -151,7 +151,7 @@ Same shape across scales, build once:
 - **Surface:** MCP server — `search_graph` / `get_node` / `walk_provenance` / `list_node_stats` over stdio; any MCP client (Claude Code, Claude Desktop, Cursor) queries natively. **Shipped Apr 2026.**
 - **Next bottleneck:** sub-statement chunking. Long observation nodes accumulate dated sub-sections; whole-statement single-vector dilutes new content. Etude queued.
 
-Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
+Adjacent work names pieces without the cross-scale claim. Bryk's [*Why Google Search Sucks for AI*](https://jxnl.co/writing/2025/09/11/why-google-search-sucks-for-ai-will-bryk-exa/) on Scale 4. Lù et al.'s [*Build the Web for Agents*](https://arxiv.org/abs/2506.10953) one level up. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) on Scale 3. Personal-memory siblings — [Mem0](https://github.com/mem0ai/mem0), [Graphiti](https://github.com/getzep/graphiti), [Letta](https://github.com/letta-ai/letta), [HippoRAG](https://github.com/OSU-NLP-Group/HippoRAG), [A-Mem](https://github.com/agiresearch/A-mem) — converge on structured memory beyond turn-shaped buffers, with [Graphiti](https://github.com/getzep/graphiti) the closest to typed-node-with-provenance. Frameworks like LangChain / LlamaIndex treat memory as conversation-shaped (buffer, summary, vector-of-turns). Graph-shaped projects treat it as person-shaped. Conversation primitive falls under McCarthy's Theorem 4 — flat substrates degrade as bounded readers scan them. Person-shaped survives.
 
 ## Postscript — DeepSeek V4 (Apr 26 2026)
 
@@ -173,11 +173,11 @@ The full scaffold is three retrieval modes, ~300 LOC, runnable on a laptop: **[g
 
 This is the loop the first essay opened and this one closes. Personal-memory and AI-search-for-agents are the same problem at different scales.
 
-γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was offered to visitors before they consulted the oracle. Being legible to the oracle was the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
+γνῶθι σεαυτόν. *Know thyself.* The Delphic maxim was inscribed in the forecourt of the temple of Apollo, where visitors entered before consulting the oracle. Being legible to the oracle was, in this reading, the precondition for being understood. The oracle's bandwidth was finite; the visitor's wasn't.
 
 **The retrieval problem hasn't changed in two and a half millennia. The reader has.**
 
-*Agents help when you know what you're looking for. They don't help when you don't.* Turnbull's Apr 28 2026 post sharpens the limit: agents add value on entity-discovery — finding a thing whose shape is named — and add nothing on information-discovery, because *if it knew what information was correct, it wouldn't need search.*[^turnbull-agents]
+*Agents help when you know what you're looking for. They don't help when you don't.* Turnbull's Apr 28 2026 post sharpens the limit: agents add value on entity-discovery — finding a thing whose shape is named — and add nothing on information-discovery, because if the agent already knew which information was correct, it wouldn't need search.[^turnbull-agents]
 
 The bet is testable.
 

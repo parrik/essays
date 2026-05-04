@@ -52,7 +52,7 @@ A model's memory is a list — bullets, facts, things you said that carried weig
 
 After the mirror problem, Alex wanted a memory that could not do this. Not a more careful model — a memory whose shape made repetition-as-evidence structurally impossible. The answer: the memory had to have types.
 
-The academic frame for memory-with-types is already named. Sumers, Yao, Narasimhan, and Griffiths's *Cognitive Architectures for Language Agents* (2023) carves agent memory into working, episodic, semantic, and procedural.[^coala] The eight types here are an opinionated refinement of the semantic side — what makes a claim about a person earn standing.
+The academic frame for memory-with-types is already named. Sumers, Yao, Narasimhan, and Griffiths's *Cognitive Architectures for Language Agents* (2023) carves agent memory into working, episodic, semantic, and procedural.[^coala] The eight types here keep that split — *Observation* is the episodic type; the other seven sit on the semantic side — and refine the semantic side around one question: what makes a claim about a person earn standing.
 
 <div class="type-cards">
 
@@ -123,7 +123,7 @@ The academic frame for memory-with-types is already named. Sumers, Yao, Narasimh
 
 The types are the binding principle: episodic and semantic memory held in distinct stores, not collapsed.[^prior]
 
-A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and orphan pages.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches contradictions the flat list cannot. It does not fix the other drift — repetition reading as evidence — because markdown has no place to put the difference between *said* and *grounded*.
+A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on April 4 — keeps memory in plain markdown and lets the model edit itself, with a lint loop to catch contradictions and orphan pages.[^karpathy-wiki] The wiki is a real fix for one drift: the lint catches contradictions the flat list cannot, and the gist's `sources/` convention does carry per-page provenance. It does not fix the other drift — repetition reading as evidence — because there is no typed slot for *one source repeated N times* versus *N independent groundings*.
 
 ## The operating rule
 
@@ -155,7 +155,7 @@ A typed graph with provenance can tell you things you never said.
 
 Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switches models, the new one reads the graph and picks up the thread. When a model gets retired, the graph stays where it is.
 
-The primitive landed in shipped infrastructure this month. Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph drops in directly, no translation layer.[^managed-memory]
+The primitive landed in shipped infrastructure this month. Anthropic's memory tool exposes persistence as a client-side directory at `/memories` — a YAML graph lives there as a file; graph operations are text-edits against the YAML.[^managed-memory]
 
 The edges have a vocabulary too. McCarthy's open-knowledge-graph schema names them: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs.
 
@@ -163,17 +163,13 @@ Which is also the privacy story. The memory is not inside the model. It is in a 
 
 ## The thing
 
-The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was carved on the temple as advice to visitors before they consulted the oracle. The oracle is the interlocutor; know-thyself is the preparation for being understood by one.
+The Delphic maxim γνῶθι σεαυτόν — *know thyself* — was inscribed in the forecourt of the temple of Apollo, where visitors entered before consulting the oracle. The oracle is the interlocutor; know-thyself, in this reading, is the preparation for being understood by one.
 
 Whether *we* know what they know about us, and whether they know how they know it, is the only question that matters.
 
 ---
 
 *The scaffold is MIT-licensed at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)** — eight node types, provenance, validator, rendering. `START_HERE.md` walks through building a graph of your own.*
-
----
-
-***[Part II — Search was never about humans →](/puzzles/know-thyself-search/)***
 
 [^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2014), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
 
