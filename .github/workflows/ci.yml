@@ -133,6 +133,129 @@ jobs:
           done
           exit $fail
 
+  frontmatter-discipline:
+    # Per audit-knife (2026-05-02 self-audit) discipline rules #4 and #5:
+    # require `surprise` and `coAuthoredWith` frontmatter fields on
+    # non-draft essays. Forcing function for author-surprise discipline
+    # and co-authorship honesty before publish.
+    name: Essay frontmatter discipline (surprise + coAuthoredWith)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check frontmatter required fields
+        continue-on-error: true  # soft-warn until 2026-05-18; flip after calibration
+        run: node scripts/check-essay-frontmatter.mjs
+
+  pr-cooldown:
+    # Block merges on PRs that were opened less than N hours ago. Direct
+    # counter to high-merge-in-excitement: forces a deliberation gap
+    # between "opened" and "merged." Default 12h; override via the env
+    # var below for genuine emergencies.
+    name: PR-cooldown (deliberation gap)
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    env:
+      PR_COOLDOWN_HOURS: '12'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify PR has cooled
+        continue-on-error: true  # soft-warn until 2026-05-18; flip after calibration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -e
+          created_at=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq .created_at)
+          created_epoch=$(date -d "$created_at" +%s)
+          now_epoch=$(date +%s)
+          age_hours=$(( (now_epoch - created_epoch) / 3600 ))
+          required_hours=${PR_COOLDOWN_HOURS}
+          echo "PR #$PR_NUMBER opened at $created_at"
+          echo "PR age: ${age_hours}h; cooldown required: ${required_hours}h"
+          if [ "$age_hours" -lt "$required_hours" ]; then
+            remaining=$(( required_hours - age_hours ))
+            echo "::warning::PR-cooldown: only ${age_hours}h since open; ${remaining}h to go before cooldown clears."
+            exit 1
+          fi
+          echo "PR-cooldown: cleared."
+
+  slop-lint:
+    # Pre-merge gate against AI-generated-text reliability hazards on essay
+    # content. Three classes: lexical register, citation/numeric provenance,
+    # semantic LLM-judge (mechanism / steel-manning / surprise + arithmetic
+    # / contradiction). Pinned by SHA against parrik/slop-lint v0.1.0 — pin
+    # changes are deliberate cross-repo commits, not in-session edits.
+    #
+    # Soft-warn (continue-on-error: true) for calibration window
+    # 2026-05-04 → 2026-05-18. After that, promote to hard-fail by
+    # removing continue-on-error from the lexical and citations steps. The
+    # semantic step stays soft-warn longer (LLM-judge has higher false-fail
+    # potential and per-call cost; calibrate independently).
+    name: Slop-lint (lexical / citations / semantic)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # need history to compute changed files for semantic step
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install slop-lint (SHA-pinned)
+        run: npm install --no-save 'github:parrik/slop-lint#b7a73b35d5f1469e7487d94dc808a98f8d9409b3'
+
+      - name: Lexical (regex register tells)
+        continue-on-error: true
+        run: npx slop-lint lexical src/content/essays/
+
+      - name: Citations (URL resolution + numeric provenance + recency)
+        continue-on-error: true
+        run: npx slop-lint citations src/content/essays/
+
+      - name: Identify changed essay files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="${{ github.event.pull_request.base.sha }}"
+            files=$(git diff --name-only --diff-filter=AM "$base"...HEAD -- 'src/content/essays/*.md' || true)
+          else
+            # Push to main: run semantic on essays touched in the merge commit
+            files=$(git diff --name-only --diff-filter=AM HEAD~1...HEAD -- 'src/content/essays/*.md' || true)
+          fi
+          echo "files<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$files" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+          if [ -z "$files" ]; then
+            echo "no-changed-essays=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "no-changed-essays=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Semantic LLM-judge (mechanism / steel-manning / surprise + arithmetic / contradiction)
+        if: steps.changed.outputs.no-changed-essays != 'true' && env.ANTHROPIC_API_KEY != ''
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          while IFS= read -r f; do
+            [ -z "$f" ] && continue
+            echo "::group::$f"
+            npx slop-lint semantic "$f" || true
+            echo "::endgroup::"
+          done <<< "${{ steps.changed.outputs.files }}"
+
+      - name: Semantic skipped (no ANTHROPIC_API_KEY secret configured)
+        if: env.ANTHROPIC_API_KEY == ''
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: echo "::warning::ANTHROPIC_API_KEY secret not configured; semantic check skipped. Add it under repo Settings → Secrets to enable."
+
   lighthouse:
     name: Lighthouse audit (perf / a11y / best-practices / SEO)
     needs: build
