@@ -6,14 +6,19 @@ have caught it at PR time."
 
 ## The merge-gate (what has to be green before main merges)
 
-| Check | What it catches | Runs on |
-|---|---|---|
-| `astro build` | Frontmatter schema violations, broken imports, TypeScript errors | PR + push |
-| `astro check` | Content-collection schema + unused imports | PR + push |
-| **Internal link check** (lychee, internal-only) | Broken `href` to a page that doesn't exist — e.g. `/essays/know-thyself-v2/` that we actually shipped | PR + push |
-| **Stylesheet-presence guard** | Page renders without CSS because the `<link rel="stylesheet">` was omitted or the bundle was missing | PR + push |
-| **Lighthouse CI** | Perf / a11y / SEO regressions below budgets (`.lighthouserc.json`) — a11y `0.95` and SEO `0.9` are `error`-level assertions, so a regression below those thresholds fails the merge | PR + push |
-| **Post-deploy live verification** (puppeteer) | What the user actually sees is broken — e.g. the deployed CSS chunk 404s | every 6h schedule + manual |
+| Check | What it catches | Runs on | Mode |
+|---|---|---|---|
+| `astro build` | Frontmatter schema violations, broken imports, TypeScript errors | PR + push | hard-fail |
+| `astro check` | Content-collection schema + unused imports | PR + push | hard-fail |
+| **Internal link check** (lychee, internal-only) | Broken `href` to a page that doesn't exist | PR + push | hard-fail |
+| **Stylesheet-presence guard** | Page renders without CSS because the `<link rel="stylesheet">` was omitted or the bundle was missing | PR + push | hard-fail |
+| **Lighthouse CI** | Perf / a11y / SEO regressions below budgets (`.lighthouserc.json`) | PR + push | hard-fail at 0.9 |
+| **slop-lint lexical** | AI-marketing register tells: banned phrases, em-dash density, hedge clusters, emoji, contrast tic, bullet density, parallel-opener templating, domain warnings (medical/legal/financial) | PR + push | soft-warn until 2026-05-18 |
+| **slop-lint citations** | URL resolution, uncited specific-numeric-claim detection, named-work surfacing, recency-without-source | PR + push | soft-warn until 2026-05-18 |
+| **slop-lint semantic** | LLM-judge on changed essays: mechanism specificity, steel-manning, author-surprise + arithmetic / contradiction. Pinned prompt and pinned model in `parrik/slop-lint`. | PR + push (changed essays only) | soft-warn until 2026-06-01 |
+| **Frontmatter discipline** | Non-draft essays must declare `surprise` (the moment your prediction broke) and `coAuthoredWith` (LLMs that helped beyond polish; empty array if solo). Per audit-knife (2026-05-02) recs #4 and #5. | PR + push | soft-warn until 2026-05-18 |
+| **PR-cooldown** | Blocks merges on PRs less than 12h old (env-tunable via `PR_COOLDOWN_HOURS`). Direct counter to high-merge-in-excitement: forces a deliberation gap between "opened" and "merged." | PR | soft-warn until 2026-05-18 |
+| **Post-deploy live verification** (puppeteer) | What the user actually sees is broken | every 6h schedule + manual | hard-fail |
 
 External link checks, markdown lint, and spellcheck run informational only —
 external links flake, spellcheck has too many false positives on engineer
@@ -23,11 +28,62 @@ register, markdown lint is mostly stylistic.
 
 | Hook | What it catches | Installed via |
 |---|---|---|
-| **PD-audit pre-commit** | Personal-data patterns and personal-graph node IDs in staged files (full pattern set lives in the harness, not vendored here) | `bash $HARNESS/scripts/install-pd-hooks.sh` (run once per repo) |
-| **PD-audit pre-push** | Same scan applied to the commit range being pushed — last line of defense before the diff leaves the machine | same install script |
+| **PD-audit pre-commit** | Personal-data patterns and personal-graph node IDs in staged files | `bash $HARNESS/scripts/install-pd-hooks.sh` (run once per repo) |
+| **PD-audit pre-push** | Same scan applied to the commit range being pushed | same install script |
+| **slop-lint pre-commit** | AI-marketing register on staged content files. Soft-warn echo by default; set `SLOP_LINT_HARD_FAIL=1` to abort on findings. | `bash $HARNESS/scripts/install-slop-hooks.sh` (run once per repo) |
 
 These are local hooks, not CI — re-run the install script on a fresh clone or
-when joining from a new device. The harness script is idempotent.
+when joining from a new device. The harness scripts are idempotent.
+
+## Sober-attestation merge wrapper (`gh-pr-merge-sober`)
+
+Layer 2 of the slop-merge-gate. Wraps `gh pr merge` with a gpg-encrypted
+sober-attestation requirement. The threat model: future-self-while-high
+runs `gh pr merge` on AI-generated content that wouldn't pass sober
+review. Layer 1 catches the content register; Layer 2 catches the
+cognitive state.
+
+| Step | Mechanism |
+|---|---|
+| One-time setup (sober-only) | `gh-pr-merge-sober setup-attestation` — choose a sentence, encrypt it under a gpg passphrase. Stored at `~/.config/slop-lint/attestation.gpg`. |
+| Per-merge | `gh-pr-merge-sober merge <PR-N>` — verifies CI green, prompts gpg decrypt, mints 5-min token, then runs `gh pr merge`. Subsequent merges within 5 min skip the prompt. |
+| Bypass (logged) | `SLOP_GATE_BYPASS=1 gh-pr-merge-sober merge ...` — emergency only; logs to `~/.cache/slop-lint/bypass.log`. |
+
+Passphrase rotation: quarterly, on a calendar reminder. Rotation prevents
+the passphrase from sliding into unconscious muscle memory and stopping
+the gate from gating.
+
+Wrapper script: `$HARNESS/scripts/gh-pr-merge-sober.sh`.
+Add the alias to your shell rc:
+
+```bash
+alias gh-pr-merge-sober="$HARNESS/scripts/gh-pr-merge-sober.sh"
+```
+
+## Branch protection on `main` (manual setup, github.com)
+
+Layer 3 of the slop-merge-gate. Lives on github.com and cannot be
+disabled by Claude in-session. **Apply manually via the web UI when
+sober.** Settings → Branches → Add rule for `main`:
+
+- ✅ Require a pull request before merging
+- ✅ Require approvals: 0 (solo repo) — but PR-required forces a deliberation gap
+- ✅ Require status checks to pass before merging
+  - `CI / Build + lint`
+  - `CI / Slop-lint (lexical / citations / semantic)` — once promoted from soft-warn
+  - `CI / Stylesheet presence check`
+  - `CI / Link check (internal + external)`
+  - `CI / Lighthouse audit (perf / a11y / best-practices / SEO)`
+- ✅ Require branches to be up to date before merging
+- ✅ Require linear history — forces rebase, no merge commits
+- ✅ Block force pushes
+- ✅ Block branch deletion
+- ✅ **Include administrators** — solo repo; this is the load-bearing checkbox. Without it, the gate is theater.
+
+The "Include administrators" check is what makes Layer 3 work for a
+solo builder. Disabling it for one merge requires a sober web-UI
+session — Claude cannot toggle it from the CLI, and a high-self
+typically won't bother.
 
 ## What was deferred / removed
 

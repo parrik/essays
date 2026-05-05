@@ -47,6 +47,16 @@ const essays = defineCollection({
         })
       )
       .optional(),
+    // Author-surprise marker — per audit-knife discipline rule #4. The
+    // moment in this essay where my prior expectation broke. Required on
+    // non-draft essays (enforced by scripts/check-essay-frontmatter.mjs
+    // in CI, not the schema, so old essays don't break the build).
+    surprise: z.string().optional(),
+    // Co-authorship declaration — per audit-knife discipline rule #5. If
+    // an LLM helped propose framing or structure (not just polish words),
+    // name it here. Required on non-draft essays. Empty array allowed
+    // when the essay was authored solo.
+    coAuthoredWith: z.array(z.string()).optional(),
   }),
 });
 
