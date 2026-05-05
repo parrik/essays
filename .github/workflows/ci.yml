@@ -207,8 +207,10 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install slop-lint (SHA-pinned)
-        run: npm install --no-save 'github:parrik/slop-lint#b7a73b35d5f1469e7487d94dc808a98f8d9409b3'
+      - name: Install slop-lint (SHA-pinned, HTTPS)
+        # Explicit HTTPS form so npm doesn't try SSH on the runner. Pin moves
+        # are deliberate cross-repo commits; bump this SHA to upgrade.
+        run: npm install --no-save 'git+https://github.com/parrik/slop-lint.git#7c8edf5234cf2d22f69034b34aa2b737b438cfe0'
 
       - name: Lexical (regex register tells)
         continue-on-error: true
