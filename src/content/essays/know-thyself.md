@@ -172,7 +172,7 @@ The mechanical face is the rules: a novel waits for a second observation, an ope
 
 The philosophical face is harder. Even when the typing is mechanically correct, the choice of what counts as Alex's own claim about Alex is hers. Models can identify entities, attribute claims to sources, and weight confidence; they cannot, and should not, decide which claim stands as a thing she'll keep. A graph someone else wrote is not your graph. The schema is the trace of that choice, not the product.
 
-The vocabulary is what travels. McCarthy's open-knowledge-graph schema names the edges: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The legend's solid and dotted lines are two of those — `grounds` and `derives_from`. The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs. Shared vocabulary is what lets two people compare disciplines.
+The vocabulary is what travels. McCarthy's open-knowledge-graph schema names the edges of a typed-claims graph and gives each a paper trail.[^mccarthy-edges] This scaffold takes that move to personal memory: typed nodes for the eight kinds of claim a person can make about themselves, eight typed edges between them (`grounds`, `grounded_in`, `derives_from`, `generalizes`, `instantiates`, `qualifies`, `contradicts`, `emergent_from`), and the same paper-trail discipline. The legend's solid and dotted lines are two of those — `grounds` and `emergent_from`. Nodes are the nouns; the edges are verbs. Shared vocabulary is what lets two people compare disciplines.
 
 Which is also the privacy story. The memory is not inside the model. It is in a file she keeps. The model only sees what she hands it. Some conversations she opens with the whole graph. Some with just the spine. Some with nothing — the model is a stranger again. She decides what gets known, every time.
 
@@ -184,7 +184,7 @@ Whether *we* know what they know about us, and whether they know how they know i
 
 ---
 
-*The scaffold is MIT-licensed at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)** — eight node types, provenance, validator, rendering. `START_HERE.md` walks through building a graph of your own.*
+*The schema is MIT-licensed at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)** — eight node types, eight typed edges, provenance, validation rules. Tooling (validator, dashboard, retrieval, MCP server) at **[github.com/parrik/know-thyself-search](https://github.com/parrik/know-thyself-search)**. `START_HERE.md` walks through building a graph of your own.*
 
 [^prior]: Episodic vs semantic memory as separate stores: Tulving, *Episodic and Semantic Memory* (1972) — the binding principle the schema operationalizes. Provenance triples: [RDF](https://www.w3.org/TR/rdf11-concepts/) (W3C, 2014), [PROV ontology](https://www.w3.org/TR/prov-overview/) (W3C, 2013), [Claude citations API](https://docs.anthropic.com/en/docs/build-with-claude/citations). Patrick D. McCarthy's [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph) develops the necessity theorems and *attribution ≠ confidence* for scientific-knowledge graphs. Park et al., *Generative Agents* (UIST 2023), separates observation from reflection in agent memory.
 
@@ -194,7 +194,7 @@ Whether *we* know what they know about us, and whether they know how they know i
 
 [^managed-memory]: Anthropic, [memory tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/memory-tool) (Apr 8 2026). Client-side persistence exposed as a `/memories` directory the model can `view` / `create` / `str_replace` / `insert` / `delete` / `rename`; a YAML graph fits the primitive without adaptation.
 
-[^mccarthy-edges]: Patrick D. McCarthy, [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph). Edge vocabulary — `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes` — each carrying `(attribution, evidence, derivation)` triples. The eight node types map onto these edges directly.
+[^mccarthy-edges]: Patrick D. McCarthy, [open-knowledge-graph](https://github.com/patdmc/open-knowledge-graph). McCarthy names a typed-edge vocabulary for scientific-claims graphs (`derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`) with each edge carrying its own paper trail. This scaffold adapts the move to personal-memory: a different but overlapping eight-edge set (`grounds`, `grounded_in`, `derives_from`, `generalizes`, `instantiates`, `qualifies`, `contradicts`, `emergent_from`) and seven flat English provenance fields per node (`said_by`, `said_when`, `evidence_kind`, `evidence_notes`, `evidence_refs`, `derives_from`, `how_it_follows`).
 
 [^karpathy-wiki]: Andrej Karpathy, *LLM Wiki* (gist, Apr 4 2026). Plain-markdown self-edited memory with a lint loop for duplicates and contradictions; no types, no provenance. The lint catches duplicates the flat list cannot — and still has no slot for the distinction between *said* and *grounded*.
 
