@@ -18,7 +18,7 @@ She had been talking to a mirror.
 
 The mirror is now a measured effect, not a metaphor. A two-week field study of real-world LLM use found that condensed user-profile memory produced the largest sycophancy amplification of any personalization feature tested.[^mirror-study]
 
-A model's memory is a list — bullets, facts, things you said that carried weight. A claim stated once feels the same as a claim grounded in five independent events. The fix is not more memory. The fix is shape. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
+A model's memory is a list — bullets, facts, things you said that carried weight. A claim stated once feels the same as a claim grounded in five independent events. The fix is not more memory. The fix is shape: a memory with types, where episodes are stored separately from the patterns derived from them, where every claim carries who said it and what it rests on, and where repetition by itself cannot promote a single source into a stable claim. The scaffold — open, MIT-licensed — is at **[github.com/parrik/know-thyself](https://github.com/parrik/know-thyself)**.
 
 <p class="dashboard-link-wrap">
   <a class="dashboard-link" href="/alex-case-study.html">
@@ -140,7 +140,7 @@ A neighboring proposal — Andrej Karpathy's *LLM Wiki*, posted as a gist on Apr
 
 Repetition feels like corroboration. It isn't. Six conversations saying the same thing is one derivation repeated six times, not six pieces of evidence. The schema forces this into the memory itself: a novel cannot quietly become an overlap. It waits for a new, independent observation.
 
-A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) keeps memory as typed vectors only — thirteen categories, no graph — and beats graph hybrids on LongMemEval (89.8%) and LoCoMo (87.1%).[^memanto] On fact-retrieval QA, types-without-edges wins. The benchmark measures recall. It does not measure whether one derivation got mistaken for six.
+A second neighboring proposal lands harder. The Memanto paper (arXiv, April 23) keeps memory as typed vectors only — thirteen categories, no graph — and beats graph hybrids on LongMemEval (89.8%) and LoCoMo (87.1%).[^memanto] On fact-retrieval QA, types-without-edges wins, and on that axis Memanto is right: the benchmarks reward recall — *which fact comes back when you query for it?* — and a vector store with strong typing answers that question well. But the question this essay is asking is different. Recall measures whether the fact comes back, not whether one derivation got mistaken for six. A vector store that returns the same claim five times still cannot tell you the claim rests on one source, repeated.
 
 ## What the graph lets her see
 
@@ -166,7 +166,11 @@ Alex's graph is a YAML file. It lives on her laptop. She owns it. When she switc
 
 But the schema's structural work is dissolving into model capability. Hand a current frontier model a year of raw journal text and it will identify the entities, attribute claims to their sources, weight confidence by how each source is framed, surface provenance chains on demand. The typing the graph was doing is now an inference-time operation. Per-node, Alex's hand-curated graph is more reliable than what a model would synthesize from her notes alone — because she chose what landed there. But the *capability* of producing typed-with-provenance structure from messy text is no longer scarce.
 
-Which means the durable thing is not the schema. It is the discipline of refusing to let the model write the graph. The rule that a novel waits for a second observation. The willingness to leave *open* questions open. The provenance chain Alex can stand behind in front of another human. Models will do the typing; what they cannot do, and should not be allowed to do, is decide what counts as Alex's own claim about Alex. The schema is the trace of the practice, not the product.
+Which means the durable thing is not the schema. It is the discipline of refusing to let the model write the graph. The discipline has two faces.
+
+The mechanical face is the rules: a novel waits for a second observation, an open question stays open, repetition does not promote. These exist because models, given drafting privileges, will collapse the distinctions the typing makes. They will smooth a single source into a stable claim because confident prose reads better than tentative prose, and once smoothed, downstream nodes inherit that confidence. The mechanism is mundane — sycophantic feedback loops compound — but the consequence is that an unguarded model with a memory ends up with a graph that says everything you'd like to be true about yourself.
+
+The philosophical face is harder. Even when the typing is mechanically correct, the choice of what counts as Alex's own claim about Alex is hers. Models can identify entities, attribute claims to sources, and weight confidence; they cannot, and should not, decide which claim stands as a thing she'll keep. A graph someone else wrote is not your graph. The schema is the trace of that choice, not the product.
 
 The vocabulary is what travels. McCarthy's open-knowledge-graph schema names the edges: `derives_from`, `evidences`, `grounds`, `overlaps_with`, `generalizes`, each carrying an `(attribution, evidence, derivation)` triple.[^mccarthy-edges] The legend's solid and dotted lines are two of those — `grounds` and `derives_from`. The eight node types here sit on top of that vocabulary cleanly — *Overlap* is `overlaps_with`, *Emergent* is `derives_from` with plural ancestry, *Equivalency* is `generalizes`. Nodes are the nouns; the edges were already verbs. Shared vocabulary is what lets two people compare disciplines.
 
