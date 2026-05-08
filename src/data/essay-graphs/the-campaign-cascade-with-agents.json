@@ -1,0 +1,282 @@
+{
+  "slug": "the-campaign-cascade-with-agents",
+  "essayTitle": "The cascade survives the substrate",
+  "spineId": "S01-cascade-survives-substrate",
+  "viewBox": {
+    "width": 960,
+    "height": 600
+  },
+  "nodes": [
+    {
+      "id": "S01-cascade-survives-substrate",
+      "type": "synthesis",
+      "claim": "The cascade pattern is substrate-invariant. The principle, the three paths, the dead zone — all hold when the workers are agents instead of humans.",
+      "where": "the spine",
+      "why": "The load-bearing claim of Part II. The principle from Part I survived a substrate change — sign that distributed-work-loses-context is structural, not human-specific."
+    },
+    {
+      "id": "S02-three-paths-still-hold",
+      "type": "synthesis",
+      "claim": "Three paths still hold (automate / own vertically / enable completely). Mechanics shifted: codemod-as-agent, one-operator-plus-fleet, AGENTS.md/MCP/SKILL.md as enablement primitives.",
+      "where": "three paths, new mechanics",
+      "derives_from": [
+        "S01-cascade-survives-substrate"
+      ],
+      "why": "The action menu transfers without modification. What changed is the unit cost of each path — vertical ownership most dramatically, enablement artifact most visibly."
+    },
+    {
+      "id": "D03-single-operator-dead-zone",
+      "type": "derivation",
+      "claim": "The dead zone reproduces inside one operator. Spawn → Stall → Self-escalate → Ad-hoc merge → Cleanup campaign. Same five-step cascade, smaller scale.",
+      "where": "the dead zone, single-operator edition",
+      "derives_from": [
+        "S01-cascade-survives-substrate",
+        "S02-three-paths-still-hold"
+      ],
+      "why": "The surprise of Part II. The org-scale cascade had multiple actors at each step — director, SVP, platform team. The single-operator version has one person occupying every role, which makes the cascade feel like personal failure rather than structural failure."
+    },
+    {
+      "id": "S04-quality-gates-as-enablement",
+      "type": "synthesis",
+      "claim": "Quality gates are the enablement artifact for the operator-as-reviewer. Without a trustable gate, every PR is a context-acquisition task and the operator stalls on their own work.",
+      "where": "quality gates as enablement",
+      "derives_from": [
+        "D03-single-operator-dead-zone"
+      ],
+      "why": "Generalizes the 'enable completely' artifact to the reviewing side of the loop. A fleet with author-side enablement (CLAUDE.md, MCP, skills) but no reviewer-side enablement (gates, coordinator, structured review) is the dead zone wearing a costume."
+    },
+    {
+      "id": "D05-bottleneck-moved-downstream",
+      "type": "derivation",
+      "claim": "Code production stopped being scarce; review and merge orchestration became the binding constraint. The cascade lives downstream now.",
+      "where": "the dead zone — supporting numbers",
+      "derives_from": [
+        "D03-single-operator-dead-zone"
+      ],
+      "why": "Names the mechanism behind D03. Throughput-shift evidence is industry-scale (Faros telemetry); the framing is Burak Dede's. The single-operator dead zone is one shape this downstream-bottleneck takes."
+    },
+    {
+      "id": "C01-cloudflare-review-fleet",
+      "type": "citation",
+      "claim": "Cloudflare's internal AI code review system: 7 specialized reviewer agents + coordinator (Opus 4.7 / GPT-5.4 judge). 131,246 runs across 48,095 MRs in 5,169 repositories, March 10 – April 9 2026.",
+      "source": "Cloudflare Blog · Orchestrating AI Code Review at scale (April 2026)",
+      "url": "https://blog.cloudflare.com/ai-code-review/",
+      "why": "Concrete worked example of operator-side enablement at scale. The fleet reviewing the fleet, with the human entering the loop only on judge-flagged decisions. Grounds S04."
+    },
+    {
+      "id": "C02-faros-dora-2026",
+      "type": "citation",
+      "claim": "Faros AI 2026 DORA telemetry across ~22,000 developers: 98% more PRs merged with AI tools, median review time up 441% versus pre-AI baselines. Org-level DORA metrics stayed flat.",
+      "source": "Faros AI · DORA Report 2025 + AI Acceleration Whiplash (2026)",
+      "url": "https://www.faros.ai/research/ai-acceleration-whiplash",
+      "why": "The numbers behind D05. Throughput up at the individual level, system throughput unchanged — the binding constraint moved. Grounds D05; supports D03 indirectly."
+    },
+    {
+      "id": "C03-enablement-primitives",
+      "type": "citation",
+      "claim": "AGENTS.md (open spec, ~2026), Anthropic SKILL.md (folder + YAML frontmatter, on-demand load), Model Context Protocol (Anthropic Nov 2024, Linux Foundation Dec 2025) — three primitives for agent-readable project context.",
+      "source": "agents.md / Anthropic Skills / Model Context Protocol",
+      "url": "https://agents.md/",
+      "why": "The shape of 'enable completely' for non-human readers. Three vendor-neutral or near-neutral primitives, all shipping in production by mid-2026. Grounds the enable arm of S02."
+    },
+    {
+      "id": "C04-codified-context",
+      "type": "citation",
+      "claim": "Codified Context (arXiv 2602.20478): 'agents fail because they operate on inconsistent views of shared state.' Three-substrate codification — hot-memory constitution, retrieval hooks, cold-memory knowledge base — plus 19 domain-expert agents.",
+      "source": "arXiv 2602.20478 · Codified Context",
+      "url": "https://arxiv.org/abs/2602.20478",
+      "why": "Names the same context-loss mechanism this essay names, at architecture level rather than process level. The substrate-invariance claim sits one layer up — both essays are pointing at the same loss surface."
+    },
+    {
+      "id": "C05-stripe-lsc",
+      "type": "citation",
+      "claim": "Stripe Flow→TypeScript codemod (3.7M lines in a single PR, March 6 2017; 6.5M+ lines total). Hyrum Wright's Large-Scale Changes (Software Engineering at Google, Ch 22): LSCs at Google almost always machine-generated.",
+      "source": "Stripe.dev / Software Engineering at Google · Ch 22",
+      "url": "https://abseil.io/resources/swe-book/html/ch22.html",
+      "why": "Historical anchor for the automate path. The 'automate completely' arm worked pre-LLM via codemods; the LLM-era shift is in *generating* the codemod, not the path. Grounds the automate arm of S02."
+    }
+  ],
+  "positions": {
+    "S01-cascade-survives-substrate": {
+      "cx": 480,
+      "cy": 90,
+      "r": 34,
+      "labelText": "S01 · principle"
+    },
+    "S02-three-paths-still-hold": {
+      "cx": 240,
+      "cy": 230,
+      "r": 28,
+      "labelText": "S02"
+    },
+    "D03-single-operator-dead-zone": {
+      "cx": 480,
+      "cy": 250,
+      "r": 28,
+      "labelText": "D03"
+    },
+    "S04-quality-gates-as-enablement": {
+      "cx": 720,
+      "cy": 230,
+      "r": 28,
+      "labelText": "S04"
+    },
+    "D05-bottleneck-moved-downstream": {
+      "cx": 320,
+      "cy": 380,
+      "r": 24,
+      "labelText": "D05"
+    },
+    "C01-cloudflare-review-fleet": {
+      "cx": 820,
+      "cy": 380,
+      "r": 22,
+      "labelText": "C01"
+    },
+    "C02-faros-dora-2026": {
+      "cx": 200,
+      "cy": 510,
+      "r": 22,
+      "labelText": "C02"
+    },
+    "C03-enablement-primitives": {
+      "cx": 480,
+      "cy": 510,
+      "r": 22,
+      "labelText": "C03"
+    },
+    "C04-codified-context": {
+      "cx": 760,
+      "cy": 510,
+      "r": 22,
+      "labelText": "C04"
+    },
+    "C05-stripe-lsc": {
+      "cx": 80,
+      "cy": 380,
+      "r": 22,
+      "labelText": "C05"
+    }
+  },
+  "edges": [
+    {
+      "from": "S02-three-paths-still-hold",
+      "to": "S01-cascade-survives-substrate",
+      "kind": "derives"
+    },
+    {
+      "from": "D03-single-operator-dead-zone",
+      "to": "S01-cascade-survives-substrate",
+      "kind": "derives"
+    },
+    {
+      "from": "D03-single-operator-dead-zone",
+      "to": "S02-three-paths-still-hold",
+      "kind": "derives"
+    },
+    {
+      "from": "S04-quality-gates-as-enablement",
+      "to": "D03-single-operator-dead-zone",
+      "kind": "derives"
+    },
+    {
+      "from": "D05-bottleneck-moved-downstream",
+      "to": "D03-single-operator-dead-zone",
+      "kind": "derives"
+    },
+    {
+      "from": "C01-cloudflare-review-fleet",
+      "to": "S04-quality-gates-as-enablement",
+      "kind": "grounds"
+    },
+    {
+      "from": "C02-faros-dora-2026",
+      "to": "D05-bottleneck-moved-downstream",
+      "kind": "grounds"
+    },
+    {
+      "from": "C03-enablement-primitives",
+      "to": "S02-three-paths-still-hold",
+      "kind": "grounds"
+    },
+    {
+      "from": "C04-codified-context",
+      "to": "S01-cascade-survives-substrate",
+      "kind": "grounds"
+    },
+    {
+      "from": "C05-stripe-lsc",
+      "to": "S02-three-paths-still-hold",
+      "kind": "grounds"
+    }
+  ],
+  "eyes": [
+    {
+      "id": "D03-single-operator-dead-zone",
+      "what": "The five-step single-operator cascade (Spawn → Stall → Self-escalate → Ad-hoc merge → Cleanup) is the author's observation. No formal study tracks the shape replicating 1:1 inside one operator.",
+      "why": "Plausible from observable telemetry plus first-hand orchestration experience. External corroboration would strengthen the claim — Faros telemetry shows the symptom (review time up 441%) but not the five-step shape. Anyone surveying practitioners running fleets in 2026 would either find this shape or sharpen it.",
+      "ground_with": [
+        {
+          "label": "Faros AI · Acceleration Whiplash (telemetry, 2026)",
+          "url": "https://www.faros.ai/research/ai-acceleration-whiplash"
+        },
+        {
+          "label": "Burak Dede · The Pull Request is Dead (practitioner framing)",
+          "url": "https://burakdede.com/blog/the-pull-request-is-dead-surviving-the-ai-code-avalanche/"
+        }
+      ]
+    },
+    {
+      "id": "S04-quality-gates-as-enablement",
+      "what": "Generalizing 'enable completely' to the operator-as-reviewer is the author's extension. Cloudflare's system is one worked example; whether the framing fits other operator shapes (solo dev, two-person team, OSS maintainer) is implicit.",
+      "why": "The framing reads cleanly at Cloudflare scale (130K+ MRs/month) but may compress poorly at solo-developer scale where the operator is also the consumer of the gate's output. Worth instantiating against multiple operator shapes before treating it as universal."
+    },
+    {
+      "id": "S01-cascade-survives-substrate",
+      "what": "Substrate-invariance is the author's synthesis claim. Codified Context (arXiv 2602.20478) and adjacent multi-agent context-loss work name a related mechanism but do not frame the org-process cascade pattern as substrate-invariant.",
+      "why": "The synthesis is novel relative to the linked prior art. If a 2025–2026 piece already names this exact framing, citing it would let Part II sit alongside that frame instead of re-naming it. Active eyes — the most likely place an external reader could already have shipped the same claim."
+    }
+  ],
+  "actions": [
+    {
+      "kind": "etude",
+      "label": "Spawn the fleet",
+      "body": "Watch the operator's review queue saturate as N agents fan out. Demonstrates D03 and D05 — the bottleneck moves from PR creation to PR review.",
+      "href": "/etudes/campaign-cascade/operator-bottleneck/"
+    },
+    {
+      "kind": "etude",
+      "label": "Write the gate",
+      "body": "Pre-merge invariants for an agent-spawned PR. Drills S04 — what the operator-side enablement artifact actually has to check.",
+      "href": "/etudes/campaign-cascade/write-the-gate/"
+    },
+    {
+      "kind": "apply",
+      "label": "Audit your fleet",
+      "body": "For each cross-cutting task you've handed to an agent, name which of the three paths it's on. Anything you spawned without the path picked first is in the operator dead zone."
+    },
+    {
+      "kind": "apply",
+      "label": "Find the operator-side enablement gap",
+      "body": "Your project probably has CLAUDE.md / AGENTS.md (author-side enablement). Does it have a quality gate the operator trusts (reviewer-side enablement)? If not, every agent PR is a context-acquisition task for you."
+    },
+    {
+      "kind": "next",
+      "label": "Part I — where the cascade was first named",
+      "body": "How to run a cross-cutting campaign — the principle, the three paths, the cascade. Pre-LLM framing; held up under substrate change.",
+      "href": "/puzzles/the-campaign-cascade/"
+    }
+  ],
+  "rubric": {
+    "composite": "mid",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "mid",
+      "synthesis": "strong",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "Sharper graph-discipline than Part I — every load-bearing claim cites a verifiable source, and synthesis attribution is explicit. Composite is mid not strong because the substrate-invariance claim is structural and the strongest external corroboration (Codified Context) names the mechanism without naming the framing.",
+    "soft": "Two soft spots:\n1. The five-step single-operator cascade is presented as parallel structure to Part I's. Parallel framing is rhetorically clean; empirically it claims more than the citations support. Worth marking as observation rather than derivation, or surveying operators to confirm shape.\n2. The 'voice survived a substrate change so the observation was structural' move is the closing claim. Strong as rhetoric; weak as proof — one substrate change is not the same as substrate-invariance. The honest read is: the principle generalizes to one new substrate; further substrates are open."
+  }
+}

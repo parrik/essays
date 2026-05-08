@@ -75,7 +75,10 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
             </div>
             <ol class="series-parts">
               {parts.map((p, i) => {
-                const muted = i > 0;
+                // Muted = draft (still cooking). Non-draft children render as
+                // real links — Part II of a published series should be
+                // clickable, not just listed.
+                const muted = i > 0 && !!p.data.draft;
                 if (!muted) {
                   return (
                     <li>

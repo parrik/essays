@@ -1,0 +1,298 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Spawn the fleet';
+const subtitle = 'You are the operator. The agents are eager. Watch your review queue saturate.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · Campaign Cascade · Part II</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/campaign-cascade/">← campaign cascade etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/the-campaign-cascade-with-agents/">puzzle</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>You're running a single-operator fleet. Each agent you spawn opens a PR. Each PR needs your eyes. Spawn more agents than you can review and the dead zone fills quietly.</p>
+      <p>Pick a fleet size. Watch the math.</p>
+    </section>
+
+    <div class="etude-stage">
+      <div class="etude-card">
+        <p class="etude-step">Operator dashboard</p>
+
+        <div class="op-controls">
+          <label class="op-label">Fleet size <span class="op-num" id="fleet-num">8</span></label>
+          <input type="range" id="fleet-slider" min="1" max="32" value="8" />
+          <div class="op-presets">
+            <button type="button" data-n="1" class="op-preset">1</button>
+            <button type="button" data-n="3" class="op-preset">3</button>
+            <button type="button" data-n="8" class="op-preset active">8</button>
+            <button type="button" data-n="16" class="op-preset">16</button>
+            <button type="button" data-n="32" class="op-preset">32</button>
+          </div>
+        </div>
+
+        <div class="op-grid" id="op-grid"></div>
+
+        <div class="op-stats">
+          <div class="op-stat"><span class="op-stat-label">PRs in your review queue</span><span class="op-stat-value" id="op-queue">0</span></div>
+          <div class="op-stat"><span class="op-stat-label">Hours to clear at 12 min/PR</span><span class="op-stat-value" id="op-hours">0.0</span></div>
+          <div class="op-stat"><span class="op-stat-label">PRs you'll likely panic-merge</span><span class="op-stat-value" id="op-panic">0</span></div>
+        </div>
+
+        <div id="op-banner" class="banner" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <section class="etude-failure">
+      <h2 class="etude-failure-title">The bottleneck moved</h2>
+      <p>Code production stopped being scarce. Review capacity is now the binding constraint. The single-operator fleet inherits the cascade — it just runs at smaller scale, inside one head. <em>Spawn → Stall → Self-escalate → Ad-hoc merge → Cleanup campaign.</em></p>
+      <p>Quality gates are the enablement artifact for the operator-as-reviewer. Without one the operator trusts, every PR is a context-acquisition task, and the review queue eats the day.</p>
+    </section>
+
+    <footer class="etude-coda">
+      <p>The fleet is fast. The operator is finite.</p>
+    </footer>
+  </article>
+</Base>
+
+<script is:inline>
+  const REVIEW_MIN_PER_PR = 12;
+  const PANIC_THRESHOLD = 6;
+
+  const slider = document.getElementById('fleet-slider');
+  const num = document.getElementById('fleet-num');
+  const grid = document.getElementById('op-grid');
+  const qEl = document.getElementById('op-queue');
+  const hEl = document.getElementById('op-hours');
+  const pEl = document.getElementById('op-panic');
+  const banner = document.getElementById('op-banner');
+  const presets = document.querySelectorAll('.op-preset');
+
+  function pickColor() {
+    const r = Math.random();
+    if (r < 0.30) return 'green';
+    if (r < 0.78) return 'yellow';
+    return 'red';
+  }
+
+  function render(n) {
+    grid.innerHTML = '';
+    for (let i = 0; i < n; i++) {
+      const dot = document.createElement('span');
+      dot.className = 'op-dot op-dot-' + pickColor();
+      dot.style.animationDelay = (i * 38) + 'ms';
+      grid.appendChild(dot);
+    }
+
+    const hours = (n * REVIEW_MIN_PER_PR) / 60;
+    const panic = Math.max(0, n - PANIC_THRESHOLD);
+
+    qEl.textContent = String(n);
+    hEl.textContent = hours.toFixed(1);
+    pEl.textContent = String(panic);
+
+    if (n <= PANIC_THRESHOLD) {
+      banner.className = 'banner banner-ok';
+      banner.textContent = `Within review capacity. You can hold the gate.`;
+    } else if (n <= 16) {
+      banner.className = 'banner banner-warn';
+      banner.textContent = `Review queue exceeds your day. Watch for the panic-merge pattern.`;
+    } else {
+      banner.className = 'banner banner-bad';
+      banner.textContent = `Dead zone. You will panic-merge ${panic} PRs and spawn a cleanup campaign next week.`;
+    }
+  }
+
+  slider.addEventListener('input', () => {
+    const n = parseInt(slider.value, 10);
+    num.textContent = n;
+    presets.forEach(b => b.classList.toggle('active', parseInt(b.dataset.n, 10) === n));
+    render(n);
+  });
+
+  presets.forEach(b => {
+    b.addEventListener('click', () => {
+      const n = parseInt(b.dataset.n, 10);
+      slider.value = n;
+      num.textContent = n;
+      presets.forEach(p => p.classList.toggle('active', p === b));
+      render(n);
+    });
+  });
+
+  render(8);
+</script>
+
+<style is:global>
+  .etude-page { max-width: 38rem; margin: 0 auto; padding: 0; }
+  .etude-head { margin-bottom: 2rem; }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title { font-family: var(--serif-display); font-size: 2.25rem; line-height: 1.15; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  .etude-relief { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.05rem; margin: 0 0 1rem; line-height: 1.45; }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro { margin: 0 0 1.5rem; }
+  .etude-intro p { margin: 0 0 0.85rem; line-height: 1.6; }
+
+  .etude-stage { min-height: 22rem; }
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  /* === op controls === */
+  .op-controls { margin: 0 0 1.4rem; }
+  .op-label {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    color: var(--text);
+    margin: 0 0 0.6rem;
+    font-weight: 500;
+  }
+  .op-num {
+    display: inline-block;
+    margin-left: 0.4rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--accent);
+    min-width: 2.2em;
+  }
+  .op-controls input[type=range] {
+    width: 100%;
+    accent-color: var(--accent);
+    margin: 0 0 0.7rem;
+  }
+  .op-presets { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+  .op-preset {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.85rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.4rem 0.85rem;
+    cursor: pointer;
+    min-height: 36px;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+  .op-preset:hover { border-color: var(--accent); }
+  .op-preset.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+  /* === op grid === */
+  .op-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin: 0 0 1.5rem;
+    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    min-height: 4.5rem;
+    align-content: flex-start;
+  }
+  .op-dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    animation: opPulse 600ms ease both;
+  }
+  .op-dot-green  { background: #2d7a3e; }
+  .op-dot-yellow { background: #d99a4a; }
+  .op-dot-red    { background: var(--accent); }
+  @keyframes opPulse {
+    from { opacity: 0; transform: scale(0.55); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  /* === stats === */
+  .op-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+    gap: 0.65rem;
+    margin: 0 0 1rem;
+  }
+  .op-stat {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+  }
+  .op-stat-label {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 0.3rem;
+  }
+  .op-stat-value {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text);
+  }
+
+  /* === banner === */
+  .banner {
+    margin-top: 0.4rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 0.92rem;
+    line-height: 1.45;
+    border-left: 3px solid var(--line);
+    background: var(--bg);
+  }
+  .banner-ok   { border-left-color: #2d7a3e; color: #1a5a2e; background: rgba(45, 122, 62, 0.06); }
+  .banner-warn { border-left-color: #d99a4a; color: #8a5a1a; background: rgba(217, 154, 74, 0.10); }
+  .banner-bad  { border-left-color: var(--accent); color: var(--accent); background: rgba(138, 52, 32, 0.07); }
+
+  /* === failure section === */
+  .etude-failure { margin: 2rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .etude-failure-title {
+    font-family: var(--serif-display);
+    font-size: 1.2rem;
+    margin: 0 0 0.7rem;
+  }
+  .etude-failure p { line-height: 1.6; margin: 0 0 0.85rem; color: var(--text); }
+
+  .etude-coda { margin: 2rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .etude-coda p { color: var(--muted); font-style: italic; line-height: 1.6; margin: 0; }
+
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .op-stat-value { font-size: 1.2rem; }
+  }
+</style>
