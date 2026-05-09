@@ -84,6 +84,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
   const FRAMES = [
     // ── 1. Install bob ────────────────────────────────────────────
     { kind: 'step', id: 'install' },
+    { kind: 'step-header', text: '▼ INSTALL · adding bob to the team’s session' },
     { kind: 'prompt', text: '~ %' },
     { kind: 'type', text: 'claude' },
     { kind: 'enter' },
@@ -121,6 +122,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 3. Step 01 · precheck (gate) ──────────────────────────────
     { kind: 'step', id: '1' },
+    { kind: 'step-header', text: '▼ STEP 1 · precheck — what bob teaches' },
     { kind: 'block', cls: 'term-explain', lines: [
       '┌─ step 01 · pre-flight: is this repo ready? ───────────',
       '│',
@@ -149,6 +151,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 4. Step 02 · jakarta imports (codemod) ────────────────────
     { kind: 'step', id: '2' },
+    { kind: 'step-header', text: '▼ STEP 2 · javax → jakarta imports — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 1 step(s) done; advancing to step 02' },
     { kind: 'gap' },
@@ -232,6 +235,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 5. Step 03 · properties (codemod) ─────────────────────────
     { kind: 'step', id: '3' },
+    { kind: 'step-header', text: '▼ STEP 3 · application property renames — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 2 step(s) done; advancing to step 03' },
     { kind: 'gap' },
@@ -312,6 +316,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 6. Step 04 · build bumps (codemod) ────────────────────────
     { kind: 'step', id: '4' },
+    { kind: 'step-header', text: '▼ STEP 4 · build version bumps — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 3 step(s) done; advancing to step 04' },
     { kind: 'gap' },
@@ -385,6 +390,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 7. Step 05 · deprecated APIs (codemod) ────────────────────
     { kind: 'step', id: '5' },
+    { kind: 'step-header', text: '▼ STEP 5 · deprecated APIs — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 4 step(s) done; advancing to step 05' },
     { kind: 'gap' },
@@ -477,6 +483,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 8. Step 06 · hibernate queries (hybrid, no-op on this fixture) ─
     { kind: 'step', id: '6' },
+    { kind: 'step-header', text: '▼ STEP 6 · hibernate queries (hybrid) — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 5 step(s) done; advancing to step 06' },
     { kind: 'gap' },
@@ -541,6 +548,7 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
 
     // ── 9. Step 07 · postcheck (gate) ─────────────────────────────
     { kind: 'step', id: '7' },
+    { kind: 'step-header', text: '▼ STEP 7 · postcheck — what bob teaches' },
     { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
     { kind: 'echo', text: '→ found 6 step(s) done; advancing to step 07' },
     { kind: 'gap' },
@@ -713,6 +721,12 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
       case 'block': {
         const wrap = append(`<div class="${f.cls}"></div>`);
         const isDiff = f.cls && f.cls.indexOf('term-diff') !== -1;
+        // Teaching beats (explanation + PR-review checklist) render
+        // INSTANTLY — the viewer reads prose at their own pace, not
+        // character-by-character. Diff and other blocks keep typewriter.
+        const isTeaching =
+          f.cls && (f.cls.indexOf('term-explain') !== -1 ||
+                    f.cls.indexOf('term-review') !== -1);
         for (const ln of f.lines) {
           if (cancelled) return;
           const line = document.createElement('div');
@@ -728,9 +742,23 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
           }
           line.textContent = ln;
           wrap.appendChild(line);
-          await sleep(70);
+          if (!isTeaching) await sleep(70);
         }
-        await sleep(180);
+        // Read-time dwell. Teaching beats get a long pause so the
+        // viewer can read; diff/other blocks get the original short tail.
+        await sleep(isTeaching ? pace(4500) : 180);
+        break;
+      }
+      case 'step-header': {
+        // Prominent step boundary — bold colored header inside the
+        // terminal saying "▼ STEP N · <step-name>". Helps the viewer
+        // pattern-match where they are without watching the side bar.
+        const banner = document.createElement('div');
+        banner.className = 'term-step-header';
+        banner.textContent = f.text;
+        term.appendChild(banner);
+        term.scrollTop = term.scrollHeight;
+        await sleep(pace(900));
         break;
       }
       case 'progress':
@@ -950,6 +978,23 @@ const subtitle = 'The full walk. Install, invoke, all seven steps, paced for rea
   }
   @media (max-width: 32rem) {
     .term-clear-spacer { height: 22rem; }
+  }
+
+  /* Step boundary header — appears at the start of each step inside
+     the terminal stream. Big, colored, attention-grabbing so the
+     viewer always knows which step they're on without watching the
+     side bar. Sits between the gap before a step and the step's
+     "scanning git log" echo + explanation block. */
+  .term-step-header {
+    margin: 1.1rem 0 0.5rem;
+    padding: 0.55rem 0.75rem;
+    background: rgba(111, 168, 164, 0.12);
+    border-left: 4px solid #6fa8a4;
+    border-radius: 4px;
+    color: #d4f0ee;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.02em;
   }
 
   .term-explain, .term-stop {
