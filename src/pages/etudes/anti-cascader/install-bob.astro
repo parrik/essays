@@ -1,7 +1,7 @@
 ---
 import Base from '../../../layouts/Base.astro';
 const title = 'Install bob';
-const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.';
+const subtitle = 'The full walk. Install, invoke, all seven steps, paced for reading.';
 ---
 <Base title={title} description={subtitle}>
   <article class="etude-page">
@@ -17,8 +17,8 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
     </header>
 
     <section class="etude-intro">
-      <p>The team installs bob, invokes a migration, watches one step land, and gets a draft PR. No fan-out. No platform-team push. The next step waits for the team's clock.</p>
-      <p>Press play. Watch the shape.</p>
+      <p>The team installs bob, invokes <code>/migrate-spring-boot-3</code>, and walks all seven steps of the Spring Boot 2.7 → 3 migration. Each step shows the explanation prose verbatim, runs the codemod or gate, prints a real diff against the bundled fixture, opens a draft PR, and stops. The next step waits for the team to invoke again.</p>
+      <p>Press play. Read the explanations. Watch the shape repeat.</p>
     </section>
 
     <div class="etude-stage">
@@ -54,12 +54,13 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
 
     <section class="etude-failure">
       <h2 class="etude-failure-title">What happened</h2>
-      <p>The team typed two commands. Bob explained the step <em>before</em> running it, then ran it, then opened a draft PR. <strong>Step 02 of 7 lands as a 14-line PR.</strong> Steps 03 through 07 wait until the team invokes again — that day, that week, that quarter.</p>
-      <p>The platform team that authored the migration never opened the PR. They wrote the codemod and the explanation and shipped it as a skill. The team pulled.</p>
+      <p>The team typed two commands. Bob walked all seven steps in sequence — a precheck gate, four deterministic codemods, one hybrid step, and a postcheck gate — pausing on each to print the publisher-authored explanation <em>before</em> running it, then showing the diff, then opening a draft PR with a <code>Bob-Step:</code> trailer. <strong>Seven small reviewable PRs land in the team's queue.</strong></p>
+      <p>State lives in <code>git log</code>. The next invocation re-derives the same step pointer from the trailers on main. Pause for a quarter, hand to a colleague, run on a fresh clone — same answer.</p>
+      <p>The platform team that authored the migration never opened the PR. They wrote the codemods and the explanations and shipped it as a skill. The team pulled.</p>
     </section>
 
     <footer class="etude-coda">
-      <p>Single-shot would have been one 700-line PR. Choreographed is seven 14-line PRs. The team reads each one.</p>
+      <p>Single-shot would have been one 700-line PR. Choreographed is seven small PRs, each one with the explanation in front of it. The team reads each one.</p>
     </footer>
   </article>
 </Base>
@@ -70,6 +71,7 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
   // — install, invoke, explain, run, diff, PR, stop — at the user's chosen speed.
 
   const FRAMES = [
+    // ── 1. Install bob ────────────────────────────────────────────
     { kind: 'prompt', text: '~ %' },
     { kind: 'type', text: 'claude' },
     { kind: 'enter' },
@@ -92,69 +94,344 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
     { kind: 'echo', text: '  /adopt-structured-logging' },
     { kind: 'gap' },
 
+    // ── 2. Invoke the migration ───────────────────────────────────
     { kind: 'cc-prompt' },
     { kind: 'type', text: '/migrate-spring-boot-3' },
     { kind: 'enter' },
-    { kind: 'echo', text: '→ reading .migration-state.json (none — creating)' },
-    { kind: 'echo', text: '→ step 01 of 7 · precheck' },
-    { kind: 'echo', text: '  · on Spring Boot 2.7+ ✓' },
-    { kind: 'echo', text: '  · tests green on main ✓' },
-    { kind: 'echo', text: '  · working tree clean ✓' },
-    { kind: 'echo', text: '  · CI pipeline detected ✓' },
-    { kind: 'echo', text: 'step 01 passed. proceeding to step 02.' },
+    { kind: 'echo', text: 'claude code dispatches to bob:' },
+    { kind: 'gap' },
+    { kind: 'prompt', text: '~/svc/orders-api %' },
+    { kind: 'type', text: 'bash bob-simulator.sh . migrate-spring-boot-3' },
+    { kind: 'enter' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 0 step(s) done; advancing to step 01' },
+    { kind: 'gap' },
+
+    // ── 3. Step 01 · precheck (gate) ──────────────────────────────
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 01 · pre-flight: is this repo ready? ───────────',
+      '│',
+      '│ Bails if the repo can\'t be migrated cleanly. Checks:',
+      '│  - on Spring Boot 2.7+ (older = needs intermediate hop)',
+      '│  - no in-flight branches that would conflict',
+      '│  - tests currently green on main',
+      '│  - has a CI pipeline we can wait on',
+      '│',
+      '│ If any check fails, surface a runbook entry — don\'t',
+      '│ proceed.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/01-precheck/check.sh' },
+    { kind: 'echo', text: '  PASS: Spring Boot 2.7.18' },
+    { kind: 'echo', text: '  PASS: working tree clean' },
+    { kind: 'echo', text: '  PASS: tests currently green' },
+    { kind: 'echo', text: '  PASS: CI configured' },
+    { kind: 'echo', text: '  All prechecks passed. Ready to migrate.' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ recording empty commit: Bob-Step: migrate-spring-boot-3/01-precheck' },
+    { kind: 'echo', text: '(gate step — no diff, no PR; trailer marks completion in git log)' },
+    { kind: 'gap-long' },
+
+    // ── 4. Step 02 · jakarta imports (codemod) ────────────────────
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 1 step(s) done; advancing to step 02' },
     { kind: 'gap' },
 
     { kind: 'block', cls: 'term-explain', lines: [
       '┌─ step 02 · rename javax.* → jakarta.* ─────────────────',
       '│',
-      '│ Why: Spring Boot 3 moved to the Jakarta EE namespace.',
-      '│ This is mechanical and byte-deterministic. Touches',
-      '│ imports + fully-qualified references.',
-      '│',
-      '│ Common subset:',
+      '│ Spring Boot 3 moved off the javax.* namespace to',
+      '│ jakarta.* Mechanical, byte-deterministic. Touches',
+      '│ imports + fully-qualified references. Common subset:',
       '│   javax.persistence.*  → jakarta.persistence.*',
       '│   javax.servlet.*      → jakarta.servlet.*',
       '│   javax.validation.*   → jakarta.validation.*',
+      '│   javax.annotation.*   → jakarta.annotation.*',
       '│',
-      '│ Risk: low. AST pattern is unambiguous.',
-      '│ What to look for in review: a few hundred mechanical',
-      '│ rewrites. Skim a handful, merge.',
+      '│ This is by far the largest diff but also the safest —',
+      '│ the AST pattern is unambiguous. Expect 100s-1000s of',
+      '│ import lines touched.',
       '└────────────────────────────────────────────────────────',
     ]},
-    { kind: 'gap' },
+    { kind: 'gap-long' },
 
     { kind: 'echo', text: '→ running steps/02-jakarta-imports/transform.ts' },
-    { kind: 'progress', total: 4 },
-    { kind: 'echo', text: '→ 2 files changed · +10 −10' },
+    { kind: 'progress', total: 6 },
+    { kind: 'echo', text: '→ 6 files changed · +18 −18' },
     { kind: 'gap' },
 
     { kind: 'block', cls: 'term-diff', lines: [
-      'src/main/java/com/example/orders/Order.java',
+      'src/main/java/com/example/demo/User.java',
       '-import javax.persistence.Entity;',
+      '-import javax.persistence.GeneratedValue;',
       '-import javax.persistence.Id;',
+      '-import javax.validation.constraints.Email;',
       '+import jakarta.persistence.Entity;',
+      '+import jakarta.persistence.GeneratedValue;',
       '+import jakarta.persistence.Id;',
+      '+import jakarta.validation.constraints.Email;',
       '',
-      ' @Entity',
-      ' public class Order {',
-      '     @Id private Long id;',
+      'src/main/java/com/example/demo/controller/OrderController.java',
+      '-import javax.servlet.http.HttpServletRequest;',
+      '-import javax.validation.Valid;',
+      '+import jakarta.servlet.http.HttpServletRequest;',
+      '+import jakarta.validation.Valid;',
     ]},
     { kind: 'gap' },
 
-    { kind: 'echo', text: '→ running checkpoint: ./mvnw compile && ./mvnw test' },
+    { kind: 'echo', text: '→ checkpoint: ./mvnw compile && ./mvnw test' },
     { kind: 'echo', text: '  BUILD SUCCESS · tests pass' },
     { kind: 'gap' },
+    { kind: 'echo', text: '→ creating branch: bob/migrate-spring-boot-3/02-jakarta-imports' },
+    { kind: 'echo', text: '→ committing with Bob-Step: migrate-spring-boot-3/02-jakarta-imports' },
+    { kind: 'echo', text: '→ opening draft PR · "chore(migration): step 02 — javax→jakarta imports"' },
+    { kind: 'gap-long' },
+    { kind: 'echo', text: '(team merges through normal review …)' },
+    { kind: 'gap-long' },
 
-    { kind: 'echo', text: '→ creating branch: chore/sb3-step-02-jakarta-imports' },
-    { kind: 'echo', text: '→ opening draft PR · "step 02 — javax→jakarta imports"' },
+    // ── 5. Step 03 · properties (codemod) ─────────────────────────
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 2 step(s) done; advancing to step 03' },
     { kind: 'gap' },
 
-    { kind: 'block', cls: 'term-stop', lines: [
-      '┌─ stop ─────────────────────────────────────────────────',
-      '│ step 02 of 7 done. PR is yours to review and merge.',
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 03 · rewrite application.{yml,properties} keys ──',
       '│',
-      '│ when you are ready: invoke /migrate-spring-boot-3 again.',
-      '│ I will read .migration-state.json and pick up at step 03.',
+      '│ Spring Boot 3 renamed several config keys. Mechanical:',
+      '│   spring.redis.*           → spring.data.redis.*',
+      '│   spring.elasticsearch.*   → spring.elasticsearch.uris',
+      '│   management.metrics.export → management.{specific',
+      '│                                 exporter}.metrics.export',
+      '│',
+      '│ Codemod uses YAML / properties parsers (not regex) so',
+      '│ comments and ordering are preserved.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/03-properties/transform.ts' },
+    { kind: 'progress', total: 3 },
+    { kind: 'echo', text: '→ 3 files changed · +14 −14' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-diff', lines: [
+      'src/main/resources/application.properties',
+      '-spring.jpa.hibernate.use-new-id-generator-mappings=true',
+      '-spring.datasource.initialization-mode=always',
+      '-spring.datasource.schema=classpath:schema.sql',
+      '-spring.datasource.data=classpath:data.sql',
+      '-server.error.include-stacktrace=on_trace_param',
+      '-spring.profiles=integration',
+      '-management.metrics.export.wavefront.api-token=REPLACE_ME',
+      '+spring.sql.init.mode=always',
+      '+spring.sql.init.schema-locations=classpath:schema.sql',
+      '+spring.sql.init.data-locations=classpath:data.sql',
+      '+server.error.include-stacktrace=on_param',
+      '+spring.config.activate.on-profile=integration',
+      '+management.wavefront.metrics.export.api-token=REPLACE_ME',
+    ]},
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ checkpoint: ./mvnw compile' },
+    { kind: 'echo', text: '  BUILD SUCCESS' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ creating branch: bob/migrate-spring-boot-3/03-properties' },
+    { kind: 'echo', text: '→ committing with Bob-Step: migrate-spring-boot-3/03-properties' },
+    { kind: 'echo', text: '→ opening draft PR · "chore(migration): step 03 — application property renames"' },
+    { kind: 'gap-long' },
+    { kind: 'echo', text: '(team merges through normal review …)' },
+    { kind: 'gap-long' },
+
+    // ── 6. Step 04 · build bumps (codemod) ────────────────────────
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 3 step(s) done; advancing to step 04' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 04 · bump Spring Boot + Java in build files ─────',
+      '│',
+      '│ Single bump in pom.xml or build.gradle:',
+      '│   spring-boot version  → 3.2.x (latest patch)',
+      '│   java.version         → 17 (or 21)',
+      '│   + plugin compatibility bumps (jib,',
+      '│     spring-boot-maven-plugin)',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/04-build-bumps/transform.ts' },
+    { kind: 'progress', total: 1 },
+    { kind: 'echo', text: '→ 1 file changed · +4 −4' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-diff', lines: [
+      'pom.xml',
+      '-        <version>2.7.18</version>',
+      '+        <version>3.3.5</version>',
+      '',
+      '-        <java.version>11</java.version>',
+      '+        <java.version>17</java.version>',
+      '',
+      '-            <groupId>mysql</groupId>',
+      '-            <artifactId>mysql-connector-java</artifactId>',
+      '+            <groupId>com.mysql</groupId>',
+      '+            <artifactId>mysql-connector-j</artifactId>',
+    ]},
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ checkpoint: ./mvnw dependency:tree -DoutputType=text' },
+    { kind: 'echo', text: '  jakarta.* resolves cleanly · no surprise transitives' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ creating branch: bob/migrate-spring-boot-3/04-build-bumps' },
+    { kind: 'echo', text: '→ committing with Bob-Step: migrate-spring-boot-3/04-build-bumps' },
+    { kind: 'echo', text: '→ opening draft PR · "chore(migration): step 04 — bump Spring Boot 3.3.5 + Java 17"' },
+    { kind: 'gap-long' },
+    { kind: 'echo', text: '(team merges through normal review …)' },
+    { kind: 'gap-long' },
+
+    // ── 7. Step 05 · deprecated APIs (codemod) ────────────────────
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 4 step(s) done; advancing to step 05' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 05 · rewrite deprecated APIs removed in SB3 ─────',
+      '│',
+      '│ Spring Boot 3 removed APIs that were deprecated in',
+      '│ 2.x. Mechanical rewrites for the common ones:',
+      '│   WebSecurityConfigurerAdapter → SecurityFilterChain bean',
+      '│   antMatchers / mvcMatchers    → requestMatchers',
+      '│   @MockBean (in tests)         → unchanged but check',
+      '│                                  Mockito ver',
+      '│   ResponseEntityExceptionHandler → updated method',
+      '│                                    signatures',
+      '│',
+      '│ Some have no clean codemod (security config can be',
+      '│ hand-rolled in ways the pattern misses). Those get',
+      '│ flagged for step 06.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/05-deprecated-apis/transform.ts' },
+    { kind: 'progress', total: 2 },
+    { kind: 'echo', text: '→ 1 file changed · +9 −5 · 0 sites flagged for step 06' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-diff', lines: [
+      'src/main/java/com/example/demo/SecurityConfig.java',
+      '-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;',
+      '+import org.springframework.context.annotation.Bean;',
+      '+import org.springframework.security.web.SecurityFilterChain;',
+      '',
+      '-public class SecurityConfig extends WebSecurityConfigurerAdapter {',
+      '-    @Override',
+      '-    protected void configure(HttpSecurity http) throws Exception {',
+      '+public class SecurityConfig {',
+      '+    @Bean',
+      '+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {',
+      '         http',
+      '-            .authorizeRequests()',
+      '-                .antMatchers("/users/me").authenticated()',
+      '-                .antMatchers("/users/**").permitAll()',
+      '+            .authorizeHttpRequests()',
+      '+                .requestMatchers("/users/me").authenticated()',
+      '+                .requestMatchers("/users/**").permitAll()',
+      '+        return http.build();',
+      '     }',
+      ' }',
+    ]},
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ checkpoint: ./mvnw compile' },
+    { kind: 'echo', text: '  BUILD SUCCESS' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ creating branch: bob/migrate-spring-boot-3/05-deprecated-apis' },
+    { kind: 'echo', text: '→ committing with Bob-Step: migrate-spring-boot-3/05-deprecated-apis' },
+    { kind: 'echo', text: '→ opening draft PR · "chore(migration): step 05 — SecurityFilterChain + requestMatchers"' },
+    { kind: 'gap-long' },
+    { kind: 'echo', text: '(team merges through normal review …)' },
+    { kind: 'gap-long' },
+
+    // ── 8. Step 06 · hibernate queries (hybrid, no-op on this fixture) ─
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 5 step(s) done; advancing to step 06' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 06 · Hibernate 6 query rewrites (LLM-assisted) ──',
+      '│',
+      '│ Spring Boot 3 ships with Hibernate 6. HB6 changed',
+      '│ several HQL/JPQL semantics with no clean mechanical',
+      '│ fix. The flagger looks for five patterns; a hybrid LLM',
+      '│ step proposes per-site rewrites for human approval.',
+      '│',
+      '│ Two passes:',
+      '│  (a) AST scan: locate every @Query, @NamedQuery, and',
+      '│      HQL string against the five HB6 patterns.',
+      '│  (b) For each match: LLM proposes a rewrite. The',
+      '│      HUMAN approves each one — no silent rewrites.',
+      '│',
+      '│ Why a separate step: rewrites are non-deterministic.',
+      '│ Team should review each individually, not as one PR.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/06-hibernate-queries/flag-pattern.ts' },
+    { kind: 'echo', text: '  scanning @Query / @NamedQuery / HQL strings…' },
+    { kind: 'echo', text: '  0 matches against the 5 HB6 breakage patterns' },
+    { kind: 'echo', text: '→ no LLM rewrite pass needed for this repo' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ recording empty commit: Bob-Step: migrate-spring-boot-3/06-hibernate-queries' },
+    { kind: 'echo', text: '(no-op for this fixture — trailer still records the step as walked)' },
+    { kind: 'gap-long' },
+
+    // ── 9. Step 07 · postcheck (gate) ─────────────────────────────
+    { kind: 'clear' },
+    { kind: 'echo', text: '→ scanning git log on main for Bob-Step: trailers' },
+    { kind: 'echo', text: '→ found 6 step(s) done; advancing to step 07' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 07 · full build + integration smoke ─────────────',
+      '│',
+      '│ Final verification before marking the migration',
+      '│ complete:',
+      '│  - clean build from scratch',
+      '│  - full test suite',
+      '│  - integration tests',
+      '│  - smoke against staging if configured',
+      '│',
+      '│ If any fail: don\'t mark done. Triage owner gets',
+      '│ pinged.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap-long' },
+
+    { kind: 'echo', text: '→ running steps/07-postcheck/verify.sh' },
+    { kind: 'echo', text: '  PASS: clean build' },
+    { kind: 'echo', text: '  PASS: tests green' },
+    { kind: 'echo', text: '  PASS: integration tests green' },
+    { kind: 'echo', text: '  Migration complete. Repo is on Spring Boot 3.' },
+    { kind: 'gap' },
+    { kind: 'echo', text: '→ recording empty commit: Bob-Step: migrate-spring-boot-3/07-postcheck' },
+    { kind: 'gap-long' },
+
+    { kind: 'block', cls: 'term-stop', lines: [
+      '┌─ done ─────────────────────────────────────────────────',
+      '│ All seven steps walked. Five PRs landed (02-05 + the',
+      '│ trailers from 01, 06, 07). Repo is on Spring Boot 3.',
+      '│',
+      '│ State lives in git log. A teammate running',
+      '│ /migrate-spring-boot-3 sees: nothing to do.',
       '└────────────────────────────────────────────────────────',
     ]},
   ];
@@ -256,10 +533,20 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
         break;
       case 'block': {
         const wrap = append(`<div class="${f.cls}"></div>`);
+        const isDiff = f.cls && f.cls.indexOf('term-diff') !== -1;
         for (const ln of f.lines) {
           if (cancelled) return;
           const line = document.createElement('div');
           line.className = 'term-block-line';
+          if (isDiff) {
+            // Color +/- lines green/red; leave file headers and
+            // context lines in the default block color.
+            if (ln.startsWith('+')) line.classList.add('diff-add');
+            else if (ln.startsWith('-')) line.classList.add('diff-del');
+            else if (ln && !ln.startsWith(' ') && ln.indexOf('/') !== -1) {
+              line.classList.add('diff-file');
+            }
+          }
           line.textContent = ln;
           wrap.appendChild(line);
           await sleep(70);
@@ -275,6 +562,28 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
         append(`<div class="term-gap"></div>`);
         await sleep(180);
         break;
+      case 'gap-long':
+        // Beat that lets the viewer read the prior block (explanation,
+        // settled state after a PR opens). Longer than `gap`; not a
+        // section break.
+        append(`<div class="term-gap"></div>`);
+        await sleep(900);
+        break;
+      case 'clear': {
+        // Section break between steps. Scroll the prior content out
+        // (don't destroy it — viewer can scroll up if they want to
+        // re-read) by appending a tall spacer that pushes the new
+        // step's first line to the top of the viewport.
+        const spacer = document.createElement('div');
+        spacer.className = 'term-clear-spacer';
+        term.appendChild(spacer);
+        // Force a repaint, then scroll the spacer into view so the
+        // next echo appears at the top of the visible terminal area.
+        await sleep(60);
+        spacer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        await sleep(360);
+        break;
+      }
     }
   }
 
@@ -293,7 +602,7 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
 
     if (!cancelled) {
       banner.className = 'banner banner-shown';
-      banner.innerHTML = '<strong>Step 02 of 7 landed.</strong> The team has a 14-line draft PR. The next six steps wait. <em>Team-paced. No platform-team push.</em>';
+      banner.innerHTML = '<strong>All seven steps walked.</strong> Five draft PRs in the team\'s queue (steps 02–05 and any rewrites from step 06); two gate trailers (steps 01, 07) recorded directly to <code>git log</code>. <em>Team-paced. No platform-team push.</em>';
     }
 
     running = false;
@@ -404,6 +713,15 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
   @keyframes termblink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
   .term-echo { display: block; color: #b8a99a; }
   .term-gap { height: 0.45rem; }
+  .term-clear-spacer {
+    /* Pushes the next step to the top of the visible terminal area
+       without destroying prior content. Roughly the inner height
+       of .term-body. */
+    height: 26rem;
+  }
+  @media (max-width: 32rem) {
+    .term-clear-spacer { height: 22rem; }
+  }
 
   .term-explain, .term-stop {
     color: #c9b890;
@@ -422,10 +740,9 @@ const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.'
     border-radius: 4px;
   }
   .term-diff .term-block-line { white-space: pre; }
-  .term-diff .term-block-line:nth-child(2),
-  .term-diff .term-block-line:nth-child(3) { color: #d96a5a; }
-  .term-diff .term-block-line:nth-child(4),
-  .term-diff .term-block-line:nth-child(5) { color: #7fb98a; }
+  .term-diff .term-block-line.diff-del { color: #d96a5a; }
+  .term-diff .term-block-line.diff-add { color: #7fb98a; }
+  .term-diff .term-block-line.diff-file { color: #e8dcc8; font-weight: 600; }
 
   .term-progress {
     display: flex; align-items: center; gap: 0.6rem;
