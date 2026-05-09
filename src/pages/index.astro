@@ -88,13 +88,13 @@ const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
                           <span class="part-name">
                             {p.data.title}
                           </span>
-                          {(p.data.relief || p.data.subtitle) && <span class="part-description">{p.data.relief ?? p.data.subtitle}</span>}
+                          {(p.data.subtitle || p.data.relief) && <span class="part-description">{p.data.subtitle ?? p.data.relief}</span>}
                         </span>
                       </a>
                     </li>
                   );
                 }
-                const desc = p.data.relief ?? p.data.subtitle;
+                const desc = p.data.subtitle ?? p.data.relief;
                 return (
                   <li>
                     <div class="series-part series-part-muted" aria-disabled="true">
