@@ -1,0 +1,530 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Install bob';
+const subtitle = 'Watch the choreography land. Install, invoke, one step, stop.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · The anti-cascader</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/anti-cascader/">← anti-cascader etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/bob-the-fixer-as-anti-cascader/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>The team installs bob, invokes a migration, watches one step land, and gets a draft PR. No fan-out. No platform-team push. The next step waits for the team's clock.</p>
+      <p>Press play. Watch the shape.</p>
+    </section>
+
+    <div class="etude-stage">
+      <div class="etude-card">
+        <p class="etude-step">Team's terminal · Spring Boot 2.7 repo</p>
+
+        <div class="term" id="term">
+          <div class="term-chrome">
+            <span class="term-dot term-dot-r"></span>
+            <span class="term-dot term-dot-y"></span>
+            <span class="term-dot term-dot-g"></span>
+            <span class="term-title">~/svc/orders-api · main</span>
+          </div>
+          <div class="term-body" id="term-body" aria-live="polite"></div>
+        </div>
+
+        <div class="controls">
+          <button type="button" id="play" class="etude-next">Play</button>
+          <button type="button" id="reset" class="etude-ghost" disabled>Reset</button>
+          <label class="speed">
+            <span class="speed-label">Speed</span>
+            <select id="speed">
+              <option value="1">1x</option>
+              <option value="2" selected>2x</option>
+              <option value="4">4x</option>
+            </select>
+          </label>
+        </div>
+
+        <div id="banner" class="banner" aria-live="polite"></div>
+      </div>
+    </div>
+
+    <section class="etude-failure">
+      <h2 class="etude-failure-title">What happened</h2>
+      <p>The team typed two commands. Bob explained the step <em>before</em> running it, then ran it, then opened a draft PR. <strong>Step 02 of 7 lands as a 14-line PR.</strong> Steps 03 through 07 wait until the team invokes again — that day, that week, that quarter.</p>
+      <p>The platform team that authored the migration never opened the PR. They wrote the codemod and the explanation and shipped it as a skill. The team pulled.</p>
+    </section>
+
+    <footer class="etude-coda">
+      <p>Single-shot would have been one 700-line PR. Choreographed is seven 14-line PRs. The team reads each one.</p>
+    </footer>
+  </article>
+</Base>
+
+<script is:inline>
+  // A scripted terminal transcript. Each frame is either a typed line, a printed
+  // line, or a multi-line block. The animation paces through the choreography
+  // — install, invoke, explain, run, diff, PR, stop — at the user's chosen speed.
+
+  const FRAMES = [
+    { kind: 'prompt', text: '~ %' },
+    { kind: 'type', text: 'claude' },
+    { kind: 'enter' },
+    { kind: 'echo', text: 'Claude Code · session started' },
+    { kind: 'gap' },
+
+    { kind: 'cc-prompt' },
+    { kind: 'type', text: '/plugin marketplace add https://raw.githubusercontent.com/parrik/bob-the-fixer/main/.claude-plugin/marketplace.json' },
+    { kind: 'enter' },
+    { kind: 'echo', text: 'added marketplace: bob-the-fixer' },
+    { kind: 'gap' },
+
+    { kind: 'cc-prompt' },
+    { kind: 'type', text: '/plugin install bob-the-fixer' },
+    { kind: 'enter' },
+    { kind: 'echo', text: 'installed: bob-the-fixer (4 skills)' },
+    { kind: 'echo', text: '  /migrate-spring-boot-3' },
+    { kind: 'echo', text: '  /migrate-junit-4-to-5' },
+    { kind: 'echo', text: '  /migrate-jest-to-vitest' },
+    { kind: 'echo', text: '  /adopt-structured-logging' },
+    { kind: 'gap' },
+
+    { kind: 'cc-prompt' },
+    { kind: 'type', text: '/migrate-spring-boot-3' },
+    { kind: 'enter' },
+    { kind: 'echo', text: '→ reading .migration-state.json (none — creating)' },
+    { kind: 'echo', text: '→ step 01 of 7 · precheck' },
+    { kind: 'echo', text: '  · on Spring Boot 2.7+ ✓' },
+    { kind: 'echo', text: '  · tests green on main ✓' },
+    { kind: 'echo', text: '  · working tree clean ✓' },
+    { kind: 'echo', text: '  · CI pipeline detected ✓' },
+    { kind: 'echo', text: 'step 01 passed. proceeding to step 02.' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-explain', lines: [
+      '┌─ step 02 · rename javax.* → jakarta.* ─────────────────',
+      '│',
+      '│ Why: Spring Boot 3 moved to the Jakarta EE namespace.',
+      '│ This is mechanical and byte-deterministic. Touches',
+      '│ imports + fully-qualified references.',
+      '│',
+      '│ Common subset:',
+      '│   javax.persistence.*  → jakarta.persistence.*',
+      '│   javax.servlet.*      → jakarta.servlet.*',
+      '│   javax.validation.*   → jakarta.validation.*',
+      '│',
+      '│ Risk: low. AST pattern is unambiguous.',
+      '│ What to look for in review: a few hundred mechanical',
+      '│ rewrites. Skim a handful, merge.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ running steps/02-jakarta-imports/transform.ts' },
+    { kind: 'progress', total: 4 },
+    { kind: 'echo', text: '→ 2 files changed · +10 −10' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-diff', lines: [
+      'src/main/java/com/example/orders/Order.java',
+      '-import javax.persistence.Entity;',
+      '-import javax.persistence.Id;',
+      '+import jakarta.persistence.Entity;',
+      '+import jakarta.persistence.Id;',
+      '',
+      ' @Entity',
+      ' public class Order {',
+      '     @Id private Long id;',
+    ]},
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ running checkpoint: ./mvnw compile && ./mvnw test' },
+    { kind: 'echo', text: '  BUILD SUCCESS · tests pass' },
+    { kind: 'gap' },
+
+    { kind: 'echo', text: '→ creating branch: chore/sb3-step-02-jakarta-imports' },
+    { kind: 'echo', text: '→ opening draft PR · "step 02 — javax→jakarta imports"' },
+    { kind: 'gap' },
+
+    { kind: 'block', cls: 'term-stop', lines: [
+      '┌─ stop ─────────────────────────────────────────────────',
+      '│ step 02 of 7 done. PR is yours to review and merge.',
+      '│',
+      '│ when you are ready: invoke /migrate-spring-boot-3 again.',
+      '│ I will read .migration-state.json and pick up at step 03.',
+      '└────────────────────────────────────────────────────────',
+    ]},
+  ];
+
+  const term = document.getElementById('term-body');
+  const playBtn = document.getElementById('play');
+  const resetBtn = document.getElementById('reset');
+  const speedSel = document.getElementById('speed');
+  const banner = document.getElementById('banner');
+
+  let running = false;
+  let cancelled = false;
+
+  function speedMul() { return parseFloat(speedSel.value || '2'); }
+  function pace(ms) { return ms / speedMul(); }
+
+  function append(html) {
+    const d = document.createElement('div');
+    d.innerHTML = html;
+    term.appendChild(d);
+    term.scrollTop = term.scrollHeight;
+    return d;
+  }
+
+  function appendText(text, cls = '') {
+    return append(`<span class="${cls}">${escapeHtml(text)}</span>`);
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+  }
+
+  function sleep(ms) {
+    return new Promise(res => {
+      const id = setTimeout(() => res(), pace(ms));
+      sleep._cancel = () => { clearTimeout(id); res(); };
+    });
+  }
+
+  async function typeLine(text, prefix = '') {
+    const row = append(`<div class="term-line"><span class="term-prefix">${prefix}</span><span class="term-typed"></span><span class="caret">▍</span></div>`);
+    const target = row.querySelector('.term-typed');
+    for (const ch of text) {
+      if (cancelled) return;
+      target.textContent += ch;
+      await sleep(28);
+    }
+    row.querySelector('.caret')?.remove();
+    await sleep(120);
+  }
+
+  async function progressBar(total) {
+    const row = append(`<div class="term-progress"><span class="bar"><span class="fill" style="width:0%"></span></span><span class="pct">0/${total}</span></div>`);
+    const fill = row.querySelector('.fill');
+    const pct = row.querySelector('.pct');
+    for (let i = 1; i <= total; i++) {
+      if (cancelled) return;
+      const w = Math.round((i / total) * 100);
+      fill.style.width = w + '%';
+      pct.textContent = `${i}/${total}`;
+      await sleep(110);
+    }
+  }
+
+  async function renderFrame(f) {
+    if (cancelled) return;
+    switch (f.kind) {
+      case 'prompt':
+        append(`<div class="term-line term-shellprompt"><span class="term-prefix">${escapeHtml(f.text)} </span></div>`);
+        break;
+      case 'cc-prompt':
+        append(`<div class="term-line term-ccprompt"><span class="term-prefix">&gt; </span></div>`);
+        break;
+      case 'type': {
+        const last = term.querySelector('.term-line:last-child');
+        if (last) {
+          const typed = document.createElement('span');
+          typed.className = 'term-typed';
+          last.appendChild(typed);
+          const caret = document.createElement('span');
+          caret.className = 'caret';
+          caret.textContent = '▍';
+          last.appendChild(caret);
+          for (const ch of f.text) {
+            if (cancelled) return;
+            typed.textContent += ch;
+            await sleep(26);
+          }
+          last.querySelector('.caret')?.remove();
+        }
+        break;
+      }
+      case 'enter':
+        await sleep(220);
+        break;
+      case 'echo':
+        appendText(f.text, 'term-echo');
+        await sleep(140);
+        break;
+      case 'block': {
+        const wrap = append(`<div class="${f.cls}"></div>`);
+        for (const ln of f.lines) {
+          if (cancelled) return;
+          const line = document.createElement('div');
+          line.className = 'term-block-line';
+          line.textContent = ln;
+          wrap.appendChild(line);
+          await sleep(70);
+        }
+        await sleep(180);
+        break;
+      }
+      case 'progress':
+        await progressBar(f.total);
+        await sleep(140);
+        break;
+      case 'gap':
+        append(`<div class="term-gap"></div>`);
+        await sleep(180);
+        break;
+    }
+  }
+
+  async function play() {
+    if (running) return;
+    running = true; cancelled = false;
+    playBtn.disabled = true; resetBtn.disabled = true;
+    banner.className = 'banner';
+    banner.innerHTML = '';
+    term.innerHTML = '';
+
+    for (const f of FRAMES) {
+      if (cancelled) break;
+      await renderFrame(f);
+    }
+
+    if (!cancelled) {
+      banner.className = 'banner banner-shown';
+      banner.innerHTML = '<strong>Step 02 of 7 landed.</strong> The team has a 14-line draft PR. The next six steps wait. <em>Team-paced. No platform-team push.</em>';
+    }
+
+    running = false;
+    playBtn.disabled = false;
+    resetBtn.disabled = false;
+  }
+
+  function reset() {
+    cancelled = true;
+    if (sleep._cancel) sleep._cancel();
+    term.innerHTML = '';
+    banner.className = 'banner';
+    banner.innerHTML = '';
+    running = false;
+    playBtn.disabled = false;
+    resetBtn.disabled = true;
+  }
+
+  playBtn.addEventListener('click', play);
+  resetBtn.addEventListener('click', reset);
+</script>
+
+<style is:global>
+  .etude-page { max-width: 38rem; margin: 0 auto; padding: 0; }
+  .etude-head { margin-bottom: 2rem; }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title { font-family: var(--serif-display); font-size: 2.25rem; line-height: 1.15; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  .etude-relief { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.05rem; margin: 0 0 1rem; line-height: 1.45; }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro { margin: 0 0 1.5rem; }
+  .etude-intro p { margin: 0 0 0.85rem; line-height: 1.6; }
+
+  .etude-stage { min-height: 22rem; }
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 1rem;
+  }
+
+  /* === terminal === */
+  .term {
+    background: #1c1814;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    margin: 0 0 1.2rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.78rem;
+    line-height: 1.55;
+  }
+  .term-chrome {
+    display: flex; align-items: center; gap: 0.4rem;
+    background: #2a241e;
+    padding: 0.5rem 0.85rem;
+    border-bottom: 1px solid #3a322a;
+  }
+  .term-dot { width: 0.65rem; height: 0.65rem; border-radius: 50%; }
+  .term-dot-r { background: #d96a5a; }
+  .term-dot-y { background: #d6a52b; }
+  .term-dot-g { background: #5aa86a; }
+  .term-title {
+    margin-left: 0.7rem;
+    font-size: 0.72rem;
+    color: #b8a99a;
+    letter-spacing: 0.02em;
+  }
+  .term-body {
+    padding: 0.85rem 1rem;
+    height: 26rem;
+    overflow-y: auto;
+    color: #e8dcc8;
+    scroll-behavior: smooth;
+  }
+  .term-body::-webkit-scrollbar { width: 6px; }
+  .term-body::-webkit-scrollbar-thumb { background: #3a322a; border-radius: 3px; }
+  .term-line { white-space: pre-wrap; word-break: break-word; }
+  .term-prefix { color: #b8a99a; }
+  .term-shellprompt .term-prefix { color: #6fa8a4; }
+  .term-ccprompt .term-prefix { color: #d6a52b; }
+  .term-typed { color: #f4ead6; }
+  .caret {
+    display: inline-block;
+    color: #f4ead6;
+    animation: termblink 1s steps(2) infinite;
+    margin-left: 0;
+  }
+  @keyframes termblink { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+  .term-echo { display: block; color: #b8a99a; }
+  .term-gap { height: 0.45rem; }
+
+  .term-explain, .term-stop {
+    color: #c9b890;
+    margin: 0.25rem 0;
+    border-left: 2px solid #6fa8a4;
+    padding-left: 0.45rem;
+  }
+  .term-stop { border-left-color: #d6a52b; }
+  .term-block-line { white-space: pre; }
+
+  .term-diff {
+    color: #c9b890;
+    margin: 0.25rem 0;
+    background: #16120e;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+  }
+  .term-diff .term-block-line { white-space: pre; }
+  .term-diff .term-block-line:nth-child(2),
+  .term-diff .term-block-line:nth-child(3) { color: #d96a5a; }
+  .term-diff .term-block-line:nth-child(4),
+  .term-diff .term-block-line:nth-child(5) { color: #7fb98a; }
+
+  .term-progress {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin: 0.25rem 0;
+    color: #b8a99a;
+  }
+  .bar {
+    display: inline-block;
+    width: 14rem;
+    max-width: 60%;
+    height: 0.55rem;
+    background: #3a322a;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .fill {
+    display: block;
+    height: 100%;
+    background: #6fa8a4;
+    transition: width 100ms linear;
+  }
+  .pct { font-size: 0.72rem; color: #b8a99a; font-variant-numeric: tabular-nums; }
+
+  /* === controls === */
+  .controls { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin: 0 0 1rem; }
+  .etude-next {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.65rem 1.2rem; min-height: 44px;
+    border: none; background: var(--text); color: var(--bg);
+    border-radius: 6px; cursor: pointer;
+    transition: background 180ms ease, transform 120ms ease, opacity 180ms ease;
+  }
+  .etude-next:hover:not(:disabled) { background: var(--accent); }
+  .etude-next:active:not(:disabled) { transform: scale(0.97); }
+  .etude-next:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .etude-next:disabled { opacity: 0.45; cursor: not-allowed; }
+  .etude-ghost {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+    padding: 0.65rem 1.2rem; min-height: 44px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--text);
+    border-radius: 6px; cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, opacity 180ms ease;
+  }
+  .etude-ghost:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .etude-ghost:disabled { opacity: 0.45; cursor: not-allowed; }
+  .speed {
+    margin-left: auto;
+    display: inline-flex; align-items: center; gap: 0.35rem;
+    font-family: var(--sans); font-size: 0.82rem; color: var(--muted);
+  }
+  .speed-label {
+    text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600;
+  }
+  .speed select {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans); font-size: 0.85rem;
+    padding: 0.32rem 1.6rem 0.32rem 0.55rem;
+    border: 1px solid var(--line); border-radius: 5px;
+    background: var(--bg) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 6'><path fill='%23888' d='M5 6L0 0h10z'/></svg>") no-repeat right 0.45rem center/8px 5px;
+    color: var(--text); cursor: pointer;
+  }
+
+  /* === banner === */
+  .banner {
+    margin: 0; min-height: 0;
+    opacity: 0; transform: translateY(6px);
+    transition: opacity 380ms ease, transform 380ms ease;
+  }
+  .banner-shown {
+    opacity: 1; transform: translateY(0);
+    padding: 1rem 1.15rem;
+    border-left: 3px solid var(--accent);
+    background: rgba(138, 52, 32, 0.06);
+    border-radius: 6px;
+    font-size: 0.98rem; line-height: 1.55;
+    color: var(--text);
+  }
+  .banner em { color: var(--accent); font-style: italic; }
+
+  /* === failure / coda === */
+  .etude-failure { margin: 2.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .etude-failure-title {
+    font-family: var(--serif-display); font-size: 1.35rem; line-height: 1.25;
+    margin: 0 0 0.75rem; letter-spacing: -0.005em; color: var(--text);
+  }
+  .etude-failure p { margin: 0 0 0.85rem; line-height: 1.6; color: var(--text); }
+
+  .etude-coda { margin: 2rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .etude-coda p { color: var(--muted); font-style: italic; line-height: 1.6; margin: 0; }
+
+  /* === mobile === */
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .term-body { height: 22rem; padding: 0.7rem 0.85rem; font-size: 0.74rem; }
+    .speed { margin-left: 0; }
+    .controls { gap: 0.5rem; }
+  }
+</style>

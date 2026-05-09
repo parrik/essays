@@ -1,0 +1,633 @@
+---
+import Base from '../../../layouts/Base.astro';
+const title = 'Author one step';
+const subtitle = 'Write the rename rule. Run it against the fixture. See what 14 lines of authored migration feels like.';
+---
+<Base title={title} description={subtitle}>
+  <article class="etude-page">
+    <header class="etude-head">
+      <p class="etude-kicker">Etude · The anti-cascader</p>
+      <h1 class="etude-title">{title}</h1>
+      <p class="etude-relief">{subtitle}</p>
+      <nav class="etude-nav">
+        <a href="/etudes/anti-cascader/">← anti-cascader etudes</a>
+        <span class="etude-nav-sep">·</span>
+        <a href="/puzzles/bob-the-fixer-as-anti-cascader/">essay</a>
+      </nav>
+    </header>
+
+    <section class="etude-intro">
+      <p>The codemod inside one step of the migration is not magic. It is a small pattern: <strong>match this; replace with that; constrain by where it appears.</strong></p>
+      <p>You're authoring step 02 of <code>/migrate-spring-boot-3</code>. Edit the rules. Hit run. See it land against a fixture file.</p>
+    </section>
+
+    <div class="etude-stage">
+      <div class="etude-card">
+        <p class="etude-step">Rules · javax → jakarta</p>
+
+        <div class="rule-presets">
+          <button type="button" class="preset-btn preset-active" data-preset="starter">Starter</button>
+          <button type="button" class="preset-btn" data-preset="full">Full</button>
+          <button type="button" class="preset-btn" data-preset="overzealous">Overzealous</button>
+          <button type="button" class="preset-btn" data-preset="empty">Empty</button>
+        </div>
+
+        <div class="rule-editor">
+          <div class="rule-grid" id="rule-grid"></div>
+          <button type="button" id="add-rule" class="rule-add">+ add rule</button>
+        </div>
+
+        <div class="rule-actions">
+          <button type="button" id="run" class="etude-next">Run rules against fixture</button>
+        </div>
+      </div>
+
+      <div class="etude-card">
+        <p class="etude-step">Fixture · <code>OrderEntity.java</code></p>
+        <p class="fixture-help">Same file, before and after. Diff highlighted in green and red.</p>
+        <div class="fixture-grid">
+          <div class="fixture-col">
+            <p class="fixture-col-name">Before</p>
+            <pre class="fixture-code" id="fixture-before"></pre>
+          </div>
+          <div class="fixture-col">
+            <p class="fixture-col-name">After</p>
+            <pre class="fixture-code" id="fixture-after">(run rules to see)</pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="etude-card">
+        <p class="etude-step">Assertions · what should be true</p>
+        <ul class="assert-list" id="assert-list"></ul>
+      </div>
+    </div>
+
+    <section class="etude-failure">
+      <h2 class="etude-failure-title">What just happened</h2>
+      <p>You wrote a transform. You ran it against a fixture. You saw assertions pass or fail. <strong>That's the loop a migration author lives in.</strong> Not 700 lines of LLM-generated refactor; a small set of mechanical rules with a fixture corpus that shows when you got too greedy or too conservative.</p>
+      <p>Bob's contribution isn't this rule shape — codemod engines have shipped this for years. Bob's contribution is the <em>wrapper</em>: the explanation that prints before this rule runs, the per-step PR cadence, the state file. The rule itself is the boring deterministic core.</p>
+    </section>
+
+    <footer class="etude-coda">
+      <p>14-line transforms. 14-line PRs. Each one reviewable. Each one teachable.</p>
+    </footer>
+  </article>
+</Base>
+
+<script is:inline>
+  // Tiny string-based codemod runner. The fixture is a Java file; rules are
+  // (find-prefix, replace-prefix) pairs that match `import <find>...;` lines.
+  // The runner is intentionally simple — this is not a real AST tool — so the
+  // reader can see how each rule maps to a transformed line.
+
+  const FIXTURE = [
+    'package com.example.orders;',
+    '',
+    'import javax.persistence.Entity;',
+    'import javax.persistence.Id;',
+    'import javax.persistence.Column;',
+    'import javax.validation.constraints.NotBlank;',
+    'import javax.servlet.http.HttpServletRequest;',
+    'import javax.crypto.Cipher;',
+    'import javax.naming.InitialContext;',
+    'import java.util.List;',
+    '',
+    '@Entity',
+    'public class OrderEntity {',
+    '    @Id',
+    '    private Long id;',
+    '    @Column @NotBlank',
+    '    private String sku;',
+    '}'
+  ].join('\n');
+
+  // The truth: which import lines should be rewritten.
+  // True = should rewrite to jakarta. False = should stay on javax.
+  const TRUTH = {
+    'javax.persistence.Entity':         { newPkg: 'jakarta.persistence', shouldRewrite: true  },
+    'javax.persistence.Id':             { newPkg: 'jakarta.persistence', shouldRewrite: true  },
+    'javax.persistence.Column':         { newPkg: 'jakarta.persistence', shouldRewrite: true  },
+    'javax.validation.constraints.NotBlank': { newPkg: 'jakarta.validation.constraints', shouldRewrite: true  },
+    'javax.servlet.http.HttpServletRequest': { newPkg: 'jakarta.servlet.http', shouldRewrite: true  },
+    'javax.crypto.Cipher':              { newPkg: null,                  shouldRewrite: false },
+    'javax.naming.InitialContext':      { newPkg: null,                  shouldRewrite: false },
+    'java.util.List':                   { newPkg: null,                  shouldRewrite: false },
+  };
+
+  const PRESETS = {
+    starter: [
+      { find: 'javax.persistence', replace: 'jakarta.persistence' }
+    ],
+    full: [
+      { find: 'javax.persistence', replace: 'jakarta.persistence' },
+      { find: 'javax.servlet',     replace: 'jakarta.servlet' },
+      { find: 'javax.validation',  replace: 'jakarta.validation' },
+      { find: 'javax.annotation',  replace: 'jakarta.annotation' }
+    ],
+    overzealous: [
+      { find: 'javax', replace: 'jakarta' }
+    ],
+    empty: []
+  };
+
+  let rules = JSON.parse(JSON.stringify(PRESETS.starter));
+
+  const grid = document.getElementById('rule-grid');
+  const addBtn = document.getElementById('add-rule');
+  const runBtn = document.getElementById('run');
+  const beforeEl = document.getElementById('fixture-before');
+  const afterEl = document.getElementById('fixture-after');
+  const assertList = document.getElementById('assert-list');
+  const presetBtns = document.querySelectorAll('.preset-btn');
+
+  function renderRules() {
+    grid.innerHTML = '';
+    if (rules.length === 0) {
+      const empty = document.createElement('p');
+      empty.className = 'rule-empty';
+      empty.textContent = 'No rules. Add one or pick a preset.';
+      grid.appendChild(empty);
+      return;
+    }
+    rules.forEach((r, i) => {
+      const row = document.createElement('div');
+      row.className = 'rule-row';
+      row.innerHTML = `
+        <div class="rule-cell">
+          <span class="rule-cell-label">Find prefix</span>
+          <input type="text" class="rule-input" data-i="${i}" data-k="find" value="${escapeAttr(r.find)}" spellcheck="false" />
+        </div>
+        <span class="rule-arrow">→</span>
+        <div class="rule-cell">
+          <span class="rule-cell-label">Replace with</span>
+          <input type="text" class="rule-input" data-i="${i}" data-k="replace" value="${escapeAttr(r.replace)}" spellcheck="false" />
+        </div>
+        <button type="button" class="rule-del" data-i="${i}" aria-label="Delete rule">×</button>
+      `;
+      grid.appendChild(row);
+    });
+    grid.querySelectorAll('.rule-input').forEach(inp => {
+      inp.addEventListener('input', () => {
+        const i = parseInt(inp.dataset.i, 10);
+        const k = inp.dataset.k;
+        rules[i][k] = inp.value;
+      });
+    });
+    grid.querySelectorAll('.rule-del').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = parseInt(btn.dataset.i, 10);
+        rules.splice(i, 1);
+        renderRules();
+      });
+    });
+  }
+
+  function escapeAttr(s) { return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function escapeHtml(s) { return String(s).replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+
+  function applyRules(line) {
+    // Sort longest-prefix first so a more specific rule wins over a generic one.
+    const sorted = rules.slice().filter(r => r.find).sort((a, b) => b.find.length - a.find.length);
+    for (const r of sorted) {
+      // Match against `import <find>` (with a dot or whitespace boundary after).
+      const pat = new RegExp('^(\\s*import\\s+)' + r.find.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&') + '(\\b)');
+      if (pat.test(line)) {
+        return line.replace(pat, '$1' + r.replace + '$2');
+      }
+    }
+    return line;
+  }
+
+  function renderBefore() {
+    const html = FIXTURE.split('\n').map(line => {
+      const isImport = /^\s*import\s+/.test(line);
+      const cls = isImport ? 'fc-line fc-line-import' : 'fc-line';
+      return `<span class="${cls}">${escapeHtml(line) || ' '}</span>`;
+    }).join('\n');
+    beforeEl.innerHTML = html;
+  }
+
+  function run() {
+    const lines = FIXTURE.split('\n');
+    const transformed = lines.map(line => {
+      const out = applyRules(line);
+      const changed = out !== line;
+      return { line: out, originalLine: line, changed };
+    });
+
+    afterEl.innerHTML = transformed.map(t => {
+      const cls = t.changed ? 'fc-line fc-line-changed' : 'fc-line';
+      return `<span class="${cls}">${escapeHtml(t.line) || ' '}</span>`;
+    }).join('\n');
+
+    runAssertions(transformed);
+  }
+
+  function runAssertions(transformed) {
+    const assertions = Object.entries(TRUTH).map(([fqcn, t]) => {
+      const importLine = `import ${fqcn};`;
+      const idx = transformed.findIndex(x => x.originalLine.trim() === importLine);
+      const out = idx >= 0 ? transformed[idx].line.trim() : null;
+      const wasRewritten = out !== null && out !== importLine;
+
+      let pass = false;
+      let actual = '';
+      let expected = '';
+      let label = '';
+
+      if (t.shouldRewrite) {
+        const expectedLine = `import ${t.newPkg}.${fqcn.split('.').pop()};`;
+        pass = out === expectedLine;
+        actual = out || '(line missing)';
+        expected = expectedLine;
+        label = `<code>${fqcn}</code> → <code>${t.newPkg}.${fqcn.split('.').pop()}</code>`;
+      } else {
+        pass = out === importLine;
+        actual = out || '(line missing)';
+        expected = importLine;
+        label = `<code>${fqcn}</code> stays on javax`;
+      }
+      return { label, pass, actual, expected, fqcn, shouldRewrite: t.shouldRewrite, wasRewritten };
+    });
+
+    const passed = assertions.filter(a => a.pass).length;
+    const total = assertions.length;
+    const overzealous = assertions.filter(a => !a.shouldRewrite && a.wasRewritten);
+    const missed = assertions.filter(a => a.shouldRewrite && !a.wasRewritten);
+
+    let summary = '';
+    if (passed === total) {
+      summary = `<div class="assert-summary assert-summary-good"><strong>${passed}/${total} pass.</strong> The fixture transforms correctly. The four in-scope namespaces are rewritten; <code>javax.crypto</code>, <code>javax.naming</code>, and <code>java.util</code> are left alone.</div>`;
+    } else if (overzealous.length > 0 && missed.length === 0) {
+      summary = `<div class="assert-summary assert-summary-bad"><strong>${passed}/${total} pass — too greedy.</strong> Your rule rewrote ${overzealous.length} import${overzealous.length>1?'s':''} that should have stayed on javax. <code>javax.crypto</code>, <code>javax.naming</code>, and <code>javax.sql</code> are still on javax in Spring Boot 3.</div>`;
+    } else if (missed.length > 0 && overzealous.length === 0) {
+      summary = `<div class="assert-summary assert-summary-bad"><strong>${passed}/${total} pass — too conservative.</strong> You missed ${missed.length} namespace${missed.length>1?'s':''}. The full migration covers persistence, servlet, validation, and annotation.</div>`;
+    } else {
+      summary = `<div class="assert-summary assert-summary-bad"><strong>${passed}/${total} pass.</strong> Mix of misses and over-rewrites — re-check which prefixes are in scope.</div>`;
+    }
+
+    const rows = assertions.map(a => `
+      <li class="assert-item assert-${a.pass ? 'pass' : 'fail'}">
+        <span class="assert-mark">${a.pass ? '✓' : '✗'}</span>
+        <span class="assert-body">
+          <span class="assert-label">${a.label}</span>
+          ${!a.pass ? `<span class="assert-detail">expected <code>${escapeHtml(a.expected)}</code><br/>got <code>${escapeHtml(a.actual)}</code></span>` : ''}
+        </span>
+      </li>
+    `).join('');
+
+    assertList.innerHTML = summary + `<div class="assert-rows-wrap"><ul class="assert-rows">${rows}</ul></div>`;
+  }
+
+  addBtn.addEventListener('click', () => {
+    rules.push({ find: 'javax.', replace: 'jakarta.' });
+    renderRules();
+  });
+
+  runBtn.addEventListener('click', run);
+
+  presetBtns.forEach(b => {
+    b.addEventListener('click', () => {
+      presetBtns.forEach(o => o.classList.toggle('preset-active', o === b));
+      rules = JSON.parse(JSON.stringify(PRESETS[b.dataset.preset]));
+      renderRules();
+    });
+  });
+
+  renderBefore();
+  renderRules();
+</script>
+
+<style is:global>
+  .etude-page { max-width: 38rem; margin: 0 auto; padding: 0; }
+  .etude-head { margin-bottom: 2rem; }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title { font-family: var(--serif-display); font-size: 2.25rem; line-height: 1.15; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  .etude-relief { font-family: var(--serif); font-style: italic; color: var(--muted); font-size: 1.05rem; margin: 0 0 1rem; line-height: 1.45; }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-intro { margin: 0 0 1.5rem; }
+  .etude-intro p { margin: 0 0 0.85rem; line-height: 1.6; }
+  .etude-intro code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.85rem;
+    background: var(--bg-soft);
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .etude-stage { display: flex; flex-direction: column; gap: 1.2rem; }
+  .etude-card {
+    background: var(--bg-soft);
+    border-radius: 12px;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+  .etude-card code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.82rem;
+    background: var(--bg);
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+  }
+  .etude-step {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.85rem;
+  }
+
+  /* === presets === */
+  .rule-presets {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin: 0 0 0.9rem;
+  }
+  .preset-btn {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans);
+    font-size: 0.78rem;
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    padding: 0.32rem 0.7rem;
+    min-height: 32px;
+    cursor: pointer;
+    transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+  }
+  .preset-btn:hover { border-color: var(--accent); }
+  .preset-btn.preset-active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--bg);
+  }
+
+  /* === rule editor === */
+  .rule-editor {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.85rem 0.95rem 1rem;
+    margin: 0 0 1rem;
+  }
+  .rule-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .rule-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto;
+    gap: 0.5rem;
+    align-items: end;
+  }
+  .rule-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+  .rule-cell-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .rule-input {
+    appearance: none; -webkit-appearance: none;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.85rem;
+    padding: 0.45rem 0.55rem;
+    background: var(--bg-soft);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    color: var(--text);
+    min-height: 36px;
+    width: 100%;
+    transition: border-color 180ms ease;
+  }
+  .rule-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    background: var(--bg);
+  }
+  .rule-arrow {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    color: var(--muted);
+    padding-bottom: 0.55rem;
+  }
+  .rule-del {
+    appearance: none; -webkit-appearance: none;
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--muted);
+    border-radius: 5px;
+    width: 1.85rem;
+    height: 1.85rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    margin-bottom: 0.05rem;
+    transition: border-color 180ms ease, color 180ms ease;
+  }
+  .rule-del:hover { border-color: var(--accent); color: var(--accent); }
+
+  .rule-add {
+    appearance: none; -webkit-appearance: none;
+    background: transparent;
+    border: 1px dashed var(--line);
+    border-radius: 5px;
+    padding: 0.4rem 0.85rem;
+    margin-top: 0.7rem;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color 180ms ease, color 180ms ease;
+  }
+  .rule-add:hover { border-color: var(--accent); color: var(--accent); }
+  .rule-empty {
+    margin: 0;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 0.9rem;
+    padding: 0.5rem 0;
+  }
+
+  .rule-actions {
+    display: flex;
+    gap: 0.55rem;
+  }
+  .etude-next {
+    appearance: none; -webkit-appearance: none;
+    font-family: var(--sans); font-size: 0.9rem; font-weight: 600;
+    padding: 0.65rem 1.2rem; min-height: 44px;
+    border: none; background: var(--text); color: var(--bg);
+    border-radius: 6px; cursor: pointer;
+    transition: background 180ms ease, transform 120ms ease;
+  }
+  .etude-next:hover { background: var(--accent); }
+  .etude-next:active { transform: scale(0.97); }
+  .etude-next::after { content: ' →'; }
+
+  /* === fixture === */
+  .fixture-help {
+    margin: 0 0 0.85rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+  .fixture-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+  }
+  .fixture-col {
+    display: flex;
+    flex-direction: column;
+  }
+  .fixture-col-name {
+    margin: 0 0 0.45rem;
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 700;
+  }
+  .fixture-code {
+    margin: 0;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 0.65rem 0.75rem;
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-break: break-all;
+    overflow-x: auto;
+    min-height: 18rem;
+  }
+  .fc-line { display: block; padding: 0 0.15rem; border-radius: 2px; }
+  .fc-line-import { color: var(--text); }
+  .fc-line-changed { background: rgba(45, 122, 62, 0.10); color: #1a5a2e; }
+
+  /* === assertions === */
+  .assert-list {
+    list-style: none;
+    padding: 0; margin: 0;
+  }
+  .assert-summary {
+    padding: 0.85rem 1rem;
+    border-left: 3px solid var(--line);
+    background: var(--bg);
+    border-radius: 6px;
+    line-height: 1.55;
+    color: var(--text);
+    margin: 0 0 0.85rem;
+  }
+  .assert-summary-good { border-left-color: #2d7a3e; background: rgba(45, 122, 62, 0.06); }
+  .assert-summary-bad  { border-left-color: var(--accent); background: rgba(138, 52, 32, 0.06); }
+  .assert-summary code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.78rem;
+    background: var(--bg-soft);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+  }
+  .assert-rows-wrap { margin: 0; }
+  .assert-rows {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column; gap: 0.4rem;
+  }
+  .assert-item {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    gap: 0.55rem;
+    padding: 0.5rem 0.7rem;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: 5px;
+    font-size: 0.88rem;
+    line-height: 1.55;
+  }
+  .assert-mark {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-weight: 700;
+    text-align: center;
+  }
+  .assert-pass .assert-mark { color: #2d7a3e; }
+  .assert-fail .assert-mark { color: var(--accent); }
+  .assert-pass { border-left: 3px solid #2d7a3e; }
+  .assert-fail { border-left: 3px solid var(--accent); }
+  .assert-body { display: flex; flex-direction: column; gap: 0.2rem; }
+  .assert-label { color: var(--text); }
+  .assert-label code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.78rem;
+    background: var(--bg-soft);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+  }
+  .assert-detail {
+    color: var(--muted);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .assert-detail code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.76rem;
+    background: var(--bg-soft);
+    padding: 0.05rem 0.3rem;
+    border-radius: 3px;
+  }
+
+  /* === failure / coda === */
+  .etude-failure { margin: 2.5rem 0 0; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .etude-failure-title {
+    font-family: var(--serif-display); font-size: 1.35rem; line-height: 1.25;
+    margin: 0 0 0.75rem; letter-spacing: -0.005em; color: var(--text);
+  }
+  .etude-failure p { margin: 0 0 0.85rem; line-height: 1.6; color: var(--text); }
+  .etude-failure em { color: var(--accent); font-style: italic; }
+  .etude-failure code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 0.85rem;
+    background: var(--bg-soft);
+    padding: 0.05rem 0.35rem;
+    border-radius: 3px;
+  }
+
+  .etude-coda { margin: 2rem 0 0; padding-top: 1.25rem; border-top: 1px solid var(--line); }
+  .etude-coda p { color: var(--muted); font-style: italic; line-height: 1.6; margin: 0; }
+
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-card { padding: 1.15rem 1.1rem 1rem; border-radius: 10px; }
+    .rule-row { grid-template-columns: 1fr auto; gap: 0.5rem; }
+    .rule-row .rule-arrow { display: none; }
+    .rule-row .rule-del { grid-column: 2; grid-row: 1; align-self: start; margin-top: 1.1rem; }
+    .fixture-grid { grid-template-columns: 1fr; }
+    .fixture-code { min-height: 0; }
+  }
+</style>

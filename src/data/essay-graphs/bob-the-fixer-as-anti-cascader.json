@@ -1,0 +1,439 @@
+{
+  "slug": "bob-the-fixer-as-anti-cascader",
+  "essayTitle": "The anti-cascader",
+  "spineId": "S01-cascade-not-gravity",
+  "viewBox": {
+    "width": 960,
+    "height": 720
+  },
+  "nodes": [
+    {
+      "id": "S01-cascade-not-gravity",
+      "type": "synthesis",
+      "claim": "The cascade isn't gravity — it's a function of which side of the migration is doing the pulling. Flip the pull, and the cascade doesn't form.",
+      "where": "the spine",
+      "why": "The load-bearing claim of Part III. The cascade in Part II felt structural; this essay says the structure is contingent on a posture choice, not a physical law. Every inversion below is a way of flipping that pull."
+    },
+    {
+      "id": "S02-team-pull",
+      "type": "synthesis",
+      "claim": "Operator-push → team-pull. The platform team publishes a skill; the receiving team installs and invokes it on their clock.",
+      "where": "inversion 1",
+      "derives_from": [
+        "S01-cascade-not-gravity"
+      ],
+      "why": "The first load-bearing flip. Same posture as Python 2to3, OpenRewrite, jscodeshift — producer authors once, consumer runs locally. What's new is shipping it as a skill the receiving team's agent already knows how to invoke."
+    },
+    {
+      "id": "S03-choreographed",
+      "type": "synthesis",
+      "claim": "Single-shot → choreographed. A migration is a sequence of small reviewable PRs with state in the target repo, not one big diff.",
+      "where": "inversion 2",
+      "derives_from": [
+        "S01-cascade-not-gravity"
+      ],
+      "why": "The second flip. Spring Boot 2.7→3 is seven steps; each step is one PR a human will actually read. State in .migration-state.json lets the team pause and resume without losing position. 14-line diffs get reviewed; 700-line diffs don't."
+    },
+    {
+      "id": "S04-teach-while-doing",
+      "type": "synthesis",
+      "claim": "\"Do the work\" → teach while doing. Each step ships with publisher-authored prose that explains the transform before running it.",
+      "where": "inversion 3 — load-bearing",
+      "derives_from": [
+        "S01-cascade-not-gravity"
+      ],
+      "why": "The author flags this one as the load-bearing inversion. The team ends each step with a working understanding of the transform — the next step is faster because they understood the first. Teaching is the part nobody else ships."
+    },
+    {
+      "id": "S05-engine-plus-ux",
+      "type": "synthesis",
+      "claim": "Engine-only → engine + receiving-team UX. The codemods inside Bob are the same shape any AST tool produces; the contribution is the wrapper above.",
+      "where": "inversion 4",
+      "derives_from": [
+        "S01-cascade-not-gravity"
+      ],
+      "why": "The fourth flip. The engine layer (jscodeshift, OpenRewrite, ast-grep, Semgrep autofix, Codemod's CLI) is well-covered. The team-side surface — explain, pace, stop short of merge — is what's missing."
+    },
+    {
+      "id": "D06-bob-the-artifact",
+      "type": "derivation",
+      "claim": "bob-the-fixer is one instance of the artifact you get when you compose all four inversions — a Claude Code plugin shipping today.",
+      "where": "the artifact",
+      "derives_from": [
+        "S02-team-pull",
+        "S03-choreographed",
+        "S04-teach-while-doing",
+        "S05-engine-plus-ux"
+      ],
+      "why": "The four flips compose. Bob is one shape that holds them all simultaneously. The four migrations shipped at first publish — migrate-spring-boot-3, migrate-junit-4-to-5, migrate-jest-to-vitest, adopt-structured-logging — are concrete instances of the composed shape."
+    },
+    {
+      "id": "D07-skills-made-it-deliverable",
+      "type": "derivation",
+      "claim": "Before the agent-skills format, the operator had no way to ship anything but a PR. Skills are the second option.",
+      "where": "why this couldn't have shipped earlier",
+      "derives_from": [
+        "S02-team-pull",
+        "D06-bob-the-artifact"
+      ],
+      "why": "Names the mechanism behind why team-pull is suddenly deliverable at scale. Runbooks get skimmed; CLIs get forgotten; CI bots open PRs. SKILL.md + plugin marketplace is the first format where 'here is a migration with the teacher built in' is one install command."
+    },
+    {
+      "id": "O08-teaching-layer-gap",
+      "type": "observation",
+      "claim": "Across surveyed AI coding tools as of May 2026 — Cursor, Continue, Aider, Cody, JetBrains, Copilot, Sweep, Windsurf, Codemod's CLI — none ship the active teaching layer.",
+      "where": "the gap",
+      "derives_from": [
+        "S04-teach-while-doing"
+      ],
+      "why": "The empirical observation behind the load-bearing inversion. The author's surveyed claim — open to falsification by anyone who finds a counter-example. If a surveyed tool does ship a teaching-while-doing surface, this node moves."
+    },
+    {
+      "id": "C01-2to3",
+      "type": "citation",
+      "claim": "Python 2to3 — single command, run locally on the team's clock, ships with the standard library since Python 3.",
+      "source": "docs.python.org/3/library/2to3",
+      "url": "https://docs.python.org/3/library/2to3.html",
+      "why": "Earliest published instance of the team-pulled posture. The producer (CPython core) authored once; consumers ran on their own clock. Grounds S02."
+    },
+    {
+      "id": "C02-openrewrite",
+      "type": "citation",
+      "claim": "OpenRewrite OSS — Java migration recipes distributed via Maven Central; teams pull, run, commit.",
+      "source": "docs.openrewrite.org",
+      "url": "https://docs.openrewrite.org/",
+      "why": "Mature Java-ecosystem instance of the team-pulled engine. Recipes are the producer's contribution; running them is the consumer's. Grounds S02 and S05 — well-covered engine layer that doesn't include the team-side teaching surface."
+    },
+    {
+      "id": "C03-jscodeshift",
+      "type": "citation",
+      "claim": "jscodeshift — Facebook's JS codemod toolkit; treats codemods as a library devs run on their own clock.",
+      "source": "github.com/facebook/jscodeshift",
+      "url": "https://github.com/facebook/jscodeshift",
+      "why": "Engine-layer prior art, JavaScript ecosystem. The codemods inside Bob's steps are the same shape any AST tool produces; jscodeshift is one place that shape was first packaged for OSS use. Grounds S05."
+    },
+    {
+      "id": "C04-shopify-packwerk",
+      "type": "citation",
+      "claim": "Shopify (2020): \"A single centralized team can't make change happen by working against the momentum of hundreds of developers.\" Pivoted to Architecture Guild + embedded engineers + team-installed Packwerk.",
+      "source": "Shopify Engineering · Deconstructing the Monolith (2020)",
+      "url": "https://shopify.engineering/shopify-monolith",
+      "why": "Clearest published statement of the anti-push thesis as a strategic position. Bob's posture (team-pulled, team-paced) is in the same direction in a different shape (Claude Code skill rather than static-analysis library). Grounds S01."
+    },
+    {
+      "id": "C05-codemod",
+      "type": "citation",
+      "claim": "Codemod ships the engine and Campaigns — operator-side fan-out across N repos. A real product, well-funded engine layer; the team-side teacher isn't in their offering.",
+      "source": "codemod.com",
+      "url": "https://codemod.com",
+      "why": "Closest contemporary in the space — kudos to the team. The engine and operator-side orchestration are mature; this is an invitation, not a contest. If Codemod ships a team-paced + teaching-layer surface, the field is better for it."
+    },
+    {
+      "id": "C06-skills-format",
+      "type": "citation",
+      "claim": "Anthropic SKILL.md (folder + YAML frontmatter, on-demand load) + plugin marketplace — the distribution channel that makes \"a migration with a teacher built in\" one install command for the receiving team.",
+      "source": "Anthropic Skills",
+      "url": "https://github.com/anthropics/skills",
+      "why": "Names the substrate that turned the team-pulled model from runbook-shaped into installable-skill-shaped. Grounds D07 — skills are why this couldn't have shipped earlier."
+    },
+    {
+      "id": "C07-google-lsc",
+      "type": "citation",
+      "claim": "Hyrum Wright's Large-Scale Changes (Software Engineering at Google, Ch 22): LSCs at Google almost always machine-generated; pre-LLM operator-side practice for cross-cutting change.",
+      "source": "Software Engineering at Google · Ch 22",
+      "url": "https://abseil.io/resources/swe-book/html/ch22.html",
+      "why": "Historical anchor for the operator-push path Bob is inverting. The LSC pattern shipped at Google scale via codemod; the cascade Part II names is what happens when the same pattern runs against a fleet of teams that didn't author the change. Grounds the cascade-as-failure-mode framing implicit in S01."
+    }
+  ],
+  "positions": {
+    "S01-cascade-not-gravity": {
+      "cx": 480,
+      "cy": 90,
+      "r": 36,
+      "labelText": "S01 · spine"
+    },
+    "S02-team-pull": {
+      "cx": 130,
+      "cy": 230,
+      "r": 28,
+      "labelText": "S02"
+    },
+    "S03-choreographed": {
+      "cx": 360,
+      "cy": 230,
+      "r": 28,
+      "labelText": "S03"
+    },
+    "S04-teach-while-doing": {
+      "cx": 600,
+      "cy": 230,
+      "r": 30,
+      "labelText": "S04 · load-bearing"
+    },
+    "S05-engine-plus-ux": {
+      "cx": 830,
+      "cy": 230,
+      "r": 28,
+      "labelText": "S05"
+    },
+    "D06-bob-the-artifact": {
+      "cx": 480,
+      "cy": 400,
+      "r": 32,
+      "labelText": "D06 · bob"
+    },
+    "D07-skills-made-it-deliverable": {
+      "cx": 200,
+      "cy": 400,
+      "r": 24,
+      "labelText": "D07"
+    },
+    "O08-teaching-layer-gap": {
+      "cx": 760,
+      "cy": 400,
+      "r": 26,
+      "labelText": "O08"
+    },
+    "C01-2to3": {
+      "cx": 60,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C01"
+    },
+    "C02-openrewrite": {
+      "cx": 200,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C02"
+    },
+    "C03-jscodeshift": {
+      "cx": 340,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C03"
+    },
+    "C04-shopify-packwerk": {
+      "cx": 480,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C04"
+    },
+    "C05-codemod": {
+      "cx": 620,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C05"
+    },
+    "C06-skills-format": {
+      "cx": 760,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C06"
+    },
+    "C07-google-lsc": {
+      "cx": 900,
+      "cy": 580,
+      "r": 22,
+      "labelText": "C07"
+    }
+  },
+  "edges": [
+    {
+      "from": "S02-team-pull",
+      "to": "S01-cascade-not-gravity",
+      "kind": "derives"
+    },
+    {
+      "from": "S03-choreographed",
+      "to": "S01-cascade-not-gravity",
+      "kind": "derives"
+    },
+    {
+      "from": "S04-teach-while-doing",
+      "to": "S01-cascade-not-gravity",
+      "kind": "derives"
+    },
+    {
+      "from": "S05-engine-plus-ux",
+      "to": "S01-cascade-not-gravity",
+      "kind": "derives"
+    },
+    {
+      "from": "D06-bob-the-artifact",
+      "to": "S02-team-pull",
+      "kind": "derives"
+    },
+    {
+      "from": "D06-bob-the-artifact",
+      "to": "S03-choreographed",
+      "kind": "derives"
+    },
+    {
+      "from": "D06-bob-the-artifact",
+      "to": "S04-teach-while-doing",
+      "kind": "derives"
+    },
+    {
+      "from": "D06-bob-the-artifact",
+      "to": "S05-engine-plus-ux",
+      "kind": "derives"
+    },
+    {
+      "from": "D07-skills-made-it-deliverable",
+      "to": "S02-team-pull",
+      "kind": "derives"
+    },
+    {
+      "from": "D07-skills-made-it-deliverable",
+      "to": "D06-bob-the-artifact",
+      "kind": "derives"
+    },
+    {
+      "from": "O08-teaching-layer-gap",
+      "to": "S04-teach-while-doing",
+      "kind": "derives"
+    },
+    {
+      "from": "C01-2to3",
+      "to": "S02-team-pull",
+      "kind": "grounds"
+    },
+    {
+      "from": "C02-openrewrite",
+      "to": "S02-team-pull",
+      "kind": "grounds"
+    },
+    {
+      "from": "C02-openrewrite",
+      "to": "S05-engine-plus-ux",
+      "kind": "grounds"
+    },
+    {
+      "from": "C03-jscodeshift",
+      "to": "S05-engine-plus-ux",
+      "kind": "grounds"
+    },
+    {
+      "from": "C04-shopify-packwerk",
+      "to": "S01-cascade-not-gravity",
+      "kind": "grounds"
+    },
+    {
+      "from": "C05-codemod",
+      "to": "S05-engine-plus-ux",
+      "kind": "grounds"
+    },
+    {
+      "from": "C06-skills-format",
+      "to": "D07-skills-made-it-deliverable",
+      "kind": "grounds"
+    },
+    {
+      "from": "C07-google-lsc",
+      "to": "S01-cascade-not-gravity",
+      "kind": "grounds"
+    }
+  ],
+  "eyes": [
+    {
+      "id": "O08-teaching-layer-gap",
+      "what": "The surveyed-tools claim — \"none of Cursor, Continue, Aider, Cody, JetBrains, Copilot, Sweep, Windsurf, Codemod's CLI ship an active teaching layer as of May 2026\" — is the author's hand survey. Falsifiable but not yet externally corroborated.",
+      "why": "The load-bearing observation behind S04 (teach-while-doing). Open to falsification by anyone who finds a counter-example in the surveyed set, or names a tool that wasn't surveyed. Worth a follow-up pass each quarter; the field is moving fast.",
+      "ground_with": [
+        {
+          "label": "Cursor docs / changelog",
+          "url": "https://cursor.com"
+        },
+        {
+          "label": "Continue.dev",
+          "url": "https://continue.dev"
+        },
+        {
+          "label": "Aider",
+          "url": "https://aider.chat"
+        },
+        {
+          "label": "Codemod CLI",
+          "url": "https://codemod.com"
+        }
+      ]
+    },
+    {
+      "id": "S04-teach-while-doing",
+      "what": "Teaching-as-load-bearing is the author's framing. Adjacent literature (literate programming, dev-experience research, runbook-vs-skill comparisons) names the value of explanation alongside execution but does not frame the teaching layer as the load-bearing inversion in cross-cutting change.",
+      "why": "The framing reads cleanly against the surveyed tools, but a published taxonomy already naming \"teaching-while-doing\" as the missing primitive would let the essay sit alongside it instead of re-naming it. Active eyes — most likely place an external reader could already have shipped the same claim.",
+      "ground_with": [
+        {
+          "label": "Knuth · Literate Programming (1984)",
+          "url": "https://en.wikipedia.org/wiki/Literate_programming"
+        }
+      ]
+    },
+    {
+      "id": "D06-bob-the-artifact",
+      "what": "Bob is presented as one demonstration of the four-inversion shape. The claim that the four inversions are jointly sufficient to defeat the cascade is implicit, not yet proven against a second instance.",
+      "why": "One artifact is an existence proof for the shape, not for the shape's necessity or sufficiency. Other shapes that hold the same four inversions — or that drop one and still avoid the cascade — would sharpen the claim. Open invitation to the field."
+    }
+  ],
+  "actions": [
+    {
+      "kind": "etude",
+      "label": "Install bob",
+      "body": "Watch the choreography land. Install, invoke, one step, stop. Demonstrates the team-pulled posture and per-step pacing in 90 seconds.",
+      "href": "/etudes/anti-cascader/install-bob/"
+    },
+    {
+      "kind": "etude",
+      "label": "Teaching layer",
+      "body": "Same diff. With and without the explanation wrapped around it. Drills the load-bearing inversion — S04.",
+      "href": "/etudes/anti-cascader/teaching-layer/"
+    },
+    {
+      "kind": "etude",
+      "label": "Pull vs push",
+      "body": "Two scenarios land in your week as team lead. Pick the response. Drills S02.",
+      "href": "/etudes/anti-cascader/pull-vs-push/"
+    },
+    {
+      "kind": "etude",
+      "label": "Author one step",
+      "body": "Write the rename rule. Run it against the fixture. Drills S05 — what shipping a step actually feels like.",
+      "href": "/etudes/anti-cascader/author-one-step/"
+    },
+    {
+      "kind": "apply",
+      "label": "Pick one cross-cutting change you tried to push",
+      "body": "What would the team-pulled shape have looked like? Where would the per-step pacing have lived? What's the teaching layer your PR description didn't carry?"
+    },
+    {
+      "kind": "apply",
+      "label": "Try bob",
+      "body": "If you have a Spring Boot 2.7, JUnit 4, Jest, or unstructured-logging codebase, install the plugin and run the migration. The repo is MIT-licensed and under 1,000 lines.",
+      "href": "https://github.com/parrik/bob-the-fixer"
+    },
+    {
+      "kind": "next",
+      "label": "Part II — the cascade with agents in the loop",
+      "body": "The cascade survives the substrate. Same pattern reproduces inside one operator running a fleet of agents. Sets up why the team-pulled inversion in this essay matters at agent scale, not just human scale.",
+      "href": "/puzzles/the-campaign-cascade-with-agents/"
+    },
+    {
+      "kind": "next",
+      "label": "Part I — where the cascade was first named",
+      "body": "How to run a cross-cutting campaign — the principle, the three paths, the dead zone. The pre-LLM framing the anti-cascader is a positive instance of.",
+      "href": "/puzzles/the-campaign-cascade/"
+    }
+  ],
+  "rubric": {
+    "composite": "mid",
+    "scores": {
+      "grounded": "strong",
+      "tentatives": "mid",
+      "synthesis": "strong",
+      "provenance": "strong",
+      "voice": "strong"
+    },
+    "note": "Each load-bearing claim cites a real prior-art reference; the four inversions are explicitly framed as a recombination, not an invention. Composite is mid not strong because the surveyed-tools observation (O08) and the four-inversions-are-sufficient claim (D06) are author-side surveys without independent corroboration yet.",
+    "soft": "Two soft spots:\n1. The surveyed-tools claim is the load-bearing empirical observation but rests on the author's hand survey. A reproducible methodology — feature matrix across the named tools, last-checked date, link to each tool's docs section that confirms or denies a teaching layer — would let a reader verify rather than trust.\n2. \"The four inversions compose\" presents as an exhaustive decomposition. It may not be. There are plausible fifth axes — reversibility, blast radius, telemetry — that the essay doesn't surface. Worth marking the four as the ones bob explicitly inverts rather than the complete set."
+  }
+}

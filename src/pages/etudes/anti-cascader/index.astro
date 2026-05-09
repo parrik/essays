@@ -1,0 +1,121 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
+
+const etudes = [
+  { name: 'Install bob', href: '/etudes/anti-cascader/install-bob/', desc: 'Watch the choreography land — install, invoke, one step, stop.' },
+  { name: 'Teaching layer', href: '/etudes/anti-cascader/teaching-layer/', desc: 'Same diff. With and without the explanation wrapped around it.' },
+  { name: 'Pull vs push', href: '/etudes/anti-cascader/pull-vs-push/', desc: 'You are the team lead. Two scenarios land in your week.' },
+  { name: 'Author one step', href: '/etudes/anti-cascader/author-one-step/', desc: 'Write the rename rule. Run it against the fixture.' },
+];
+
+const seriesLinks = [
+  { label: 'Campaign Cascade etudes (Parts I & II)', href: '/etudes/campaign-cascade/' },
+  { label: 'The anti-cascader essay', href: '/puzzles/bob-the-fixer-as-anti-cascader/' },
+];
+---
+<Base title="The anti-cascader etudes">
+  <article class="etude-page">
+    <header class="etude-head">
+      <nav class="etude-nav">
+        <a href="/etudes/">← all etudes</a>
+      </nav>
+      <h1 class="etude-title">The anti-cascader</h1>
+      <p class="etude-relief">Four studies on the inverse shape — team-pulled, choreographed, teaching, paced.</p>
+      <PuzzleViews
+        slug="bob-the-fixer-as-anti-cascader"
+        activeView="etudes"
+        etudesUrl="/etudes/anti-cascader/"
+        hasGraph={true}
+      />
+    </header>
+
+    <ul class="etude-list">
+      {etudes.map(e => (
+        <li>
+          <a href={e.href} class="etude-link">
+            <span class="etude-name">{e.name}</span>
+            <span class="etude-sep"> &mdash; </span>
+            <span class="etude-desc">{e.desc}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+
+    <section class="series-links">
+      <p class="series-label">Series</p>
+      <ul class="series-list">
+        {seriesLinks.map(s => (
+          <li><a href={s.href}>{s.label}</a></li>
+        ))}
+      </ul>
+    </section>
+  </article>
+</Base>
+
+<style is:global>
+  .etude-page { max-width: 38rem; margin: 0 auto; padding: 0; }
+  .etude-head { margin-bottom: 2rem; }
+  .etude-kicker {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .etude-title {
+    font-family: var(--serif-display);
+    font-size: 2.25rem;
+    line-height: 1.15;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.01em;
+  }
+  .etude-relief {
+    font-family: var(--serif);
+    font-style: italic;
+    color: var(--muted);
+    font-size: 1.05rem;
+    margin: 0 0 1rem;
+    line-height: 1.45;
+  }
+  .etude-nav { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); margin: 0 0 1.25rem; }
+  .etude-nav a { color: var(--muted); text-decoration: none; }
+  .etude-nav a:hover { color: var(--accent); }
+  .etude-nav-sep { margin: 0 0.5rem; opacity: 0.5; }
+
+  .etude-list { list-style: none; padding: 0; margin: 0; }
+  .etude-list li { padding: 0.7rem 0; border-bottom: 1px solid var(--line); }
+  .etude-list li:last-child { border-bottom: none; }
+  .etude-link { display: block; text-decoration: none; color: var(--text); line-height: 1.45; }
+  .etude-name { font-weight: 600; }
+  .etude-link:hover .etude-name { color: var(--accent); text-decoration: underline; }
+  .etude-sep { color: var(--muted); }
+  .etude-desc { color: var(--muted); }
+
+  .series-links {
+    margin: 2.25rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+  .series-label {
+    font-family: var(--sans);
+    font-size: var(--label-size);
+    letter-spacing: var(--label-tracking);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 0 0 0.55rem;
+  }
+  .series-list { list-style: none; padding: 0; margin: 0; }
+  .series-list li { margin: 0.25rem 0; font-size: 0.95rem; }
+  .series-list a { color: var(--muted); text-decoration: none; }
+  .series-list a:hover { color: var(--accent); text-decoration: underline; }
+
+  @media (max-width: 32rem) {
+    .etude-title { font-size: 1.85rem; }
+    .etude-sep { display: none; }
+    .etude-desc { display: block; font-size: 0.92rem; margin-top: 0.15rem; }
+  }
+</style>
