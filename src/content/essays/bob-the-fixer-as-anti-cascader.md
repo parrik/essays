@@ -27,6 +27,8 @@ That's it. Seven small reviewable PRs, paced by you, explained as they happen, m
 
 ![/migrate-spring-boot-3 walking through the first three steps — install, precheck, jakarta-imports, properties — with the publisher-authored explanation prose printed before each codemod runs. Real recording, ~34 seconds.](/demo/bob-walkthrough.gif)
 
+Or [walk it step-by-step in the etude](/etudes/anti-cascader/install-bob/) — same example, paced for reading, all seven steps with each step's explanation prose held on screen long enough to read.
+
 ## Why this matters
 
 [Part II](/puzzles/the-campaign-cascade-with-agents/) named the failure mode. The cascade has a structure: operator-pushed PRs land in receiving teams' queues; the receiving team didn't author the change, doesn't trust the diff, can't pace it; the PRs sit; the operator chases; the long tail never closes. Six months later the dashboard says 87% and the holdouts are someone's problem forever.
