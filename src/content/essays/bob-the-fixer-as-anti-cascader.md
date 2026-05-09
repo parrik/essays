@@ -25,7 +25,7 @@ You merge it through your normal review. The merge commit's trailer is now in ma
 
 That's it. Seven small reviewable PRs, paced by you, explained as they happen, merged through your normal protocol. The platform team never opened a PR.
 
-![Step 02 of /migrate-spring-boot-3 — javax→jakarta imports, 7.8 seconds, real recording.](/demo/bob-step-02.gif)
+![/migrate-spring-boot-3 walking through the first three steps — install, precheck, jakarta-imports, properties — with the publisher-authored explanation prose printed before each codemod runs. Real recording, ~34 seconds.](/demo/bob-walkthrough.gif)
 
 ## Why this matters
 
