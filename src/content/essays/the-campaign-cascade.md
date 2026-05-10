@@ -1,7 +1,7 @@
 ---
 title: How to run a cross-cutting campaign
 seriesName: The Campaign Cascade
-subtitle: The principle, the three paths, the cascade
+subtitle: Automate, own vertically, or enable horizontally — three paths through a multi-repo migration
 relief: Cross-cutting changes finish or they don't. The ones that finish distribute context, not just code. Three paths through, one constraint that decides everything.
 kicker: Engineering Pattern
 tag: poster

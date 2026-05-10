@@ -34,15 +34,12 @@ const fullTitle = title === 'parrik' ? 'parrik' : `${title} — parrik`;
     <header class="site-header">
       <a href="/" class="site-title">parrik</a>
       <nav class="site-nav">
-        <a href="/nature/">nature</a>
+        <a href="/about/">about</a>
+        <a href="https://github.com/parrik" rel="me">github</a>
       </nav>
     </header>
     <main>
       <slot />
     </main>
-    <footer class="site-footer">
-      <slot name="footer-extra" />
-      <p class="footer-links"><a href="https://www.linkedin.com/in/parrik/">linkedin</a> · <a href="https://github.com/parrik/essays">github</a> · <a href="/rss.xml">rss</a></p>
-    </footer>
   </body>
 </html>

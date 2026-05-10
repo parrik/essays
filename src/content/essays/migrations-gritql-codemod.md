@@ -1,15 +1,16 @@
 ---
-title: The cascade survives the substrate
+title: Migrations — playing with GritQL and codemod
 seriesName: The Campaign Cascade
-subtitle: Same principle, same three paths, same dead zone — with agents in the loop
-relief: Distributed work loses context. The cascade is what that loss looks like. Whether the workers are silicon or carbon, the pattern is the same and the fix is the same.
+subtitle: The cascade, transferred to agent fleets — and GritQL + the codemod CLI as the engine underneath
+relief: Distributed work loses context. The cascade is what that loss looks like. Below the wrapper is its own pattern language.
 kicker: Engineering Pattern
 tag: essay
 order: 2
 parent: the-campaign-cascade
-description: How the cascade pattern from Part I transfers when the workers are AI agents — and why the dead zone reproduces inside a single operator running a fleet.
-publishedAt: 2026-05-08
-surprise: The dead zone reproduces inside one operator running a fleet — same shape, smaller scale. The single-operator cascade has the same five steps as the org-scale one.
+status: seedling
+description: How the cascade pattern transfers when the workers are AI agents — and a first pass at GritQL and the codemod CLI as the engine layer beneath bob.
+publishedAt: 2026-05-10
+surprise: The dead zone reproduces inside one operator running a fleet — same shape, smaller scale. And a future bob can host GritQL inside its codemods without changing the wrapper's job.
 coAuthoredWith:
   - Claude Opus 4.7
 etudes:
@@ -77,9 +78,96 @@ Two things, both already present in Part I but only legible from the other side.
 
 ---
 
-*Honor the principle — every entity in the loop has context-in-hand — and you stay out of the cascade. One substrate change is not a proof of substrate-invariance, but it is enough to suspect the original observation was structural rather than local.*
+## Below the wrapper — playing with GritQL and codemod
+
+The arrows above keep pointing at the engine layer — codemods, mechanical rewrites, the deterministic substrate the fleet needs to lean on. [Part III](/puzzles/bob-the-fixer-as-anti-cascader/) names the wrapper above that engine: bob's team-paced, teach-while-doing UX. The engine itself is mature: [jscodeshift](https://github.com/facebook/jscodeshift), [OpenRewrite](https://docs.openrewrite.org/), [ast-grep](https://ast-grep.github.io/), Semgrep autofix, [codemod.com](https://codemod.com).
+
+I had not actually used the codemod toolchain end-to-end. I had used ast-grep inside bob's transforms. I had read GritQL examples. I had not opened a fresh repo and run `codemod run` on a real thing.
+
+So this is that. An afternoon. Two tools. Notes.
+
+### What the two things are
+
+**GritQL** is a query language for source code. You write a pattern that looks like the code you want to match, with metavariables (`$foo`) for the holes, and a rewrite block (`=>`) for what it becomes. The engine parses your repo into ASTs across [tree-sitter languages](https://github.com/tree-sitter), runs your pattern, and applies the rewrite. The pitch: a single language across JS, TS, Python, Java, Go, etc., instead of one codemod tool per ecosystem.
+
+**codemod** (the CLI) is the runner above it — the thing that picks up `.grit` files, finds your repo files, applies the pattern, shows you a diff, lets you commit. It's the developer-facing surface; GritQL is what you write into it.
+
+Both ship from [codemod.com](https://codemod.com), which also runs a *registry* of published codemods and a *campaigns* platform for operator-side fanout across N repos.
+
+### The first toy
+
+I wanted the simplest possible thing. Console.log to logger.info. Same rewrite bob's `adopt-structured-logging` step 02 does, by hand, in TypeScript.
+
+In GritQL it is, roughly:
+
+```grit
+language js
+
+`console.log($args)` => `logger.info($args)`
+```
+
+Three lines. The `language js` declaration tells the engine which tree-sitter grammar to load. The backticks are pattern syntax; the inside is a code shape with a metavariable. Run with `codemod run`. It scans your repo, finds the matches, shows the diff. You approve. You commit.
+
+That is *much* nicer than the ast-grep TypeScript transform in bob's `replace-prints/transform.ts`. The TypeScript version is 33 lines: imports, language hook, pattern compile, edit collection, commit. The GritQL version is the *pattern itself*.
+
+### Where it starts to pinch
+
+The console.log toy is the postcard. Real codemods are messier.
+
+**Mapping one symbol to several.** Bob's `replace-prints` maps `console.log → logger.info` AND `console.info → logger.info`. Two-to-one. In GritQL, you write two patterns, both rewriting to the same thing. Fine. But the explanation prose — *why* `console.log` collapses into `logger.info` and not `logger.debug` — does not live in the pattern. It lives somewhere else, or nowhere.
+
+**Conditional rewrites.** Bob's `migrate-junit-4-to-5` step 02 has an explicit ordering: rewrite `BeforeClass` before `Before`, otherwise `@BeforeClass` gets partially rewritten to `@BeforeEachClass`. GritQL handles this — patterns are deterministic, rewrites are scoped — but the *reasoning* for the ordering, again, lives outside the pattern.
+
+**Import injection.** When bob's adopt-logging rewrites `console.log` to `logger.info`, the file might not import `logger`. The transform should add the import. Bob's TypeScript transform documents in a comment that it *should* do this and doesn't. GritQL has primitives for inserting nodes — adding a top-of-file import is expressible. Whether it's *idiomatic* GritQL or whether you reach for something else is the kind of thing I'd want to verify against the real docs before claiming.
+
+**Cross-file reasoning.** Most things one wants from a real codemod stay inside one file. But the moment a transform needs to know "is `logger` already defined somewhere in scope, possibly imported from a sibling file?" — that is not what tree-sitter-driven pattern languages are built for. They are syntactic, not semantic. OpenRewrite-style type-aware recipes are the other end of that spectrum.
+
+### What bob is doing that GritQL is not
+
+This is the load-bearing observation. After playing for an hour the layering became sharp:
+
+GritQL is a *pattern language*. The codemod CLI is a *runner*. Together they replace the TypeScript-glue layer inside one of bob's steps. That is real value — the transform in `adopt-structured-logging/replace-prints/transform.ts` could be a three-line `.grit` file plus a workflow declaration.
+
+What they do not replace:
+
+- The *publisher-authored explanation* bob prints to the developer's session before the transform runs. The `.grit` file is the rule, not the teaching.
+- The *step sequencing* across PRs. One `.grit` file is one rewrite. Bob's `migrate-spring-boot-3` is seven steps. The codemod CLI runs codemods; bob runs a *migration* — a sequence with state in `git log`.
+- The *hybrid LLM step*. GritQL is deterministic by design. Bob's hibernate-queries flag pattern is real GritQL territory; the LLM-proposed-rewrite-per-site loop on top of it is not.
+
+So a future bob can host GritQL *inside* its step-02 codemods instead of hand-rolled TypeScript. The wrapper is still doing the wrapper's job. The engine got smaller and faster to write.
+
+That feels like the right cut.
+
+### What I want to do next
+
+Three follow-ups, none done in this sitting:
+
+1. **Rewrite one bob step in GritQL.** Take `migrate-jest-to-vitest/rename-imports`, currently 50 lines of TypeScript, and replace it with a `.grit` file plus a workflow. Compare bytes, compare clarity, compare what the diff feels like to review. The result is either "yes, swap" or "no, here's the load-bearing reason TypeScript wins" — both are findings.
+
+2. **Try a destructuring-import pattern.** The jest-to-vitest transform's hardest part is `import { describe, it, jest as vi } from '@jest/globals'` and its four positional variants (jest alone, leading, trailing, middle). I want to see what that looks like in GritQL. My prior is *much* shorter; my prior is also that I'm wrong about how much shorter.
+
+3. **Walk the codemod registry.** See what's published. See the shape of the prose that accompanies each registry entry. The closest published comparison to bob's "teach while doing" is whatever the registry surfaces — and that's the apples-to-apples I owe the reader.
+
+### Where I break (engine half)
+
+This half is a seedling on top of a published diagnosis. The shape of my engagement with these tools as of writing:
+
+- I have read GritQL examples and the [Grit pattern docs](https://docs.grit.io/) but have not built a non-trivial codemod end-to-end against a real repo.
+- The "three-line `console.log` codemod" I quote is the postcard example; whether the real syntax in current GritQL matches what I wrote needs verifying against `docs.grit.io` before publish.
+- I claim "GritQL has primitives for inserting nodes — adding a top-of-file import is expressible." That is *probably* true; I have not written the pattern that does it.
+- I claim the codemod CLI is the developer-facing runner and registry surface. The exact UX of `codemod run`, `codemod publish`, and the registry browser flow I'm describing from memory of the website, not from a fresh session.
+- I have not pinned versions. GritQL and the codemod CLI are evolving; specific syntax (`language js` declaration, backtick pattern delimiters) may have changed by the time this lands. Re-verify before publish.
+- The "Wrap GritQL inside bob's step-02 codemods" claim is architecturally plausible and not yet attempted. The first follow-up bullet above is the experiment that proves or breaks it.
+
+The honest version of this half is: **I have a thesis about layering, and I want to play with the engine to see if the thesis holds.** When I do the three follow-ups, the seedling becomes a real claim. Until then it is what it says it is — notes from an afternoon under a published diagnosis.
+
+---
+
+*Honor the principle — every entity in the loop has context-in-hand — and you stay out of the cascade. One substrate change is not a proof of substrate-invariance, but it is enough to suspect the original observation was structural rather than local. The engine below the wrapper is its own pattern language to learn, and bob can host it without changing what bob is.*
 
 *Part I: [How to run a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
+
+*Part III: [The anti-cascader](/puzzles/bob-the-fixer-as-anti-cascader/) — bob-the-fixer as the flipped shape, shipped today.*
 
 [^lsc]: Hyrum Wright et al., [*Large-Scale Changes*](https://abseil.io/resources/swe-book/html/ch22.html), in *Software Engineering at Google* (O'Reilly, 2020), Ch 22. The historical anchor for the automate path: at Google's scale, almost all LSCs are generated and merged by automated tooling, not humans. The path's preconditions — atomic safety, idempotent application, mechanical correctness — predate the LLM era.
 

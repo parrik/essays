@@ -1,6 +1,6 @@
 ---
 title: Search was never about humans
-subtitle: Retrieval over typed personal graphs
+subtitle: Graph traversal with ranking, sized to an agent reader instead of a human one
 relief: Retrieval is shape, sized to the reader. The reader is no longer just human.
 kicker: Method
 tag: essay

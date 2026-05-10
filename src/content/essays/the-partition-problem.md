@@ -1,6 +1,6 @@
 ---
 title: The Partition Problem
-subtitle: Restorative Yoga and the Biology of Belonging
+subtitle: Partition tolerance, cellular edition — a node optimizing locally because the cluster went silent
 tag: essay
 track: nature
 order: 2

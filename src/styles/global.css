@@ -60,51 +60,6 @@ main {
 
 .site-title:hover { color: var(--accent); }
 
-.site-footer {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 1.5rem 1.25rem 2.5rem;
-  width: 100%;
-  font-family: system-ui, -apple-system, sans-serif;
-  font-size: 0.82rem;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
-}
-
-.site-footer a {
-  color: var(--muted);
-  text-decoration: underline;
-  text-decoration-color: var(--line);
-  text-underline-offset: 3px;
-}
-
-.site-footer a:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-
-.site-footer .maxims-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 2rem;
-  margin-bottom: 0.9rem;
-}
-.site-footer .maxim-name {
-  color: var(--muted);
-  font-weight: 400;
-  font-style: italic;
-  opacity: 0.7;
-}
-
-.footer-byline {
-  margin: 0 0 1rem;
-  font-family: Georgia, 'Times New Roman', Times, serif;
-  font-style: italic;
-  font-size: 0.92rem;
-  line-height: 1.5;
-  color: var(--muted);
-}
-
 h1 {
   font-family: Georgia, 'Times New Roman', Times, serif;
   font-weight: 500;
@@ -214,6 +169,22 @@ a:hover { text-decoration-color: var(--accent); }
 .essay-title {
   font-size: 1.15rem;
   font-weight: 500;
+}
+
+/* Label-only essay title — used for drafts and seedlings. Same
+   typography as a linked title but muted, no underline, no cursor. */
+.essay-title-label .essay-title {
+  color: var(--muted);
+}
+
+.essay-status {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  opacity: 0.85;
 }
 
 .essays li a.essay-link:hover .essay-title { color: var(--accent); }
@@ -1070,7 +1041,6 @@ hr {
 @media print {
   .reading-progress,
   .site-header,
-  .site-footer,
   .essay-meta,
   .metadata-stripe,
   .graph-embed,
