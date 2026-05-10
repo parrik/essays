@@ -1,5 +1,5 @@
 ---
-title: Migrations — playing with GritQL and codemod
+title: Playing with GritQL and codemod
 seriesName: The Campaign Cascade
 subtitle: The cascade, transferred to agent fleets — and GritQL + the codemod CLI as the engine underneath
 relief: Distributed work loses context. The cascade is what that loss looks like. Below the wrapper is its own pattern language.
