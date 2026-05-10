@@ -1,5 +1,5 @@
 ---
-title: How to run a cross-cutting campaign
+title: Running a cross-cutting campaign
 seriesName: The Campaign Cascade
 subtitle: Automate, own vertically, or enable horizontally — three paths through a multi-repo migration
 relief: Cross-cutting changes finish or they don't. The ones that finish distribute context, not just code. Three paths through, one constraint that decides everything.

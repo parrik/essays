@@ -165,9 +165,9 @@ The honest version of this half is: **I have a thesis about layering, and I want
 
 *Honor the principle — every entity in the loop has context-in-hand — and you stay out of the cascade. One substrate change is not a proof of substrate-invariance, but it is enough to suspect the original observation was structural rather than local. The engine below the wrapper is its own pattern language to learn, and bob can host it without changing what bob is.*
 
-*Part I: [How to run a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
+*Part I: [Running a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
 
-*Part III: [The anti-cascader](/puzzles/bob-the-fixer-as-anti-cascader/) — bob-the-fixer as the flipped shape, shipped today.*
+*Part III: [Migrations don't have to cascade](/puzzles/bob-the-fixer-as-anti-cascader/) — bob-the-fixer as the flipped shape, shipped today.*
 
 [^lsc]: Hyrum Wright et al., [*Large-Scale Changes*](https://abseil.io/resources/swe-book/html/ch22.html), in *Software Engineering at Google* (O'Reilly, 2020), Ch 22. The historical anchor for the automate path: at Google's scale, almost all LSCs are generated and merged by automated tooling, not humans. The path's preconditions — atomic safety, idempotent application, mechanical correctness — predate the LLM era.
 
