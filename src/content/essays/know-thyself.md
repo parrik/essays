@@ -1,7 +1,7 @@
 ---
 title: A self was never flat
 seriesName: Know Thyself
-subtitle: A schema for personal memory in LLM conversations
+subtitle: A typed, provenance-tagged schema for personal memory in long-running LLM conversations
 relief: You are not what you said six times. You are what you did, on the days you did it.
 kicker: Method
 tag: essay

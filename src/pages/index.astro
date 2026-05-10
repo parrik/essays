@@ -4,114 +4,62 @@ import { getCollection } from 'astro:content';
 
 const all = await getCollection('essays');
 
-// Every essay is a work-in-progress at some stage of development —
-// seedling / tending / evergreen are stages of the same artifact, not
-// separate hierarchies. Surface them in one unified list. The
-// per-essay status lives in the MetadataStripe on each page, where
-// the reader can see *Planted ... · seedling* or *... · tending* and
-// know what they are reading. The homepage's job is to show the
-// structure of the body of work.
-//
-// Drafts: filtered out of top-level entries, kept as children. A draft
-// shouldn't appear as a standalone homepage card, but a draft Part II/III
-// of a series the reader can already see is coming should still render
-// muted under its parent.
-const topLevel = all.filter(e => !e.data.parent && !e.data.track && !e.data.draft);
-topLevel.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
+// One flat list, latest planted on top. Drafts and seedlings appear —
+// they're part of "what's growing here" — but render as label-only so
+// the reader can see the title without clicking through to something
+// that isn't ready to read yet. Each entry carries a small status
+// marker (· draft, · seedling) so the homepage tells the truth about
+// what's published vs. what's still tending.
+const list = all.sort((a, b) => {
+  const ad = a.data.publishedAt ? +a.data.publishedAt : 0;
+  const bd = b.data.publishedAt ? +b.data.publishedAt : 0;
+  return bd - ad;
+});
 
-// Build a parent-id → ordered children map. Children include all
-// statuses — a series has all its parts visible, in order, even when
-// the later parts are still seedling.
-const childrenByParent = new Map();
-for (const e of all) {
-  if (!e.data.parent) continue;
-  const arr = childrenByParent.get(e.data.parent) ?? [];
-  arr.push(e);
-  childrenByParent.set(e.data.parent, arr);
-}
-for (const arr of childrenByParent.values()) {
-  arr.sort((a, b) => (a.data.order ?? 99) - (b.data.order ?? 99));
-}
-
-const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+// A label fully or a link — same rule for drafts and seedlings: not
+// ready, no link. `draft` is the binary "don't serve a URL" flag;
+// `status: seedling` is the per-essay maturity signal. Either one
+// renders as non-clickable.
+const isLabelOnly = (e) => !!e.data.draft || e.data.status === 'seedling';
+const statusMarker = (e) => {
+  if (e.data.draft) return 'draft';
+  if (e.data.status === 'seedling') return 'seedling';
+  return null;
+};
 ---
 <Base title="parrik">
-  <p slot="footer-extra" class="footer-byline">On love, nature, &amp; nurture. I like distributed systems, math, biology and practice</p>
   <section class="essays">
-    <h2>puzzle-shape problems</h2>
     <ul>
-      {topLevel.map(essay => {
-        const children = childrenByParent.get(essay.id) ?? [];
-        const isSeries = children.length > 0;
-        const meta = isSeries ? (
-          <span class="essay-meta-right">
-            <span class="meta-series">a series</span>
+      {list.map(essay => {
+        // Homepage register is engineering-first — show the technical
+        // subtitle. The felt `relief` line lives on the per-essay page.
+        const subtitle = essay.data.subtitle ?? essay.data.relief;
+        const marker = statusMarker(essay);
+        const title = (
+          <span class="essay-title">
+            {essay.data.title}
+            {marker && <span class="essay-status"> · {marker}</span>}
           </span>
-        ) : null;
-
-        if (!isSeries) {
+        );
+        if (isLabelOnly(essay)) {
           return (
             <li>
               <div class="essay-row">
-                <a href={`/puzzles/${essay.id}/`} class="essay-link">
-                  <span class="essay-title">{essay.data.title}</span>
-                </a>
+                <span class="essay-title-label">{title}</span>
               </div>
-              {(essay.data.relief || essay.data.subtitle) && <p class="essay-subtitle">{essay.data.relief ?? essay.data.subtitle}</p>}
+              {subtitle && <p class="essay-subtitle">{subtitle}</p>}
             </li>
           );
         }
-        // Series: parent becomes Part I; children get Part II, III, ...
-        // Series header uses `seriesName` if set, else falls back to the
-        // parent's title — lets each part have its own claim-shaped title
-        // while the series keeps an umbrella name.
-        const parts = [essay, ...children];
-        const seriesLabel = essay.data.seriesName ?? essay.data.title;
         return (
-          <li class="series">
+          <li>
             <div class="essay-row">
-              <span class="essay-title series-title">{seriesLabel}</span>
-              {meta}
+              <a href={`/puzzles/${essay.id}/`} class="essay-link">{title}</a>
             </div>
-            <ol class="series-parts">
-              {parts.map((p, i) => {
-                // Muted = draft (still cooking). Non-draft children render as
-                // real links — Part II of a published series should be
-                // clickable, not just listed.
-                const muted = i > 0 && !!p.data.draft;
-                if (!muted) {
-                  return (
-                    <li>
-                      <a href={`/puzzles/${p.id}/`} class="series-part">
-                        <span class="part-num">Part {ROMAN[i]}</span>
-                        <span class="part-body">
-                          <span class="part-name">
-                            {p.data.title}
-                          </span>
-                          {(p.data.subtitle || p.data.relief) && <span class="part-description">{p.data.subtitle ?? p.data.relief}</span>}
-                        </span>
-                      </a>
-                    </li>
-                  );
-                }
-                const desc = p.data.subtitle ?? p.data.relief;
-                return (
-                  <li>
-                    <div class="series-part series-part-muted" aria-disabled="true">
-                      <span class="part-num">Part {ROMAN[i]}</span>
-                      <span class="part-body">
-                        <span class="part-name">{p.data.title}</span>
-                        {desc && <span class="part-description">{desc}</span>}
-                      </span>
-                    </div>
-                  </li>
-                );
-              })}
-            </ol>
+            {subtitle && <p class="essay-subtitle">{subtitle}</p>}
           </li>
         );
       })}
     </ul>
   </section>
 </Base>
-

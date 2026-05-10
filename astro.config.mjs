@@ -15,9 +15,12 @@ export default defineConfig({
     '/puzzles/know-thyself-security/': '/puzzles/know-thyself/',
     '/essays/memory-was-never-about-storage/': '/puzzles/know-thyself/',
     '/puzzles/memory-was-never-about-storage/': '/puzzles/know-thyself/',
-    // Earlier section renames.
-    '/side-channels/': '/nature/',
-    '/crossings/': '/nature/',
+    // Earlier section renames. nature → about (the nature track was
+    // converted to an about-me section; partition-problem essay moved
+    // onto the main homepage list).
+    '/side-channels/': '/about/',
+    '/crossings/': '/about/',
+    '/nature/': '/about/',
   },
   markdown: {
     // Light syntax theme so code blocks sit on the cream palette,

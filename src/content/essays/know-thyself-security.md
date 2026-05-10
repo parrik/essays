@@ -1,6 +1,6 @@
 ---
 title: Security was never about response
-subtitle: 'Continuous verification: gates and sweeps'
+subtitle: Continuous verification — pre-action gates and scheduled sweeps
 relief: Security is the love of careful work. Response is what arrives when carefulness arrives late.
 kicker: Method
 tag: essay

@@ -1,7 +1,7 @@
 ---
-title: The anti-cascader
+title: Migrations don't have to cascade
 seriesName: The Campaign Cascade
-subtitle: What the inverse of operator-push looks like in code, today
+subtitle: Choreographed multi-PR migrations as a Claude Code skill — paced by the team, riding a codemod engine
 relief: The cascade isn't gravity. It's a function of which side is doing the pulling. Flip that, and the cascade doesn't form.
 kicker: Engineering Pattern
 tag: essay
@@ -31,7 +31,7 @@ Or [walk it step-by-step in the etude](/etudes/anti-cascader/install-bob/) — s
 
 ## Why this matters
 
-[Part II](/puzzles/the-campaign-cascade-with-agents/) named the failure mode. The cascade has a structure: operator-pushed PRs land in receiving teams' queues; the receiving team didn't author the change, doesn't trust the diff, can't pace it; the PRs sit; the operator chases; the long tail never closes. Six months later the dashboard says 87% and the holdouts are someone's problem forever.
+[Part II](/puzzles/migrations-gritql-codemod/) named the failure mode. The cascade has a structure: operator-pushed PRs land in receiving teams' queues; the receiving team didn't author the change, doesn't trust the diff, can't pace it; the PRs sit; the operator chases; the long tail never closes. Six months later the dashboard says 87% and the holdouts are someone's problem forever.
 
 The thesis of this part is one sentence: **the cascade isn't gravity**. It is a function of which side of the migration is pulling. Flip every load-bearing arrow and the artifact changes shape. Bob is one instance of the flipped shape, shipped today.
 
@@ -83,5 +83,5 @@ Repo: [github.com/parrik/bob-the-fixer](https://github.com/parrik/bob-the-fixer)
 
 ---
 
-*Part I: [How to run a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
-*Part II: [The cascade survives the substrate](/puzzles/the-campaign-cascade-with-agents/) — same pattern with agents in the loop.*
+*Part I: [Running a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
+*Part II: [Migrations — playing with GritQL and codemod](/puzzles/migrations-gritql-codemod/) — same pattern with agents in the loop, and an afternoon poking at the engine layer.*
