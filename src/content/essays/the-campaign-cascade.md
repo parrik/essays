@@ -17,7 +17,7 @@ etudes:
 
 ## The principle
 
-Cross-cutting changes finish or they don't. The ones that finish share one constraint: **every entity in the loop has the context they need to act on the change in front of them.** *Entity*, not human — teammate, script, or agent, the same rule holds. The examples below run on humans because that's where the cascade was first observed; [Part II](/puzzles/the-campaign-cascade-with-agents/) walks the same principle into a single-operator agent fleet.
+Cross-cutting changes finish or they don't. The ones that finish share one constraint: **every entity in the loop has the context they need to act on the change in front of them.** *Entity*, not human — teammate, script, or agent, the same rule holds. The examples below run on humans because that's where the cascade was first observed.
 
 Skip that constraint and the work fans out into a cascade. A platform team launches a campaign across two hundred repos. The PRs stall. The director escalates to the SVP, who broadcasts a directive to merge. The directive lands with selective adoption. A tracking campaign gets spun up to chase compliance on the original campaign. Each incomplete campaign spawns the next:
 
@@ -42,5 +42,3 @@ The pattern fails in the middle: you do the work for the team (create the PR) bu
 ---
 
 *Honor the principle — every entity in the loop has context-in-hand — and you're out of the cascade.*
-
-*Part II: [the same cascade, with agents in the loop](/puzzles/the-campaign-cascade-with-agents/) — what changes when the workers are silicon.*

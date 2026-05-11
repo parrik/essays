@@ -4,28 +4,16 @@ import { getCollection } from 'astro:content';
 
 const all = await getCollection('essays');
 
-// One flat list, latest planted on top. Drafts and seedlings appear —
-// they're part of "what's growing here" — but render as label-only so
-// the reader can see the title without clicking through to something
-// that isn't ready to read yet. Each entry carries a small status
-// marker (· draft, · seedling) so the homepage tells the truth about
-// what's published vs. what's still tending.
-const list = all.sort((a, b) => {
-  const ad = a.data.publishedAt ? +a.data.publishedAt : 0;
-  const bd = b.data.publishedAt ? +b.data.publishedAt : 0;
-  return bd - ad;
-});
-
-// A label fully or a link — same rule for drafts and seedlings: not
-// ready, no link. `draft` is the binary "don't serve a URL" flag;
-// `status: seedling` is the per-essay maturity signal. Either one
-// renders as non-clickable.
-const isLabelOnly = (e) => !!e.data.draft || e.data.status === 'seedling';
-const statusMarker = (e) => {
-  if (e.data.draft) return 'draft';
-  if (e.data.status === 'seedling') return 'seedling';
-  return null;
-};
+// Homepage = top-level essays only — no parent. Series children
+// (Parts II/III, anti-cascader derivatives) and standalone drafts
+// live on /drafts/ instead of crowding the front page.
+const list = all
+  .filter(e => !e.data.parent && !e.data.draft)
+  .sort((a, b) => {
+    const ad = a.data.publishedAt ? +a.data.publishedAt : 0;
+    const bd = b.data.publishedAt ? +b.data.publishedAt : 0;
+    return bd - ad;
+  });
 ---
 <Base title="parrik">
   <section class="essays">
@@ -34,27 +22,12 @@ const statusMarker = (e) => {
         // Homepage register is engineering-first — show the technical
         // subtitle. The felt `relief` line lives on the per-essay page.
         const subtitle = essay.data.subtitle ?? essay.data.relief;
-        const marker = statusMarker(essay);
-        const title = (
-          <span class="essay-title">
-            {essay.data.title}
-            {marker && <span class="essay-status"> · {marker}</span>}
-          </span>
-        );
-        if (isLabelOnly(essay)) {
-          return (
-            <li>
-              <div class="essay-row">
-                <span class="essay-title-label">{title}</span>
-              </div>
-              {subtitle && <p class="essay-subtitle">{subtitle}</p>}
-            </li>
-          );
-        }
         return (
           <li>
             <div class="essay-row">
-              <a href={`/puzzles/${essay.id}/`} class="essay-link">{title}</a>
+              <a href={`/puzzles/${essay.id}/`} class="essay-link">
+                <span class="essay-title">{essay.data.title}</span>
+              </a>
             </div>
             {subtitle && <p class="essay-subtitle">{subtitle}</p>}
           </li>

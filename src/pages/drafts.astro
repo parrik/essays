@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+// Everything not on the homepage — drafts, seedlings, series children.
+// Sorted by publishedAt descending (most-recent on top), matching the
+// homepage's date order.
+const list = (await getCollection('essays'))
+  .filter(e => e.data.parent || e.data.draft || e.data.status === 'seedling')
+  .sort((a, b) => {
+    const ad = a.data.publishedAt ? +a.data.publishedAt : 0;
+    const bd = b.data.publishedAt ? +b.data.publishedAt : 0;
+    return bd - ad;
+  });
+
+const statusMarker = (e) => {
+  if (e.data.draft) return 'draft';
+  if (e.data.status === 'seedling') return 'seedling';
+  if (e.data.parent) return 'series';
+  return null;
+};
+---
+<Base title="drafts">
+  <section class="essays">
+    <ul>
+      {list.map(essay => {
+        const subtitle = essay.data.subtitle ?? essay.data.relief;
+        const marker = statusMarker(essay);
+        return (
+          <li>
+            <div class="essay-row">
+              <a href={`/puzzles/${essay.id}/`} class="essay-link">
+                <span class="essay-title">
+                  {essay.data.title}
+                  {marker && <span class="essay-status"> · {marker}</span>}
+                </span>
+              </a>
+            </div>
+            {subtitle && <p class="essay-subtitle">{subtitle}</p>}
+          </li>
+        );
+      })}
+    </ul>
+  </section>
+</Base>

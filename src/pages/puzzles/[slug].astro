@@ -5,7 +5,10 @@ import PuzzleViews from '../../components/PuzzleViews.astro';
 import { getCollection, render } from 'astro:content';
 
 export async function getStaticPaths() {
-  const essays = (await getCollection('essays')).filter(e => !e.data.draft);
+  // Build every essay's page, drafts included. Drafts are unlinked
+  // from the homepage (index.astro filters them); the /drafts/ index
+  // is their entry point.
+  const essays = await getCollection('essays');
   return essays.map(essay => ({
     params: { slug: essay.id },
     props: { essay },
