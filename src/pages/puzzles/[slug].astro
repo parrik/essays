@@ -24,13 +24,11 @@ const slugsWithGraph = new Set([
   'know-thyself',
   'know-thyself-search',
   'know-thyself-security',
-  'the-partition-problem',
 ]);
 const hasGraph = slugsWithGraph.has(essay.id);
 
 // Per-essay etude track. null = no etudes built yet.
 const etudesBySlug: Record<string, string | null> = {
-  'the-partition-problem': '/etudes/restorative/',
   'know-thyself': '/etudes/know-thyself/',
   'know-thyself-search': '/etudes/know-thyself/',
   'know-thyself-security': null,
