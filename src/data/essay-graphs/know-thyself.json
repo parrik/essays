@@ -368,12 +368,6 @@
       "label": "Part II — Search was never about humans",
       "body": "The same schema turned around: when you search, what does the system know about how it knows? Retrieval as the second half of the memory question.",
       "href": "/puzzles/know-thyself-search/"
-    },
-    {
-      "kind": "next",
-      "label": "Same shape, different domain",
-      "body": "How to run a cross-cutting campaign — the same structural argument (substrate must match the reader) at org scale instead of memory scale.",
-      "href": "/puzzles/the-campaign-cascade/"
     }
   ],
   "rubric": {

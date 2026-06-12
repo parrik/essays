@@ -83,5 +83,4 @@ Repo: [github.com/parrik/bob-the-fixer](https://github.com/parrik/bob-the-fixer)
 
 ---
 
-*Part I: [Running a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
 *Part II: [Playing with GritQL and codemod](/puzzles/migrations-gritql-codemod/) — same pattern with agents in the loop, and an afternoon poking at the engine layer.*

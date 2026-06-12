@@ -20,8 +20,6 @@ const { Content } = await render(essay);
 
 // Essays with a graph dashboard built. As more land, add the slug here.
 const slugsWithGraph = new Set([
-  'the-campaign-cascade',
-  'the-campaign-cascade-with-agents',
   'bob-the-fixer-as-anti-cascader',
   'know-thyself',
   'know-thyself-search',
@@ -32,8 +30,6 @@ const hasGraph = slugsWithGraph.has(essay.id);
 
 // Per-essay etude track. null = no etudes built yet.
 const etudesBySlug: Record<string, string | null> = {
-  'the-campaign-cascade': '/etudes/campaign-cascade/',
-  'the-campaign-cascade-with-agents': '/etudes/campaign-cascade/',
   'the-partition-problem': '/etudes/restorative/',
   'know-thyself': '/etudes/know-thyself/',
   'know-thyself-search': '/etudes/know-thyself/',
