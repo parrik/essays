@@ -5,8 +5,8 @@ import { getCollection } from 'astro:content';
 const all = await getCollection('essays');
 
 // Homepage = top-level essays only — no parent. Series children
-// (Parts II/III, anti-cascader derivatives) and standalone drafts
-// live on /drafts/ instead of crowding the front page.
+// and standalone drafts live on /drafts/ instead of crowding the
+// front page.
 const list = all
   .filter(e => !e.data.parent && !e.data.draft)
   .sort((a, b) => {

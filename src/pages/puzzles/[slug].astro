@@ -20,19 +20,13 @@ const { Content } = await render(essay);
 
 // Essays with a graph dashboard built. As more land, add the slug here.
 const slugsWithGraph = new Set([
-  'bob-the-fixer-as-anti-cascader',
   'know-thyself',
-  'know-thyself-search',
-  'know-thyself-security',
 ]);
 const hasGraph = slugsWithGraph.has(essay.id);
 
 // Per-essay etude track. null = no etudes built yet.
 const etudesBySlug: Record<string, string | null> = {
   'know-thyself': '/etudes/know-thyself/',
-  'know-thyself-search': '/etudes/know-thyself/',
-  'know-thyself-security': null,
-  'bob-the-fixer-as-anti-cascader': '/etudes/anti-cascader/',
 };
 const etudesUrl = etudesBySlug[essay.id] ?? null;
 ---
