@@ -362,12 +362,6 @@
       "kind": "apply",
       "label": "Name your novels",
       "body": "Pick three things you have been quietly believing about yourself. For each, write the single episode it derives from. If you cannot find a second independent episode, the claim is a Novel, not an Overlap. Mark it tentative."
-    },
-    {
-      "kind": "next",
-      "label": "Part II — Search was never about humans",
-      "body": "The same schema turned around: when you search, what does the system know about how it knows? Retrieval as the second half of the memory question.",
-      "href": "/puzzles/know-thyself-search/"
     }
   ],
   "rubric": {

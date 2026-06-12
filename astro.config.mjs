@@ -5,7 +5,6 @@ export default defineConfig({
   redirects: {
     // Old /essays/ prefix → new /puzzles/ prefix.
     '/essays/know-thyself/': '/puzzles/know-thyself/',
-    '/essays/the-partition-problem/': '/puzzles/the-partition-problem/',
     // Parts II and III are drafts — bounce old URLs to Part I rather than 404.
     '/essays/know-thyself-search/': '/puzzles/know-thyself/',
     '/puzzles/know-thyself-search/': '/puzzles/know-thyself/',

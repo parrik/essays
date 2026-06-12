@@ -7,7 +7,6 @@ Built with [Astro](https://astro.build). Deployed to GitHub Pages.
 ## Essays
 
 - **[Know Thyself](src/content/essays/know-thyself.md)** — a schema for personal memory in LLM conversations.
-- **[The Partition Problem](src/content/essays/the-partition-problem.md)** — restorative yoga and the biology of belonging.
 
 ## Local development
 
