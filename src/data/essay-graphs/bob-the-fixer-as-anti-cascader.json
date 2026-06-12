@@ -410,18 +410,6 @@
       "label": "Try bob",
       "body": "If you have a Spring Boot 2.7, JUnit 4, Jest, or unstructured-logging codebase, install the plugin and run the migration. The repo is MIT-licensed and under 1,000 lines.",
       "href": "https://github.com/parrik/bob-the-fixer"
-    },
-    {
-      "kind": "next",
-      "label": "Part II — the cascade with agents in the loop",
-      "body": "The cascade survives the substrate. Same pattern reproduces inside one operator running a fleet of agents. Sets up why the team-pulled inversion in this essay matters at agent scale, not just human scale.",
-      "href": "/puzzles/the-campaign-cascade-with-agents/"
-    },
-    {
-      "kind": "next",
-      "label": "Part I — where the cascade was first named",
-      "body": "How to run a cross-cutting campaign — the principle, the three paths, the dead zone. The pre-LLM framing the anti-cascader is a positive instance of.",
-      "href": "/puzzles/the-campaign-cascade/"
     }
   ],
   "rubric": {

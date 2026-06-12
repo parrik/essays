@@ -13,16 +13,9 @@ publishedAt: 2026-05-10
 surprise: The dead zone reproduces inside one operator running a fleet — same shape, smaller scale. And a future bob can host GritQL inside its codemods without changing the wrapper's job.
 coAuthoredWith:
   - Claude Opus 4.7
-etudes:
-  - label: Spawn the fleet
-    url: /etudes/campaign-cascade/operator-bottleneck/
-    note: Watch the review queue saturate as N agents fan out
-  - label: Write the gate
-    url: /etudes/campaign-cascade/write-the-gate/
-    note: Pre-merge invariants for an agent-spawned PR
 ---
 
-[Part I](/puzzles/the-campaign-cascade/) named the cascade in human teams running cross-cutting campaigns. **The same pattern lives inside one engineer running a fleet of agents.** Same principle. Same three paths. Same dead zone — at smaller scale.
+Part I of this series named the cascade in human teams running cross-cutting campaigns. **The same pattern lives inside one engineer running a fleet of agents.** Same principle. Same three paths. Same dead zone — at smaller scale.
 
 The fact that the rule survives the substrate change is what makes the original observation worth keeping. *Distributed work loses context.* The cascade is what that loss looks like. Whether the workers are silicon or carbon, the pattern is the same and the fix is the same.
 
@@ -164,8 +157,6 @@ The honest version of this half is: **I have a thesis about layering, and I want
 ---
 
 *Honor the principle — every entity in the loop has context-in-hand — and you stay out of the cascade. One substrate change is not a proof of substrate-invariance, but it is enough to suspect the original observation was structural rather than local. The engine below the wrapper is its own pattern language to learn, and bob can host it without changing what bob is.*
-
-*Part I: [Running a cross-cutting campaign](/puzzles/the-campaign-cascade/) — where the cascade was first named.*
 
 *Part III: [Migrations don't have to cascade](/puzzles/bob-the-fixer-as-anti-cascader/) — bob-the-fixer as the flipped shape, shipped today.*
 
