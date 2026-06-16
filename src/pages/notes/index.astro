@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+
+// Notes — short entries, newest first. Add one by prepending to this list.
+const entries = [
+  {
+    title: 'knowledge will not heal me',
+    href: '/notes/knowledge-will-not-heal-me/',
+    date: '2026-06-16',
+    dateLabel: 'June 16, 2026',
+  },
+];
+---
+<Base title="notes" description="Short notes.">
+  <section class="essays">
+    <ul>
+      {entries.map(entry => (
+        <li>
+          <div class="essay-row">
+            <a href={entry.href} class="essay-link">
+              <span class="essay-title">{entry.title}</span>
+            </a>
+          </div>
+          <p class="essay-subtitle"><time datetime={entry.date}>{entry.dateLabel}</time></p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
