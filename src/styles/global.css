@@ -199,6 +199,18 @@ a:hover { text-decoration-color: var(--accent); }
   font-size: 0.95rem;
 }
 
+/* Original posted date under each homepage essay — the same provenance
+   signal the notes index carries. Matches the essay-page MetadataStripe
+   treatment: small, muted, tabular figures. */
+.essay-dateline {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  margin: 0.3rem 0 0;
+  font-variant: tabular-nums;
+}
+
 /* Series block — homepage parent + nested parts.
    Visually a small "trunk" (left border on parts) under the series title.
    Preserves the warm cream palette; no new chrome. */

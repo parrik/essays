@@ -14,6 +14,14 @@ const list = all
     const bd = b.data.publishedAt ? +b.data.publishedAt : 0;
     return bd - ad;
   });
+
+// Original posted date, shown under each essay — same surface signal the
+// notes index carries. Full month, matching the notes "Month D, YYYY" form.
+// timeZone: 'UTC' so the date matches the frontmatter value regardless of
+// the build machine's zone (publishedAt parses to UTC midnight; a local-zone
+// format would shift it a day west of UTC).
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 ---
 <Base title="parrik">
   <section class="essays">
@@ -30,6 +38,13 @@ const list = all
               </a>
             </div>
             {subtitle && <p class="essay-subtitle">{subtitle}</p>}
+            {essay.data.publishedAt && (
+              <p class="essay-dateline">
+                <time datetime={essay.data.publishedAt.toISOString()}>
+                  {fmtDate(essay.data.publishedAt)}
+                </time>
+              </p>
+            )}
           </li>
         );
       })}
