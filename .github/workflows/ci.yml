@@ -109,7 +109,8 @@ jobs:
           # Skip standalone HTML copied verbatim from public/ — those are
           # self-contained interactive docs (inline CSS, own styling), not
           # Astro-rendered pages, so they don't reference /_astro/*.css.
-          skip_re='^dist/(alex-case-study|example-graph-(full|spine|extended|extended-.*))\.html$'
+          # /resume/ mirrors the cssLinkExempt set in scripts/verify.mjs.
+          skip_re='^dist/(alex-case-study|example-graph-(full|spine|extended|extended-.*))\.html$|^dist/resume/index\.html$'
           for f in $(find dist -name "*.html"); do
             if [[ "$f" =~ $skip_re ]]; then
               continue
