@@ -21,12 +21,14 @@ const { Content } = await render(essay);
 // Essays with a graph dashboard built. As more land, add the slug here.
 const slugsWithGraph = new Set([
   'know-thyself',
+  'restorative-yoga-and-biology-of-belonging',
 ]);
 const hasGraph = slugsWithGraph.has(essay.id);
 
 // Per-essay etude track. null = no etudes built yet.
 const etudesBySlug: Record<string, string | null> = {
   'know-thyself': '/etudes/know-thyself/',
+  'restorative-yoga-and-biology-of-belonging': '/etudes/restorative/',
 };
 const etudesUrl = etudesBySlug[essay.id] ?? null;
 ---

@@ -13,6 +13,10 @@ export default defineConfig({
     '/puzzles/know-thyself-security/': '/puzzles/know-thyself/',
     '/essays/memory-was-never-about-storage/': '/puzzles/know-thyself/',
     '/puzzles/memory-was-never-about-storage/': '/puzzles/know-thyself/',
+    // The-partition-problem essay was retitled to
+    // restorative-yoga-and-biology-of-belonging; bounce the old slugs.
+    '/essays/the-partition-problem/': '/puzzles/restorative-yoga-and-biology-of-belonging/',
+    '/puzzles/the-partition-problem/': '/puzzles/restorative-yoga-and-biology-of-belonging/',
     // Earlier section renames. nature → about (the nature track was
     // converted to an about-me section; partition-problem essay moved
     // onto the main homepage list).
