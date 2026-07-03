@@ -7,6 +7,7 @@ Built with [Astro](https://astro.build). Deployed to GitHub Pages.
 ## Essays
 
 - **[Know Thyself](src/content/essays/know-thyself.md)** — a schema for personal memory in LLM conversations.
+- **[Restorative yoga and biology of belonging](src/content/essays/restorative-yoga-and-biology-of-belonging.md)** — a cancer cell is not a broken cell; it has lost context.
 
 ## Local development
 

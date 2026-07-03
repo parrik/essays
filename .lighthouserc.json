@@ -5,7 +5,8 @@
       "staticDistDir": "./dist",
       "url": [
         "http://localhost/index.html",
-        "http://localhost/essays/know-thyself/index.html"
+        "http://localhost/essays/know-thyself/index.html",
+        "http://localhost/puzzles/restorative-yoga-and-biology-of-belonging/index.html"
       ]
     },
     "assert": {
