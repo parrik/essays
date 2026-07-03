@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'none'; style-src 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<title>Piyush Ahuja — Resume</title>
+<style>
+  :root { --link:#1a56db; --gray:#8a8a8a; --ink:#1a1a1a; }
+  @page { size: letter; margin: 0.5in 0.55in; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; }
+  /* screen-only margins; @page handles print */
+  @media screen {
+    body { max-width: 820px; margin: 0 auto; padding: 40px 28px 64px; }
+  }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--ink); font-size: 10.5px; line-height: 1.42;
+    background: #fff;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--link); text-decoration: none; }
+  .note { font-size: 9px; color: var(--gray); margin-bottom: 14px; }
+  .note a { color: var(--link); }
+
+  /* two-column row: narrow label/blurb sidebar + main content */
+  .row { display: grid; grid-template-columns: 150px 1fr; column-gap: 22px; }
+  .side { color: var(--ink); }
+  .side .label { font-size: 16px; font-weight: 400; }
+  .side .blurb { font-size: 9px; color: #555; line-height: 1.4; }
+  .main { }
+
+  .name { font-size: 20px; font-weight: 400; letter-spacing: .2px; }
+  .subtitle { font-size: 10px; color: #333; margin-top: 1px; }
+  .contact { font-size: 10.5px; }
+  .contact .sep { color:#333; }
+
+  .block { margin-bottom: 16px; break-inside: avoid; }
+  .job-h { font-weight: 700; }
+  a.co, .job-h .co { color: var(--link); }
+  .job-title { font-weight: 700; }
+  .lead { color: var(--gray); }       /* "Stories", "Tools", "Decisions" lead-ins */
+  ol.items { margin: 2px 0 0 0; padding-left: 16px; }
+  ol.items li { margin-bottom: 2px; }
+  p.tight { margin: 2px 0; }
+  .courses { font-size: 9px; color:#333; line-height:1.4; }
+  em { font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="note">*<a href="https://www.linkedin.com/in/parrik/">blue</a> is a link</div>
+
+<!-- HEADER -->
+<div class="row block">
+  <div class="side">
+    <div class="name">Piyush Ahuja</div>
+    <div class="subtitle">Engineering</div>
+  </div>
+  <div class="main">
+    <div class="contact"><a href="https://www.linkedin.com/in/parrik/">Linkedin</a> · <a href="https://github.com/parrik">Github</a></div>
+  </div>
+</div>
+
+<!-- SKILLS -->
+<div class="row block">
+  <div class="side"><div class="label">Skills</div></div>
+  <div class="main">
+    <p class="tight"><strong>Professional:</strong> distributed systems, platform engineering, research infrastructure, performance &amp; reliability, data &amp; ml ops, writing. <strong>Recreational:</strong> frontend engineering, security ops.</p>
+    <p class="tight">Programming languages: <strong>Professional:</strong> java, python <strong>Recreational</strong>: typescript, rust, go.</p>
+    <p class="tight"><strong>Cloud:</strong> aws, azure, gcp, openshift, self-hosted. <strong>Orchestrators:</strong> kubernetes, azure service fabric</p>
+    <p class="tight">Books I like: I heart logs, browser networking, data-intensive application, streaming databases</p>
+  </div>
+</div>
+
+<!-- WORK -->
+<div class="row block">
+  <div class="side">
+    <div class="label">Work</div>
+  </div>
+  <div class="main"></div>
+</div>
+
+<!-- EXPEDIA -->
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Built an AI code review service and grew a 360+ engineer community around it, then moved the platform into automated code migrations.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.expedia.com/">Expedia</a> (October 2024 - April 2026, Seattle - US)</div>
+    <div class="job-title">Senior Software Engineer, DevEx / AI Foundations</div>
+    <ol class="items">
+      <li>Built an AI code review service, Bob the Fixer (BTF); the novel bet was feeding output from existing static &amp; dynamic analysis tools to the LLM as context rather than relying on the model alone. Ran across ~728 repos, grew an internal community of 360+ engineers, and presented to 500+ engineers in an internal demo.</li>
+      <li>Extended the platform into automated code migration - auto-generating PRs for teams' Java upgrades, then broadening to more common migration types; migrated 118 repos. Tools: java, python, llms, kubernetes.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Senior engineer on a team of 6. Help scale real time analytics infrastructure.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.bloomberg.com/">Bloomberg</a> (September 2023 - September 2024, New York - US)</div>
+    <div class="job-title">Senior Software Engineer, Streaming Analytics Infrastructure</div>
+    <ol class="items">
+      <li><span class="lead">Stories</span> - setup &amp; patch upstream <a href="https://github.com/apache/flink-kubernetes-operator">operator</a>, sidecar debugging, control-plane, observability.</li>
+      <li><span class="lead">Tools</span> - go, python, java, apache flink, iceberg, kafka, kubernetes ecosystem, <a href="https://karmada.io/">karmada</a>, <a href="https://kyverno.io/">kyverno</a>.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Initial engineering hire, helped hire contract workers. Our triaging product was acquired by getready.com.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.linkedin.com/company/nobis-health/">Nobis Health</a> (August 2022 - March 2023, Seattle - US)</div>
+    <div class="job-title">Staff Product Engineer, Last mile acute health care</div>
+    <ol class="items">
+      <li><span class="lead">Stories</span> - Extracting patient data. Set up a platform to help paramedics triage incoming patient calls. SOC2. Engagement / growth engineering. Set up CRM for sales.</li>
+      <li><span class="lead">Tools</span> - python, go, aws data stack, tableau, Athena (EHR).</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Single threaded leader for data. Worked with 4 engineers to help set up the data platform. The wallet app shipped; Bitski was later acquired by Phantom.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.bitski.com/">Bitski, Inc</a> (December 2021 - July 2022, Seattle - US)</div>
+    <div class="job-title">Senior Data Engineer, Web3</div>
+    <ol class="items">
+      <li><span class="lead">Stories</span> - push notifications on the transfer of an ERC20/721/1155 token, wallet balance extraction from raw logs, extracting token mints</li>
+      <li><span class="lead">Decisions</span> - Kafka for <a href="https://github.com/BitskiCo/ethereum-etl">streaming-etl</a> of raw data and features, <a href="https://github.com/BitskiCo/ethereum-etl-airflow">airflow for batch-etl</a> and backfill of raw data, terraform for IAC, python, <a href="https://docs.rs/rdkafka/latest/rdkafka/">rust for kafka consumers</a>, openshift for multi-cloud support, kubernetes.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Responsible for onboarding azure compute to hybrid cloud. The Compute team is responsible for creating VMs on which azure runs.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://azure.microsoft.com/en-us/">Microsoft, Azure</a> (July 2020 - October 2021, Seattle - US)</div>
+    <div class="job-title">Senior Software Engineer, Azure Edge &amp; Platform, Hybrid Cloud</div>
+    <ol class="items">
+      <li>Worked with teams that deal with these problems a) VM Control Path (Azure Compute) b) Secret rotation on edge device c) Identity validation and translation (Edge Proxy). <span class="lead">Tools</span> - PowerShell, c#, service fabric, threat models, certificates.</li>
+      <li><span class="lead">Security &amp; Operations</span> - Maintaining internal certificate authority. Threat model reviews. Performance engineering. Owned a 1-month release for a partner team to help improve their operations.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Help setup research infrastructure to enable AI experiments.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://getcruise.com/">Cruise LLC</a> (July 2019 - July 2020, Seattle - US)</div>
+    <div class="job-title">Software Engineer, Machine Learning Platform</div>
+    <ol class="items">
+      <li><span class="lead">ML Inference &amp; Training</span> - Wrote initial design and flow for operating <em>kubeflow</em> in the cloud to train models, helped scale the team from 2 to 5 engineers. Technical Challenges: Continuous experimentation on the problem space, supporting elasticity in training.</li>
+      <li><span class="lead">Performance Engineering</span> - Improved performance on model training by average 6x (and 16x on a particular <em>voxelnet</em> model). <span class="lead">Tools</span> - kubeflow, go, python, py-spy, k8, google cloud, pytorch, kserve.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">Two teams - AWS API Gateway, and before that Transportation Payments Service, where I built Jury. I learned a lot about operations and writing here.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.amazon.com">Amazon</a> (July 2016 - July 2019, Seattle - US &amp; Hyderabad - India)</div>
+    <div class="job-title"><a href="https://aws.amazon.com/serverless/">AWS</a> API Gateway, DataPlane Team - Software Engineer L5 (July 2017 - July 2019, Seattle)</div>
+    <div class="job-title">Transportation Payments Service - Software Engineer L5 (July 2016 - July 2017, Hyderabad)</div>
+    <ol class="items">
+      <li><span class="lead">WebSocket APIs</span> - <a href="https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/">Release Blog</a>. Technical Challenges: Reusing the existing non-sticky DataPlane to serve requests while introducing a sticky WebSocket protocol. Performance engineering for the number of TLS connections per host. Tools: java, netty, alb, CloudFront.</li>
+      <li><span class="lead">Distributed Tracing</span> - <a href="https://aws.amazon.com/blogs/aws/apigateway-xray/">Release Blog</a>. Technical Challenges: Introducing new processes in the existing hosts without impacting operations. Tools: cgroups, java.</li>
+      <li><span class="lead">Performance &amp; Reliability</span> - http1.1's head-of-the-line problem. Move state objects from on-heap to Java off-heap. Wrote a flow for shuffle sharding load balancers. Wrote a framework to safely rotate a lot(~700k) of secrets with limited manual intervention.</li>
+      <li><span class="lead">Jury</span> - Wrote a platform to detect disputes in transportation vendor bills (Transportation Payments Service).</li>
+    </ol>
+  </div>
+</div>
+
+<div class="row block">
+  <div class="side">
+    <div class="blurb">My first encounter with streaming and search space. My work on solving search in streaming fashion got a lot of recognition given the cost reduction it brings.</div>
+  </div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.sprinklr.com/">Sprinklr</a> (August 2013 - July 2016, Delhi - National Capital Region - India)</div>
+    <div class="job-title">Associate Director, Product Development (January 2016 - July 2016)</div>
+    <div class="job-title">Product Engineer (August 2013 - December 2015)</div>
+    <ol class="items">
+      <li><span class="lead">Reverse Similarity Search</span> - We reverse the role of data and query in search space. Given vast incoming social-media data we search on them with complex lucene queries in-memory in real-time. Tools: flaxsearch, kafka, <a href="https://lucene.apache.org/core/8_1_1/memory/org/apache/lucene/index/memory/MemoryIndex.html">lucene memory index</a>, java, redis pub-sub.</li>
+      <li><span class="lead">Operations &amp; Performance</span> - Operating kafka, elasticsearch, mongoDB, zookeeper. jvm/gc tuning. Fixing JDK bugs, performance engineering, and optimizing graph search problems, implementing tokenizers.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- INTERNSHIPS -->
+<div class="row block">
+  <div class="side"><div class="label">Internships</div></div>
+  <div class="main">
+    <div class="job-h"><a class="co" href="https://www.directi.com/">DirectI</a> (May 2012 - July 2012, Delhi - National Capital Region - India)</div>
+    <p class="tight">Backend + Frontend (node.js, javascript)</p>
+    <div class="job-h"><a class="co" href="https://www.vlab.co.in/">Virtual Labs</a>, (May 2011 - July 2011, Hyderabad, India)</div>
+    <p class="tight">Frontend (javascript)</p>
+  </div>
+</div>
+
+<!-- EDUCATION -->
+<div class="row block">
+  <div class="side">
+    <div class="label">Education &amp; Awards</div>
+    <div class="courses"><strong>Courses:</strong> Compilers • Distributed Systems • Number Theory and Cryptology • Complexity Theory And Advanced Algorithm</div>
+  </div>
+  <div class="main">
+    <p class="tight">2009 - 2013</p>
+    <div class="job-title">Bachelors in Computer Science and Engineering</div>
+    <p class="tight"><a href="https://www.iiit.ac.in/">International Institute of Information Technology, Hyderabad (IIIT-H)</a></p>
+    <p class="tight">Teaching Assistant: Compilers, Monsoon 2012.</p>
+    <p class="tight">Represented IIIT-H in ACM-ICPC qualifiers (2012, Amritapuri)</p>
+    <p class="tight">Represented North Zone in the Regional Math Olympiad.</p>
+    <p class="tight">All India Engineering Entrance Exam Rank - 1426/Million.</p>
+    <p class="tight">Few awards across competitive programming competitions.</p>
+  </div>
+</div>
+
+</body>
+</html>

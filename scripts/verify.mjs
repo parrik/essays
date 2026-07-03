@@ -92,7 +92,7 @@ try {
     const astroCss = cssHrefs.filter((h) => /^\/_astro\/.+\.css$/.test(h));
     // Standalone static HTML in public/ ships its own inline styles and has
     // no Astro bundle by design. Skip the CSS-LINK assertion for these.
-    const cssLinkExempt = new Set(['/alex-case-study.html']);
+    const cssLinkExempt = new Set(['/alex-case-study.html', '/resume/']);
     const urlPath = new URL(url).pathname;
     if (astroCss.length === 0 && !cssLinkExempt.has(urlPath)) {
       failures.push(`[CSS-LINK] ${url} — no <link rel=stylesheet href=/_astro/*.css>`);
