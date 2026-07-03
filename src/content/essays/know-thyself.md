@@ -64,6 +64,14 @@ The model doesn't load the whole file every time. It queries it through an MCP s
 
 Because it's a file, it outlives the model. I switch models and the new one reads the same file and picks up where the last one left off. A model gets shut down and the file is still there. And I decide how much to hand over. Some days the whole thing, some days a few lines, some days nothing, and the model is a stranger again.
 
+## What's actually new
+
+Let me be straight about what's new here and what isn't. The schema isn't. Companies building memory for AI agents landed on the same shape without me, typed nodes, typed edges, a source on every claim. When that many people find the same thing on their own, it was the easy part, and I can't claim it.
+
+What none of them added is the gate. Every shipped memory tool lets the model write the whole record and never stops to ask. I looked again this year and couldn't find one where a claim waits for you before it sticks. Mine has that step, and it's narrow on purpose. The model writes the record itself, the notes and patterns and guesses, and only a rule I'm going to live by waits for my yes.
+
+That narrowness is the point. Gating everything doesn't scale, and I tried. Gating just the rules does, because a wrong note is cheap to fix later and a wrong rule is the thing you go and act on. So the strength isn't that I curate more than the machine. It's that I curate the one layer that would hurt to get wrong, and let the machine have the rest.
+
 ## Know thyself
 
 "Know thyself" was carved at Delphi, by the door, where people waited before they went in to ask the oracle. It was the part you did first. It was how you got ready to be understood by something else.
