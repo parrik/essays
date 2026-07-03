@@ -331,24 +331,6 @@
   ],
   "actions": [
     {
-      "kind": "etude",
-      "label": "Six restatements",
-      "body": "One claim, said six ways. Watch the flat list count it as six. Watch the typed graph count it as one. Drills S08.",
-      "href": "/etudes/know-thyself/six-restatements/"
-    },
-    {
-      "kind": "etude",
-      "label": "Attribution vs confidence",
-      "body": "Sort five claims about Alex by attribution count and by independent-derivation count. The two columns disagree. Drills S07.",
-      "href": "/etudes/know-thyself/attribution-confidence/"
-    },
-    {
-      "kind": "etude",
-      "label": "Flat vs typed",
-      "body": "Same set of conversations, two memories. The flat memory reads back a confident self-diagnosis; the typed graph reads back a tentative novel. Demonstrates S02 and S13.",
-      "href": "/etudes/know-thyself/flat-vs-typed/"
-    },
-    {
       "kind": "apply",
       "label": "Audit your last LLM conversation",
       "body": "If memory was on, what claims about you did the model state confidently? For each: how many independent episodes ground it, and how many times did you simply restate it? The two counts should not be conflated."

@@ -1,6 +1,6 @@
 ---
 title: Restorative yoga and biology of belonging
-subtitle: Partition tolerance, cellular edition. A cell that went quiet because it stopped hearing the rest.
+subtitle: Partition tolerance, cellular edition.
 tag: essay
 description: A cancer cell is not a broken cell. It has lost context.
 publishedAt: 2026-04-21

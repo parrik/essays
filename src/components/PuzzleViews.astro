@@ -1,14 +1,15 @@
 ---
-type ActiveView = 'essay' | 'etudes' | 'graph';
+type ActiveView = 'essay' | 'etudes' | 'graph' | 'notes';
 
 interface Props {
   slug: string;
   activeView: ActiveView;
   etudesUrl?: string | null;
   hasGraph?: boolean;
+  hasNotes?: boolean;
 }
 
-const { slug, activeView, etudesUrl = null, hasGraph = false } = Astro.props;
+const { slug, activeView, etudesUrl = null, hasGraph = false, hasNotes = false } = Astro.props;
 
 const cls = (view: ActiveView) =>
   `puzzle-view${activeView === view ? ' puzzle-view-active' : ''}`;
@@ -17,6 +18,7 @@ const hint = {
   essay: 'Read the prose.',
   etudes: 'Play — short interactive studies of the claim.',
   graph: 'See the essay’s claims, typed and connected.',
+  notes: 'Sources and footnotes.',
 };
 ---
 <nav class="puzzle-views" aria-label="Puzzle views">
@@ -44,6 +46,17 @@ const hint = {
         <span class={cls('graph')} aria-current="page" data-hint={hint.graph}>graph</span>
       ) : (
         <a href={`/puzzles/${slug}/graph/`} class={cls('graph')} title={hint.graph} data-hint={hint.graph}>graph</a>
+      )}
+    </>
+  )}
+
+  {hasNotes && (
+    <>
+      <span class="puzzle-views-sep" aria-hidden="true">·</span>
+      {activeView === 'notes' ? (
+        <span class={cls('notes')} aria-current="page" data-hint={hint.notes}>notes</span>
+      ) : (
+        <a href={`/puzzles/${slug}/notes/`} class={cls('notes')} title={hint.notes} data-hint={hint.notes}>notes</a>
       )}
     </>
   )}
