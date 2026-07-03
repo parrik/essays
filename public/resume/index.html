@@ -41,8 +41,8 @@
   a.co, .job-h .co { color: var(--link); }
   .job-title { font-weight: 700; }
   .lead { color: var(--gray); }       /* "Stories", "Tools", "Decisions" lead-ins */
-  ol.items { margin: 2px 0 0 0; padding-left: 16px; }
-  ol.items li { margin-bottom: 2px; }
+  ul.items { margin: 2px 0 0 0; padding-left: 0; list-style: none; }
+  ul.items li { margin-bottom: 2px; }
   p.tight { margin: 2px 0; }
   .courses { font-size: 9px; color:#333; line-height:1.4; }
   em { font-style: italic; }
@@ -90,10 +90,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://www.expedia.com/">Expedia</a> (October 2024 - April 2026, Seattle - US)</div>
     <div class="job-title">Senior Software Engineer, DevEx / AI Foundations</div>
-    <ol class="items">
-      <li>Built an AI code review service, Bob the Fixer (BTF); the novel bet was feeding output from existing static &amp; dynamic analysis tools to the LLM as context rather than relying on the model alone. Ran across ~728 repos, grew an internal community of 360+ engineers, and presented to 500+ engineers in an internal demo.</li>
-      <li>Extended the platform into automated code migration - auto-generating PRs for teams' Java upgrades, then broadening to more common migration types; migrated 118 repos. Tools: java, python, llms, kubernetes.</li>
-    </ol>
+    <ul class="items">
+      <li><span class="lead">AI Code Review</span> - Built Bob the Fixer (BTF), an AI code review service; the novel bet was feeding output from existing static &amp; dynamic analysis tools to the LLM as context rather than relying on the model alone. Ran across ~728 repos, grew an internal community of 360+ engineers, and presented to 500+ engineers in an internal demo.</li>
+      <li><span class="lead">Code Migrations</span> - Extended the platform to auto-generate PRs for teams' Java upgrades, then broadening to more common migration types; migrated 118 repos. <span class="lead">Tools</span> - java, python, llms, kubernetes.</li>
+    </ul>
   </div>
 </div>
 
@@ -104,10 +104,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://www.bloomberg.com/">Bloomberg</a> (September 2023 - September 2024, New York - US)</div>
     <div class="job-title">Senior Software Engineer, Streaming Analytics Infrastructure</div>
-    <ol class="items">
+    <ul class="items">
       <li><span class="lead">Stories</span> - setup &amp; patch upstream <a href="https://github.com/apache/flink-kubernetes-operator">operator</a>, sidecar debugging, control-plane, observability.</li>
       <li><span class="lead">Tools</span> - go, python, java, apache flink, iceberg, kafka, kubernetes ecosystem, <a href="https://karmada.io/">karmada</a>, <a href="https://kyverno.io/">kyverno</a>.</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -118,10 +118,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://www.linkedin.com/company/nobis-health/">Nobis Health</a> (August 2022 - March 2023, Seattle - US)</div>
     <div class="job-title">Staff Product Engineer, Last mile acute health care</div>
-    <ol class="items">
+    <ul class="items">
       <li><span class="lead">Stories</span> - Extracting patient data. Set up a platform to help paramedics triage incoming patient calls. SOC2. Engagement / growth engineering. Set up CRM for sales.</li>
       <li><span class="lead">Tools</span> - python, go, aws data stack, tableau, Athena (EHR).</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -132,10 +132,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://www.bitski.com/">Bitski, Inc</a> (December 2021 - July 2022, Seattle - US)</div>
     <div class="job-title">Senior Data Engineer, Web3</div>
-    <ol class="items">
+    <ul class="items">
       <li><span class="lead">Stories</span> - push notifications on the transfer of an ERC20/721/1155 token, wallet balance extraction from raw logs, extracting token mints</li>
       <li><span class="lead">Decisions</span> - Kafka for <a href="https://github.com/BitskiCo/ethereum-etl">streaming-etl</a> of raw data and features, <a href="https://github.com/BitskiCo/ethereum-etl-airflow">airflow for batch-etl</a> and backfill of raw data, terraform for IAC, python, <a href="https://docs.rs/rdkafka/latest/rdkafka/">rust for kafka consumers</a>, openshift for multi-cloud support, kubernetes.</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -146,10 +146,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://azure.microsoft.com/en-us/">Microsoft, Azure</a> (July 2020 - October 2021, Seattle - US)</div>
     <div class="job-title">Senior Software Engineer, Azure Edge &amp; Platform, Hybrid Cloud</div>
-    <ol class="items">
-      <li>Worked with teams that deal with these problems a) VM Control Path (Azure Compute) b) Secret rotation on edge device c) Identity validation and translation (Edge Proxy). <span class="lead">Tools</span> - PowerShell, c#, service fabric, threat models, certificates.</li>
+    <ul class="items">
+      <li><span class="lead">VM Control Path &amp; Edge</span> - Worked with teams that deal with these problems a) VM Control Path (Azure Compute) b) Secret rotation on edge device c) Identity validation and translation (Edge Proxy). <span class="lead">Tools</span> - PowerShell, c#, service fabric, threat models, certificates.</li>
       <li><span class="lead">Security &amp; Operations</span> - Maintaining internal certificate authority. Threat model reviews. Performance engineering. Owned a 1-month release for a partner team to help improve their operations.</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -160,10 +160,10 @@
   <div class="main">
     <div class="job-h"><a class="co" href="https://getcruise.com/">Cruise LLC</a> (July 2019 - July 2020, Seattle - US)</div>
     <div class="job-title">Software Engineer, Machine Learning Platform</div>
-    <ol class="items">
+    <ul class="items">
       <li><span class="lead">ML Inference &amp; Training</span> - Wrote initial design and flow for operating <em>kubeflow</em> in the cloud to train models, helped scale the team from 2 to 5 engineers. Technical Challenges: Continuous experimentation on the problem space, supporting elasticity in training.</li>
       <li><span class="lead">Performance Engineering</span> - Improved performance on model training by average 6x (and 16x on a particular <em>voxelnet</em> model). <span class="lead">Tools</span> - kubeflow, go, python, py-spy, k8, google cloud, pytorch, kserve.</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -175,12 +175,12 @@
     <div class="job-h"><a class="co" href="https://www.amazon.com">Amazon</a> (July 2016 - July 2019, Seattle - US &amp; Hyderabad - India)</div>
     <div class="job-title"><a href="https://aws.amazon.com/serverless/">AWS</a> API Gateway, DataPlane Team - Software Engineer L5 (July 2017 - July 2019, Seattle)</div>
     <div class="job-title">Transportation Payments Service - Software Engineer L5 (July 2016 - July 2017, Hyderabad)</div>
-    <ol class="items">
-      <li><span class="lead">WebSocket APIs</span> - <a href="https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/">Release Blog</a>. Technical Challenges: Reusing the existing non-sticky DataPlane to serve requests while introducing a sticky WebSocket protocol. Performance engineering for the number of TLS connections per host. Tools: java, netty, alb, CloudFront.</li>
-      <li><span class="lead">Distributed Tracing</span> - <a href="https://aws.amazon.com/blogs/aws/apigateway-xray/">Release Blog</a>. Technical Challenges: Introducing new processes in the existing hosts without impacting operations. Tools: cgroups, java.</li>
+    <ul class="items">
+      <li><span class="lead">WebSocket APIs</span> - <a href="https://aws.amazon.com/blogs/compute/announcing-websocket-apis-in-amazon-api-gateway/">Release Blog</a>. Technical Challenges: Reusing the existing non-sticky DataPlane to serve requests while introducing a sticky WebSocket protocol. Performance engineering for the number of TLS connections per host. <span class="lead">Tools</span> - java, netty, alb, CloudFront.</li>
+      <li><span class="lead">Distributed Tracing</span> - <a href="https://aws.amazon.com/blogs/aws/apigateway-xray/">Release Blog</a>. Technical Challenges: Introducing new processes in the existing hosts without impacting operations. <span class="lead">Tools</span> - cgroups, java.</li>
       <li><span class="lead">Performance &amp; Reliability</span> - http1.1's head-of-the-line problem. Move state objects from on-heap to Java off-heap. Wrote a flow for shuffle sharding load balancers. Wrote a framework to safely rotate a lot(~700k) of secrets with limited manual intervention.</li>
       <li><span class="lead">Jury</span> - Wrote a platform to detect disputes in transportation vendor bills (Transportation Payments Service).</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
@@ -192,10 +192,10 @@
     <div class="job-h"><a class="co" href="https://www.sprinklr.com/">Sprinklr</a> (August 2013 - July 2016, Delhi - National Capital Region - India)</div>
     <div class="job-title">Associate Director, Product Development (January 2016 - July 2016)</div>
     <div class="job-title">Product Engineer (August 2013 - December 2015)</div>
-    <ol class="items">
-      <li><span class="lead">Reverse Similarity Search</span> - We reverse the role of data and query in search space. Given vast incoming social-media data we search on them with complex lucene queries in-memory in real-time. Tools: flaxsearch, kafka, <a href="https://lucene.apache.org/core/8_1_1/memory/org/apache/lucene/index/memory/MemoryIndex.html">lucene memory index</a>, java, redis pub-sub.</li>
+    <ul class="items">
+      <li><span class="lead">Reverse Similarity Search</span> - We reverse the role of data and query in search space. Given vast incoming social-media data we search on them with complex lucene queries in-memory in real-time. <span class="lead">Tools</span> - flaxsearch, kafka, <a href="https://lucene.apache.org/core/8_1_1/memory/org/apache/lucene/index/memory/MemoryIndex.html">lucene memory index</a>, java, redis pub-sub.</li>
       <li><span class="lead">Operations &amp; Performance</span> - Operating kafka, elasticsearch, mongoDB, zookeeper. jvm/gc tuning. Fixing JDK bugs, performance engineering, and optimizing graph search problems, implementing tokenizers.</li>
-    </ol>
+    </ul>
   </div>
 </div>
 
