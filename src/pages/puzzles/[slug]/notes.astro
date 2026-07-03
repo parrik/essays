@@ -1,0 +1,82 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PuzzleViews from '../../../components/PuzzleViews.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const essays = await getCollection('essays');
+  // A footnote definition looks like `[^id]: text` at the start of a line.
+  // Only build a notes page for essays that actually carry footnotes.
+  // (Defined inline: getStaticPaths runs isolated and can't see module scope.)
+  const hasFootnotes = (body) => /^\[\^[^\]]+\]:\s/m.test(body ?? '');
+  return essays
+    .filter(essay => hasFootnotes(essay.body))
+    .map(essay => ({ params: { slug: essay.id }, props: { essay } }));
+}
+
+const { essay } = Astro.props;
+const { Content } = await render(essay);
+
+// Mirror the essay page's per-slug wiring so the switcher shows the same tabs.
+const slugsWithGraph = new Set([
+  'know-thyself',
+  'restorative-yoga-and-biology-of-belonging',
+]);
+const etudesBySlug: Record<string, string | null> = {
+  'restorative-yoga-and-biology-of-belonging': '/etudes/restorative/',
+};
+const hasGraph = slugsWithGraph.has(essay.id);
+const etudesUrl = etudesBySlug[essay.id] ?? null;
+---
+<Base title={`${essay.data.title} — notes`} description={`Sources and footnotes for ${essay.data.title}.`}>
+  <article class="essay">
+    <p class="essay-kicker">Notes</p>
+    <h1 class="p-name">{essay.data.title}</h1>
+    <p class="essay-sub">Sources and footnotes.</p>
+    <PuzzleViews
+      slug={essay.id}
+      activeView="notes"
+      etudesUrl={etudesUrl}
+      hasGraph={hasGraph}
+      hasNotes={true}
+    />
+    <div class="essay-body notes-only">
+      <Content />
+    </div>
+  </article>
+</Base>
+
+<style is:global>
+  /* Notes view: render the full essay content but reveal only the
+     footnotes section. Everything else stays in the DOM (so footnote
+     anchors resolve) but is visually hidden. */
+  .notes-only > *:not(section[data-footnotes]) {
+    display: none;
+  }
+  .notes-only section[data-footnotes] {
+    /* Undo the sr-only-style collapse the essay view uses; show it plainly. */
+    margin-top: 0;
+    border-top: none;
+  }
+  .notes-only section[data-footnotes] > h2.sr-only {
+    /* Surface the "Footnotes" heading that is screen-reader-only in the essay. */
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 0 1rem;
+    clip: auto;
+    clip-path: none;
+    overflow: visible;
+    white-space: normal;
+    font-family: var(--sans);
+    font-size: var(--label-size, 0.8rem);
+    letter-spacing: var(--label-tracking, 0.08em);
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  /* No essay body to jump back to on this page — hide the ↩ backrefs. */
+  .notes-only [data-footnote-backref] {
+    display: none;
+  }
+</style>

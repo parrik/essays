@@ -27,10 +27,15 @@ const hasGraph = slugsWithGraph.has(essay.id);
 
 // Per-essay etude track. null = no etudes built yet.
 const etudesBySlug: Record<string, string | null> = {
-  'know-thyself': '/etudes/know-thyself/',
+  // know-thyself etudes unlinked (2026-07-02): the essay stands on its own.
   'restorative-yoga-and-biology-of-belonging': '/etudes/restorative/',
 };
 const etudesUrl = etudesBySlug[essay.id] ?? null;
+
+// Footnotes live on their own /notes/ tab so the essay reads clean.
+// Build the tab only when the essay actually carries footnotes.
+const hasNotes = /^\[\^[^\]]+\]:\s/m.test(essay.body ?? '');
+const notesUrl = `/puzzles/${essay.id}/notes/`;
 ---
 <Base title={essay.data.title} description={essay.data.description ?? essay.data.subtitle}>
   <article class="essay h-entry">
@@ -48,8 +53,9 @@ const etudesUrl = etudesBySlug[essay.id] ?? null;
       activeView="essay"
       etudesUrl={etudesUrl}
       hasGraph={hasGraph}
+      hasNotes={hasNotes}
     />
-    <div class="essay-body e-content">
+    <div class="essay-body e-content" data-notes-url={hasNotes ? notesUrl : undefined}>
       <Content />
     </div>
 
@@ -66,3 +72,25 @@ const etudesUrl = etudesBySlug[essay.id] ?? null;
     <span class="p-author h-card" hidden>parrik</span>
   </article>
 </Base>
+
+<style is:global>
+  /* Footnotes moved to the /notes/ tab — hide the rendered block on the
+     essay view so the prose reads clean. Scoped to .e-content so the
+     notes page (.notes-only) still shows the same section. */
+  .essay-body.e-content section[data-footnotes] {
+    display: none;
+  }
+</style>
+
+<script is:inline>
+  // Send in-body footnote markers ([1], [2], …) to the notes tab at the
+  // matching anchor, since the footnote text no longer lives on this page.
+  document.querySelectorAll('.essay-body.e-content[data-notes-url]').forEach((body) => {
+    const notesUrl = body.getAttribute('data-notes-url');
+    if (!notesUrl) return;
+    body.querySelectorAll('a[data-footnote-ref]').forEach((a) => {
+      const hash = a.getAttribute('href') || '';
+      if (hash.startsWith('#')) a.setAttribute('href', notesUrl + hash);
+    });
+  });
+</script>
