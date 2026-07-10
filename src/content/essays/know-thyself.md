@@ -7,11 +7,11 @@ kicker: Method
 tag: essay
 order: 0
 publishedAt: 2026-04-21
-updatedAt: 2026-07-02
+updatedAt: 2026-07-09
 description: There is a schema for personal memory, and one human step. You approve the rules before they go in. Everything else the model can write.
 ---
 
-Talk to a chatbot for long enough and it starts to agree with you. Its memory is a flat profile, a paragraph of facts about you that it slips into every chat, and in that paragraph a thing you guessed once and a thing that really happened read exactly the same. Nothing says where a line came from, so the model reads it back and sounds sure. Someone measured this last year, and a profile like that made chatbots agree with people more than anything else did.[^mirror-study]
+Talk to a chatbot for long enough and it starts to agree with you. Its memory is a flat profile, a paragraph of facts about you that it slips into every chat, and in that paragraph a thing you guessed once and a thing that really happened read exactly the same. Nothing says where a line came from, so the model reads it back and sounds sure. Someone measured this earlier this year, and a profile like that made chatbots agree with people more than anything else did.[^mirror-study]
 
 But agreeing is the smaller problem. A paragraph doesn't really know you. There are no links in it, no way to ask how one thing about you leads to another, so when you need something the paragraph doesn't spell out, the model fills the gap with whatever sounds right. It makes you up.
 
@@ -23,7 +23,7 @@ Ten kinds of note. The third column is which kind of memory each is. The last co
 
 | Node | What it is | Kind of memory | How it's saved |
 |---|---|---|---|
-| **Reference** | A fact that doesn't change. Age, job, city. | semantic (a thing I know) | auto-extracted |
+| **Reference** | A fact that rarely changes. Age, job, city. | semantic (a thing I know) | auto-extracted |
 | **Observation** | One thing that happened, with a date. Saved as it was. | episodic (a thing that happened) | auto-extracted |
 | **Overlap** | A pattern found in two or more observations. | semantic | auto-extracted |
 | **Novel** | A guess with one source. Marked unsure until a second shows up. | semantic | auto-extracted |
@@ -54,7 +54,7 @@ Here it is as a live graph. Hover any node to see what it is, and follow a link 
 
 Two things. One, saying a thing more often doesn't make it truer, only a second and separate source does. A guess I said five times stays one guess, marked unsure, until something real backs it up.
 
-Two, and this is the one that counts. As we talk the model writes most of this itself, the notes, the patterns, its guesses about me, and if one's wrong I fix it later. But a rule, a thing I'm going to live by, it doesn't get to write. That waits for me to say yes. So the memory fills in on its own, same as any chatbot, and the one place I stand in the loop is the rules.
+Two, and this is the one that counts. As we talk, the model writes most of this itself, the notes, the patterns, its guesses about me, and if one's wrong I fix it later. But a rule, a thing I'm going to live by, it doesn't get to write. That waits for me to say yes. So the memory fills in on its own, same as any chatbot, and the one place I stand in the loop is the rules.
 
 ## It's just a file
 
@@ -66,7 +66,7 @@ Because it's a file, it outlives the model. I switch models and the new one read
 
 ## What's actually new
 
-Let me be straight about what's new here and what isn't. The schema isn't. Companies building memory for AI agents landed on the same shape without me, typed nodes, typed edges, a source on every claim. When that many people find the same thing on their own, it was the easy part, and I can't claim it.
+Let me be straight about what's new here and what isn't. The schema isn't. Companies building memory for AI agents landed on the same shape without me, typed nodes, typed edges, a source on every claim. When that many people found the same thing on their own, it was the easy part, and I can't claim it.
 
 What none of them added is the gate. Every shipped memory tool lets the model write the whole record and never stops to ask. I looked again this year and couldn't find one where a claim waits for you before it sticks. Mine has that step, and it's narrow on purpose. The model writes the record itself, the notes and patterns and guesses, and only a rule I'm going to live by waits for my yes.
 

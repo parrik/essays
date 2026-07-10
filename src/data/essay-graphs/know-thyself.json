@@ -55,15 +55,15 @@
       "type": "citation",
       "claim": "Episodic vs semantic memory as separate stores — the binding principle the schema operationalizes.",
       "source": "Tulving, Episodic and Semantic Memory (1972)",
-      "why": "The originating cognitive-psychology distinction the essay's eight types refine. Cited to mark the lineage rather than claim novelty for the type/no-type cut."
+      "why": "The originating cognitive-psychology distinction the essay's ten types refine. Cited to mark the lineage rather than claim novelty for the type/no-type cut."
     },
     {
       "id": "C05-coala",
       "type": "citation",
-      "claim": "Working / episodic / semantic / procedural — the canonical agent-memory taxonomy. The eight node types here are an opinionated refinement of the semantic side.",
-      "source": "Sumers, Yao, Narasimhan, Cognitive Architectures for Language Agents (2023)",
+      "claim": "Working / episodic / semantic / procedural — the canonical agent-memory taxonomy. The ten node types map onto it — two episodic (Observation, Period), six semantic, one procedural (Practice), one held open — with the opinionated refinement on the semantic side.",
+      "source": "Sumers, Yao, Narasimhan, Griffiths, Cognitive Architectures for Language Agents (2023)",
       "url": "https://arxiv.org/abs/2309.02427",
-      "why": "The contemporary academic frame. Cited to position the eight types as a refinement (not replacement) of CoALA — naming the literature the schema sits inside."
+      "why": "The contemporary academic frame. Cited to position the ten types as a refinement (not replacement) of CoALA — naming the literature the schema sits inside."
     },
     {
       "id": "C12-mccarthy-edges",
@@ -71,7 +71,7 @@
       "claim": "Edge vocabulary — derives_from, evidences, grounds, overlaps_with, generalizes — each carrying an (attribution, evidence, derivation) triple.",
       "source": "Patrick D. McCarthy, open-knowledge-graph",
       "url": "https://github.com/patdmc/open-knowledge-graph",
-      "why": "Provides the edge vocabulary the essay's nodes plug into. McCarthy supplies the verbs; the eight types are the nouns. Without this citation, attribution≠confidence reads as the author's coinage rather than an adoption."
+      "why": "Provides the edge vocabulary the essay's nodes plug into. McCarthy supplies the verbs; the ten types are the nouns. Without this citation, attribution≠confidence reads as the author's coinage rather than an adoption."
     },
     {
       "id": "S07-attribution-neq-confidence",
@@ -267,7 +267,7 @@
   "eyes": [
     {
       "id": "S03-memory-must-have-types",
-      "what": "The eight node types (Reference / Observation / Overlap / Novel / Emergent / Equivalency / Practice / Open) are the author's opinionated refinement of CoALA's four. The specific cuts — especially Novel, Emergent, Open — are author-original.",
+      "what": "The ten node types (Reference / Observation / Overlap / Novel / Emergent / Equivalency / Theme / Period / Practice / Open) are the author's opinionated refinement of CoALA's four. The specific cuts — especially Novel, Emergent, Open — are author-original.",
       "why": "CoALA grounds working/episodic/semantic/procedural. The further partition of the semantic side is the essay's contribution, not yet validated externally. Empirical work showing these specific cuts reduce one-derivation-as-six errors would harden the case.",
       "ground_with": [
         {
@@ -284,7 +284,7 @@
     },
     {
       "id": "S08-repetition-isnt-corroboration",
-      "what": "The Mira/Alex case is illustrative, not empirical. No user study cited testing whether graph-shaped memory reduces sycophancy at the user-experience level — only the CHI 2026 paper showing flat memory amplifies it.",
+      "what": "The Alex case (drilled in the etudes) is illustrative, not empirical. No user study cited testing whether graph-shaped memory reduces sycophancy at the user-experience level — only the CHI 2026 paper showing flat memory amplifies it.",
       "why": "The negative result (flat memory amplifies sycophancy) is grounded. The positive result (typed-and-edged memory reduces it) is asserted by construction, not measured. The essay would land harder with a paired study.",
       "ground_with": [
         {
@@ -356,6 +356,6 @@
       "voice": "strong"
     },
     "note": "Tight on every dimension. MIT/Penn State CHI 2026 sycophancy study, CoALA, Karpathy's LLM Wiki, Memanto, McCarthy's edge vocabulary, Tulving, Anthropic memory tool, Park et al — citations are real and load-bearing. The Novel type is itself the embodiment of marking-tentative; the schema enacts its own discipline.",
-    "soft": "the opening claim — \"a model's memory is a list — bullets, facts\" — generalizes from ChatGPT-style memory to all LLM memory. False of Memanto, Mem0, Graphiti, A-Mem. The argument doesn't need the generalization. Specify \"ChatGPT's persistent memory\" and the precision rises without losing the move."
+    "soft": "the opening claim — \"its memory is a flat profile, a paragraph of facts\" — generalizes from ChatGPT-style memory to all LLM memory. False of Memanto, Mem0, Graphiti, A-Mem. The argument doesn't need the generalization. Specify \"ChatGPT's persistent memory\" and the precision rises without losing the move."
   }
 }
