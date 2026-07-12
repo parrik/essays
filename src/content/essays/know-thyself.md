@@ -19,7 +19,7 @@ So I keep a typed graph instead. Here's the whole of it.
 
 ## The schema
 
-Ten kinds of note. The third column is which kind of memory each is. The last column is how it gets saved, and only one kind, Practice, waits for me. The rest the model writes on its own.[^coala]
+Ten kinds of node. The third column is which kind of memory each is. The last column is how it gets saved, and only one kind, Practice, waits for me. The rest the model writes on its own.[^coala]
 
 | Node | What it is | Kind of memory | How it's saved |
 |---|---|---|---|
@@ -29,12 +29,12 @@ Ten kinds of note. The third column is which kind of memory each is. The last co
 | **Novel** | A guess with one source. Marked unsure until a second shows up. | semantic | auto-extracted |
 | **Emergent** | A claim that shows up only where two threads cross. | semantic | auto-extracted |
 | **Equivalency** | A name my idea already has somewhere else. | semantic | auto-extracted |
-| **Theme** | A thread that keeps surfacing across many notes. | semantic | auto-extracted |
+| **Theme** | A thread that keeps surfacing across many nodes. | semantic | auto-extracted |
 | **Period** | A named stretch of time with its own shape. | episodic (a span that happened) | auto-extracted |
 | **Practice** | A rule I follow, earned from a pattern. Not made up. | procedural (a thing I do) | human-in-the-loop |
 | **Open** | A question I haven't answered. Kept open on purpose. | none (a held question) | auto-extracted |
 
-The links between notes are typed too, each one carrying where it came from, so the graph is typed on both ends. I took the edge names from McCarthy's open-knowledge-graph, which does this for science.[^mccarthy-edges]
+The links between nodes are typed too, each one carrying where it came from, so the graph is typed on both ends. I took the edge names from McCarthy's open-knowledge-graph, which does this for science.[^mccarthy-edges]
 
 | Edge | What it says |
 |---|---|
@@ -54,7 +54,7 @@ Here it is as a live graph. Hover any node to see what it is, and follow a link 
 
 Two things. One, saying a thing more often doesn't make it truer, only a second and separate source does. A guess I said five times stays one guess, marked unsure, until something real backs it up.
 
-Two, and this is the one that counts. As we talk, the model writes most of this itself, the notes, the patterns, its guesses about me, and if one's wrong I fix it later. But a rule, a thing I'm going to live by, it doesn't get to write. That waits for me to say yes. So the memory fills in on its own, same as any chatbot, and the one place I stand in the loop is the rules.
+Two, and this is the one that counts. As we talk, the model writes most of this itself, the nodes, the patterns, its guesses about me, and if one's wrong I fix it later. But a rule, a thing I'm going to live by, it doesn't get to write. That waits for me to say yes. So the memory fills in on its own, same as any chatbot, and the one place I stand in the loop is the rules.
 
 ## It's just a file
 
@@ -68,9 +68,9 @@ Because it's a file, it outlives the model. I switch models and the new one read
 
 Let me be straight about what's new here and what isn't. The schema isn't. Companies building memory for AI agents landed on the same shape without me, typed nodes, typed edges, a source on every claim. When that many people found the same thing on their own, it was the easy part, and I can't claim it.
 
-What none of them added is the gate. Every shipped memory tool lets the model write the whole record and never stops to ask. I looked again this year and couldn't find one where a claim waits for you before it sticks. Mine has that step, and it's narrow on purpose. The model writes the record itself, the notes and patterns and guesses, and only a rule I'm going to live by waits for my yes.
+What none of them added is the gate. Every shipped memory tool lets the model write the whole record and never stops to ask. I looked again this year and couldn't find one where a claim waits for you before it sticks. Mine has that step, and it's narrow on purpose. The model writes the record itself, the nodes and patterns and guesses, and only a rule I'm going to live by waits for my yes.
 
-That narrowness is the point. Gating everything doesn't scale, and I tried. Gating just the rules does, because a wrong note is cheap to fix later and a wrong rule is the thing you go and act on. So the strength isn't that I curate more than the machine. It's that I curate the one layer that would hurt to get wrong, and let the machine have the rest.
+That narrowness is the point. Gating everything doesn't scale, and I tried. Gating just the rules does, because a wrong node is cheap to fix later and a wrong rule is the thing you go and act on. So the strength isn't that I curate more than the machine. It's that I curate the one layer that would hurt to get wrong, and let the machine have the rest.
 
 ## Know thyself
 
